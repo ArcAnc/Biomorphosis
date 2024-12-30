@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "biomorphosis:item/common_item"
+    "layer0": "biomorphosis:item/flesh_piece"
   }
 }

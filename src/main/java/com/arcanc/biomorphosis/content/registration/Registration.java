@@ -9,9 +9,8 @@
 
 package com.arcanc.biomorphosis.content.registration;
 
-import com.arcanc.biomorphosis.content.item.BioBaseItem;
-import com.arcanc.biomorphosis.content.item.BioIconItem;
-import com.arcanc.biomorphosis.content.item.ItemInterfaces;
+import com.arcanc.biomorphosis.content.block.BioBaseBlock;
+import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
 import net.minecraft.Util;
@@ -21,10 +20,16 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -36,6 +41,34 @@ public final class Registration
     {
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Database.MOD_ID);
 
+        public static final DeferredBlock<BioBaseBlock> FLESH = register("flesh", BioBaseBlock::new,
+                properties -> properties.
+                        mapColor(MapColor.COLOR_PURPLE).
+                        strength(3, 3).
+                        sound(SoundType.HONEY_BLOCK).
+                        isValidSpawn((state, level, pos, value) -> false),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
+        {
+            BlockBehaviour.Properties props = setId(name, props(additionalProps));
+            Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
+            DeferredBlock<B> blockGetter = BLOCKS.register(name, ()-> block.apply(props));
+            ItemReg.ITEMS.register(name, () -> new BioBaseBlockItem(blockGetter.get(), itemProps));
+            return blockGetter;
+        }
+
+        private static BlockBehaviour.@NotNull Properties setId(String id, BlockBehaviour.@NotNull Properties props)
+        {
+            ResourceKey<Block> resourceKey = ResourceKey.create(Registries.BLOCK, Database.rl(id));
+            return props.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix("block.").toLanguageKey().replace(':', '.').replace('/', '.'));
+        }
+
+        private static BlockBehaviour.@NotNull Properties props (Consumer<BlockBehaviour.Properties> additionalProps)
+        {
+            return Util.make(BlockBehaviour.Properties.of(), additionalProps);
+        }
+
         private static void init (@NotNull final IEventBus bus)
         {
             BLOCKS.register(bus);
@@ -46,30 +79,30 @@ public final class Registration
     {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Database.MOD_ID);
 
-        public static final DeferredItem<BioBaseItem> test = register("common_item", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
-        public static final DeferredItem<BioBaseItem> test_rare = register("rare_item", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
-        public static final DeferredItem<BioBaseItem> test_ultra_rare = register("ultra_rare_item", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
         public static final DeferredItem<BioIconItem> CREATIVE_TAB_ICON = registerIcon("creative_tab_icon");
+        public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+        public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
-        private static DeferredItem<BioIconItem> registerIcon(String name)
+        private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
         {
-            Item.Properties props = setId(name, new Item.Properties().stacksTo(1));
+            Item.Properties props = setId(name, new Item.Properties().stacksTo(1), false);
             return ITEMS.register(name, ()-> new BioIconItem(props));
         }
 
-        private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, I> item, Consumer<Item.Properties> additionalProps)
+        private static <I extends Item> @NotNull DeferredItem<I> register(String name, Function<Item.Properties, I> item, Consumer<Item.Properties> additionalProps)
         {
-            Item.Properties props = setId(name, props(additionalProps));
+            Item.Properties props = setId(name, props(additionalProps), false);
             return ITEMS.register(name, ()-> item.apply(props));
         }
 
-        private static Item.Properties setId(String id, Item.Properties props)
+        private static Item.@NotNull Properties setId(String id, Item.@NotNull Properties props, boolean blockItem)
         {
             ResourceKey<Item> resourceKey = ResourceKey.create(Registries.ITEM, Database.rl(id));
-            return props.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix("item.").toLanguageKey().replace(':', '.').replace('/', '.'));
+            return props.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix(blockItem ? "block." : "item." ).toLanguageKey().replace(':', '.').replace('/', '.'));
         }
 
-        private static Item.Properties props (Consumer<Item.Properties> additionalProps)
+        @Contract("_ -> new")
+        private static Item.@NotNull Properties props (Consumer<Item.Properties> additionalProps)
         {
             return Util.make(new Item.Properties(), additionalProps);
         }

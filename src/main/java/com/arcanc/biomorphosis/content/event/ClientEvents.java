@@ -9,13 +9,17 @@
 
 package com.arcanc.biomorphosis.content.event;
 
-import com.arcanc.biomorphosis.data.ItemModelProvider;
+import com.arcanc.biomorphosis.data.BioRecipeProvider;
+import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.CompletableFuture;
 
 public final class ClientEvents
 {
@@ -107,10 +111,11 @@ public final class ClientEvents
         //ExistingFileHelper ext = event.getExistingFileHelper();
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
-        //CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
 
         gen.addProvider(true, new EnUsProvider(packOutput));
-        gen.addProvider(true, new ItemModelProvider(packOutput));
+        gen.addProvider(true, new SummaryModelProvider(packOutput));
+        gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
     }
 }

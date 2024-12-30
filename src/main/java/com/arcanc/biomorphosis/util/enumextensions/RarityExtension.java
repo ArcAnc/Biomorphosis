@@ -25,7 +25,7 @@ public class RarityExtension
             Database.rlStr("common"),
             (UnaryOperator<Style>) style -> style.withColor(
                     TextColor.fromRgb(
-                                    new Color(90, 133, 50).getRGB())).
+                                    new Color(70, 185, 34, 255).getRGB())).
                     withItalic(false));
 
     public static final EnumProxy<Rarity> BIO_RARE = new EnumProxy<>(Rarity.class,
@@ -33,7 +33,7 @@ public class RarityExtension
             Database.rlStr("rare"),
             (UnaryOperator<Style>) style -> style.withColor(
                     TextColor.fromRgb(
-                            new Color(110, 11, 110).getRGB())).
+                            new Color(155, 34, 180).getRGB())).
                     withItalic(true));
 
     public static final EnumProxy<Rarity> BIO_ULTRA_RARE = new EnumProxy<>(Rarity.class,
@@ -41,6 +41,6 @@ public class RarityExtension
             Database.rlStr("ultra_rare"),
             (UnaryOperator<Style>) style -> style.withColor(
                     TextColor.fromRgb(
-                            new Color(156, 109, 9).getRGB())).
+                            new Color(227, 163, 37).getRGB())).
                     withItalic(true));
 }

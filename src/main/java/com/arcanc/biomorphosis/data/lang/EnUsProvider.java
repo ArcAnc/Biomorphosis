@@ -24,8 +24,7 @@ public class EnUsProvider extends LanguageProvider
     @Override
     protected void addTranslations()
     {
-        this.addItem(Registration.ItemReg.test, "Basic Common Item");
-        this.addItem(Registration.ItemReg.test_rare, "Basic Rare Item");
-        this.addItem(Registration.ItemReg.test_ultra_rare, "Basic Epic Item");
+        this.addItem(Registration.ItemReg.FLESH_PIECE, "Piece Of Flash");
+        this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
     }
 }
