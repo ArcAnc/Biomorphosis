@@ -9,6 +9,9 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
+import com.arcanc.biomorphosis.content.render.block_entity.model.LureCampfireModel;
 import com.arcanc.biomorphosis.data.BioRecipeProvider;
 import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
@@ -16,6 +19,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +30,9 @@ public final class ClientEvents
     public static void registerClientEvents(final @NotNull IEventBus modEventBus)
     {
         modEventBus.addListener(ClientEvents :: gatherData);
-/*        modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
-        modEventBus.addListener(ClientEvents :: registerMenuScreens);
+        modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
+        modEventBus.addListener(ClientEvents ::registerLayerDefinitions);
+/*        modEventBus.addListener(ClientEvents :: registerMenuScreens);
         modEventBus.addListener(ClientEvents :: setupClient);
         modEventBus.addListener(ClientEvents :: setupItemColor);
         modEventBus.addListener(ClientEvents :: setupModels);
@@ -40,24 +45,29 @@ public final class ClientEvents
         NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: essenceRenderer);
 */    }
 
-/*    private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
-    {
-        NRegistration.NFluids.FLUID_TYPES.getEntries().
-                stream().
-                map(DeferredHolder::get).
-                filter(fluidType -> fluidType instanceof NFluidType).
-                map(fluidType -> (NFluidType)fluidType).
-                forEach(fluidType ->
-                        event.registerFluidType(fluidType.registerClientExtensions(), fluidType));
-    }
-
+    /*    private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
+        {
+            NRegistration.NFluids.FLUID_TYPES.getEntries().
+                    stream().
+                    map(DeferredHolder::get).
+                    filter(fluidType -> fluidType instanceof NFluidType).
+                    map(fluidType -> (NFluidType)fluidType).
+                    forEach(fluidType ->
+                            event.registerFluidType(fluidType.registerClientExtensions(), fluidType));
+        }
+    */
     private static void registerBlockEntityRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(NRegistration.NBlockEntities.BE_NODE.get(), NodeRenderer:: new);
-        event.registerBlockEntityRenderer(NRegistration.NBlockEntities.BE_FLUID_STORAGE.get(), FluidStorageRenderer:: new);
-        event.registerBlockEntityRenderer(NRegistration.NBlockEntities.BE_FLUID_TRANSMITTER.get(), FluidTransmitterRenderer :: new);
+        event.registerBlockEntityRenderer(Registration.BETypeReg.BE_LURE_CAMPFIRE.get(), LureCampfireRenderer :: new);
     }
 
+    private static void registerLayerDefinitions(final @NotNull EntityRenderersEvent.RegisterLayerDefinitions event)
+    {
+        event.registerLayerDefinition(LureCampfireModel.LAYER_LOCATION, LureCampfireModel :: createBodyLayer);
+    }
+
+
+    /*
     private static void setupClient(final @NotNull FMLClientSetupEvent event)
     {
         event.enqueueWork(() ->

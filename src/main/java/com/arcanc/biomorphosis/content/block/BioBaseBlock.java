@@ -128,4 +128,9 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
     {
         return InteractionResult.PASS;
     }
+
+    protected InteractionResult.Success sidedSuccess(boolean isClient)
+    {
+        return isClient ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
+    }
 }

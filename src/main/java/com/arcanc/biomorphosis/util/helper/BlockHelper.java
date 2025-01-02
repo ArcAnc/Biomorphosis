@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.util.helper;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
@@ -17,6 +18,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +29,9 @@ public class BlockHelper
     public static final class BlockProperties
     {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
+        public static final BooleanProperty LIT = BlockStateProperties.LIT;
+
+        public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
     }
 
     public static Optional<BlockEntity> getTileEntity(BlockGetter world, Vec3 pos)

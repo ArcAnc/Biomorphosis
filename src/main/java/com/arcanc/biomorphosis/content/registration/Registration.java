@@ -10,10 +10,13 @@
 package com.arcanc.biomorphosis.content.registration;
 
 import com.arcanc.biomorphosis.content.block.BioBaseBlock;
+import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
+import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,7 +33,11 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -44,8 +51,11 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public final class Registration
 {
@@ -53,12 +63,22 @@ public final class Registration
     {
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Database.MOD_ID);
 
-        public static final DeferredBlock<BioBaseBlock> FLESH = register("flesh", BioBaseBlock::new,
+        public static final DeferredBlock<BioBaseBlock> FLESH = register("flesh", BioBaseBlock :: new,
                 properties -> properties.
                         mapColor(MapColor.COLOR_PURPLE).
                         strength(3, 3).
                         sound(SoundType.HONEY_BLOCK).
                         isValidSpawn((state, level, pos, value) -> false),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<LureCampfireBlock> LURE_CAMPFIRE = register("lure_campfire", LureCampfireBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BASS).
+                        strength(2, 2).
+                        sound(SoundType.WOOD).
+                        lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 0).
+                        noOcclusion().
+                        ignitedByLava(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
@@ -84,6 +104,34 @@ public final class Registration
         private static void init (@NotNull final IEventBus bus)
         {
             BLOCKS.register(bus);
+        }
+    }
+
+    public static class BETypeReg
+    {
+        public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(
+                BuiltInRegistries.BLOCK_ENTITY_TYPE, Database.MOD_ID);
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LureCampfireBE>> BE_LURE_CAMPFIRE = BLOCK_ENTITIES.register(
+                "lure_campfire",
+                makeType(LureCampfireBE :: new, BlockReg.LURE_CAMPFIRE));
+
+        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
+        {
+            return makeTypeMultipleBlocks(create, ImmutableSet.of(valid));
+        }
+
+        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
+                BlockEntityType.BlockEntitySupplier<T> create, Collection<? extends Supplier<? extends Block>> valid
+        )
+        {
+            return () -> new BlockEntityType<>(
+                    create, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
+        }
+
+        public static void init (final IEventBus modEventBus)
+        {
+            BLOCK_ENTITIES.register(modEventBus);
         }
     }
 
@@ -242,6 +290,7 @@ public final class Registration
     {
         BlockReg.init(bus);
         ItemReg.init(bus);
+        BETypeReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
     }
