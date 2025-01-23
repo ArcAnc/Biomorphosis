@@ -21,6 +21,18 @@ public class Database
     public static final String MOD_NAME = "Biomorphosis";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    public static final class Textures
+    {
+        public static final class GUI
+        {
+            public static final class Tooltip
+            {
+                public static final ResourceLocation TOOLTIP_BACKGROUND = Database.rl("special");
+                public static final ResourceLocation TOOLTIP_DECORATIONS = Database.rl("special");
+            }
+        }
+    }
+
     @Contract("_ -> new")
     public static @NotNull ResourceLocation rl(String name)
     {

@@ -9,19 +9,38 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.gui.component.animation.AnimationData;
+import com.arcanc.biomorphosis.content.gui.component.tooltip.ICustomTooltip;
+import com.arcanc.biomorphosis.content.gui.component.tooltip.StyleData;
+import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipData;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
-import com.arcanc.biomorphosis.content.render.block_entity.model.LureCampfireModel;
 import com.arcanc.biomorphosis.data.BioRecipeProvider;
+import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.mojang.blaze3d.platform.GlStateManager;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ARGB;
+import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import org.jetbrains.annotations.NotNull;
+import org.lwjgl.opengl.GL11;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,19 +50,8 @@ public final class ClientEvents
     {
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
-        modEventBus.addListener(ClientEvents ::registerLayerDefinitions);
-/*        modEventBus.addListener(ClientEvents :: registerMenuScreens);
-        modEventBus.addListener(ClientEvents :: setupClient);
-        modEventBus.addListener(ClientEvents :: setupItemColor);
-        modEventBus.addListener(ClientEvents :: setupModels);
-        modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
-
-        modEventBus.addListener(ClientEvents ::registerReloadListeners);
-
-        modEventBus.addListener(DynamicModel :: registerModels);
-
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: essenceRenderer);
-*/    }
+        TooltipBorderHandler.registerHandler();
+    }
 
     /*    private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
         {
@@ -58,74 +66,215 @@ public final class ClientEvents
     */
     private static void registerBlockEntityRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(Registration.BETypeReg.BE_LURE_CAMPFIRE.get(), LureCampfireRenderer :: new);
+        event.registerBlockEntityRenderer(Registration.BETypeReg.BE_LURE_CAMPFIRE.get(), LureCampfireRenderer:: new);
     }
-
-    private static void registerLayerDefinitions(final @NotNull EntityRenderersEvent.RegisterLayerDefinitions event)
-    {
-        event.registerLayerDefinition(LureCampfireModel.LAYER_LOCATION, LureCampfireModel :: createBodyLayer);
-    }
-
-
-    /*
-    private static void setupClient(final @NotNull FMLClientSetupEvent event)
-    {
-        event.enqueueWork(() ->
-        {
-            NRegistration.NFluids.FLUIDS.getEntries().stream().filter(fluid -> fluid.get().getFluidType() instanceof NEnergonFluidType).
-                    map(DeferredHolder:: get).
-                    forEach(fluid ->
-                    {
-                        ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent());
-                        ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent());
-                    });
-        });
-    }
-
-    private static void registerMenuScreens(@NotNull RegisterMenuScreensEvent event)
-    {
-        event.register(NRegistration.NMenuTypes.FLUID_TRANSMITTER.getType(), FluidTransmitterScreen ::new);
-    }
-
-    private static void setupItemColor(final @NotNull RegisterColorHandlersEvent.Item event)
-    {
-        event.register((stack, tintIndex) ->
-                {
-                    if (stack.getItem() instanceof NBucketItem item)
-                    {
-                        if (item.content.getFluidType() instanceof NEnergonFluidType type && tintIndex == 1)
-                            return type.getEnergonType().color();
-                    }
-                    return -1;
-                },
-                NRegistration.NFluids.ENERGON_DARK.bucket().get(),
-                NRegistration.NFluids.ENERGON_BLUE.bucket().get(),
-                NRegistration.NFluids.ENERGON_RED.bucket().get(),
-                NRegistration.NFluids.ENERGON_GREEN.bucket().get(),
-                NRegistration.NFluids.ENERGON_YELLOW.bucket().get());
-    }
-
-    private static void setupModels (final ModelEvent.@NotNull RegisterGeometryLoaders event)
-    {
-        event.register(SimpleModel.GeometryLoader.ID, new SimpleModel.GeometryLoader(FluidStorageBakedModel :: new));
-    }
-
-    private static void registerReloadListeners(final @NotNull RegisterClientReloadListenersEvent event)
-    {
-        event.registerReloadListener((ResourceManagerReloadListener) resourceManager -> RenderHelper.clearRenderCaches());
-    }
- */
 
     private static void gatherData(final @NotNull GatherDataEvent.Client event)
     {
-        //ExistingFileHelper ext = event.getExistingFileHelper();
+        ExistingFileHelper ext = event.getExistingFileHelper();
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-
         gen.addProvider(true, new EnUsProvider(packOutput));
         gen.addProvider(true, new SummaryModelProvider(packOutput));
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
+        gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider, ext));
+    }
+
+    private static class TooltipBorderHandler
+    {
+        private static void registerHandler()
+        {
+            NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipDisplayEvent);
+            NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
+        }
+        private static void tooltipDisplayEvent(final @NotNull CustomEvents.TooltipDisplayEvent event)
+        {
+            LocalPlayer player = Minecraft.getInstance().player;
+
+            if (player == null)
+                return;
+
+            ItemStack stack = event.getStack();
+
+            if (!(stack.getItem() instanceof ICustomTooltip tooltip))
+                return;
+
+            StyleData style = tooltip.getStyle();
+            if (!style.isCustom())
+                return;
+            TooltipData data = style.tooltip().apply(player, stack);
+            if (!data.isTextured())
+                return;
+
+            GuiGraphics guiGraphics = event.getGuiGraphics();
+            PoseStack poseStack = guiGraphics.pose();
+
+            int x = event.getX();
+            int y = event.getY();
+            int width = event.getWidth();
+            int height = event.getHeight();
+
+            ResourceLocation texture = data.decorations().withSuffix("_decorations.png").withPrefix("textures/gui/tooltip/");
+
+            RenderSystem.setShaderTexture(0, texture);
+
+            RenderHelper.mc().getTextureManager().getTexture(texture).bind();
+
+            int texWidth = GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_WIDTH);
+            int texHeight = GlStateManager._getTexLevelParameter(GL11.GL_TEXTURE_2D, 0, GL11.GL_TEXTURE_HEIGHT);
+            if (texWidth == 0 || texHeight == 0)
+                return;
+
+            int patternWidth = 160;
+            int patternHeight = 64;
+
+            int cornerWidth = 32;
+            int cornerHeight = 32;
+
+            int middleWidth = 96;
+            int middleHeight = cornerHeight;
+
+            poseStack.pushPose();
+
+            RenderSystem.enableBlend();
+
+            poseStack.translate(0, 0, 410.0);
+
+            AnimationData animationData = AnimationData.construct(texHeight, patternHeight, 4);
+            if (data.isInterpolated())
+                renderInterpolatedDecorations(
+                        animationData,
+                        player,
+                        guiGraphics,
+                        texture,
+                        x,
+                        y,
+                        width,
+                        height,
+                        patternWidth,
+                        patternHeight,
+                        cornerWidth,
+                        cornerHeight,
+                        middleWidth,
+                        middleHeight,
+                        texWidth,
+                        texHeight);
+            else
+                renderNormalDecorations(
+                        animationData,
+                        player,
+                        guiGraphics,
+                        texture,
+                        x,
+                        y,
+                        width,
+                        height,
+                        patternWidth,
+                        patternHeight,
+                        cornerWidth,
+                        cornerHeight,
+                        middleWidth,
+                        middleHeight,
+                        texWidth,
+                        texHeight);
+
+            RenderSystem.disableBlend();
+            guiGraphics.pose().popPose();
+        }
+
+        private static void renderInterpolatedDecorations(AnimationData animationData,
+                                                          LocalPlayer player,
+                                                          GuiGraphics guiGraphics,
+                                                          ResourceLocation texture,
+                                                          int x,
+                                                          int y,
+                                                          int width,
+                                                          int height,
+                                                          int patternWidth,
+                                                          int patternHeight,
+                                                          int cornerWidth,
+                                                          int cornerHeight,
+                                                          int middleWidth,
+                                                          int middleHeight,
+                                                          int texWidth,
+                                                          int texHeight)
+        {
+            int currentFrame = animationData.getFrameByTime(player.tickCount).getFirst();
+            int nextFrame = (currentFrame + 1) % animationData.totalLength();
+
+            int offset = patternHeight * currentFrame;
+
+            float progress = (player.tickCount % 4) / 4f;
+
+            int baseColor = ARGB.colorFromFloat(1f, 1f, 1f, 1f);
+            int intColor = ARGB.colorFromFloat(progress, 1f, 1f ,1f);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight, baseColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight, baseColor);
+
+            offset = patternHeight * nextFrame;
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight, intColor);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight, intColor);
+        }
+
+        private static void renderNormalDecorations(@NotNull AnimationData animationData,
+                                                    @NotNull LocalPlayer player,
+                                                    @NotNull GuiGraphics guiGraphics,
+                                                    ResourceLocation texture,
+                                                    int x,
+                                                    int y,
+                                                    int width,
+                                                    int height,
+                                                    int patternWidth,
+                                                    int patternHeight,
+                                                    int cornerWidth,
+                                                    int cornerHeight,
+                                                    int middleWidth,
+                                                    int middleHeight,
+                                                    int texWidth,
+                                                    int texHeight)
+        {
+            int frame = animationData.getFrameByTime(player.tickCount).getFirst();
+            int offset = patternHeight * frame;
+
+            RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
+
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight);
+            guiGraphics.blit(RenderType :: guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight);
+        }
+
+        private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Texture event)
+        {
+            if (!(event.getItemStack().getItem() instanceof ICustomTooltip tooltip))
+                return;
+
+            StyleData style = tooltip.getStyle();
+            if (!style.isCustom())
+                return;
+            TooltipData data = style.tooltip().apply(RenderHelper.clientPlayer(), event.getItemStack());
+            if (data.isTextured())
+                event.setTexture(data.background());
+        }
     }
 }

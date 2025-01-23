@@ -16,13 +16,13 @@ displayURL="https://github.com/ArcAnc/Biomorphosis"
 authors="${mod_authors}"
 description='''${mod_description}'''
 
-#[[mixins]]
-#config="${mod_id}.mixins.json"
-
-#[[accessTransformers]]
-#file="META-INF/accesstransformer.cfg"
-
 enumExtensions="META-INF/enumextensions.json"
+
+[[mixins]]
+config="${mod_id}.mixins.json"
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
 [[dependencies.${mod_id}]]
     modId="neoforge"
     type="required"
@@ -36,6 +36,25 @@ enumExtensions="META-INF/enumextensions.json"
     versionRange="${minecraft_version_range}"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.${ mod_id }]]
+    modId="geckolib"
+    type="required"
+    versionRange = "${geckolib_version}"
+    ordering = "AFTER"
+    side = "BOTH"
+[[dependencies.${ mod_id }]]
+    modId="roughlyenoughitems"
+    type="optional"
+    versionRange = "${rei_version}"
+    ordering = "AFTER"
+    side = "BOTH"
+[[dependencies.${ mod_id }]]
+    modId="jade"
+    type="optional"
+    versionRange = "${jade_version}"
+    ordering = "AFTER"
+    side = "BOTH"
 
 # Features are specific properties of the game environment, that you may want to declare you require. This example declares
 # that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't

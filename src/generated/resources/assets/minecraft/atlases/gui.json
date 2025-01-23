@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "biomorphosis:gui/tooltip/special_background",
+      "sprite": "biomorphosis:tooltip/special_background"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "biomorphosis:gui/tooltip/special_frame",
+      "sprite": "biomorphosis:tooltip/special_frame"
+    }
+  ]
+}

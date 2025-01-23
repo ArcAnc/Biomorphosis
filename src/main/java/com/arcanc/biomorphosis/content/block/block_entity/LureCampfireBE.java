@@ -9,20 +9,41 @@
 
 package com.arcanc.biomorphosis.content.block.block_entity;
 
-import com.arcanc.biomorphosis.content.block.block_entity.tick.ClientTickableBE;
+import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
+import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.AnimationState;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.items.ItemHandlerHelper;
+import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.animatable.GeoBlockEntity;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class LureCampfireBE extends AnimatedBlockEntity implements ClientTickableBE
+public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickableBE, GeoBlockEntity
 {
-    public final AnimationState rotateShaft = new AnimationState();
+    private static final RawAnimation SHAFT_ROTATION = RawAnimation.begin().thenLoop("shaft_rotation");
+    private static final RawAnimation FIRE_ENABLE = RawAnimation.begin().thenPlayAndHold("fire_enable");
+    private static final RawAnimation FIRE_DISABLE = RawAnimation.begin().thenPlayAndHold("fire_disable");
+
+    private static final int BASE_SUMMON_TIME = 2 * 60 * 20;
+    private static final int REDUCTION_PER_MEAT = 20 * 15;
+    private int timer;
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final LureCampfireStackHandler itemHandler = new LureCampfireStackHandler(5);
 
     public LureCampfireBE(BlockPos pos, BlockState blockState)
     {
@@ -31,31 +52,123 @@ public class LureCampfireBE extends AnimatedBlockEntity implements ClientTickabl
 
     public UsingResult addMeat(ItemStack stack, Player player)
     {
-        return new UsingResult(stack, false);
+        ItemStack returnedStack = ItemHandlerHelper.insertItem(itemHandler, stack, false);
+
+        return new UsingResult(returnedStack, !ItemStack.matches(stack, returnedStack));
     }
+
+    public LureCampfireStackHandler getInventory()
+    {
+        return itemHandler;
+    }
+
+    @Override
+    protected void firstTick()
+    {}
 
     @Override
     public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
-        if (descrPacket)
-        {
-            rotateShaft.start(getAge());
-        }
+        itemHandler.deserializeNBT(registries, tag.getCompound("inventory"));
+        timer = tag.getInt("timer");
     }
 
     @Override
     public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
-
+        tag.put("inventory", itemHandler.serializeNBT(registries));
+        tag.putInt("timer", timer);
     }
 
     @Override
-    public void tickClient()
+    public void tickServer()
     {
-        age++;
+        if (ItemHelper.isEmpty(itemHandler))
+            return;
+        BlockState state = getBlockState();
+        if (state.getValue(LureCampfireBlock.LIT))
+            timer++;
+        else
+            timer = 0;
+        if (timer >= getSummonTime())
+            summonMobs();
+    }
+
+    private void summonMobs()
+    {
+        timer = 0;
+    }
+
+    private int getSummonTime()
+    {
+        int meatAmount = 0;
+        for (int q = 0; q < itemHandler.getSlots(); q++)
+        {
+            ItemStack stack = itemHandler.getStackInSlot(q);
+            if (!stack.isEmpty())
+                meatAmount ++;
+        }
+        return meatAmount > 1 ? BASE_SUMMON_TIME - ((meatAmount - 1) * REDUCTION_PER_MEAT) : BASE_SUMMON_TIME;
+    }
+
+    @Override
+    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    {
+        controllers.add(new AnimationController<>(this, "shaft_controller", 10, state ->
+        {
+            if (state.getAnimatable().getBlockState().getValue(BlockHelper.BlockProperties.LIT) && !ItemHelper.isEmpty(state.getAnimatable().getInventory()))
+                return state.setAndContinue(SHAFT_ROTATION);
+            return PlayState.STOP;
+        }));
+        controllers.add(new AnimationController<>(this, "fire_controller", state ->
+        {
+            if (state.getAnimatable().getBlockState().getValue(BlockHelper.BlockProperties.LIT))
+                state.getController().setAnimation(FIRE_ENABLE);
+            else
+                state.getController().setAnimation(FIRE_DISABLE);
+            return PlayState.CONTINUE;
+        }));
+    }
+
+    @Override
+    public @NotNull AnimatableInstanceCache getAnimatableInstanceCache()
+    {
+        return this.cache;
     }
 
     public record UsingResult(ItemStack stack, boolean added)
     {
+    }
+
+    public final class LureCampfireStackHandler extends ItemStackHandler
+    {
+        private LureCampfireStackHandler(int size)
+        {
+            super(size);
+        }
+
+        @Override
+        public int getSlotLimit(int slot)
+        {
+            return 1;
+        }
+
+        @Override
+        protected int getStackLimit(int slot, @NotNull ItemStack stack)
+        {
+            return 1;
+        }
+
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack)
+        {
+            return stack.is(Registration.BlockReg.FLESH.asItem());
+        }
+
+        @Override
+        protected void onContentsChanged(int slot)
+        {
+            LureCampfireBE.this.markDirty();
+        }
     }
 }
