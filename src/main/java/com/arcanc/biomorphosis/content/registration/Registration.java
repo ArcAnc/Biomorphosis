@@ -12,6 +12,8 @@ package com.arcanc.biomorphosis.content.registration;
 import com.arcanc.biomorphosis.content.block.BioBaseBlock;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
+import com.arcanc.biomorphosis.content.book_data.BookChapterData;
+import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.util.Database;
@@ -19,10 +21,12 @@ import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -41,10 +45,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredHolder;
-import net.neoforged.neoforge.registries.DeferredItem;
-import net.neoforged.neoforge.registries.DeferredRegister;
+import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Contract;
@@ -142,6 +143,7 @@ public final class Registration
         public static final DeferredItem<BioIconItem> CREATIVE_TAB_ICON = registerIcon("creative_tab_icon");
         public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+        public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
 
         private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
         {
@@ -286,12 +288,35 @@ public final class Registration
         }
     }
 
+    public static class BookDataReg
+    {
+        public static final ResourceKey<Registry<BookPageData>> PAGE_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("book/page"));
+        public static final ResourceKey<Registry<BookChapterData>> CHAPTER_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("book/chapter"));
+
+        private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+        {
+            event.dataPackRegistry(PAGE_KEY, BookPageData.CODEC, BookPageData.CODEC, regBuilder -> makeRegistry(regBuilder, PAGE_KEY));
+            event.dataPackRegistry(CHAPTER_KEY, BookChapterData.CODEC, BookChapterData.CODEC, regBuilder -> makeRegistry(regBuilder, CHAPTER_KEY));
+        }
+
+        public static void init (@NotNull final IEventBus modEventBus)
+        {
+            modEventBus.addListener(BookDataReg :: registerDataPackRegister);
+        }
+    }
+
     public static void init(@NotNull final IEventBus bus)
     {
+        BookDataReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
         BETypeReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
+    }
+
+    private static <T> void makeRegistry(@NotNull RegistryBuilder<T> registryBuilder, @NotNull ResourceKey<? extends Registry<T>> key)
+    {
+        registryBuilder.defaultKey(key.location()).maxId(Integer.MAX_VALUE - 1).sync(true);
     }
 }

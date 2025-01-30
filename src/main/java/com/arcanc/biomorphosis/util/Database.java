@@ -9,8 +9,8 @@
 
 package com.arcanc.biomorphosis.util;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,9 +21,9 @@ public class Database
     public static final String MOD_NAME = "Biomorphosis";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
-    public static final class Textures
+    public static final class GUI
     {
-        public static final class GUI
+        public static final class Textures
         {
             public static final class Tooltip
             {
@@ -31,11 +31,51 @@ public class Database
                 public static final ResourceLocation TOOLTIP_DECORATIONS = Database.rl("special");
             }
         }
+
+        public static final class GuideBook
+        {
+            public static final class Chapters
+            {
+                public static final ChapterInfo BASIC = new ChapterInfo(rl("basic"));
+                public static final ChapterInfo ADVANCED = new ChapterInfo(rl("advanced"));
+
+                public record ChapterInfo(ResourceLocation location, String langKey)
+                {
+                    public ChapterInfo(ResourceLocation location)
+                    {
+                        this(location, location.withPrefix("book.chapter.").toLanguageKey());
+                    }
+                }
+            }
+
+            public static final class Pages
+            {
+
+                public static final PageInfo TEST_PAGE_1 = new PageInfo(rl("test_1"));
+                public static final PageInfo TEST_PAGE_2 = new PageInfo(rl("test_next_lvl"));
+                public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
+
+                public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
+                {
+                    public PageInfo(ResourceLocation location)
+                    {
+                        this(location,
+                                location.withPrefix("book.page.title.").toLanguageKey(),
+                                location.withPrefix("book.page.text.").toLanguageKey());
+                    }
+                }
+            }
+        }
+
+        public static @NotNull ResourceLocation getTexturePath(String str)
+        {
+            return rl("textures/" + str + ".png");
+        }
     }
 
-    @Contract("_ -> new")
     public static @NotNull ResourceLocation rl(String name)
     {
+        Preconditions.checkNotNull(name);
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
     }
 

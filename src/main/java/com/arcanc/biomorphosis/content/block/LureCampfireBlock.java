@@ -60,7 +60,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
                 {
                     if (!(level instanceof ServerLevel serverLevel))
                         return InteractionResult.SUCCESS;
-                    if (stack.is(Registration.BlockReg.FLESH.asItem()))//Tags.Items.FOODS_RAW_MEAT))
+                    if (stack.is(Registration.BlockReg.FLESH.asItem()))
                     {
                         LureCampfireBE.UsingResult result = lureCampfireBE.addMeat(stack, player);
                         if (result.added())

@@ -19,8 +19,8 @@ public class BioBaseItem extends Item implements ItemInterfaces.IMustAddToCreati
 {
     private final StyleData style = new StyleData(true, (player, stack) -> new TooltipData(
             true,
-            Database.Textures.GUI.Tooltip.TOOLTIP_BACKGROUND,
-            Database.Textures.GUI.Tooltip.TOOLTIP_DECORATIONS,
+            Database.GUI.Textures.Tooltip.TOOLTIP_BACKGROUND,
+            Database.GUI.Textures.Tooltip.TOOLTIP_DECORATIONS,
             true));
 
     public BioBaseItem(Properties properties)

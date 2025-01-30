@@ -1,6 +1,7 @@
-// 1.21.4	2025-01-11T16:01:13.8117735	Biomorphosis: Models
+// 1.21.4	2025-01-30T06:22:10.0825826	Biomorphosis: Models
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 d7700da8fb8738cc580741fc4be8678d65dbc404 assets/biomorphosis/blockstates/lure_campfire.json
+fa958b9b103f7e47d72bf2d20a0fbfb789fb1b4e assets/biomorphosis/items/book.json
 1fb6862792b8865b8ddf7f7694379a3887aad774 assets/biomorphosis/items/creative_tab_icon.json
 ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 8cc2526f42ef8874e5121514f57b57b8df448d94 assets/biomorphosis/items/flesh_piece.json
@@ -8,6 +9,7 @@ ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
 5e059a73c62a9b2f046eb15c58cc1a78bc5078bf assets/biomorphosis/models/block/lure_campfire.json
+b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
 55563bd38cba9be063ebf73b5f415adc5c4506b2 assets/biomorphosis/models/item/flesh_piece.json
 9a32dcef59b3da11bbc88b20dec302404c935a61 assets/biomorphosis/models/item/wrench.json

@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
+import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
@@ -42,5 +43,10 @@ public class RenderHelper
     public static @NotNull ItemRenderer renderItem()
     {
         return mc().getItemRenderer();
+    }
+
+    public static void openGuideScreen()
+    {
+        Minecraft.getInstance().setScreen(new GuideScreen());
     }
 }
