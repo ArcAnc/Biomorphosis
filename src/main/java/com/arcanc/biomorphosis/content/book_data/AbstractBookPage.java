@@ -11,11 +11,20 @@ package com.arcanc.biomorphosis.content.book_data;
 
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractBookPage extends AbstractWidget
 {
-    public AbstractBookPage(int x, int y, int width, int height, Component message)
+    private final BookPageData data;
+
+    public AbstractBookPage(@NotNull BookPageData data)
     {
-        super(x, y, width, height, message);
+        super(0, 0, 16, 16, Component.translatable(data.title()));
+        this.data = data;
+    }
+
+    public BookPageData getData()
+    {
+        return data;
     }
 }

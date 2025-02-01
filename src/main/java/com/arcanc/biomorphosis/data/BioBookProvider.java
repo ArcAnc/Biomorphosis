@@ -36,12 +36,14 @@ public class BioBookProvider extends RegistrySetBuilder
     private void addContent()
     {
         addChapter(Database.GUI.GuideBook.Chapters.BASIC.location(), BookChapterBuilder.newChapter().
+                setId(Database.GUI.GuideBook.Chapters.BASIC.location()).
                 setAuthor("ArcAnc").
                 setTitle(Database.GUI.GuideBook.Chapters.BASIC.langKey()).
                 setWeight(1).
                 end());
 
         addChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location(), BookChapterBuilder.newChapter().
+                setId(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
                 setAuthor("ArcAnc").
                 setTitle(Database.GUI.GuideBook.Chapters.ADVANCED.langKey()).
                 setWeight(2).

@@ -9,10 +9,8 @@
 
 package com.arcanc.biomorphosis.content.gui.screen;
 
+import com.arcanc.biomorphosis.content.book_data.BookData;
 import com.arcanc.biomorphosis.util.Database;
-import com.mojang.blaze3d.platform.Window;
-import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
@@ -29,6 +27,10 @@ public class GuideScreen extends Screen
     public int guiLeft;
     public int guiTop;
 
+    private ResourceLocation currentChapter;
+    private int currentPage;
+    private int currentSubPage;
+
     public GuideScreen()
     {
         super(Component.empty());
@@ -39,6 +41,39 @@ public class GuideScreen extends Screen
     {
         guiLeft = (this.width - this.xSize) / 2;
         guiTop = (this.height - this.ySize) / 2;
+
+        BookData.getInstance().setScreen(this);
+        BookData.getInstance().reCalcPositions();
+
+        BookData.getInstance().getContent().forEach((chapter, pages) ->
+                addRenderableWidget(chapter));
+
+        BookData.BookHistoryEntry entry = BookData.getInstance().getLastHistoryEntry();
+
+        if (entry == null)
+        {
+            currentChapter = Database.GUI.GuideBook.Chapters.BASIC.location();
+            currentPage = 0;
+            currentSubPage = 0;
+        }
+        else
+        {
+            currentChapter = entry.chapter();
+            currentPage = entry.page();
+            currentSubPage = entry.subPage();
+        }
+
+        Database.LOGGER.warn("Entry: {}", currentChapter);
+
+        BookData.getInstance().addNewHistoryEntry(currentChapter, currentPage, currentSubPage);
+
+        setCurrentChapter(currentChapter);
+    }
+
+    public void setCurrentChapter(ResourceLocation chapter)
+    {
+        BookData.getInstance().getContent().keySet().forEach(chapt -> chapt.setActive(chapt.getData().id().equals(chapter)));
+        BookData.getInstance().addNewHistoryEntry(chapter, currentPage, currentSubPage);
     }
 
     @Override
@@ -61,5 +96,15 @@ public class GuideScreen extends Screen
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
         guiGraphics.pose().popPose();
+    }
+
+    public int getGuiLeft()
+    {
+        return guiLeft;
+    }
+
+    public int getGuiTop()
+    {
+        return guiTop;
     }
 }

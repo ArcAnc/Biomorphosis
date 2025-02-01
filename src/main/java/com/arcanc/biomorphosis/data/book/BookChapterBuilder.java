@@ -11,11 +11,13 @@ package com.arcanc.biomorphosis.data.book;
 
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.google.common.base.Preconditions;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 public class BookChapterBuilder
 {
+    private ResourceLocation id;
     private String author;
     private String title;
     private int weight;
@@ -27,6 +29,13 @@ public class BookChapterBuilder
     public static @NotNull BookChapterBuilder newChapter()
     {
         return new BookChapterBuilder();
+    }
+
+    public BookChapterBuilder setId(ResourceLocation id)
+    {
+        Preconditions.checkNotNull(id);
+        this.id = id;
+        return this;
     }
 
     public BookChapterBuilder setAuthor(String author)
@@ -56,6 +65,6 @@ public class BookChapterBuilder
 
     public BookChapterData end()
     {
-        return new BookChapterData(this.author, this.title, this.weight);
+        return new BookChapterData(this.id, this.author, this.title, this.weight);
     }
 }

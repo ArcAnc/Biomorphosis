@@ -9,8 +9,6 @@
 
 package com.arcanc.biomorphosis.content.item;
 
-import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;

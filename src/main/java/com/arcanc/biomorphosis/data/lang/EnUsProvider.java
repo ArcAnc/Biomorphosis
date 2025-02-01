@@ -27,5 +27,11 @@ public class EnUsProvider extends LanguageProvider
         this.addItem(Registration.ItemReg.FLESH_PIECE, "Piece Of Flash");
         this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
         this.addItem(Registration.ItemReg.BOOK, "Guide");
+
+
+        //-----------------------------
+        //BOOK
+        this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
+        this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
     }
 }

@@ -36,6 +36,7 @@ public class Database
         {
             public static final class Chapters
             {
+                public static final ChapterInfo TITLE = new ChapterInfo(rl("title"));
                 public static final ChapterInfo BASIC = new ChapterInfo(rl("basic"));
                 public static final ChapterInfo ADVANCED = new ChapterInfo(rl("advanced"));
 
@@ -50,6 +51,7 @@ public class Database
 
             public static final class Pages
             {
+
 
                 public static final PageInfo TEST_PAGE_1 = new PageInfo(rl("test_1"));
                 public static final PageInfo TEST_PAGE_2 = new PageInfo(rl("test_next_lvl"));
