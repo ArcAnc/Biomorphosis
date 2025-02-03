@@ -63,8 +63,6 @@ public class GuideScreen extends Screen
             currentSubPage = entry.subPage();
         }
 
-        Database.LOGGER.warn("Entry: {}", currentChapter);
-
         BookData.getInstance().addNewHistoryEntry(currentChapter, currentPage, currentSubPage);
 
         setCurrentChapter(currentChapter);
@@ -106,5 +104,11 @@ public class GuideScreen extends Screen
     public int getGuiTop()
     {
         return guiTop;
+    }
+
+    @Override
+    public boolean isPauseScreen()
+    {
+        return false;
     }
 }

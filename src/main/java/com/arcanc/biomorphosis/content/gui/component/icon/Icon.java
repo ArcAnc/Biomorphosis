@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.gui.component.icon;
 
-import com.arcanc.biomorphosis.util.Database;
 import com.google.common.primitives.Ints;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -32,7 +31,6 @@ public interface Icon
     {
         public static @NotNull List<Object> parse(String text)
         {
-            Database.LOGGER.warn("Text: {}", text);
             List<Object> result = new ArrayList<>();
             int start = 0;
             Pattern pattern = Pattern.compile("</(item|block|image);(.*?)/>");

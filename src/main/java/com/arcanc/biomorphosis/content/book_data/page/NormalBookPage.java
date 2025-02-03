@@ -7,8 +7,9 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.book_data;
+package com.arcanc.biomorphosis.content.book_data.page;
 
+import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +24,7 @@ public class NormalBookPage extends AbstractBookPage
     @Override
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-
+        this.components.forEach(component -> component.render(guiGraphics, mouseX, mouseY, partialTick));
     }
 
     @Override

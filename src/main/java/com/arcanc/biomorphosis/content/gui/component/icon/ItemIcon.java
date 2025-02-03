@@ -16,11 +16,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class ItemIcon implements Icon
 {
-    private final Item item;
+    private final ItemStack item;
 
     public ItemIcon(Item item)
     {
-        this.item = item;
+        this.item = new ItemStack(item);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ItemIcon implements Icon
         graphics.pose().pushPose();
         graphics.pose().translate(xPos, yPos, 0.f);
         graphics.pose().scale(scaleX, scaleY, 1.f);
-        graphics.renderItem(new ItemStack(item), 0,0);
+        graphics.renderItem(item, 0,0);
         graphics.pose().popPose();
     }
 }

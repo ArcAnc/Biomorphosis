@@ -2,6 +2,7 @@
   "biomorphosis.block.flesh": "Flesh Block",
   "biomorphosis.book.chapter.advanced": "</block;minecraft:beacon/>Advanced Chapter",
   "biomorphosis.book.chapter.basic": "</block;minecraft:dirt/>Basic Chapter",
+  "biomorphosis.book.page.text.test_1": "У нас сегодня шикарный завтрак из </item;minecraft:bread/>, тарелки с которым расставлены на </block;minecraft:dirt/>, который сделан из </tag;block;minecraft:planks/>. Со мной за столом сидят </entity;minecraft:creeper/> и </entity;minecraft:spider/>. Суп приготовлен по лучшему в мире рецепту </recipe;crafting_shaped;minecraft:soup/>. Хороший день намечается",
   "biomorphosis.item.book": "Guide",
   "biomorphosis.item.flesh_piece": "Piece Of Flash"
 }

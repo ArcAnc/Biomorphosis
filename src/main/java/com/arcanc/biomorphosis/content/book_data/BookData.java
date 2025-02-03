@@ -9,13 +9,17 @@
 
 package com.arcanc.biomorphosis.content.book_data;
 
+import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
+import com.arcanc.biomorphosis.content.book_data.chapter.NormalBookChapter;
+import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
+import com.arcanc.biomorphosis.content.book_data.page.NormalBookPage;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -42,7 +46,6 @@ public class BookData
         {
             INSTANCE = new BookData();
             INSTANCE.initBookData();
-            //INSTANCE.reCalcPositions();
         }
         return INSTANCE;
     }
@@ -53,12 +56,17 @@ public class BookData
         int guiLeft = screen == null ? 0 : screen.getGuiLeft();
         int guiTop = screen == null ? 0 : screen.getGuiTop();
 
+        AbstractBookChapter.setPageZones(new Rect2i(guiLeft + 18, guiTop + 15, 107, 148),
+                new Rect2i(guiLeft + 165, guiTop + 15, 107, 148));
+
         for (AbstractBookChapter chapter : CONTENT.keySet())
         {
-            boolean isNative = chapter.isNative;
+            boolean isNative = chapter.isNative();
             chapter.setPosition(
                     isNative ? guiLeft + 15 + (20 * bottom) + (4 * bottom) : guiLeft + 15 * (20 * upper) + (4 * upper),
                     isNative ? guiTop + 175 : guiTop + 21);
+            for (AbstractBookPage page: CONTENT.get(chapter))
+                page.reCalcPositions();
             if (isNative)
                 bottom++;
             else
@@ -84,7 +92,7 @@ public class BookData
                 lookup(Registration.BookDataReg.CHAPTER_KEY).
                 map(registry -> registry.
                         stream().
-                        map(NormalBookChapter :: new).
+                        map(NormalBookChapter:: new).
                         sorted(Comparator.comparing(chapter -> chapter.
                                 getData().
                                 weight())).
@@ -95,7 +103,7 @@ public class BookData
                 lookup(Registration.BookDataReg.PAGE_KEY).
                 map(registry -> registry.
                         stream().
-                        map(NormalBookPage :: new).
+                        map(NormalBookPage:: new).
                         map(page -> (AbstractBookPage)page).
                         collect(Collectors.toList())).
                 orElse(new ArrayList<>());
