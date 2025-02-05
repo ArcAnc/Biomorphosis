@@ -9,22 +9,20 @@
 
 package com.arcanc.biomorphosis.content.book_data.chapter;
 
-import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookData;
+import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.content.gui.component.icon.Icon;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.util.List;
 
 public class NormalBookChapter extends AbstractBookChapter
@@ -71,7 +69,7 @@ public class NormalBookChapter extends AbstractBookChapter
 
         if (!isActive())
             return;
-        AbstractBookPage page = BookData.getInstance().getContent().get(this).get(currentPage);
+        AbstractBookPage page = BookData.getInstance().getCurrentPage();
         if (page != null)
             page.render(guiGraphics, mouseX, mouseY, partialTick);
     }
@@ -83,7 +81,7 @@ public class NormalBookChapter extends AbstractBookChapter
         if (screen == null)
             return;
         if (screen instanceof GuideScreen guideScreen)
-            guideScreen.setCurrentChapter(this.getData().id());
+            guideScreen.setCurrentChapter(this);
     }
 
     @Override

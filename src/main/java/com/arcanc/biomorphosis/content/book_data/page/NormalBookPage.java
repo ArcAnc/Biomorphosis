@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.book_data.page;
 
+import com.arcanc.biomorphosis.content.book_data.BookData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -24,7 +25,10 @@ public class NormalBookPage extends AbstractBookPage
     @Override
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-        this.components.forEach(component -> component.render(guiGraphics, mouseX, mouseY, partialTick));
+        this.components.stream().
+                filter(component -> component.getOwningSubpage() == BookData.getInstance().getCurrentSubpage() ||
+                        component.getOwningSubpage() == BookData.getInstance().getCurrentSubpage() + 1).
+                forEach(component -> component.render(guiGraphics, mouseX, mouseY, partialTick));
     }
 
     @Override

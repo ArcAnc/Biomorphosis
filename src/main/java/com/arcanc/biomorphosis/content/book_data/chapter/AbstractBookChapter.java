@@ -10,6 +10,8 @@
 package com.arcanc.biomorphosis.content.book_data.chapter;
 
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
+import com.arcanc.biomorphosis.content.book_data.BookData;
+import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -27,7 +29,6 @@ public abstract class AbstractBookChapter extends AbstractWidget
     private final BookChapterData data;
 
     protected final boolean isNative;
-    protected int currentPage = 0;
 
     public AbstractBookChapter(@NotNull BookChapterData data)
     {
@@ -60,7 +61,9 @@ public abstract class AbstractBookChapter extends AbstractWidget
 
     private boolean onPageClick(double mouseX, double mouseY, int button)
     {
-
+        AbstractBookPage page = BookData.getInstance().getCurrentPage();
+        if (page != null)
+            return BookData.getInstance().getCurrentPage().mouseClicked(mouseX, mouseY, button);
         return false;
     }
 
@@ -127,5 +130,14 @@ public abstract class AbstractBookChapter extends AbstractWidget
     public boolean isNative()
     {
         return isNative;
+    }
+
+    @Override
+    public boolean equals(Object o)
+    {
+        if (this == o) return true;
+        if (!(o instanceof AbstractBookChapter that))
+            return false;
+        return getData().id().equals(that.getData().id());
     }
 }

@@ -10,6 +10,8 @@
 package com.arcanc.biomorphosis.content.gui.screen;
 
 import com.arcanc.biomorphosis.content.book_data.BookData;
+import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
+import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
@@ -17,6 +19,8 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public class GuideScreen extends Screen
 {
@@ -27,7 +31,7 @@ public class GuideScreen extends Screen
     public int guiLeft;
     public int guiTop;
 
-    private ResourceLocation currentChapter;
+    private AbstractBookChapter currentChapter;
     private int currentPage;
     private int currentSubPage;
 
@@ -52,7 +56,16 @@ public class GuideScreen extends Screen
 
         if (entry == null)
         {
-            currentChapter = Database.GUI.GuideBook.Chapters.BASIC.location();
+            currentChapter = BookData.getInstance().
+                    getContent().
+                    keySet().
+                    stream().
+                    filter(chapter -> chapter.
+                            getData().
+                            id().
+                            equals(Database.GUI.GuideBook.Chapters.BASIC.location())).
+                    findFirst().
+                    orElse(null);
             currentPage = 0;
             currentSubPage = 0;
         }
@@ -65,13 +78,64 @@ public class GuideScreen extends Screen
 
         BookData.getInstance().addNewHistoryEntry(currentChapter, currentPage, currentSubPage);
 
-        setCurrentChapter(currentChapter);
+        setCurrentOpenedData(currentChapter, currentPage, currentSubPage);
     }
 
-    public void setCurrentChapter(ResourceLocation chapter)
+    public AbstractBookChapter getCurrentChapter()
     {
-        BookData.getInstance().getContent().keySet().forEach(chapt -> chapt.setActive(chapt.getData().id().equals(chapter)));
-        BookData.getInstance().addNewHistoryEntry(chapter, currentPage, currentSubPage);
+        return currentChapter;
+    }
+
+    public int getCurrentPage()
+    {
+        return currentPage;
+    }
+
+    public int getCurrentSubPage()
+    {
+        return currentSubPage;
+    }
+
+    private void setCurrentOpenedData(AbstractBookChapter chapter, int page, int subPage)
+    {
+        setCurrentChapter(chapter);
+        setCurrentPage(page);
+        setCurrentSubPage(subPage);
+    }
+
+    public void setCurrentChapter(AbstractBookChapter chapter)
+    {
+        this.currentChapter = chapter;
+        this.currentPage = 0;
+        this.currentSubPage = 0;
+
+        BookData.getInstance().getContent().keySet().forEach(chapt -> chapt.setActive(chapt.equals(this.currentChapter)));
+        setCurrentPage(this.currentPage);
+        BookData.getInstance().addNewHistoryEntry(chapter, this.currentPage, this.currentSubPage);
+    }
+
+    public void setCurrentPage(int page)
+    {
+        this.currentPage = page;
+        this.currentSubPage = 0;
+
+        List<AbstractBookPage> pages = BookData.getInstance().getContent().get(BookData.getInstance().getCurrentChapter());
+        for (int q = 0; q < pages.size(); q++)
+        {
+            AbstractBookPage absPage = pages.get(q);
+            boolean newValue = page == q;
+            absPage.visible = newValue;
+            absPage.active = newValue;
+        }
+
+        BookData.getInstance().addNewHistoryEntry(this.currentChapter, this.currentPage, this.currentSubPage);
+    }
+
+    public void setCurrentSubPage(int subPage)
+    {
+        this.currentSubPage = subPage;
+
+        BookData.getInstance().addNewHistoryEntry(this.currentChapter, this.currentPage, this.currentSubPage);
     }
 
     @Override

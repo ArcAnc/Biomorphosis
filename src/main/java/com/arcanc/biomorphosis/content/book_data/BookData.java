@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.book_data.chapter.NormalBookChapter;
 import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.content.book_data.page.NormalBookPage;
+import com.arcanc.biomorphosis.content.book_data.page.TitleBookPage;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -20,12 +21,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @OnlyIn(Dist.CLIENT)
 public class BookData
@@ -109,13 +111,17 @@ public class BookData
                 orElse(new ArrayList<>());
 
         chapters.forEach(chapter ->
-            CONTENT.putIfAbsent(chapter, pages.stream().filter(page ->
-                    page.getData().
-                            chapter().
-                            equals(chapter.getData().id())).toList()));
+                CONTENT.computeIfAbsent(chapter, key ->
+                        Stream.concat(
+                                Stream.of(new TitleBookPage(chapter)),
+                                pages.stream()
+                                        .filter(page -> page.getData().chapter().equals(chapter.getData().id()))
+                        ).collect(Collectors.toList())
+                )
+        );
     }
 
-    public void addNewHistoryEntry(ResourceLocation chapter, int page, int subPage)
+    public void addNewHistoryEntry(AbstractBookChapter chapter, int page, int subPage)
     {
         this.history.addLast(new BookHistoryEntry(chapter, page, subPage));
     }
@@ -142,5 +148,25 @@ public class BookData
         this.screen = screen;
     }
 
-    public record BookHistoryEntry(ResourceLocation chapter, int page, int subPage){}
+    public GuideScreen getScreen()
+    {
+        return screen;
+    }
+
+    public @Nullable AbstractBookChapter getCurrentChapter()
+    {
+        return screen.getCurrentChapter();
+    }
+
+    public @Nullable AbstractBookPage getCurrentPage()
+    {
+        return CONTENT.get(getCurrentChapter()).get(screen.getCurrentPage());
+    }
+
+    public int getCurrentSubpage()
+    {
+        return screen.getCurrentSubPage();
+    }
+
+    public record BookHistoryEntry(AbstractBookChapter chapter, int page, int subPage){}
 }

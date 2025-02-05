@@ -45,7 +45,7 @@ public abstract class AbstractBookPage extends AbstractWidget
     {
         super(0, 0, 0, 0, Component.translatable(data.title()));
         this.data = data;
-        this.components = parseComponents(Component.translatable(data.text()).getString());
+        this.components = data.text().isBlank() ? List.of() : parseComponents(Component.translatable(data.text()).getString());
     }
 
     private @NotNull List<AbstractPageComponent> parseComponents(String string)
@@ -107,19 +107,21 @@ public abstract class AbstractBookPage extends AbstractWidget
         while (iterator.hasNext())
         {
             AbstractPageComponent component = iterator.next();
-            component.reCalcShiftX(subPage);
+            component.reCalcShiftX(subPage % 2);
+            component.setOwningSubpage(subPage);
 
             if (component instanceof TextPageComponent textComponent)
-                splitTextComponentIfNeeded(textComponent, iterator, zone, currentY);
+                splitTextComponentIfNeeded(textComponent, iterator, subPage, currentY);
 
             int componentHeight = component.getHeight();
             if (currentY + componentHeight > zone.getY() + zone.getHeight())
             {
-                subPage = (subPage + 1) % 2;
-                zone = AbstractBookChapter.getPageZones().get(subPage);
+                subPage++;
+                zone = AbstractBookChapter.getPageZones().get(subPage % 2);
                 currentY = zone.getY();
 
-                component.reCalcShiftX(subPage);
+                component.reCalcShiftX(subPage % 2);
+                component.setOwningSubpage(subPage);
             }
 
             component.setPosition(zone.getX() + component.getShiftX(), currentY);
@@ -127,10 +129,11 @@ public abstract class AbstractBookPage extends AbstractWidget
         }
     }
 
-    private void splitTextComponentIfNeeded(@NotNull TextPageComponent component, ListIterator<AbstractPageComponent> iterator, @NotNull Rect2i zone, int currentY)
+    private void splitTextComponentIfNeeded(@NotNull TextPageComponent component, ListIterator<AbstractPageComponent> iterator, int subPage, int currentY)
     {
         Minecraft mc = RenderHelper.mc();
         Font font = mc.font;
+        Rect2i zone = AbstractBookChapter.getPageZones().get(subPage % 2);
 
         int availableHeight = zone.getY() + zone.getHeight() - currentY;
         List<FormattedCharSequence> lines = font.split(component.getMessage(), component.getWidth());
@@ -155,13 +158,57 @@ public abstract class AbstractBookPage extends AbstractWidget
                 /*FIXME: is seq.toString is right way?*/
                 remainingText = remainingText.append(seq.toString()).append("\n");
             TextPageComponent nextComponent = new TextPageComponent(remainingText);
-            nextComponent.setHeight(remainingLines.size() * lineHeight);
+            int nextComponentHeight = remainingLines.size() * lineHeight;
+            int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());
+
+            if (nextComponentHeight > remainingHeight)
+            {
+                subPage++;
+                zone = AbstractBookChapter.getPageZones().get(subPage % 2);
+                currentY = zone.getY();
+            }
+
+            nextComponent.setOwningSubpage(subPage);
+            nextComponent.reCalcShiftX(subPage % 2);
+            nextComponent.setHeight(nextComponentHeight);
 
             iterator.add(nextComponent);
 
-            splitTextComponentIfNeeded(nextComponent, iterator, zone, currentY + component.getHeight());
+            splitTextComponentIfNeeded(nextComponent, iterator, subPage, currentY + nextComponentHeight);
         }
         else
             component.setHeight(lines.size() * lineHeight);
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (this.active && this.visible)
+        {
+            if (this.isValidClickButton(button))
+            {
+                if (this.isMouseOver(mouseX, mouseY))
+                {
+                    this.onClick(mouseX, mouseY, button);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY)
+    {
+        for (Rect2i zone : AbstractBookChapter.getPageZones())
+            if (isMouseInZone(zone, mouseX, mouseY))
+                return true;
+        return false;
+    }
+
+    private boolean isMouseInZone(@NotNull Rect2i zone, double mouseX, double mouseY)
+    {
+        return mouseX >= zone.getX() && mouseX < zone.getX() + zone.getWidth() &&
+                mouseY >= zone.getY() && mouseY < zone.getY() + zone.getHeight();
     }
 }

@@ -17,7 +17,7 @@ import net.minecraft.network.chat.Component;
 public abstract class AbstractPageComponent extends AbstractWidget
 {
     private int shiftX = 0;
-
+    private int owningSubpage = 0;
     public AbstractPageComponent(int x, int y, int width, int height, Component message)
     {
         super(x, y, width, height, message);
@@ -32,5 +32,15 @@ public abstract class AbstractPageComponent extends AbstractWidget
     public int getShiftX()
     {
         return shiftX;
+    }
+
+    public int getOwningSubpage()
+    {
+        return owningSubpage;
+    }
+
+    public void setOwningSubpage(int owningSubpage)
+    {
+        this.owningSubpage = owningSubpage;
     }
 }
