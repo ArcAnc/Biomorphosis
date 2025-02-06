@@ -23,6 +23,8 @@ public class Database
 
     public static final class GUI
     {
+        private static final String GUI = "gui";
+
         public static final class Textures
         {
             public static final class Tooltip
@@ -36,7 +38,6 @@ public class Database
         {
             public static final class Chapters
             {
-                public static final ChapterInfo TITLE = new ChapterInfo(rl("title"));
                 public static final ChapterInfo BASIC = new ChapterInfo(rl("basic"));
                 public static final ChapterInfo ADVANCED = new ChapterInfo(rl("advanced"));
 
@@ -51,8 +52,6 @@ public class Database
 
             public static final class Pages
             {
-
-
                 public static final PageInfo TEST_PAGE_1 = new PageInfo(rl("test_1"));
                 public static final PageInfo TEST_PAGE_2 = new PageInfo(rl("test_next_lvl"));
                 public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
@@ -65,6 +64,12 @@ public class Database
                                 location.withPrefix("book.page.title.").toLanguageKey(),
                                 location.withPrefix("book.page.text.").toLanguageKey());
                     }
+                }
+
+                public static final class Components
+                {
+                    public static final String SHAPED = rl(GUI + ".book.page.component.recipe.shaped").toLanguageKey();
+                    public static final String SHAPELESS = rl(GUI + ".book.page.component.recipe.shapeless").toLanguageKey();
                 }
             }
         }

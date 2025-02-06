@@ -33,6 +33,9 @@ public class EnUsProvider extends LanguageProvider
         //BOOK
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
-        //this.add(Database.GUI.GuideBook.Pages.TEST_PAGE_1.textLangKey(), "У нас сегодня шикарный завтрак из </item;minecraft:soup/>, тарелки с которым расставлены на </block;minecraft:table/>, который сделан из </tag;block;minecraft:planks/>. Со мной за столом сидят </entity;minecraft:creeper/> и </entity;minecraft:spider/>. Суп приготовлен по лучшему в мире рецепту </recipe;crafting_shaped;minecraft:soup/>. Хороший день намечается");
+        this.add(Database.GUI.GuideBook.Pages.TEST_PAGE_1.textLangKey(), "Some text for testing </item;minecraft:bread/> Additional testing text </block;minecraft:dirt/> MORE testing text </tag;block;minecraft:planks/> Yet again testing TEXT </recipe;minecraft:crafting_shaped;minecraft:fishing_rod/> And another one testing text </entity;minecraft:creeper/> and </entity;minecraft:spider/> Last testing text");
+
+        this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
+        this.add(Database.GUI.GuideBook.Pages.Components.SHAPELESS, "Shapeless");
     }
 }

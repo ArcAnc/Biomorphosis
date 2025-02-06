@@ -9,9 +9,15 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.api.book.recipe.RecipeRenderer;
+import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.Event;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CustomEvents
 {
@@ -67,6 +73,26 @@ public class CustomEvents
         public ItemStack getStack()
         {
             return stack;
+        }
+    }
+
+    public static class AddRecipeRenderer extends Event
+    {
+        private final Map<RecipeType<?>, RecipeRenderer> additionalRenderers = new HashMap<>();
+
+        public AddRecipeRenderer()
+        {
+        }
+
+        public void addRenderer(RecipeType<?> type, RecipeRenderer renderer)
+        {
+            this.additionalRenderers.put(type, renderer);
+        }
+
+        public void addCustomRenderers()
+        {
+            if (!additionalRenderers.isEmpty())
+                additionalRenderers.forEach(AbstractRecipeComponent.RecipeRenderCache :: addNewRenderer);
         }
     }
 }

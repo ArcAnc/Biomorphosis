@@ -63,17 +63,11 @@ public class TagPageComponent extends AbstractPageComponent
     {
         if (!toRender.isEmpty())
         {
-            ItemStack stack = getStackAtCurrentTime(toRender);
+            ItemStack stack = RenderHelper.getStackAtCurrentTime(toRender);
             guiGraphics.renderItem(stack, getX() + 1, getY() + 1);
             if (isHovered())
                 guiGraphics.renderTooltip(RenderHelper.mc().font, stack, mouseX, mouseY);
         }
-    }
-
-    public ItemStack getStackAtCurrentTime(@NotNull List<ItemStack> items)
-    {
-        int perm = (int)(System.currentTimeMillis() / 1000 % items.size());
-        return items.get(perm);
     }
 
     @Override

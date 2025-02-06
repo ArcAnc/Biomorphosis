@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.book_data.page;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.book_data.page.component.*;
+import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -75,7 +76,7 @@ public abstract class AbstractBookPage extends AbstractWidget
                 components.add(new TagPageComponent(matcher.group(3), ResourceLocation.parse(matcher.group(4))));
             else if (matcher.group(5) != null)
             { // Recipe
-                components.add(new AbstractRecipeComponent(matcher.group(5), ResourceLocation.parse(matcher.group(6))));
+                components.add(AbstractRecipeComponent.createRecipeComponent(ResourceLocation.parse(matcher.group(5)), ResourceLocation.parse(matcher.group(6))));
             }
             else if (matcher.group(7) != null)
                 // Entity

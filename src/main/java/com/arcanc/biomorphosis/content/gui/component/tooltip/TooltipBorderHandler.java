@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.gui.component.tooltip;
 
-import com.arcanc.biomorphosis.content.event.ClientEvents;
 import com.arcanc.biomorphosis.content.event.CustomEvents;
 import com.arcanc.biomorphosis.content.gui.component.animation.AnimationData;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;

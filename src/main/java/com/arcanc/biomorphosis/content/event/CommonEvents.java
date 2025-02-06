@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import net.neoforged.bus.api.IEventBus;
 import org.jetbrains.annotations.NotNull;
 
@@ -17,8 +18,8 @@ public class CommonEvents
 
     public static void registerCommonEvents(@NotNull final IEventBus modEventBus)
     {
-/*        modEventBus.addListener(NetworkEngine :: setupMessages);
-        registerContainerMenuEvents();
+        modEventBus.addListener(NetworkEngine:: setupMessages);
+/*        registerContainerMenuEvents();
         modEventBus.addListener(CommonEvents :: commonSetup);
 
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);

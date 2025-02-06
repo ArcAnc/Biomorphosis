@@ -33,9 +33,6 @@ public class Biomorphosis
     {
         CommonEvents.registerCommonEvents(modEventBus);
         if (FMLLoader.getDist().isClient())
-        {
             ClientEvents.registerClientEvents(modEventBus);
-        }
-
     }
 }

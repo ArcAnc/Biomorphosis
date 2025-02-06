@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.book_data.page.component.recipes.RecipeRenderHandler;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
@@ -38,6 +39,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
         TooltipBorderHandler.registerHandler();
+        RecipeRenderHandler.registerRenderers();
     }
 
     /*    private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
