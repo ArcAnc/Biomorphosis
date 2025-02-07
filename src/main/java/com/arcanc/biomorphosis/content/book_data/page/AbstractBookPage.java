@@ -13,20 +13,21 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.book_data.page.component.*;
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +41,8 @@ public abstract class AbstractBookPage extends AbstractWidget
     );
 
     private final BookPageData data;
-    protected final List<AbstractPageComponent> components;
+    private final List<AbstractPageComponent> components;
+    protected final Map<Integer, List<AbstractPageComponent>> dividedComponents = new HashMap<>();
 
     public AbstractBookPage(@NotNull BookPageData data)
     {
@@ -60,7 +62,6 @@ public abstract class AbstractBookPage extends AbstractWidget
         {
             if (matcher.start() > lastEnd)
             {
-                //Дописать рассчет высоты текста
                 components.add(new TextPageComponent(Component.literal(string.substring(lastEnd, matcher.start()))));
             }
 
@@ -128,6 +129,10 @@ public abstract class AbstractBookPage extends AbstractWidget
             component.setPosition(zone.getX() + component.getShiftX(), currentY);
             currentY += componentHeight;
         }
+
+        dividedComponents.clear();
+        for (AbstractPageComponent component : components)
+            dividedComponents.computeIfAbsent(component.getOwningSubpage(), k -> new ArrayList<>()).add(component);
     }
 
     private void splitTextComponentIfNeeded(@NotNull TextPageComponent component, ListIterator<AbstractPageComponent> iterator, int subPage, int currentY)
@@ -137,31 +142,26 @@ public abstract class AbstractBookPage extends AbstractWidget
         Rect2i zone = AbstractBookChapter.getPageZones().get(subPage % 2);
 
         int availableHeight = zone.getY() + zone.getHeight() - currentY;
-        List<FormattedCharSequence> lines = font.split(component.getMessage(), component.getWidth());
-
+        List<FormattedText> lines = font.getSplitter().splitLines(component.getMessage(), component.getWidth(), Style.EMPTY);
         int lineHeight = font.lineHeight;
         int maxLines = availableHeight / lineHeight;
-
         if (lines.size() > maxLines)
         {
-            List<FormattedCharSequence> currentLines = lines.subList(0, maxLines);
-            List<FormattedCharSequence> remainingLines = lines.subList(maxLines, lines.size());
+            List<FormattedText> currentLines = lines.subList(0, maxLines);
+            List<FormattedText> remainingLines = lines.subList(maxLines, lines.size());
 
             MutableComponent currentText = Component.empty();
-            for (FormattedCharSequence seq : currentLines)
-                /*FIXME: is seq.toString is right way?*/
-                currentText = currentText.append(seq.toString()).append("\n");
+            for (FormattedText text : currentLines)
+                currentText = currentText.append(text.getString()).append("\n");
             component.setMessage(currentText);
             component.setHeight(currentLines.size() * lineHeight);
 
             MutableComponent remainingText = Component.empty();
-            for (FormattedCharSequence seq : remainingLines)
-                /*FIXME: is seq.toString is right way?*/
-                remainingText = remainingText.append(seq.toString()).append("\n");
+            for (FormattedText text : remainingLines)
+                remainingText = remainingText.append(text.getString()).append("\n");
             TextPageComponent nextComponent = new TextPageComponent(remainingText);
             int nextComponentHeight = remainingLines.size() * lineHeight;
             int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());
-
             if (nextComponentHeight > remainingHeight)
             {
                 subPage++;
@@ -172,10 +172,10 @@ public abstract class AbstractBookPage extends AbstractWidget
             nextComponent.setOwningSubpage(subPage);
             nextComponent.reCalcShiftX(subPage % 2);
             nextComponent.setHeight(nextComponentHeight);
+            nextComponent.setPosition(zone.getX(), zone.getY());
 
             iterator.add(nextComponent);
-
-            splitTextComponentIfNeeded(nextComponent, iterator, subPage, currentY + nextComponentHeight);
+            splitTextComponentIfNeeded(nextComponent, iterator, subPage, currentY);
         }
         else
             component.setHeight(lines.size() * lineHeight);
@@ -212,4 +212,15 @@ public abstract class AbstractBookPage extends AbstractWidget
         return mouseX >= zone.getX() && mouseX < zone.getX() + zone.getWidth() &&
                 mouseY >= zone.getY() && mouseY < zone.getY() + zone.getHeight();
     }
+
+    @Override
+    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    {
+        renderPageContent(guiGraphics, mouseX, mouseY, partialTicks);
+        renderNavigationButtons(guiGraphics, mouseX, mouseY, partialTicks);
+    }
+
+    protected abstract void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
+    protected abstract void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
+
 }

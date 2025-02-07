@@ -20,6 +20,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class GuideScreen extends Screen
@@ -56,29 +57,21 @@ public class GuideScreen extends Screen
 
         if (entry == null)
         {
-            currentChapter = BookData.getInstance().
+            setCurrentChapter(BookData.getInstance().
                     getContent().
                     keySet().
                     stream().
                     filter(chapter -> chapter.
                             getData().
                             id().
-                            equals(Database.GUI.GuideBook.Chapters.BASIC.location())).
+                            equals(Database.GUI.GuideBook.Chapters.TITLE.location())).
                     findFirst().
-                    orElse(null);
-            currentPage = 0;
-            currentSubPage = 0;
+                    orElse(null));
+            setCurrentPage(0);
+            setCurrentSubPage(0);
         }
         else
-        {
-            currentChapter = entry.chapter();
-            currentPage = entry.page();
-            currentSubPage = entry.subPage();
-        }
-
-        BookData.getInstance().addNewHistoryEntry(currentChapter, currentPage, currentSubPage);
-
-        setCurrentOpenedData(currentChapter, currentPage, currentSubPage);
+            setCurrentOpenedByHistory(entry);
     }
 
     public AbstractBookChapter getCurrentChapter()
@@ -96,6 +89,27 @@ public class GuideScreen extends Screen
         return currentSubPage;
     }
 
+    public void jumpToFirstChapter()
+    {
+        jumpToChapter(BookData.getInstance().
+                getContent().
+                keySet().
+                stream().
+                filter(chapter -> chapter.
+                        getData().
+                        id().
+                        equals(Database.GUI.GuideBook.Chapters.TITLE.location())).
+                findFirst().
+                orElse(null));
+    }
+
+    public void setCurrentOpenedByHistory(BookData.@NotNull BookHistoryEntry entry)
+    {
+        setCurrentChapter(entry.chapter());
+        setCurrentPage(entry.page());
+        setCurrentSubPage(entry.subPage());
+    }
+
     private void setCurrentOpenedData(AbstractBookChapter chapter, int page, int subPage)
     {
         setCurrentChapter(chapter);
@@ -103,21 +117,36 @@ public class GuideScreen extends Screen
         setCurrentSubPage(subPage);
     }
 
-    public void setCurrentChapter(AbstractBookChapter chapter)
+    public void jumpToChapter(AbstractBookChapter chapter)
     {
-        this.currentChapter = chapter;
-        this.currentPage = 0;
-        this.currentSubPage = 0;
-
-        BookData.getInstance().getContent().keySet().forEach(chapt -> chapt.setActive(chapt.equals(this.currentChapter)));
-        setCurrentPage(this.currentPage);
-        BookData.getInstance().addNewHistoryEntry(chapter, this.currentPage, this.currentSubPage);
+        addNewHistory();
+        setCurrentChapter(chapter);
     }
 
-    public void setCurrentPage(int page)
+    private void setCurrentChapter(AbstractBookChapter chapter)
+    {
+        this.currentChapter = chapter;
+        setCurrentPage(0);
+
+        BookData.getInstance().getContent().keySet().forEach(chapt -> chapt.setActive(chapt.equals(this.currentChapter)));
+    }
+
+    public void setTitlePage()
+    {
+        addNewHistory();
+        setCurrentPage(0);
+    }
+
+    public void jumpToPage(int page)
+    {
+        addNewHistory();
+        setCurrentPage(page);
+    }
+
+    private void setCurrentPage(int page)
     {
         this.currentPage = page;
-        this.currentSubPage = 0;
+        setCurrentSubPage(0);
 
         List<AbstractBookPage> pages = BookData.getInstance().getContent().get(BookData.getInstance().getCurrentChapter());
         for (int q = 0; q < pages.size(); q++)
@@ -127,15 +156,28 @@ public class GuideScreen extends Screen
             absPage.visible = newValue;
             absPage.active = newValue;
         }
+    }
 
+    public void nextSubPage()
+    {
+        addNewHistory();
+        setCurrentSubPage(this.currentSubPage + 2);
+    }
+
+    private void setCurrentSubPage(int subPage)
+    {
+        this.currentSubPage = subPage;
+    }
+
+    private void addNewHistory()
+    {
         BookData.getInstance().addNewHistoryEntry(this.currentChapter, this.currentPage, this.currentSubPage);
     }
 
-    public void setCurrentSubPage(int subPage)
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
     {
-        this.currentSubPage = subPage;
-
-        BookData.getInstance().addNewHistoryEntry(this.currentChapter, this.currentPage, this.currentSubPage);
+        return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override

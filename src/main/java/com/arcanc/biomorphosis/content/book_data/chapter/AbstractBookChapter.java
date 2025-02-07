@@ -71,10 +71,10 @@ public abstract class AbstractBookChapter extends AbstractWidget
     {
         if (!isActive())
             return false;
-        for (Rect2i pageZone : PAGE_ZONES)
-            if (isMouseInZone(mouseX, mouseY, pageZone))
-                return true;
-        return false;
+        AbstractBookPage page = BookData.getInstance().getCurrentPage();
+        if (page == null)
+            return false;
+        return page.isMouseOver(mouseX, mouseY);
     }
 
     public boolean isMouseOverChapter(double mouseX, double mouseY)
@@ -92,12 +92,6 @@ public abstract class AbstractBookChapter extends AbstractWidget
         return this.visible &&
                 (isMouseOverChapter(mouseX, mouseY) ||
                  isMouseOverPage(mouseX, mouseY));
-    }
-
-    private boolean isMouseInZone(double mouseX, double mouseY, @NotNull Rect2i zone)
-    {
-        return mouseX >= zone.getX() && mouseX < zone.getX() + zone.getWidth() &&
-            mouseY >= zone.getY() && mouseY < zone.getY() + zone.getHeight();
     }
 
     public static List<Rect2i> getPageZones()

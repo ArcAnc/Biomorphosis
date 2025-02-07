@@ -38,6 +38,7 @@ public class Database
         {
             public static final class Chapters
             {
+                public static final ChapterInfo TITLE = new ChapterInfo(rl("title"));
                 public static final ChapterInfo BASIC = new ChapterInfo(rl("basic"));
                 public static final ChapterInfo ADVANCED = new ChapterInfo(rl("advanced"));
 
@@ -52,8 +53,28 @@ public class Database
 
             public static final class Pages
             {
-                public static final PageInfo TEST_PAGE_1 = new PageInfo(rl("test_1"));
-                public static final PageInfo TEST_PAGE_2 = new PageInfo(rl("test_next_lvl"));
+                public static final PageInfo PATCH_NOTES = new PageInfo(rl("patch_notes"));
+                public static final PageInfo TEST_BASIC_1 = new PageInfo(rl("test_1"));
+                public static final PageInfo TEST_BASIC_2 = new PageInfo(rl("test_next_lvl"));
+                public static final PageInfo TEST_BASIC_3 = new PageInfo(rl("test_basic_3"));
+                public static final PageInfo TEST_BASIC_4 = new PageInfo(rl("test_basic_4"));
+                public static final PageInfo TEST_BASIC_5 = new PageInfo(rl("test_basic_5"));
+                public static final PageInfo TEST_BASIC_6 = new PageInfo(rl("test_basic_6"));
+                public static final PageInfo TEST_BASIC_7 = new PageInfo(rl("test_basic_7"));
+                public static final PageInfo TEST_BASIC_8 = new PageInfo(rl("test_basic_8"));
+                public static final PageInfo TEST_BASIC_9 = new PageInfo(rl("test_basic_9"));
+                public static final PageInfo TEST_BASIC_10 = new PageInfo(rl("test_basic_10"));
+                public static final PageInfo TEST_BASIC_11 = new PageInfo(rl("test_basic_11"));
+                public static final PageInfo TEST_BASIC_12 = new PageInfo(rl("test_basic_12"));
+                public static final PageInfo TEST_BASIC_13 = new PageInfo(rl("test_basic_13"));
+                public static final PageInfo TEST_BASIC_14 = new PageInfo(rl("test_basic_14"));
+                public static final PageInfo TEST_BASIC_15 = new PageInfo(rl("test_basic_15"));
+                public static final PageInfo TEST_BASIC_16 = new PageInfo(rl("test_basic_16"));
+                public static final PageInfo TEST_BASIC_17 = new PageInfo(rl("test_basic_17"));
+                public static final PageInfo TEST_BASIC_18 = new PageInfo(rl("test_basic_18"));
+                public static final PageInfo TEST_BASIC_19 = new PageInfo(rl("test_basic_19"));
+                public static final PageInfo TEST_BASIC_20 = new PageInfo(rl("test_basic_20"));
+                public static final PageInfo TEST_BASIC_21 = new PageInfo(rl("test_basic_21"));
                 public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
@@ -70,6 +91,11 @@ public class Database
                 {
                     public static final String SHAPED = rl(GUI + ".book.page.component.recipe.shaped").toLanguageKey();
                     public static final String SHAPELESS = rl(GUI + ".book.page.component.recipe.shapeless").toLanguageKey();
+                    public static final String TICKS = rl(GUI + ".book.page.component.recipe.ticks").toLanguageKey();
+                    public static final String EXP = rl(GUI + ".book.page.component.recipe.experience").toLanguageKey();
+                    public static final String ARROW_LEFT = rl(GUI + "book.page.component.arrow.back").toLanguageKey();
+                    public static final String ARROW_RIGHT = rl(GUI + "book.page.component.arrow.forward").toLanguageKey();
+                    public static final String ARROW_TO_TITLE = rl(GUI + "book.page.component.arrow.to_title").toLanguageKey();
                 }
             }
         }

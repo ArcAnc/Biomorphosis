@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 
@@ -24,7 +25,7 @@ public class TextPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         Component comp = getMessage();
         if (!comp.getString().isBlank())

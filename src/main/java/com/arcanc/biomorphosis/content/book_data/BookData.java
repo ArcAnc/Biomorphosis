@@ -39,7 +39,7 @@ public class BookData
      * Value - pages for chose chapter*/
     private final Map<AbstractBookChapter, List<AbstractBookPage>> CONTENT = new LinkedHashMap<>();
 
-    private final Deque<BookHistoryEntry> history = new ArrayDeque<>();
+    public final Deque<BookHistoryEntry> history = new ArrayDeque<>();
     private GuideScreen screen;
 
     public static BookData getInstance()
@@ -141,6 +141,11 @@ public class BookData
         BookHistoryEntry entry = getFirstHistoryEntry();
         this.history.clear();
         return entry;
+    }
+
+    public int getHistorySize()
+    {
+        return this.history.size();
     }
 
     public void setScreen(GuideScreen screen)

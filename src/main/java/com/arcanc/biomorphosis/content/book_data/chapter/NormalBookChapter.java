@@ -17,7 +17,6 @@ import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.ARGB;
@@ -77,11 +76,7 @@ public class NormalBookChapter extends AbstractBookChapter
     @Override
     public void onClick(double mouseX, double mouseY, int button)
     {
-        Screen screen = RenderHelper.mc().screen;
-        if (screen == null)
-            return;
-        if (screen instanceof GuideScreen guideScreen)
-            guideScreen.setCurrentChapter(this);
+        BookData.getInstance().getScreen().jumpToChapter(this);
     }
 
     @Override

@@ -14,12 +14,15 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.gui.component.icon.Icon;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import org.jetbrains.annotations.NotNull;
@@ -38,6 +41,8 @@ public class TitleBookPage extends AbstractBookPage
     private final Map<Integer, List<PageEntry>> pages = new HashMap<>();
     private final AbstractBookChapter chapter;
 
+    private Vec3i toTitle, arrowLeft, arrowRight;
+
     public TitleBookPage(AbstractBookChapter chapter)
     {
         super(BookPageData.getTitleData(chapter));
@@ -53,7 +58,7 @@ public class TitleBookPage extends AbstractBookPage
         Rect2i zone = AbstractBookChapter.getPageZones().getFirst();
         int yPos = zone.getY();
 
-        for (int q= 0; q < filteredPages.size(); q++)
+        for (int q = 0; q < filteredPages.size(); q++)
         {
             AbstractBookPage page = filteredPages.get(q);
             if (page == this)
@@ -72,9 +77,9 @@ public class TitleBookPage extends AbstractBookPage
                 {
                     if (objects.getFirst() instanceof String str)
                         title = str.trim();
-                    else if (objects.size() > 1 && objects.get(1) instanceof String str)
-                        title = str.trim();
                 }
+                else if (objects.size() > 1 && objects.get(1) instanceof String str)
+                    title = str.trim();
             }
 
             PageEntry entry = new PageEntry(new Vector2i(zone.getX(), yPos), q, icon, title, zone.getWidth());
@@ -91,10 +96,16 @@ public class TitleBookPage extends AbstractBookPage
             this.pages.get(subPage).add(entry);
             yPos += entry.getHeight() + ENTRY_OFFSET;
         }
+
+        zone = AbstractBookChapter.getPageZones().getFirst();
+
+        this.toTitle = new Vec3i(zone.getX() + 15 + 103, zone.getY() + 170, 0);
+        this.arrowLeft = new Vec3i(zone.getX(), zone.getY() + 145, 0);
+        this.arrowRight = new Vec3i(zone.getX() + 15 + 225, zone.getY() + 145, 0);
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         pages.forEach((integer, pageEntries) ->
                 pageEntries.forEach(entry ->
@@ -104,14 +115,112 @@ public class TitleBookPage extends AbstractBookPage
                     entry.visible = bool;
                     entry.active = bool;
                     if (bool)
-                        entry.render(guiGraphics, mouseX, mouseY, partialTick);
+                        entry.render(guiGraphics, mouseX, mouseY, partialTicks);
                 }));
+    }
+
+    @Override
+    protected void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    {
+        Font font = RenderHelper.mc().font;
+        if (isArrowActive(this.arrowLeft))
+        {
+            if (isAboveArrow(mouseX, mouseY, this.arrowLeft))
+            {
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 26, 207, 18, 10, 256, 256);
+                guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT), mouseX, mouseY);
+            }
+            else
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 3, 207, 18, 10, 256, 256);
+        }
+        if (isArrowActive(this.arrowRight))
+        {
+            if (isAboveArrow(mouseX, mouseY, this.arrowRight))
+            {
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 26, 194, 18, 10, 256, 256);
+                guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT), mouseX, mouseY);
+            }
+            else
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 3, 194, 18, 10, 256, 256);
+        }
+        if (isArrowActive(this.toTitle))
+        {
+            if (isAboveArrow(mouseX, mouseY, this.toTitle))
+            {
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 207, 17, 9, 256, 256);
+                guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE), mouseX, mouseY);
+            }
+            else
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
+        }
+    }
+
+    private boolean isAboveArrow(double mouseX, double mouseY, @NotNull Vec3i arrow)
+    {
+        return mouseX >= arrow.getX() && mouseY >= arrow.getY() && mouseX <= arrow.getX() + (arrow.equals(this.toTitle) ? 17 : 18) && mouseY <= arrow.getY() + (arrow.equals(this.toTitle) ? 9 : 10);
+    }
+
+    private boolean anyArrowClicked (double mouseX, double mouseY)
+    {
+        return isArrowClicked(mouseX, mouseY, this.arrowLeft) || isArrowClicked(mouseX, mouseY, this.arrowRight) || isArrowClicked(mouseX, mouseY, this.toTitle);
+    }
+
+    private boolean isArrowClicked(double mouseX, double mouseY, Vec3i arrow)
+    {
+        return isArrowActive(arrow) && isAboveArrow(mouseX, mouseY, arrow);
+    }
+
+    private boolean isArrowActive(@NotNull Vec3i arrow)
+    {
+        if (arrow.equals(this.toTitle) && !BookData.getInstance().getCurrentChapter().getData().id().equals(Database.GUI.GuideBook.Chapters.TITLE.location()))
+            return true;
+        else if (arrow.equals(this.arrowRight) && this.pages.containsKey(BookData.getInstance().getCurrentSubpage() + 2))
+            return true;
+        else return arrow.equals(this.arrowLeft) && BookData.getInstance().getHistorySize() > 0;
+    }
+
+    @Override
+    public boolean mouseClicked(double mouseX, double mouseY, int button)
+    {
+        if (this.active && this.visible)
+        {
+            if (this.isValidClickButton(button))
+            {
+                if (anyArrowClicked(mouseX, mouseY))
+                {
+                    this.onArrowClick(mouseX, mouseY, button);
+                    return true;
+                }
+                else if (super.isMouseOver(mouseX, mouseY))
+                {
+                    this.onClick(mouseX, mouseY, button);
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
     public void onClick(double mouseX, double mouseY, int button)
     {
         pages.forEach((integer, pageEntries) -> pageEntries.forEach(page -> page.mouseClicked(mouseX, mouseY, button)));
+    }
+
+    public void onArrowClick(double mouseX, double mouseY, int button)
+    {
+        if (isArrowClicked(mouseX, mouseY, this.arrowLeft))
+            BookData.getInstance().getScreen().setCurrentOpenedByHistory(BookData.getInstance().getLastHistoryEntry());
+        else if (isArrowClicked(mouseX, mouseY, this.arrowRight))
+            BookData.getInstance().getScreen().nextSubPage();
+        else if (isArrowClicked(mouseX, mouseY, this.toTitle))
+            BookData.getInstance().getScreen().jumpToFirstChapter();
+    }
+
+    @Override
+    public boolean isMouseOver(double mouseX, double mouseY)
+    {
+        return super.isMouseOver(mouseX, mouseY) || anyArrowClicked(mouseX, mouseY);
     }
 
     @Override
@@ -168,7 +277,7 @@ public class TitleBookPage extends AbstractBookPage
         @Override
         public void onClick(double mouseX, double mouseY, int button)
         {
-            BookData.getInstance().getScreen().setCurrentPage(this.page);
+            BookData.getInstance().getScreen().jumpToPage(this.page);
         }
 
         @Override

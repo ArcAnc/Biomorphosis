@@ -14,13 +14,14 @@ import com.arcanc.biomorphosis.content.event.CustomEvents;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.common.NeoForge;
@@ -34,6 +35,8 @@ import java.util.stream.Collectors;
 
 public class RecipeRenderHandler
 {
+    /*FIXME: добавить остальные типи рецептов для рендера*/
+
     public static void registerRenderers()
     {
         NeoForge.EVENT_BUS.addListener(RecipeRenderHandler :: addRecipeRenderers);
@@ -42,6 +45,11 @@ public class RecipeRenderHandler
     private static void addRecipeRenderers(@NotNull final CustomEvents.AddRecipeRenderer event)
     {
         event.addRenderer(RecipeType.CRAFTING, new CraftingRecipeRenderer());
+        CookingRecipeRenderer cookingRecipeRenderer = new CookingRecipeRenderer();
+        event.addRenderer(RecipeType.BLASTING, cookingRecipeRenderer);
+        event.addRenderer(RecipeType.CAMPFIRE_COOKING, cookingRecipeRenderer);
+        event.addRenderer(RecipeType.SMELTING, cookingRecipeRenderer);
+        event.addRenderer(RecipeType.SMOKING, cookingRecipeRenderer);
     }
 
     private static class CraftingRecipeRenderer implements RecipeRenderer
@@ -183,6 +191,86 @@ public class RecipeRenderHandler
         public int getWidth()
         {
             return 90;
+        }
+    }
+
+    private static class CookingRecipeRenderer implements RecipeRenderer
+    {
+
+        @Override
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        {
+            if (!(recipe instanceof AbstractCookingRecipe cookingRecipe))
+                return;
+
+            final List<Vec2> positions = new ArrayList<>();
+
+            Vec2 arrowPos = Vec2.ZERO;
+            Vec2 expPos = Vec2.ZERO;
+
+            positions.add(new Vec2(xPos, yPos));
+            positions.add(new Vec2(xPos + 22 + 4 + 18, yPos));
+            arrowPos = new Vec2(xPos + 18 + 2, yPos );
+            expPos = new Vec2(xPos + 18 + 4 + 22 + 4, yPos + 2);
+
+            ItemStack highlighted = ItemStack.EMPTY;
+            ItemStack stack = ItemStack.EMPTY;
+
+            NonNullList<SizedIngredient> ingr = NonNullList.create();
+            ingr.add(new SizedIngredient(cookingRecipe.input(), 1));
+            Minecraft mc = RenderHelper.mc();
+            ItemStack result = cookingRecipe.assemble(new SingleRecipeInput(ItemStack.EMPTY), mc.level.registryAccess());
+            ingr.add(SizedIngredient.of(result.getItem(), result.getCount()));
+            int time = cookingRecipe.cookingTime();
+            float exp = cookingRecipe.experience();
+
+
+            for (int q = 0; q < ingr.size(); q++)
+            {
+                guiGraphics.pose().pushPose();
+                RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0f);
+                RenderSystem.enableBlend();
+                RenderSystem.defaultBlendFunc();
+                RenderSystem.enableDepthTest();
+                stack = RenderHelper.getStackAtCurrentTime(ingr.get(q));
+
+                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)positions.get(q).x, (int)positions.get(q).y, 217, 0, 18, 18, 256, 256);
+                guiGraphics.renderItem(stack, (int)positions.get(q).x, (int)positions.get(q).y);
+                if (mouseX >= (int)positions.get(q).x && mouseY >= (int)positions.get(q).y && mouseX <= (int)positions.get(q).x + 16 && mouseY <= positions.get(q).y + 16)
+                    highlighted = stack;
+                guiGraphics.pose().popPose();
+            }
+            guiGraphics.pose().pushPose();
+            //exp
+            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)expPos.x + 18, (int)expPos.y + 2, 234, 86, 11, 11, 256, 256);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.pose().pushPose();
+            //palochka
+            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)arrowPos.x, (int)arrowPos.y, 234, 53, RenderHelper.animateArrow(time), 15, 256, 256);
+            guiGraphics.pose().popPose();
+
+            if (!highlighted.isEmpty())
+                guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+            else if (mouseX >= arrowPos.x && mouseY >= arrowPos.y && mouseX <= arrowPos.x + 14 && mouseY <= arrowPos.y + 14)
+
+                guiGraphics.renderTooltip(mc.font, List.of(Component.translatable(Database.GUI.GuideBook.Pages.Components.TICKS, time)), Optional.empty(), mouseX, mouseY);
+            else if (mouseX >= expPos.x + 18 && mouseY >= expPos.y + 2 && mouseX <= expPos.x + 18 + 11 && mouseY <= expPos.y + 2 +11)
+                guiGraphics.renderTooltip(mc.font, List.of(Component.translatable(Database.GUI.GuideBook.Pages.Components.EXP, exp)), Optional.empty(), mouseX, mouseY);
+
+
+        }
+
+        @Override
+        public int getHeight()
+        {
+            return 17;
+        }
+
+        @Override
+        public int getWidth()
+        {
+            return 48;
         }
     }
 }

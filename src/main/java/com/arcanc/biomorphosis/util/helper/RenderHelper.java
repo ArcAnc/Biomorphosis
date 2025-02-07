@@ -71,4 +71,9 @@ public class RenderHelper
         int perm = (int)(System.currentTimeMillis() / 1000 % items.size());
         return items.get(perm);
     }
+
+    public static int animateArrow (int ticks)
+    {
+        return (int) (System.currentTimeMillis() / ticks % 22);
+    }
 }
