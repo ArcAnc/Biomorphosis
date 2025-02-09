@@ -11,6 +11,8 @@ package com.arcanc.biomorphosis.content.registration;
 
 import com.arcanc.biomorphosis.content.block.BioBaseBlock;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
+import com.arcanc.biomorphosis.content.block.NorphBlock;
+import com.arcanc.biomorphosis.content.block.NorphSource;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
@@ -80,6 +82,24 @@ public final class Registration
                         lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 0).
                         noOcclusion().
                         ignitedByLava(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<NorphSource> NORPH_SOURCE = register("norph_source", NorphSource :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(3,3).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion().
+                        isValidSpawn((state, level, pos, value) -> false),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<NorphBlock> NORPH = register("norph", NorphBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(0.3f).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion().
+                        isValidSpawn((state, level, pos, value) -> false),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
