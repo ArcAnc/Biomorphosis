@@ -9,11 +9,12 @@
 
 package com.arcanc.biomorphosis.content.registration;
 
-import com.arcanc.biomorphosis.content.block.BioBaseBlock;
-import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
-import com.arcanc.biomorphosis.content.block.NorphBlock;
-import com.arcanc.biomorphosis.content.block.NorphSource;
+import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
+import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
+import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
+import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
+import com.arcanc.biomorphosis.content.block.norph.NorphSource;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
@@ -90,6 +91,7 @@ public final class Registration
                         strength(3,3).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion().
+                        randomTicks().
                         isValidSpawn((state, level, pos, value) -> false),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
@@ -99,6 +101,25 @@ public final class Registration
                         strength(0.3f).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion().
+                        isValidSpawn((state, level, pos, value) -> false),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<NorphStairs> NORPH_STAIRS = register("norph_stairs", properties -> new NorphStairs(NORPH.get().defaultBlockState(), properties),
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(0.3f).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion().
+                        isValidSpawn((state, level, pos, value) -> false),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<NorphOverlay> NORPH_OVERLAY = register("norph_overlay", NorphOverlay :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(0.3f).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion().
+                        noCollission().
                         isValidSpawn((state, level, pos, value) -> false),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 

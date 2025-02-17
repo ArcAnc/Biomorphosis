@@ -48,17 +48,6 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
         return state;
     }
 
-    @Override
-    public boolean triggerEvent(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, int eventId, int eventParam)
-    {
-        if (world.isClientSide() && eventId == 255)
-        {
-            world.sendBlockUpdated(pos, state, state, Block.UPDATE_ALL);
-            return true;
-        }
-        return super.triggerEvent(state, world, pos, eventId, eventParam);
-    }
-
     /**
      * WATERLOGGING
      */
@@ -123,13 +112,17 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
         return ItemStack.EMPTY;
     }
 
+    /**
+     * WRENCHEABLE
+     */
+
     @Override
     public @NotNull InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
     {
         return InteractionResult.PASS;
     }
 
-    protected InteractionResult.Success sidedSuccess(boolean isClient)
+    protected static InteractionResult.Success sidedSuccess(boolean isClient)
     {
         return isClient ? InteractionResult.SUCCESS : InteractionResult.SUCCESS_SERVER;
     }

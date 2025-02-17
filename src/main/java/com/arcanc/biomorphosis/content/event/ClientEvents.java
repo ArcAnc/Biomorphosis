@@ -18,12 +18,15 @@ import com.arcanc.biomorphosis.data.BioRecipeProvider;
 import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
+import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
+import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -67,6 +70,9 @@ public final class ClientEvents
 
         gen.addProvider(true, new EnUsProvider(packOutput));
         gen.addProvider(true, new SummaryModelProvider(packOutput));
+        BlockTagsProvider btp = new BioBlockTagsProvider(packOutput, lookupProvider, ext);
+        gen.addProvider(true, btp);
+        gen.addProvider(true, new BioItemTagsProvider(packOutput, lookupProvider, btp, ext));
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider, ext));
 
