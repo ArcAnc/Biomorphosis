@@ -26,16 +26,19 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
+import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -51,9 +54,12 @@ public class SummaryModelProvider extends ModelProvider
     private void registerItemModels(@NotNull ItemModelGenerators itemModels)
     {
         itemModels.generateFlatItem(Registration.ItemReg.FLESH_PIECE.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(Registration.ItemReg.QUEENS_BRAIN.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.CREATIVE_TAB_ICON.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.WRENCH.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.BOOK.get(), ModelTemplates.FLAT_ITEM);
+
+        createBucketModel(Registration.FluidReg.BIOMASS, itemModels);
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)
@@ -66,6 +72,45 @@ public class SummaryModelProvider extends ModelProvider
         blockModels.createTrivialCube(Registration.BlockReg.NORPH.get());
 
         createMultifaceModel(Registration.BlockReg.NORPH_OVERLAY.get(), blockModels);
+
+        createFluidModel(Registration.FluidReg.BIOMASS, blockModels);
+    }
+
+    //------------------------------------------------------------------------------
+    // ITEM MODELS
+    //------------------------------------------------------------------------------
+    private void createBucketModel(@NotNull Registration.FluidReg.FluidEntry fluidEntry, @NotNull ItemModelGenerators itemModels)
+    {
+        DynamicFluidContainerModel.Textures textures = new DynamicFluidContainerModel.Textures(
+                Optional.of(fluidEntry.bucket().getId().withPrefix("block/")),
+                Optional.of(Database.mineRl("item/bucket")),
+                Optional.of(Database.neoRl("item/mask/bucket_fluid_drip")),
+                Optional.of(Database.neoRl("item/mask/bucket_fluid_cover_drip")));
+        itemModels.itemModelOutput.accept(fluidEntry.bucket().get(), new DynamicFluidContainerModel.Unbaked(
+                textures,
+                fluidEntry.still().get(),
+                false,
+                true,
+                true));
+    }
+    //------------------------------------------------------------------------------
+    // BLOCK MODELS
+    //------------------------------------------------------------------------------
+
+    private void createFluidModel(@NotNull Registration.FluidReg.FluidEntry fluid, @NotNull BlockModelGenerators blockModels)
+    {
+        DeferredBlock<LiquidBlock> block = fluid.block();
+
+        TextureMapping mapping = new TextureMapping().
+                put(TextureSlot.PARTICLE, fluid.still().getId());
+
+        ExtendedModelTemplateBuilder template = ModelTemplates.PARTICLE_ONLY.
+                extend().
+                renderType("translucent").
+                guiLight(UnbakedModel.GuiLight.SIDE);
+
+        ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).create(block.get(), blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block.get(), modelLocation));
     }
 
     private void createNorphSource(@NotNull BlockModelGenerators blockModels)

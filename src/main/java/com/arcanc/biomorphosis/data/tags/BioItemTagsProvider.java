@@ -16,17 +16,15 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BioItemTagsProvider extends ItemTagsProvider
 {
-    public BioItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @NotNull BlockTagsProvider blockTagsProvider, @Nullable ExistingFileHelper existingFileHelper)
+    public BioItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @NotNull BlockTagsProvider blockTagsProvider)
     {
-        super(output, lookupProvider, blockTagsProvider.contentsGetter(), Database.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, blockTagsProvider.contentsGetter(), Database.MOD_ID);
     }
 
     @Override

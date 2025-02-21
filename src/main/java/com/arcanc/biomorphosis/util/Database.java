@@ -21,6 +21,34 @@ public class Database
     public static final String MOD_NAME = "Biomorphosis";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    public static final class FluidInfo
+    {
+        public static @NotNull ResourceLocation getStillLoc(String name)
+        {
+            return rl("fluids/" + name +"/still");
+        }
+
+        public static @NotNull ResourceLocation getFlowLoc(String name)
+        {
+            return rl("fluids/" + name +"/flow");
+        }
+
+        public static @NotNull ResourceLocation getOverlayLoc(String name)
+        {
+            return rl("fluids/" + name + "/overlay");
+        }
+
+        public static @NotNull ResourceLocation getBlockLocation(String name)
+        {
+            return rl("fluids/" + name + "/block");
+        }
+
+        public static @NotNull ResourceLocation getBucketLocation(String name)
+        {
+            return rl("fluids/" + name + "/bucket");
+        }
+    }
+
     public static final class GUI
     {
         private static final String GUI = "gui";
@@ -110,6 +138,18 @@ public class Database
     {
         Preconditions.checkNotNull(name);
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
+    }
+
+    public static @NotNull ResourceLocation mineRl(String name)
+    {
+        Preconditions.checkNotNull(name);
+        return ResourceLocation.withDefaultNamespace(name);
+    }
+
+    public static @NotNull ResourceLocation neoRl(String name)
+    {
+        Preconditions.checkNotNull(name);
+        return ResourceLocation.fromNamespaceAndPath("neoforge", name);
     }
 
     public static @NotNull String rlStr(String name)

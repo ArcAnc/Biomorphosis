@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "biomorphosis.refmap.json",
   "mixins": [
+    "FluidTypeRarityAccessor"
   ],
   "minVersion": "0.8",
   "client": [

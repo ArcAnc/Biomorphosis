@@ -16,6 +16,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.Items;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -30,8 +31,13 @@ public class BioRecipeProvider extends RecipeProvider
     @Override
     protected void buildRecipes()
     {
-        //threeByThreePacker(RecipeCategory.MISC, Registration.ItemReg.FLESH_PIECE, Registration.BlockReg.FLESH);
         nineBlockStorageRecipes(RecipeCategory.MISC, Registration.ItemReg.FLESH_PIECE, RecipeCategory.MISC, Registration.BlockReg.FLESH);
+        shapeless(RecipeCategory.MISC, Registration.ItemReg.BOOK).
+                unlockedBy(getHasName(Registration.ItemReg.QUEENS_BRAIN), has(Registration.ItemReg.QUEENS_BRAIN)).
+                unlockedBy(getHasName(Items.WRITABLE_BOOK), has(Items.WRITABLE_BOOK)).
+                requires(Registration.ItemReg.QUEENS_BRAIN).
+                requires(Items.WRITABLE_BOOK).
+                save(this.output);
     }
 
     public static class Runner extends RecipeProvider.Runner

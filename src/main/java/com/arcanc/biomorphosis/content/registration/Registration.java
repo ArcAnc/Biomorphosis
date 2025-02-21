@@ -9,20 +9,30 @@
 
 package com.arcanc.biomorphosis.content.registration;
 
-import com.arcanc.biomorphosis.content.block.*;
+import com.arcanc.biomorphosis.content.block.BioBaseBlock;
+import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
-import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
 import com.arcanc.biomorphosis.content.block.norph.NorphSource;
+import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
+import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
+import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
+import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,32 +40,43 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
+import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector4f;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -100,7 +121,6 @@ public final class Registration
                         instrument(NoteBlockInstrument.BIT).
                         strength(0.3f).
                         sound(SoundType.HONEY_BLOCK).
-                        noOcclusion().
                         isValidSpawn((state, level, pos, value) -> false),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
@@ -182,6 +202,7 @@ public final class Registration
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Database.MOD_ID);
 
         public static final DeferredItem<BioIconItem> CREATIVE_TAB_ICON = registerIcon("creative_tab_icon");
+        public static final DeferredItem<BioBaseItem> QUEENS_BRAIN = register("queens_brain", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
         public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
@@ -213,6 +234,198 @@ public final class Registration
         private static void init (@NotNull final IEventBus bus)
         {
             ITEMS.register(bus);
+        }
+    }
+
+    public static class FluidReg
+    {
+        public static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(Registries.FLUID, Database.MOD_ID);
+        public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Database.MOD_ID);
+
+        public static final FluidEntry BIOMASS = FluidEntry.make("biomass",
+                new BioFluidType.ColorParams(new Vector4f(130, 33, 16, 255), new Vector4f(178, 78, 53, 255), 80, (minColor, maxColor, maxTime) ->
+                {
+                    Vector4f minimumColor = minColor.div(255f, new Vector4f());
+                    Vector4f maximumColor = maxColor.div(255f, new Vector4f());
+                    Minecraft mc = RenderHelper.mc();
+                    Level level = mc.level;
+                    if (level == null)
+                        return -1;
+                    long levelTime = level.getGameTime();
+                    float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+                    float halfTime = maxTime / 2f;
+
+                    float time = (levelTime + partialTicks) % maxTime;
+                    if (time < halfTime)
+                        return MathHelper.ColorHelper.lerp(time / halfTime, MathHelper.ColorHelper.color(maximumColor), MathHelper.ColorHelper.color(minimumColor));
+                    else
+                        return MathHelper.ColorHelper.lerp((time - halfTime) / halfTime, MathHelper.ColorHelper.color(minimumColor), MathHelper.ColorHelper.color(maximumColor));
+                }),
+                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
+                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                    {
+                        Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                        return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+                    },
+                props -> props.slopeFindDistance(2).levelDecreasePerBlock(2).explosionResistance(100),
+                typeProps -> typeProps.
+                        lightLevel(0).
+                        density(3000).
+                        viscosity(6000).
+                        rarity(RarityExtension.BIO_COMMON.getValue()).
+                        canSwim(true).
+                        canExtinguish(true).
+                        canHydrate(true).
+                        fallDistanceModifier(0f));
+
+        public record FluidEntry(DeferredHolder<Fluid, BioBaseFluid> still,
+                                  DeferredHolder<Fluid, BioBaseFluid> flowing,
+                                  DeferredBlock<LiquidBlock> block,
+                                  DeferredItem<BucketItem> bucket,
+                                  DeferredHolder<FluidType, BioFluidType> type,
+                                  List<Property<?>> properties)
+        {
+            private static @NotNull FluidEntry make(String name, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            {
+                return make(name, new BioFluidType.ColorParams(new Vector4f(0,0,0,0), new Vector4f(0,0,0,0), 1, (vector4f, vector4f2, integer) -> 0xffffffff), fogColor, fogOptions, props);
+            }
+
+            private static @NotNull FluidEntry make(String name, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            {
+                return make(name, 0, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props);
+            }
+
+            private static @NotNull FluidEntry make(String name, int burnTime, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            {
+                return make(name, burnTime, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props);
+            }
+
+            private static @NotNull FluidEntry make(String name, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            {
+                return make(name, 0, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props);
+            }
+
+            private static @NotNull FluidEntry make(
+                    String name, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props, Consumer<FluidType.Properties> buildAttributes
+            )
+            {
+                return make(name, 0, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props, buildAttributes);
+            }
+
+            private static @NotNull FluidEntry make(String name, int burnTime, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            {
+                return make(name, burnTime, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props, null);
+            }
+
+            private static @NotNull FluidEntry make(
+                    String name, int burnTime,
+                    ResourceLocation stillTex,
+                    ResourceLocation flowingTex,
+                    ResourceLocation overlayTex,
+                    BioFluidType.ColorParams colorParams,
+                    BioFluidType.FogGetter fogColor,
+                    BioFluidType.FogOptionsGetter fogOptions,
+                    @Nullable Consumer<BaseFlowingFluid.Properties> props,
+                    @Nullable Consumer<FluidType.Properties> buildAttributes
+            )
+            {
+                return make(
+                        name, burnTime, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, BioBaseFluid.BioFluidSource :: new, BioBaseFluid.BioFluidFlowing :: new, props, buildAttributes,
+                        ImmutableList.of()
+                );
+            }
+
+            private static @NotNull FluidEntry make(
+                    String name,
+                    int burnTime,
+                    ResourceLocation stillTex,
+                    ResourceLocation flowingTex,
+                    ResourceLocation overlayTex,
+                    BioFluidType.ColorParams colorParams,
+                    BioFluidType.FogGetter fogColor,
+                    BioFluidType.FogOptionsGetter fogOptions,
+                    Function<BaseFlowingFluid.Properties, ? extends BioBaseFluid> makeStill,
+                    Function<BaseFlowingFluid.Properties, ? extends BioBaseFluid> makeFlowing,
+                    @Nullable Consumer<BaseFlowingFluid.Properties> props,
+                    @Nullable Consumer<FluidType.Properties> buildAttributes,
+                    List<Property<?>> properties)
+            {
+                FluidType.Properties builder = FluidType.Properties.create().
+                        sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).
+                        sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY);
+                if(buildAttributes!=null)
+                    buildAttributes.accept(builder);
+                DeferredHolder<FluidType, BioFluidType> type = FLUID_TYPES.register(
+                        name, () -> makeTypeWithTextures(builder, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions)
+                );
+                Mutable<FluidEntry> thisMutable = new MutableObject<>();
+                BioBaseFluid.FluidPropsGetter fluidProps = BaseFlowingFluid.Properties :: new;
+                DeferredHolder<Fluid, BioBaseFluid> still = FLUIDS.register(Database.FluidInfo.getStillLoc(name).getPath(), () -> BioBaseFluid.makeFluid(makeStill,
+                        fluidProps.get(
+                                        thisMutable.getValue().type(),
+                                        thisMutable.getValue().still(),
+                                        thisMutable.getValue().flowing()).
+                                block(thisMutable.getValue().block()).
+                                bucket(thisMutable.getValue().bucket()),
+                        props));
+                DeferredHolder<Fluid, BioBaseFluid> flowing = FLUIDS.register(Database.FluidInfo.getFlowLoc(name).getPath(), () -> BioBaseFluid.makeFluid(makeFlowing,
+                        fluidProps.get(
+                                        thisMutable.getValue().type(),
+                                        thisMutable.getValue().still(),
+                                        thisMutable.getValue().flowing()).
+                                block(thisMutable.getValue().block()).
+                                bucket(thisMutable.getValue().bucket()),
+                        props));
+                ResourceLocation blockId = Database.FluidInfo.getBlockLocation(name);
+                DeferredBlock<LiquidBlock> block = BlockReg.BLOCKS.register(blockId.getPath(),
+                        () -> new LiquidBlock(thisMutable.getValue().still().get(), BlockReg.setId(blockId.getPath(), BlockBehaviour.Properties.ofFullCopy(Blocks.WATER).
+                                noLootTable())));
+                ResourceLocation bucketId = Database.FluidInfo.getBucketLocation(name);
+                DeferredItem<BucketItem> bucket = ItemReg.ITEMS.register(bucketId.getPath(), () -> makeBucket(bucketId, still, builder, burnTime));
+                FluidEntry entry = new FluidEntry(still, flowing, block, bucket, type, properties);
+                thisMutable.setValue(entry);
+                return entry;
+            }
+
+            private static @NotNull BioFluidType makeTypeWithTextures(FluidType.Properties props, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions)
+            {
+                return new BioFluidType(stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props)
+                {
+                    @Override
+                    public @NotNull String getDescriptionId()
+                    {
+                        ResourceLocation loc = NeoForgeRegistries.FLUID_TYPES.getKey(this);
+                        if (loc != null)
+                            return loc.getNamespace() + "." + "fluid_type" + "." + loc.getPath().replace('/', '.');
+                        return "unregistered.fluid_type";
+                    }
+                };
+            }
+
+            private static @NotNull BucketItem makeBucket (@NotNull ResourceLocation id, @NotNull DeferredHolder<Fluid, BioBaseFluid> still, FluidType.@NotNull Properties props, int burnTime)
+            {
+                return new BioBucketItem(still.get(), ItemReg.setId(id.getPath(), new Item.Properties().
+                        stacksTo(1).
+                        rarity(((FluidTypeRarityAccessor) (Object)props).getRarity()).
+                        craftRemainder(Items.BUCKET),
+                        false))
+                {
+                    @Override
+                    public int getBurnTime(@NotNull ItemStack itemStack,
+                                           @Nullable RecipeType<?> recipeType,
+                                           @NotNull FuelValues fuelValues)
+                    {
+                        return burnTime;
+                    }
+                };
+            }
+        }
+
+        private static void init (@NotNull final IEventBus bus)
+        {
+            FLUIDS.register(bus);
+            FLUID_TYPES.register(bus);
         }
     }
 
@@ -351,6 +564,7 @@ public final class Registration
         BookDataReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
+        FluidReg.init(bus);
         BETypeReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);

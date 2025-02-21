@@ -9,8 +9,14 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
 public class CommonEvents
@@ -19,6 +25,7 @@ public class CommonEvents
     public static void registerCommonEvents(@NotNull final IEventBus modEventBus)
     {
         modEventBus.addListener(NetworkEngine:: setupMessages);
+        modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
 /*        registerContainerMenuEvents();
         modEventBus.addListener(CommonEvents :: commonSetup);
 
@@ -34,6 +41,16 @@ public class CommonEvents
         NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: playerLoad);
 */    }
 
+    private static void registerCapabilitiesEvent(final @NotNull RegisterCapabilitiesEvent event)
+    {
+        Registration.ItemReg.ITEMS.getEntries().stream().filter(item -> item.get() instanceof BioBucketItem).
+                map(DeferredHolder :: get).
+                forEach(item -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), item));
+
+        //event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_NODE.get(), NodeBlockEntity::getHandler);
+        //event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_FLUID_STORAGE.get(), FluidStorageBlockEntity::getHandler);
+    }
+
 /*    private static void registerContainerMenuEvents()
     {
         NeoForge.EVENT_BUS.addListener(NContainerMenu:: onContainerOpened);
@@ -45,15 +62,6 @@ public class CommonEvents
         Nedaire.getLogger().info("{} Started Server Initialization", NDatabase.MOD_ID);
 
         Nedaire.getLogger().info("{} Finished Server Initialization", NDatabase.MOD_ID);
-    }
-
-    private static void registerCapabilitiesEvent(final @NotNull RegisterCapabilitiesEvent event)
-    {
-        NRegistration.NItems.ITEMS.getEntries().stream().filter(item -> item.get() instanceof NBucketItem).
-                map(DeferredHolder:: get).forEach(item -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), item));
-
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_NODE.get(), NodeBlockEntity::getHandler);
-        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_FLUID_STORAGE.get(), FluidStorageBlockEntity::getHandler);
     }
 
     private static void gatherData(final @NotNull GatherDataEvent.Client event)
