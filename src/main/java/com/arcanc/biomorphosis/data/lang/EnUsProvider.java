@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.lang;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
 public class EnUsProvider extends LanguageProvider
@@ -29,6 +28,17 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
         this.addItem(Registration.ItemReg.BOOK, "Guide");
         this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
+
+        this.addBlock(Registration.BlockReg.NORPH, "Norph");
+        this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
+        this.addBlock(Registration.BlockReg.NORPH_STAIRS, "Norph Stairs");
+        this.addBlock(Registration.BlockReg.NORPH_SOURCE, "Norph Source");
+
+        this.addItem(Registration.FluidReg.BIOMASS.bucket(), "Biomass Bucket");
+        this.add(Registration.FluidReg.BIOMASS.still().getId().toLanguageKey(), "Biomass");
+        this.add(Registration.FluidReg.BIOMASS.flowing().getId().toLanguageKey(), "Biomass");
+        this.addBlock(Registration.FluidReg.BIOMASS.block(), "Biomass");
+        this.add(Registration.FluidReg.BIOMASS.type().get().getDescriptionId(), "Biomass");
 
         //-----------------------------
         //BOOK

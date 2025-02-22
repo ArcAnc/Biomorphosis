@@ -353,7 +353,8 @@ public final class Registration
             {
                 FluidType.Properties builder = FluidType.Properties.create().
                         sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).
-                        sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY);
+                        sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).
+                        descriptionId(Database.rl("fluid_type" + "." + name).toLanguageKey());
                 if(buildAttributes!=null)
                     buildAttributes.accept(builder);
                 DeferredHolder<FluidType, BioFluidType> type = FLUID_TYPES.register(
@@ -390,17 +391,7 @@ public final class Registration
 
             private static @NotNull BioFluidType makeTypeWithTextures(FluidType.Properties props, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions)
             {
-                return new BioFluidType(stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props)
-                {
-                    @Override
-                    public @NotNull String getDescriptionId()
-                    {
-                        ResourceLocation loc = NeoForgeRegistries.FLUID_TYPES.getKey(this);
-                        if (loc != null)
-                            return loc.getNamespace() + "." + "fluid_type" + "." + loc.getPath().replace('/', '.');
-                        return "unregistered.fluid_type";
-                    }
-                };
+                return new BioFluidType(stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props);
             }
 
             private static @NotNull BucketItem makeBucket (@NotNull ResourceLocation id, @NotNull DeferredHolder<Fluid, BioBaseFluid> still, FluidType.@NotNull Properties props, int burnTime)
