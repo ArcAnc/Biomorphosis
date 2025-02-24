@@ -21,6 +21,17 @@ public class Database
     public static final String MOD_NAME = "Biomorphosis";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    public static final class JadeInfo
+    {
+        public static final class IDs
+        {
+            public static final ResourceLocation FLUID_RENDERER = rl("jade_fluid_renderer");
+        }
+        public static final class Translations
+        {
+            public static final String FLUID_AMOUNT = rl("jade.fluid").toLanguageKey();
+        }
+    }
     public static final class FluidInfo
     {
         public static @NotNull ResourceLocation getStillLoc(String name)
@@ -48,7 +59,6 @@ public class Database
             return rl("fluids/" + name + "/bucket");
         }
     }
-
     public static final class GUI
     {
         private static final String GUI = "gui";
@@ -131,6 +141,23 @@ public class Database
         public static @NotNull ResourceLocation getTexturePath(String str)
         {
             return rl("textures/" + str + ".png");
+        }
+    }
+
+    public static final class Capabilities
+    {
+        public static final class Fluids
+        {
+            public static final String HANDLER = "handler";
+            public static final String TANK = "tank";
+            public static final String TANKS = "tanks";
+            public static final class Holder
+            {
+                public static final String FLUID = "fluid";
+                public static final String CAPACITY = "capacity";
+                public static final String TYPE = "type";
+                public static final String FACES = "faces";
+            }
         }
     }
 

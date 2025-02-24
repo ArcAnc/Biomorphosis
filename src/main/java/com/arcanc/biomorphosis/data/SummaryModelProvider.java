@@ -74,6 +74,9 @@ public class SummaryModelProvider extends ModelProvider
         createMultifaceModel(Registration.BlockReg.NORPH_OVERLAY.get(), blockModels);
 
         createFluidModel(Registration.FluidReg.BIOMASS, blockModels);
+
+        //FIXME: заменить модель для хранилища!!!
+        blockModels.createTrivialCube(Registration.BlockReg.FLUID_STORAGE.get());
     }
 
     //------------------------------------------------------------------------------

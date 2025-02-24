@@ -32,6 +32,7 @@ public class BlockHelper
         public static final BooleanProperty LIT = BlockStateProperties.LIT;
 
         public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
+        public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
     }
 
     public static Optional<BlockEntity> getTileEntity(BlockGetter world, Vec3 pos)

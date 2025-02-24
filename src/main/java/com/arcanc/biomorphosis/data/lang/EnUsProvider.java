@@ -40,6 +40,14 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.FluidReg.BIOMASS.block(), "Biomass");
         this.add(Registration.FluidReg.BIOMASS.type().get().getDescriptionId(), "Biomass");
 
+        this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Storage");
+
+        //-----------------------------
+        // JADE
+
+        this.add("config.jade.plugin_" + Database.JadeInfo.IDs.FLUID_RENDERER.toLanguageKey(), "Test Fluid Render");
+        this.add(Database.JadeInfo.Translations.FLUID_AMOUNT, "%s Amount: %s/%s");
+
         //-----------------------------
         //BOOK
         this.add(Database.GUI.GuideBook.Chapters.TITLE.langKey(), "</item;minecraft:writable_book/>Patch Notes");

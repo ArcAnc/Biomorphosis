@@ -1,5 +1,6 @@
 {
   "biomorphosis.block.flesh": "Flesh Block",
+  "biomorphosis.block.fluid_storage": "Fluid Storage",
   "biomorphosis.block.fluids.biomass.block": "Biomass",
   "biomorphosis.block.norph": "Norph",
   "biomorphosis.block.norph_overlay": "Norph",
@@ -40,5 +41,7 @@
   "biomorphosis.item.book": "Guide",
   "biomorphosis.item.flesh_piece": "Piece Of Flash",
   "biomorphosis.item.fluids.biomass.bucket": "Biomass Bucket",
-  "biomorphosis.item.queens_brain": "Queen's Brain"
+  "biomorphosis.item.queens_brain": "Queen's Brain",
+  "biomorphosis.jade.fluid": "%s Amount: %s/%s",
+  "config.jade.plugin_biomorphosis.jade_fluid_renderer": "Test Fluid Render"
 }

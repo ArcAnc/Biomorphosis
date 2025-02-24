@@ -10,7 +10,9 @@
 package com.arcanc.biomorphosis.content.registration;
 
 import com.arcanc.biomorphosis.content.block.BioBaseBlock;
+import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
+import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -143,6 +145,14 @@ public final class Registration
                         isValidSpawn((state, level, pos, value) -> false),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<BioFluidStorageBlock> FLUID_STORAGE = register("fluid_storage", BioFluidStorageBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2,2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -177,6 +187,10 @@ public final class Registration
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LureCampfireBE>> BE_LURE_CAMPFIRE = BLOCK_ENTITIES.register(
                 "lure_campfire",
                 makeType(LureCampfireBE :: new, BlockReg.LURE_CAMPFIRE));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidStorage>> BE_FLUID_STORAGE = BLOCK_ENTITIES.register(
+                "fluid_storage",
+                makeType(BioFluidStorage :: new, BlockReg.FLUID_STORAGE));
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
         {

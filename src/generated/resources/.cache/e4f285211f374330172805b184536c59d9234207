@@ -1,6 +1,7 @@
-// 1.21.4	2025-02-21T17:47:01.1542574	Biomorphosis: Models
+// 1.21.4	2025-02-22T23:38:14.1804514	Biomorphosis: Models
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 3ddd817db3cc0a0d86bed5390f309ec156a35ad8 assets/biomorphosis/blockstates/fluids/biomass/block.json
+24bb989bcf2f72fe5550b04322ff96bf9b50d1ce assets/biomorphosis/blockstates/fluid_storage.json
 d7700da8fb8738cc580741fc4be8678d65dbc404 assets/biomorphosis/blockstates/lure_campfire.json
 691647dc2cf5ed770dc987a2ab8229c95110d1c6 assets/biomorphosis/blockstates/norph.json
 69693f5a42a318a089de94f58827d024301c5645 assets/biomorphosis/blockstates/norph_overlay.json
@@ -11,6 +12,7 @@ fa958b9b103f7e47d72bf2d20a0fbfb789fb1b4e assets/biomorphosis/items/book.json
 ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 8cc2526f42ef8874e5121514f57b57b8df448d94 assets/biomorphosis/items/flesh_piece.json
 dd50913161638f687d28bc9bf71799476d46eaf8 assets/biomorphosis/items/fluids/biomass/bucket.json
+9cda51b82986dc7023d336bf592b868207250a29 assets/biomorphosis/items/fluid_storage.json
 3e01b1e33ccb002a2117bca15d53ce426d511951 assets/biomorphosis/items/lure_campfire.json
 fca23f39b5d3db17eaa1ebec55c40009c9672fbd assets/biomorphosis/items/norph.json
 74b119b80a366333584a8c1d608636d08726a0e5 assets/biomorphosis/items/norph_overlay.json
@@ -20,6 +22,7 @@ f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
 ebf8f15acfed3aa55da4a750d67756f20b8b65a4 assets/biomorphosis/models/block/fluids/biomass/block.json
+770e85b770e227417e1e8356102b1b38f4934eeb assets/biomorphosis/models/block/fluid_storage.json
 5e059a73c62a9b2f046eb15c58cc1a78bc5078bf assets/biomorphosis/models/block/lure_campfire.json
 0800524c81ad609fbae4a72c134689f9108accbc assets/biomorphosis/models/block/norph.json
 12223ab8e1cebd68ab154320bf50dafd51833284 assets/biomorphosis/models/block/norph_overlay.json
