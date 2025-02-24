@@ -17,6 +17,8 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
@@ -37,6 +39,9 @@ public class FluidStackHolder implements IFluidTank
     protected HolderCallback callback;
     protected HolderType type;
     protected Set<DirectionHelper.RelativeFace> accessibleFaces;
+
+    @OnlyIn(Dist.CLIENT)
+    private int clientFluidAmount = 0;
 
     public FluidStackHolder(FluidStack stack, int capacity, HolderType type, Set<DirectionHelper.RelativeFace> accessibleFaces, Predicate<FluidStack> validator, HolderCallback callback)
     {
@@ -110,7 +115,6 @@ public class FluidStackHolder implements IFluidTank
     {
         if (stack.isEmpty() || !isFluidValid(stack))
             return 0;
-
         if (!this.fluid.isEmpty() && !FluidStack.isSameFluidSameComponents(this.fluid, stack))
             return 0;
 
@@ -181,6 +185,18 @@ public class FluidStackHolder implements IFluidTank
     public boolean isEmpty()
     {
         return this.fluid.isEmpty() || this.fluid.getAmount() == 0;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public int getClientFluidAmount()
+    {
+        return clientFluidAmount;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void setClientFluidAmount(int clientFluidAmount)
+    {
+        this.clientFluidAmount = clientFluidAmount;
     }
 
     public static @NotNull Builder newBuilder()

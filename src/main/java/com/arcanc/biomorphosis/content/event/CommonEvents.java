@@ -9,9 +9,11 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -29,7 +31,7 @@ public class CommonEvents
 /*        registerContainerMenuEvents();
         modEventBus.addListener(CommonEvents :: commonSetup);
 
-        modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
+
 
         modEventBus.addListener(CommonEvents :: gatherData);
 
@@ -47,8 +49,8 @@ public class CommonEvents
                 map(DeferredHolder :: get).
                 forEach(item -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), item));
 
-        //event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_NODE.get(), NodeBlockEntity::getHandler);
-        //event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, NRegistration.NBlockEntities.BE_FLUID_STORAGE.get(), FluidStorageBlockEntity::getHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FLUID_STORAGE.get(), BioFluidStorage :: getHandler);
+        event.registerBlockEntity(com.arcanc.biomorphosis.content.capabilities.Capabilities.Fluid.BLOCK, Registration.BETypeReg.BE_FLUID_STORAGE.get(), BioFluidStorage :: getHandler);
     }
 
 /*    private static void registerContainerMenuEvents()

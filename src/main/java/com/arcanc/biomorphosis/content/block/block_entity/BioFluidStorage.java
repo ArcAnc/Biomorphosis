@@ -9,15 +9,19 @@
 
 package com.arcanc.biomorphosis.content.block.block_entity;
 
+import com.arcanc.biomorphosis.content.capabilities.Capabilities;
+import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.fluid.SimpleFluidHandler;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
@@ -38,13 +42,32 @@ public class BioFluidStorage extends BioBaseBlockEntity
                         setValidator(stack -> stack.is(Registration.FluidReg.BIOMASS.type().get())).
                         setCapacity(10000).
                         build()).
-                build();
+                build(blockState);
     }
 
     @Override
     protected void firstTick()
     {
+        if (level != null && level.isClientSide())
+            FluidLevelAnimator.registerBlockEntity(level, getBlockPos());
+    }
 
+    @Override
+    public void setRemoved()
+    {
+        if (level != null && level.isClientSide())
+            FluidLevelAnimator.removeBlockEntity(level, getBlockPos());
+        super.setRemoved();
+    }
+
+    public static IFluidHandler getHandler(@NotNull BioFluidStorage be, Direction ctx)
+    {
+        return getHandler(be, new Capabilities.Fluid.CapabilityAccess(DirectionHelper.getRelativeDirection(be.getBlockState(), ctx), FluidStackHolder.HolderType.ALL));
+    }
+
+    public static SimpleFluidHandler getHandler(@NotNull BioFluidStorage be, Capabilities.Fluid.CapabilityAccess ctx)
+    {
+        return be.handler.getHandler();
     }
 
     @Override

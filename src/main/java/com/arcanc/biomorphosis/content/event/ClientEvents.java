@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.RecipeRenderHandler;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
+import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
@@ -32,6 +33,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
@@ -50,8 +52,10 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
         modEventBus.addListener(ClientEvents :: setupItemColor);
+
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
+        NeoForge.EVENT_BUS.addListener(FluidLevelAnimator ::renderFrame);
     }
 
     private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
