@@ -9,76 +9,83 @@
 
 package com.arcanc.biomorphosis.content.block.block_entity;
 
-import com.arcanc.biomorphosis.content.capabilities.Capabilities;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.helper.DirectionHelper;
+import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
+import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
-import com.arcanc.biomorphosis.util.inventory.fluid.SimpleFluidHandler;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumSet;
-
-public class BioFluidStorage extends BioBaseBlockEntity
+public class BioFluidStorage extends BioSidedAccessBlockEntity
 {
-    private final SimpleFluidHandler handler;
+    private final FluidSidedStorage handler;
 
     public BioFluidStorage(BlockPos pos, BlockState blockState)
     {
         super(Registration.BETypeReg.BE_FLUID_STORAGE.get(), pos, blockState);
 
-        this.handler = SimpleFluidHandler.newBuilder().
-                addTank(FluidStackHolder.newBuilder().
-                        setHolderType(FluidStackHolder.HolderType.ALL).
-                        setAccessibleFaces(EnumSet.of(DirectionHelper.RelativeFace.DOWN, DirectionHelper.RelativeFace.UP)).
+        setSideMode(BasicSidedStorage.RelativeFace.UP, BasicSidedStorage.FaceMode.ALL).
+                setSideMode(BasicSidedStorage.RelativeFace.DOWN, BasicSidedStorage.FaceMode.ALL);
+        this.handler = new FluidSidedStorage().
+                addHolder(FluidStackHolder.newBuilder().
                         setCallback(hold -> this.markDirty()).
-                        setValidator(stack -> stack.is(Registration.FluidReg.BIOMASS.type().get())).
+                        setValidator(stack -> true).
                         setCapacity(10000).
-                        build()).
-                build(blockState);
+                        build(),
+                        BasicSidedStorage.FaceMode.ALL);
     }
 
     @Override
     protected void firstTick()
     {
-        if (level != null && level.isClientSide())
-            FluidLevelAnimator.registerBlockEntity(level, getBlockPos());
+        if (this.level != null && this.level.isClientSide())
+            FluidLevelAnimator.registerBlockEntity(this.level, getBlockPos());
     }
 
     @Override
     public void setRemoved()
     {
-        if (level != null && level.isClientSide())
-            FluidLevelAnimator.removeBlockEntity(level, getBlockPos());
+        if (this.level != null && this.level.isClientSide())
+            FluidLevelAnimator.removeBlockEntity(this.level, getBlockPos());
         super.setRemoved();
     }
 
-    public static IFluidHandler getHandler(@NotNull BioFluidStorage be, Direction ctx)
+    public static @Nullable FluidSidedStorage getHandler(@NotNull BioFluidStorage be, Direction ctx)
     {
-        return getHandler(be, new Capabilities.Fluid.CapabilityAccess(DirectionHelper.getRelativeDirection(be.getBlockState(), ctx), FluidStackHolder.HolderType.ALL));
-    }
-
-    public static SimpleFluidHandler getHandler(@NotNull BioFluidStorage be, Capabilities.Fluid.CapabilityAccess ctx)
-    {
-        return be.handler.getHandler();
+        return ctx == null ? be.handler : be.isAccessible(ctx) ? be.handler : null;
     }
 
     @Override
     public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
+        super.readCustomTag(tag, registries, descrPacket);
         this.handler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
     }
 
     @Override
     public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
+        super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.handler.serializeNBT(registries));
+    }
+
+    @Override
+    public InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
+    {
+        Direction dir = ctx.getClickedFace();
+        if (!(dir == Direction.UP) && !(dir == Direction.DOWN))
+            return InteractionResult.PASS;
+        nextMode(dir);
+        return InteractionResult.SUCCESS_SERVER;
     }
 }

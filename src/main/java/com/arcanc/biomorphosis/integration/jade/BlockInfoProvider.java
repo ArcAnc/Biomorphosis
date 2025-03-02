@@ -9,23 +9,16 @@
 
 package com.arcanc.biomorphosis.integration.jade;
 
-import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
-import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
-import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.phys.Vec2;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-import snownee.jade.api.ui.IElement;
-import snownee.jade.api.ui.IElementHelper;
 
 public enum BlockInfoProvider implements IBlockComponentProvider,
                                          IServerDataProvider<BlockAccessor>
@@ -59,10 +52,11 @@ public enum BlockInfoProvider implements IBlockComponentProvider,
     @Override
     public void appendServerData(@NotNull CompoundTag compoundTag, @NotNull BlockAccessor blockAccessor)
     {
-        BioFluidStorage block = (BioFluidStorage) blockAccessor.getBlockEntity();
+        /*BioFluidStorage block = (BioFluidStorage) blockAccessor.getBlockEntity();
         compoundTag.putInt("fluid_amount", 10);
         compoundTag.putInt("max_fluid", 999);
         compoundTag.putString("fluid", "Water");
+        */
     }
 
     @Override

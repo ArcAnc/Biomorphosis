@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
+import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -17,25 +18,25 @@ import org.jetbrains.annotations.Nullable;
 public class DirectionHelper
 {
 
-    public static @Nullable RelativeFace getRelativeDirection(BlockState state, @Nullable Direction dir)
+    public static @Nullable BasicSidedStorage.RelativeFace getRelativeDirection(BlockState state, @Nullable Direction dir)
     {
         Direction face = DirectionHelper.getFace(state);
 
         if (dir == null)
             return null;
         else if (dir == Direction.UP)
-            return RelativeFace.UP;
+            return BasicSidedStorage.RelativeFace.UP;
         else if (dir == Direction.DOWN)
-            return RelativeFace.DOWN;
+            return BasicSidedStorage.RelativeFace.DOWN;
         else if (face == dir)
-            return RelativeFace.FRONT;
+            return BasicSidedStorage.RelativeFace.FRONT;
         else if (face == dir.getOpposite())
-            return RelativeFace.BACK;
+            return BasicSidedStorage.RelativeFace.BACK;
         else if (face == dir.getClockWise())
-            return RelativeFace.RIGHT;
+            return BasicSidedStorage.RelativeFace.RIGHT;
         else if (face == dir.getCounterClockWise())
-            return RelativeFace.LEFT;
-        return RelativeFace.DOWN;
+            return BasicSidedStorage.RelativeFace.LEFT;
+        return BasicSidedStorage.RelativeFace.DOWN;
     }
 
     public static Direction getFace(@NotNull BlockState state)
@@ -45,8 +46,4 @@ public class DirectionHelper
                 orElse(Direction.NORTH);
     }
 
-    public enum RelativeFace
-    {
-        FRONT, RIGHT, LEFT, BACK, UP, DOWN;
-    }
 }

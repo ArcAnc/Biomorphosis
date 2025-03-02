@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.data;
 
+import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphSource;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
@@ -44,7 +45,8 @@ import java.util.stream.Stream;
 
 public class SummaryModelProvider extends ModelProvider
 {
-    private static final ModelTemplate BLOCK = ModelTemplates.create("block", TextureSlot.ALL);
+    private static final ModelTemplate BLOCK = ModelTemplates.create("block", TextureSlot.PARTICLE);
+    private static final TextureSlot PORT = TextureSlot.create("port");
 
     public SummaryModelProvider(PackOutput output)
     {
@@ -75,8 +77,7 @@ public class SummaryModelProvider extends ModelProvider
 
         createFluidModel(Registration.FluidReg.BIOMASS, blockModels);
 
-        //FIXME: заменить модель для хранилища!!!
-        blockModels.createTrivialCube(Registration.BlockReg.FLUID_STORAGE.get());
+        createFluidStorage(blockModels);
     }
 
     //------------------------------------------------------------------------------
@@ -99,6 +100,76 @@ public class SummaryModelProvider extends ModelProvider
     //------------------------------------------------------------------------------
     // BLOCK MODELS
     //------------------------------------------------------------------------------
+
+    private void createFluidStorage(@NotNull BlockModelGenerators blockModels)
+    {
+        DeferredBlock<BioFluidStorageBlock> block = Registration.BlockReg.FLUID_STORAGE;
+        ResourceLocation blockLoc = TextureMapping.getBlockTexture(block.get());
+
+
+        TextureMapping mapping = new TextureMapping().
+                put(TextureSlot.SIDE, blockLoc.withSuffix("/side")).
+                put(TextureSlot.UP, blockLoc.withSuffix("/up")).
+                put(TextureSlot.DOWN, blockLoc.withSuffix("/down")).
+                put(PORT, Database.rl(blockPrefix("port"))).
+                put(TextureSlot.PARTICLE, blockLoc.withSuffix("/side"));
+
+        ExtendedModelTemplateBuilder template = BLOCK.extend().
+                renderType("cutout").
+                requiredTextureSlot(TextureSlot.SIDE).
+                requiredTextureSlot(TextureSlot.UP).
+                requiredTextureSlot(TextureSlot.DOWN).
+                requiredTextureSlot(PORT).
+                requiredTextureSlot(TextureSlot.PARTICLE).
+                guiLight(UnbakedModel.GuiLight.SIDE).
+                element(elementBuilder -> elementBuilder.
+                        from(3, 0.001f, 3).
+                        to(13, 15.999f, 13).
+                        allFaces((direction, faceBuilder) ->
+                        {
+                            if (direction.getAxis().isHorizontal())
+                                faceBuilder.uvs(3, 0, 13, 16).texture(TextureSlot.SIDE);
+                            else
+                            {
+                                faceBuilder.uvs(3,3, 13, 13).cullface(direction);
+                                if (direction == Direction.UP)
+                                    faceBuilder.texture(TextureSlot.UP);
+                                else
+                                    faceBuilder.texture(TextureSlot.DOWN);
+                            }
+                        })).
+                element(elementBuilder -> elementBuilder.
+                        from(13, 15.999f, 13).
+                        to(3, 0.001f, 3).
+                        allFaces((direction, faceBuilder) ->
+                        {
+                            if (direction.getAxis().isHorizontal())
+                                faceBuilder.uvs(3, 16, 13, 0).texture(TextureSlot.SIDE);
+                            else
+                            {
+                                faceBuilder.uvs(13,3, 3, 13);
+                                if (direction == Direction.UP)
+                                    faceBuilder.texture(TextureSlot.DOWN);
+                                else
+                                    faceBuilder.texture(TextureSlot.UP);
+                            }
+                        })).
+                element(elementBuilder -> elementBuilder.
+                        from(0,0,0).
+                        to(16, 0, 16).
+                        allFacesExcept((direction, faceBuilder) ->
+                                    faceBuilder.uvs(0,0,16,16).texture(PORT).tintindex(1).cullface(direction),
+                                EnumSet.of(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.UP))).
+                element(elementBuilder -> elementBuilder.
+                        from(0,16,0).
+                        to(16, 16, 16).
+                        allFacesExcept((direction, faceBuilder) ->
+                                    faceBuilder.uvs(0,0,16,16).texture(PORT).tintindex(1).cullface(direction),
+                                EnumSet.of(Direction.NORTH, Direction.SOUTH, Direction.EAST, Direction.WEST, Direction.DOWN)));
+
+        ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).create(block.get(), blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block.get(), modelLocation));
+    }
 
     private void createFluidModel(@NotNull Registration.FluidReg.FluidEntry fluid, @NotNull BlockModelGenerators blockModels)
     {

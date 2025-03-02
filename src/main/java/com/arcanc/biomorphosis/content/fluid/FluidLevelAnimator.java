@@ -9,21 +9,18 @@
 
 package com.arcanc.biomorphosis.content.fluid;
 
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
-import com.arcanc.biomorphosis.util.inventory.fluid.SimpleFluidHandler;
+import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
-import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.crypto.Data;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -62,16 +59,16 @@ public class FluidLevelAnimator
                 continue;
 
             IFluidHandler handler = fluidHandler.get();
-            if (!(handler instanceof SimpleFluidHandler simpleFluidHandler))
+            if (!(handler instanceof FluidSidedStorage fluidSidedStorage))
                 continue;
 
             for (int q = 0; q < handler.getTanks(); q++)
             {
-                int realFluidAmount = simpleFluidHandler.getFluidInTank(q).getAmount();
-                int clientFluidAmount = simpleFluidHandler.getClientFluidAmountInTank(q);
+                int realFluidAmount = fluidSidedStorage.getFluidInTank(q).getAmount();
+                int clientFluidAmount = fluidSidedStorage.getClientFluidAmountInTank(q);
                 if (clientFluidAmount != realFluidAmount)
                 {
-                    simpleFluidHandler.setClientFluidAmountInTank(q, Mth.lerpDiscrete(0.01f, clientFluidAmount, realFluidAmount));
+                    fluidSidedStorage.setClientFluidAmountInTank(q, Mth.lerpDiscrete(0.01f, clientFluidAmount, realFluidAmount));
                 }
             }
         }

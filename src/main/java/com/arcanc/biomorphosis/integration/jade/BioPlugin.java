@@ -9,6 +9,8 @@
 
 package com.arcanc.biomorphosis.integration.jade;
 
+import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
+import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.util.Database;
 import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.IWailaClientRegistration;

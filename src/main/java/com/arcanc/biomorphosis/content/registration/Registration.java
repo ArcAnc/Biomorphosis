@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
+import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidStorageRenderer;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
 import com.arcanc.biomorphosis.content.block.norph.NorphSource;
@@ -24,6 +25,7 @@ import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
+import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
@@ -35,6 +37,7 @@ import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogParameters;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -79,6 +82,7 @@ import org.joml.Vector4f;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -186,23 +190,59 @@ public final class Registration
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LureCampfireBE>> BE_LURE_CAMPFIRE = BLOCK_ENTITIES.register(
                 "lure_campfire",
-                makeType(LureCampfireBE :: new, BlockReg.LURE_CAMPFIRE));
+                makeType(LureCampfireBE :: new,
+                         LureCampfireRenderer:: new,
+                         BlockReg.LURE_CAMPFIRE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidStorage>> BE_FLUID_STORAGE = BLOCK_ENTITIES.register(
                 "fluid_storage",
-                makeType(BioFluidStorage :: new, BlockReg.FLUID_STORAGE));
+                makeType(BioFluidStorage :: new,
+                         BioFluidStorageRenderer :: new,
+                         BlockReg.FLUID_STORAGE));
+
+        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
+                                                                                             BlockEntityRendererProvider<T> provider,
+                                                                                             Supplier<? extends Block> valid)
+        {
+            return makeTypeMultipleBlocks(create, provider, ImmutableSet.of(valid));
+        }
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
         {
-            return makeTypeMultipleBlocks(create, ImmutableSet.of(valid));
+            return makeTypeMultipleBlocks(create, null, ImmutableSet.of(valid));
         }
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
-                BlockEntityType.BlockEntitySupplier<T> create, Collection<? extends Supplier<? extends Block>> valid
+                BlockEntityType.BlockEntitySupplier<T> create,
+                BlockEntityRendererProvider<T> rendererProvider,
+                Collection<? extends Supplier<? extends Block>> valid
         )
         {
-            return () -> new BlockEntityType<>(
-                    create, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
+            return () -> new BioBlockEntityType<>(
+                    create, rendererProvider, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
+        }
+
+        public static class BioBlockEntityType<T extends BlockEntity> extends BlockEntityType<T>
+        {
+
+            private final BlockEntityRendererProvider<T> renderer;
+
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks)
+            {
+                super(factory, validBlocks, false);
+                this.renderer = provider;
+            }
+
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
+            {
+                super(factory, validBlocks, onlyOpsNbtAccess);
+                this.renderer = provider;
+            }
+
+            public BlockEntityRendererProvider<T> getRenderer()
+            {
+                return renderer;
+            }
         }
 
         public static void init (final IEventBus modEventBus)

@@ -14,7 +14,6 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
 import com.arcanc.biomorphosis.data.BioBookProvider;
 import com.arcanc.biomorphosis.data.BioRecipeProvider;
 import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
@@ -23,14 +22,18 @@ import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
@@ -52,6 +55,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
         modEventBus.addListener(ClientEvents :: setupItemColor);
+        modEventBus.addListener(ClientEvents :: setupModels);
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
@@ -90,7 +94,12 @@ public final class ClientEvents
 
     private static void registerBlockEntityRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
     {
-        event.registerBlockEntityRenderer(Registration.BETypeReg.BE_LURE_CAMPFIRE.get(), LureCampfireRenderer:: new);
+        Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().
+                map(DeferredHolder :: get).
+                filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType).
+                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity>)type).
+                filter(type -> type.getRenderer() != null).
+                forEach(type -> event.registerBlockEntityRenderer(type, type.getRenderer()));
     }
 
     private static void gatherData(final @NotNull GatherDataEvent.Client event)
@@ -112,6 +121,13 @@ public final class ClientEvents
                 lookupProvider,
                 BioBookProvider.registerBookContent(),
                 Set.of(Database.MOD_ID)));
+    }
+
+    private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)
+    {
+        event.getBakingResult().blockStateModels().computeIfPresent(
+                BlockModelShaper.stateToModelLocation(Registration.BlockReg.FLUID_STORAGE.get().defaultBlockState()),
+                (location, bakedModel) -> new BioFluidStorageBakedModel(bakedModel));
     }
 
 }
