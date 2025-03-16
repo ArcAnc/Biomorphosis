@@ -1,7 +1,8 @@
-// 1.21.4	2025-03-02T04:04:19.3672018	Biomorphosis: Models
+// 1.21.4	2025-03-16T19:08:52.1186286	Biomorphosis: Models
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 3ddd817db3cc0a0d86bed5390f309ec156a35ad8 assets/biomorphosis/blockstates/fluids/biomass/block.json
 24bb989bcf2f72fe5550b04322ff96bf9b50d1ce assets/biomorphosis/blockstates/fluid_storage.json
+689cd40b4979419eb6b40ddbee165dd9f2a7ab3a assets/biomorphosis/blockstates/fluid_transmitter.json
 d7700da8fb8738cc580741fc4be8678d65dbc404 assets/biomorphosis/blockstates/lure_campfire.json
 691647dc2cf5ed770dc987a2ab8229c95110d1c6 assets/biomorphosis/blockstates/norph.json
 69693f5a42a318a089de94f58827d024301c5645 assets/biomorphosis/blockstates/norph_overlay.json
@@ -13,6 +14,7 @@ ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 8cc2526f42ef8874e5121514f57b57b8df448d94 assets/biomorphosis/items/flesh_piece.json
 dd50913161638f687d28bc9bf71799476d46eaf8 assets/biomorphosis/items/fluids/biomass/bucket.json
 9cda51b82986dc7023d336bf592b868207250a29 assets/biomorphosis/items/fluid_storage.json
+b3b8a23b020ef617055610fc578af5046e9a5c33 assets/biomorphosis/items/fluid_transmitter.json
 3e01b1e33ccb002a2117bca15d53ce426d511951 assets/biomorphosis/items/lure_campfire.json
 fca23f39b5d3db17eaa1ebec55c40009c9672fbd assets/biomorphosis/items/norph.json
 74b119b80a366333584a8c1d608636d08726a0e5 assets/biomorphosis/items/norph_overlay.json
@@ -22,11 +24,12 @@ f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
 ebf8f15acfed3aa55da4a750d67756f20b8b65a4 assets/biomorphosis/models/block/fluids/biomass/block.json
-4bce5ddcd10f1a7e10987d765a8b85fd88844d05 assets/biomorphosis/models/block/fluid_storage.json
+e6ad1f272bd9f538e16e05bb28a4c4c6d801ce2e assets/biomorphosis/models/block/fluid_storage.json
+7dc72f0313d09ac296cf0482af4d9dfb51d71e9e assets/biomorphosis/models/block/fluid_transmitter.json
 5e059a73c62a9b2f046eb15c58cc1a78bc5078bf assets/biomorphosis/models/block/lure_campfire.json
 0800524c81ad609fbae4a72c134689f9108accbc assets/biomorphosis/models/block/norph.json
-12223ab8e1cebd68ab154320bf50dafd51833284 assets/biomorphosis/models/block/norph_overlay.json
-57a8bdb406ab1ff65184a0023f9765a1649401a0 assets/biomorphosis/models/block/norph_source.json
+414dc84583336546e1ce634ef83ca071b3c6f31c assets/biomorphosis/models/block/norph_overlay.json
+0d5fa9c1ca5488049bd250722277d5d671880e4a assets/biomorphosis/models/block/norph_source.json
 80e5a824961c37ffb6281e9ac247791d956fa129 assets/biomorphosis/models/block/norph_stairs.json
 7f170d3e8e50c9a277670ce08a9884e4bf18ba1b assets/biomorphosis/models/block/norph_stairs_inner.json
 de2c4302c6b4953e7a3a0ebde35707040b11ebde assets/biomorphosis/models/block/norph_stairs_outer.json

@@ -68,6 +68,8 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     @Override
     public FluidStack insert(FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
     {
+        if (mode == FaceMode.OUTPUT || mode == FaceMode.BLOCKED)
+            return FluidStack.EMPTY;
         if (value.isEmpty())
             return FluidStack.EMPTY;
 
@@ -90,6 +92,8 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     @Override
     public FluidStack extract(FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
     {
+        if (mode == FaceMode.INPUT || mode == FaceMode.BLOCKED)
+            return FluidStack.EMPTY;
         if (value.isEmpty())
             return FluidStack.EMPTY;
 

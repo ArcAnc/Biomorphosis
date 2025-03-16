@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
+import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -27,6 +28,7 @@ public class CommonEvents
     {
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
+        FluidTransportHandler.registerHandler();
 /*        registerContainerMenuEvents();
         modEventBus.addListener(CommonEvents :: commonSetup);
 

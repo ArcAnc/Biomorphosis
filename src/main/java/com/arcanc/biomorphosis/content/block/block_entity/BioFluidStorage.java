@@ -20,11 +20,17 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BioFluidStorage extends BioSidedAccessBlockEntity
 {
@@ -83,9 +89,39 @@ public class BioFluidStorage extends BioSidedAccessBlockEntity
     public InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
     {
         Direction dir = ctx.getClickedFace();
-        if (!(dir == Direction.UP) && !(dir == Direction.DOWN))
-            return InteractionResult.PASS;
-        nextMode(dir);
-        return InteractionResult.SUCCESS_SERVER;
+        Player player = ctx.getPlayer();
+
+        if (player != null)
+        {
+            if (player.isCrouching())
+            {
+                Level level = ctx.getLevel();
+                if (level.isClientSide())
+                    return InteractionResult.SUCCESS;
+
+                List<Vec3> positions = stack.has(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
+                        ? stack.get(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
+                        : new ArrayList<>();
+                if (positions == null)
+                    positions = new ArrayList<>();
+                while (positions.size() <= 1)
+                    positions.add(Vec3.ZERO);
+
+                if (positions.getFirst() == Vec3.ZERO)
+                    positions.set(0, getBlockPos().getBottomCenter());
+                else
+                    positions.set(1, getBlockPos().getBottomCenter());
+                stack.set(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA, positions);
+                return InteractionResult.SUCCESS;
+            }
+            else
+            {
+                if (!(dir == Direction.UP) && !(dir == Direction.DOWN))
+                    return InteractionResult.PASS;
+                nextMode(dir);
+                return InteractionResult.SUCCESS;
+            }
+        }
+        return InteractionResult.PASS;
     }
 }

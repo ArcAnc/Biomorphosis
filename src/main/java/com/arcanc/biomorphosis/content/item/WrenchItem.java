@@ -10,15 +10,20 @@
 package com.arcanc.biomorphosis.content.item;
 
 import com.arcanc.biomorphosis.content.block.BlockInterfaces;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class WrenchItem extends BioBaseItem
@@ -38,14 +43,26 @@ public class WrenchItem extends BioBaseItem
                 map(tile -> tile.onUsed(stack, context)).
                 or(() -> BlockHelper.getTileEntity(level, pos).map(blockEntity ->
                         {
-                            //FIXME: добавить работу с жижами
-                            /*if (FluidHelper.isFluidHandler(blockEntity))
-                                if (!stack.has(NRegistration.NDataComponents.POSITION))
-                                {
-                                    stack.set(NRegistration.NDataComponents.POSITION, pos);
-                                    return InteractionResult.sidedSuccess(level.isClientSide());
-                                }
-                            */
+                            if (FluidHelper.isFluidHandler(blockEntity))
+                            {
+                                if (level.isClientSide())
+                                    return InteractionResult.SUCCESS;
+
+                                List<Vec3> positions = stack.has(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
+                                        ? stack.get(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
+                                        : new ArrayList<>();
+                                if (positions == null)
+                                    positions = new ArrayList<>();
+                                while (positions.size() <= 1)
+                                    positions.add(Vec3.ZERO);
+
+                                if (positions.getFirst() == Vec3.ZERO)
+                                    positions.set(0, pos.getBottomCenter());
+                                else
+                                    positions.set(1, pos.getBottomCenter());
+                                stack.set(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA, positions);
+                                return InteractionResult.SUCCESS;
+                            }
                             return super.onItemUseFirst(stack, context);
                         })
                 ).

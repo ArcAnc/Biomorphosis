@@ -7,7 +7,7 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.render.block_entity;
+package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;

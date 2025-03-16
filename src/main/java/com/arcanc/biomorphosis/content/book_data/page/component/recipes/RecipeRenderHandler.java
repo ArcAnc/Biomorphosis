@@ -106,9 +106,7 @@ public class RecipeRenderHandler
                 guiGraphics.renderItem(stack, (int)positions.get(q).x, (int)positions.get(q).y);
                 guiGraphics.pose().popPose();
                 if (mouseX >= (int)positions.get(q).x && mouseY >= (int)positions.get(q).y && mouseX <= (int)positions.get(q).x + 16 && mouseY <= positions.get(q).y + 16)
-                {
                     highlighted = stack;
-                }
             }
 
             guiGraphics.renderItem(result, (int)positions.get(9).x, (int)positions.get(9).y);

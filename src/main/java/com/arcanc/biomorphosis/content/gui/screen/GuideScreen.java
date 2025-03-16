@@ -20,7 +20,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class GuideScreen extends Screen
@@ -192,11 +191,11 @@ public class GuideScreen extends Screen
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, guiLeft + xSize / 2, guiTop, 20, 1, 146, 180, 256, 256);
+        guiGraphics.blit(RenderType :: guiTextured, TEXT, guiLeft + xSize / 2, guiTop - 8, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
 
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, -guiLeft - xSize / 2, - guiTop - ySize, 20, 1, 146, 180, 256, 256);
+        guiGraphics.blit(RenderType :: guiTextured, TEXT, -guiLeft - xSize / 2, - guiTop - ySize, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
         guiGraphics.pose().popPose();

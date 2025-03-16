@@ -19,6 +19,8 @@ import com.arcanc.biomorphosis.data.BioRecipeProvider;
 import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
+import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
+import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
 import com.arcanc.biomorphosis.util.Database;
@@ -29,7 +31,9 @@ import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
+import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
@@ -43,6 +47,7 @@ import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
@@ -59,7 +64,7 @@ public final class ClientEvents
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
-        NeoForge.EVENT_BUS.addListener(FluidLevelAnimator ::renderFrame);
+        NeoForge.EVENT_BUS.addListener(FluidLevelAnimator :: renderFrame);
     }
 
     private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
@@ -116,6 +121,12 @@ public final class ClientEvents
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider));
 
+        gen.addProvider(true, BioLootTableProvider.create(
+                List.of(
+                        new LootTableProvider.SubProviderEntry(BioBlockLoot::new, LootContextParamSets.BLOCK)),
+                packOutput,
+                lookupProvider));
+
         gen.addProvider(true, new DatapackBuiltinEntriesProvider(
                 packOutput,
                 lookupProvider,
@@ -129,5 +140,4 @@ public final class ClientEvents
                 BlockModelShaper.stateToModelLocation(Registration.BlockReg.FLUID_STORAGE.get().defaultBlockState()),
                 (location, bakedModel) -> new BioFluidStorageBakedModel(bakedModel));
     }
-
 }

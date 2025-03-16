@@ -39,7 +39,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
     public static final BooleanProperty LIT = BlockHelper.BlockProperties.LIT;
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockHelper.BlockProperties.HORIZONTAL_FACING;
 
-    public static final MapCodec<LureCampfireBlock> CODEC = simpleCodec(LureCampfireBlock::new);
+    public static final MapCodec<LureCampfireBlock> CODEC = simpleCodec(LureCampfireBlock :: new);
 
     public LureCampfireBlock(Properties blockProps)
     {

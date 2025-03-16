@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
 import org.jetbrains.annotations.NotNull;
 

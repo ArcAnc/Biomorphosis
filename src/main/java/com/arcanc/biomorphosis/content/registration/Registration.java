@@ -11,13 +11,17 @@ package com.arcanc.biomorphosis.content.registration;
 
 import com.arcanc.biomorphosis.content.block.BioBaseBlock;
 import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
+import com.arcanc.biomorphosis.content.block.BioFluidTransmitterBlock;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
+import com.arcanc.biomorphosis.content.block.block_entity.BioFluidTransmitter;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidStorageRenderer;
+import com.arcanc.biomorphosis.content.block.block_entity.ber.NorphSourceRenderer;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
-import com.arcanc.biomorphosis.content.block.norph.NorphSource;
+import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
+import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
@@ -25,7 +29,7 @@ import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
-import com.arcanc.biomorphosis.content.render.block_entity.LureCampfireRenderer;
+import com.arcanc.biomorphosis.content.block.block_entity.ber.LureCampfireRenderer;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
@@ -34,15 +38,18 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.shaders.FogShape;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -67,6 +74,7 @@ import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -90,6 +98,26 @@ import java.util.stream.Collectors;
 
 public final class Registration
 {
+    public static class DataComponentsReg
+    {
+        public static final DeferredRegister.DataComponents TYPES = DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Database.MOD_ID);
+
+        public static final DeferredHolder<DataComponentType<?>, DataComponentType<List<Vec3>>> FLUID_TRANSMIT_DATA = TYPES.registerComponentType(
+                Database.DataComponents.FLUID_TRANSMIT,
+                builder -> builder.
+                        persistent(Vec3.CODEC.
+                            sizeLimitedListOf(2)).
+                        networkSynchronized(ByteBufCodecs.
+                                <ByteBuf, Vec3>list(2).
+                                apply(Vec3.STREAM_CODEC)).
+                        cacheEncoding());
+
+        private static void init (@NotNull final IEventBus bus)
+        {
+            TYPES.register(bus);
+        }
+    }
+
     public static class BlockReg
     {
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Database.MOD_ID);
@@ -112,7 +140,7 @@ public final class Registration
                         ignitedByLava(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
-        public static final DeferredBlock<NorphSource> NORPH_SOURCE = register("norph_source", NorphSource :: new,
+        public static final DeferredBlock<NorphSourceBlock> NORPH_SOURCE = register("norph_source", NorphSourceBlock:: new,
                 properties -> properties.mapColor(MapColor.PODZOL).
                         instrument(NoteBlockInstrument.BIT).
                         strength(3,3).
@@ -150,6 +178,14 @@ public final class Registration
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
         public static final DeferredBlock<BioFluidStorageBlock> FLUID_STORAGE = register("fluid_storage", BioFluidStorageBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2,2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<BioFluidTransmitterBlock> FLUID_TRANSMITTER = register("fluid_transmitter", BioFluidTransmitterBlock :: new,
                 properties -> properties.mapColor(MapColor.PODZOL).
                         instrument(NoteBlockInstrument.BIT).
                         strength(2,2).
@@ -199,6 +235,17 @@ public final class Registration
                 makeType(BioFluidStorage :: new,
                          BioFluidStorageRenderer :: new,
                          BlockReg.FLUID_STORAGE));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidTransmitter>> BE_FLUID_TRANSMITTER = BLOCK_ENTITIES.register(
+                "fluid_transmitter",
+                makeType(BioFluidTransmitter :: new,
+                        BlockReg.FLUID_TRANSMITTER));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NorphSource>> BE_NORPH_SOURCE = BLOCK_ENTITIES.register(
+                "norph_source",
+                makeType(NorphSource :: new,
+                        NorphSourceRenderer :: new,
+                        BlockReg.NORPH_SOURCE));
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
@@ -297,7 +344,7 @@ public final class Registration
         public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Database.MOD_ID);
 
         public static final FluidEntry BIOMASS = FluidEntry.make("biomass",
-                new BioFluidType.ColorParams(new Vector4f(130, 33, 16, 255), new Vector4f(178, 78, 53, 255), 80, (minColor, maxColor, maxTime) ->
+                new BioFluidType.ColorParams(new Vector4f(112, 15, 37, 255), new Vector4f(97, 21, 10, 255), 80, (minColor, maxColor, maxTime) ->
                 {
                     Vector4f minimumColor = minColor.div(255f, new Vector4f());
                     Vector4f maximumColor = maxColor.div(255f, new Vector4f());
@@ -409,7 +456,7 @@ public final class Registration
                         sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL).
                         sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY).
                         descriptionId(Database.rl("fluid_type" + "." + name).toLanguageKey());
-                if(buildAttributes!=null)
+                if(buildAttributes != null)
                     buildAttributes.accept(builder);
                 DeferredHolder<FluidType, BioFluidType> type = FLUID_TYPES.register(
                         name, () -> makeTypeWithTextures(builder, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions)
@@ -606,6 +653,7 @@ public final class Registration
 
     public static void init(@NotNull final IEventBus bus)
     {
+        DataComponentsReg.init(bus);
         BookDataReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);

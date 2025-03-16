@@ -3,6 +3,7 @@
     "biomorphosis:norph",
     "biomorphosis:norph_overlay",
     "biomorphosis:norph_stairs",
-    "biomorphosis:fluid_storage"
+    "biomorphosis:fluid_storage",
+    "biomorphosis:fluid_transmitter"
   ]
 }

@@ -14,12 +14,9 @@ import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.food.FoodProperties;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -78,18 +75,6 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack,
-                                                   @NotNull BlockState state,
-                                                   @NotNull Level level,
-                                                   @NotNull BlockPos pos,
-                                                   @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult)
-    {
-        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-    }
-
-    @Override
     protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state,
                                                         @NotNull Level level,
                                                         @NotNull BlockPos pos,
@@ -107,10 +92,14 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
                     if(interaction != null && interaction.canUseGui(player))
                     {
                         serverPlayer.openMenu(interaction, byteBuf -> byteBuf.writeBlockPos(pos));
+                        return InteractionResult.SUCCESS_SERVER;
                     }
                 }
                 else
+                {
                     serverPlayer.openMenu(menuProvider);
+                    return InteractionResult.SUCCESS_SERVER;
+                }
             }
             return InteractionResult.SUCCESS;
         }

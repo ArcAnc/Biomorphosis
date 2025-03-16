@@ -29,17 +29,17 @@ import org.joml.Vector4f;
 
 public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStorage>
 {
-    private static final float MIN_X =  1.01F/16F;
-    private static final float MAX_X = 14.99F/16F;
+    private static final float MIN_X =  3.01F/16F;
+    private static final float MAX_X = 12.99F/16F;
     private static final float MIN_Y =  0.01F/16F;
     private static final float MAX_Y = 15.99F/16F;
-    private static final float MIN_Z =  1.01F/16F;
-    private static final float MAX_Z = 14.99F/16F;
+    private static final float MIN_Z =  3.01F/16F;
+    private static final float MAX_Z = 12.99F/16F;
 
-    private static final float MIN_UV_T =  1.01F;
-    private static final float MAX_UV_T = 14.99F;
-    private static final float MIN_U_S  =  1.01F;
-    private static final float MAX_U_S  = 14.99F;
+    private static final float MIN_UV_T =  3.01F;
+    private static final float MAX_UV_T = 12.99F;
+    private static final float MIN_U_S  =  3.01F;
+    private static final float MAX_U_S  = 12.99F;
     private static final float MIN_V_S  =  0.01F;
     private static final float MAX_V_S  = 15.99F;
 

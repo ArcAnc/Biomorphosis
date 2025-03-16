@@ -21,6 +21,11 @@ public class Database
     public static final String MOD_NAME = "Biomorphosis";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
 
+    public static final class DataComponents
+    {
+        public static final String FLUID_TRANSMIT = "fluid_transmit_data";
+    }
+
     public static final class JadeInfo
     {
         public static final class IDs

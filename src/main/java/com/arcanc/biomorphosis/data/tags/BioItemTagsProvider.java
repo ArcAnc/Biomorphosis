@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.data.tags;
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
@@ -33,5 +34,6 @@ public class BioItemTagsProvider extends ItemTagsProvider
         copy(BioBlockTags.NORPH, BioItemTags.NORPH);
         copy(BioBlockTags.NORPH_AVOID, BioItemTags.NORPH_AVOID);
         copy(BioBlockTags.NORPH_SOURCE, BioItemTags.NORPH_SOURCE);
+        tag(BioItemTags.WRENCH).add(Registration.ItemReg.WRENCH.get());
     }
 }

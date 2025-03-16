@@ -28,19 +28,20 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
         this.addItem(Registration.ItemReg.BOOK, "Guide");
         this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
+        this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
 
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_STAIRS, "Norph Stairs");
         this.addBlock(Registration.BlockReg.NORPH_SOURCE, "Norph Source");
+        this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Reservoir");
+        this.addBlock(Registration.BlockReg.FLUID_TRANSMITTER, "Fluid Transmitter");
 
         this.addItem(Registration.FluidReg.BIOMASS.bucket(), "Biomass Bucket");
         this.add(Registration.FluidReg.BIOMASS.still().getId().toLanguageKey(), "Biomass");
         this.add(Registration.FluidReg.BIOMASS.flowing().getId().toLanguageKey(), "Biomass");
         this.addBlock(Registration.FluidReg.BIOMASS.block(), "Biomass");
         this.add(Registration.FluidReg.BIOMASS.type().get().getDescriptionId(), "Biomass");
-
-        this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Storage");
 
         //-----------------------------
         // JADE

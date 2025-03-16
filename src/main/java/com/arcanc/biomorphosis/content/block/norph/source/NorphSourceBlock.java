@@ -7,12 +7,14 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.norph;
+package com.arcanc.biomorphosis.content.block.norph.source;
 
-import com.arcanc.biomorphosis.content.block.BioBaseBlock;
+import com.arcanc.biomorphosis.content.block.BioBaseEntityBlock;
+import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -22,23 +24,50 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class NorphSource extends BioBaseBlock
+import java.util.EnumMap;
+import java.util.Map;
+
+public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
 {
+    private static final VoxelShape SHAPE = Shapes.or(
+            Shapes.box(0.11875, -0.25, 0, 0.11875, 0.5625, 0.1875),
+            Shapes.box(0.25, 0.4378125, 0.3125, 0.6875, 0.8753125, 0.6875),
+            Shapes.box(0.125, -0.1246875, 0.375, 0.5625, 0.5003125, 0.625),
+            Shapes.box(0.375, -0.1246875, 0.4375, 0.8125, 0.1253125, 0.9375),
+            Shapes.box(0.375, -0.18339625, 0.15245875, 0.8125, 0.31660375, 0.40245875),
+            Shapes.box(0.477903125, -0.1246875, 0.281028125, 0.915403125, 0.6878125, 0.718528125),
+            Shapes.box(0.203125, 0.0003125, 0.53125, 0.390625, 0.6878125, 0.890625),
+            Shapes.box(0.109375, 0.0003125, 0.21875, 0.46875, 0.6878125, 0.40625),
+            Shapes.box(0.0625, 0.5, 0.0625, 0.1875, 0.625, 0.25),
+            Shapes.box(0.18125, -0.25, 0.8125, 0.18125, 0.5625, 1),
+            Shapes.box(0.125, 0.5, 0.75, 0.25, 0.625, 0.9375));
+
+    private static final Map<Direction, VoxelShape> BY_DIRECTION = new EnumMap<>(Direction.class);
+
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockHelper.BlockProperties.HORIZONTAL_FACING;
 
-    public static final MapCodec<NorphSource> CODEC = simpleCodec(NorphSource :: new);
+    public static final MapCodec<NorphSourceBlock> CODEC = simpleCodec(NorphSourceBlock :: new);
 
-    public NorphSource(Properties props)
+    public NorphSourceBlock(Properties props)
     {
-        super(props);
+        super(Registration.BETypeReg.BE_NORPH_SOURCE, props);
+
+        BY_DIRECTION.put(Direction.NORTH, SHAPE);
+        BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
+        BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
+        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
     }
 
     @Override
@@ -120,9 +149,15 @@ public class NorphSource extends BioBaseBlock
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState mirror(BlockState state, Mirror mirror)
+    public @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
+    }
+
+    @Override
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+    {
+        return BY_DIRECTION.get(state.getValue(HORIZONTAL_FACING));
     }
 
     @Override
@@ -132,7 +167,13 @@ public class NorphSource extends BioBaseBlock
     }
 
     @Override
-    protected @NotNull MapCodec<NorphSource> codec()
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    {
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    protected @NotNull MapCodec<NorphSourceBlock> codec()
     {
         return CODEC;
     }

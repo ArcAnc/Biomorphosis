@@ -16,6 +16,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
@@ -80,6 +81,16 @@ public class BlockHelper
             return castTileEntity(world, BlockPos.containing(pos.x(), pos.y(), pos.z()), to);
         }
         return Optional.empty();
+    }
+
+    public static @NotNull BlockState nextDirection(@NotNull BlockState state)
+    {
+        if (state.hasProperty(BlockProperties.FACING))
+        {
+            int dirIndex = state.getValue(BlockProperties.FACING).get3DDataValue();
+            return state.setValue(BlockProperties.FACING, Direction.from3DDataValue((dirIndex + 1) % Direction.values().length));
+        }
+        return state;
     }
 
     public static @NotNull ResourceLocation getRegistryName (Block block)

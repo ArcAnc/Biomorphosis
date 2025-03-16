@@ -1,0 +1,9 @@
+// 1.21.4	2025-03-04T03:08:03.6149656	Loot Tables
+35913fa2d5ad93c127ece70e3bb7640e3841aaee data/biomorphosis/loot_table/blocks/flesh.json
+fa6c7be72601286ea76cd3524a4397135d15c884 data/biomorphosis/loot_table/blocks/fluid_storage.json
+ed67fa00cbe9a32cf137458be11b9d202771fb6c data/biomorphosis/loot_table/blocks/fluid_transmitter.json
+6f2ee4d4d678c96c38c415d845d8f40c74866e70 data/biomorphosis/loot_table/blocks/lure_campfire.json
+490c1ef415b9f2dacaa49ba1fd8de0842596d2d7 data/biomorphosis/loot_table/blocks/norph.json
+b3b0f233a54515880b90b3d391504eb422f6f253 data/biomorphosis/loot_table/blocks/norph_overlay.json
+753a70eba63f69653f0141043fae78423855a541 data/biomorphosis/loot_table/blocks/norph_source.json
+e77eeec0c661ea75f11e19b7d588ec1328bc01e3 data/biomorphosis/loot_table/blocks/norph_stairs.json

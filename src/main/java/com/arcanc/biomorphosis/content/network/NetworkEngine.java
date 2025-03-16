@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.network;
 
 import com.arcanc.biomorphosis.content.network.packets.C2SRecipeRequest;
 import com.arcanc.biomorphosis.content.network.packets.IPacket;
+import com.arcanc.biomorphosis.content.network.packets.S2CFluidTransportPacket;
 import com.arcanc.biomorphosis.content.network.packets.S2CRecipeResponse;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.network.RegistryFriendlyByteBuf;
@@ -37,6 +38,7 @@ public class NetworkEngine
         registerMessage(registrar, C2SRecipeRequest.STREAM_CODEC, C2SRecipeRequest.TYPE, PacketFlow.SERVERBOUND);
 
         registerMessage(registrar, S2CRecipeResponse.STREAM_CODEC, S2CRecipeResponse.TYPE, PacketFlow.CLIENTBOUND);
+        registerMessage(registrar, S2CFluidTransportPacket.STREAM_CODEC, S2CFluidTransportPacket.TYPE, PacketFlow.CLIENTBOUND);
     }
 
     private <T extends IPacket> void registerMessage(
