@@ -89,7 +89,7 @@ public class TooltipBorderHandler
 
         poseStack.translate(0, 0, 410.0);
 
-        AnimationData animationData = AnimationData.construct(texHeight, patternHeight, 4);
+        AnimationData animationData = AnimationData.construct(texHeight, patternHeight, 2);
         if (data.isInterpolated())
             renderInterpolatedDecorations(
                     animationData,
@@ -152,7 +152,7 @@ public class TooltipBorderHandler
 
         int offset = patternHeight * currentFrame;
 
-        float progress = (player.tickCount % 4) / 4f;
+        float progress = (player.tickCount % 2) / 2f;
 
         int baseColor = ARGB.colorFromFloat(1f, 1f, 1f, 1f);
         int intColor = ARGB.colorFromFloat(progress, 1f, 1f, 1f);

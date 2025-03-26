@@ -10,33 +10,93 @@
 package com.arcanc.biomorphosis.content.block.block_entity;
 
 import com.arcanc.biomorphosis.content.block.BlockInterfaces;
+import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.mojang.datafixers.util.Pair;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.Tag;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInterfaces.IWrencheable
+public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInterfaces.IWrencheable, ServerTickableBE
 {
+
+    private final static int PERIOD = 20;
+
+    private final List<PathData> pathData = new ArrayList<>();
+
+    private int sendAmount = 100;
+
     public BioFluidTransmitter(BlockPos pos, BlockState blockState)
     {
         super(Registration.BETypeReg.BE_FLUID_TRANSMITTER.get(), pos, blockState);
     }
+
+    @Override
+    public void tickServer()
+    {
+        if (this.level == null || this.pathData.isEmpty())
+            return;
+        List<PathData> toRemove = new ArrayList<>();
+        for (PathData data : this.pathData)
+        {
+            if (!FluidHelper.isFluidHandler(this.level, data.start()) || !FluidHelper.isFluidHandler(this.level, data.finish()))
+            {
+                toRemove.add(data);
+                continue;
+            }
+            if (this.level.getGameTime() % PERIOD != 0)
+                continue;
+            FluidHelper.getFluidHandler(this.level, data.start()).ifPresent(handler ->
+                    {
+                        if (FluidHelper.isEmpty(handler))
+                            return;
+                        FluidHelper.getFluidHandler(this.level, data.finish()).ifPresent(finishHandler ->
+                        {
+                            if (FluidHelper.isFull(finishHandler))
+                                return;
+                            FluidTransportHandler.addTransport(this.level, new FluidTransportHandler.FluidTransport(
+                                    data.start().getBottomCenter(),
+                                    getBlockPos().getBottomCenter(),
+                                    data.finish().getBottomCenter(),
+                                    handler.drain(sendAmount, IFluidHandler.FluidAction.EXECUTE),
+                                    data.edgePath()));
+                        });
+                    });
+        }
+
+        if (toRemove.isEmpty())
+            return;
+        this.pathData.removeAll(toRemove);
+        this.markDirty();
+    }
+
 
     @Override
     protected void firstTick()
@@ -44,14 +104,30 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
 
     }
 
-    @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket) {
-
+    public List<PathData> getPathData()
+    {
+        return pathData;
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket) {
+    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    {
+        pathData.clear();
+        ListTag list = tag.getList("path_data", Tag.TAG_COMPOUND);
+        for (Tag value : list)
+        {
+            PathData data = PathData.CODEC.parse(NbtOps.INSTANCE, value).result().orElseThrow();
+            pathData.add(data);
+        }
+    }
 
+    @Override
+    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    {
+        ListTag list = new ListTag();
+        for (PathData data : this.pathData)
+            PathData.CODEC.encodeStart(NbtOps.INSTANCE, data).ifSuccess(list :: add);
+        tag.put("path_data", list);
     }
 
     @Override
@@ -70,14 +146,13 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             Vec3 end = positions.get(1);
             if (start.equals(Vec3.ZERO) || end.equals(Vec3.ZERO))
                 return InteractionResult.TRY_WITH_EMPTY_HAND;
-
-            Database.LOGGER.warn("Coords: Start: {}, Transmitter:{}, Finish:{}", start, getBlockPos(), end);
             List<BlockPos> path = PathFinder.findPath(BlockPos.containing(start), getBlockPos(), BlockPos.containing(end), level);
             List<Vec3> edgePath = EdgePathFinder.findEdgePath(path, level);
-            Database.LOGGER.warn("Path: {}", edgePath);
             stack.remove(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA);
+            this.pathData.add(new PathData(BlockPos.containing(start), BlockPos.containing(end), path, edgePath));
+            this.markDirty();
 
-            FluidTransportHandler.addTransport(level, new FluidTransportHandler.FluidTransport(start, getBlockPos().getBottomCenter(), end, new FluidStack(Fluids.WATER, 100), edgePath));
+            //FluidTransportHandler.addTransport(level, new FluidTransportHandler.FluidTransport(start, getBlockPos().getBottomCenter(), end, new FluidStack(Fluids.WATER, 100), edgePath));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.TRY_WITH_EMPTY_HAND;
@@ -254,7 +329,8 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                     List<Vec3> connected = getConnectedEdges(current, start, level);
                     if (connected.isEmpty())
                         return null;
-                    connected.sort(Comparator.comparingDouble(vec3 -> heuristic(vec3, nextEdges)));
+                    Vec3 finalBestNext = bestNext;
+                    connected.sort(Comparator.comparingDouble(vec3 -> vec3.distanceToSqr(finalBestNext)));
                     Vec3 closest = connected.getFirst();
                     path.add(closest);
                     current = closest;
@@ -416,6 +492,45 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             for (Vec3 goal : goalEdges)
                 minDist = Math.min(minDist, a.distanceToSqr(goal));
             return minDist;
+        }
+    }
+
+    public record PathData(BlockPos start, BlockPos finish, List<BlockPos> blockPath, List<Vec3> edgePath)
+    {
+        public static final Codec<PathData> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+                BlockPos.CODEC.fieldOf("start").forGetter(PathData :: start),
+                BlockPos.CODEC.fieldOf("finish").forGetter(PathData :: finish),
+                BlockPos.CODEC.listOf().fieldOf("blockPath").forGetter(PathData :: blockPath),
+                Vec3.CODEC.listOf().fieldOf("edgePath").forGetter(PathData :: edgePath)).
+                apply(instance, PathData :: new));
+
+        public static final StreamCodec<FriendlyByteBuf, PathData> STREAM_CODEC = StreamCodec.composite(
+                BlockPos.STREAM_CODEC,
+                PathData :: start,
+                BlockPos.STREAM_CODEC,
+                PathData :: finish,
+                ByteBufCodecs.<ByteBuf, BlockPos>list().
+                        apply(BlockPos.STREAM_CODEC),
+                PathData :: blockPath,
+                ByteBufCodecs.<ByteBuf, Vec3>list().
+                        apply(Vec3.STREAM_CODEC),
+                PathData :: edgePath,
+                PathData :: new);
+
+        @Override
+        public boolean equals(Object object)
+        {
+            if (this == object)
+                return true;
+            if (!(object instanceof PathData pathData))
+                return false;
+            return start.equals(pathData.start) && finish.equals(pathData.finish);
+        }
+
+        @Override
+        public int hashCode()
+        {
+            return Objects.hash(start, finish);
         }
     }
 }

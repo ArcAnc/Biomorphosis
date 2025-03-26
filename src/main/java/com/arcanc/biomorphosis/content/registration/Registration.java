@@ -17,6 +17,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidTransmitter;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidStorageRenderer;
+import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidTransmitterRenderer;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.NorphSourceRenderer;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -239,6 +240,7 @@ public final class Registration
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidTransmitter>> BE_FLUID_TRANSMITTER = BLOCK_ENTITIES.register(
                 "fluid_transmitter",
                 makeType(BioFluidTransmitter :: new,
+                        BioFluidTransmitterRenderer :: new,
                         BlockReg.FLUID_TRANSMITTER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NorphSource>> BE_NORPH_SOURCE = BLOCK_ENTITIES.register(

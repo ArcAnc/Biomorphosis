@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
+import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -283,6 +284,19 @@ public class FluidHelper
             if (!handler.getFluidInTank(q).isEmpty())
                 return false;
         }
+        return true;
+    }
+
+    public static boolean isFull(@NotNull Optional<IFluidHandler> input)
+    {
+        return input.map(FluidHelper :: isFull).orElse(false);
+    }
+
+    public static boolean isFull(@NotNull IFluidHandler handler)
+    {
+        for (int q = 0; q < handler.getTanks(); q++)
+            if (handler.getFluidInTank(q).getAmount() < handler.getTankCapacity(q))
+                return false;
         return true;
     }
 

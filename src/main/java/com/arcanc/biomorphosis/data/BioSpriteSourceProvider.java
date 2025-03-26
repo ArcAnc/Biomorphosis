@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BioSpriteSourceProvider extends SpriteSourceProvider
 {
-    private static final ResourceLocation GUI_ATLAS = ResourceLocation.withDefaultNamespace("gui");
+    public static final ResourceLocation GUI_ATLAS = ResourceLocation.withDefaultNamespace("gui");
 
     public BioSpriteSourceProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
@@ -33,7 +33,7 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
     protected void gather()
     {
         //-------------------------------------------------------------------------------
-        //TOOLTIPS
+        // TOOLTIPS
         //-------------------------------------------------------------------------------
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/tooltip/special_background"), Optional.of(Database.rl("tooltip/special_background"))));
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/tooltip/special_frame"), Optional.of(Database.rl("tooltip/special_frame"))));

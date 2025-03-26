@@ -58,7 +58,7 @@ public class NormalBookChapter extends AbstractBookChapter
                 this.getHeight(),
                 256,
                 256,
-                ARGB.color(isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f)));
+                ARGB.color(isActive() ? 255 : (int)(255 * 0.55f), isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f)));
 
         if (icon != null)
             icon.render(guiGraphics, this.getX() + 1, this.getY() + 1, 18, 18);
