@@ -4,6 +4,7 @@
     "biomorphosis:norph_overlay",
     "biomorphosis:norph_stairs",
     "biomorphosis:fluid_storage",
-    "biomorphosis:fluid_transmitter"
+    "biomorphosis:fluid_transmitter",
+    "biomorphosis:crusher"
   ]
 }

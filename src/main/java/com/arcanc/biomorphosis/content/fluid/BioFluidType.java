@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.fluid;
 
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogParameters;
@@ -17,6 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.apache.commons.lang3.function.TriFunction;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
@@ -155,6 +157,11 @@ public class BioFluidType extends FluidType
 
     public record ColorParams(Vector4f minColor, Vector4f maxColor, int maxTime, TriFunction<Vector4f, Vector4f, Integer, Integer> colorGetter)
     {
+        public static @NotNull ColorParams constantColor(Vector4f color)
+        {
+            return new ColorParams(color, color, 0, (minColor, maxColor, maxTime) -> MathHelper.ColorHelper.color(minColor.div(255f, new Vector4f())));
+        }
+
         public int getColor()
         {
             return colorGetter().apply(minColor(), maxColor(), maxTime());

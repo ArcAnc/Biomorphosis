@@ -9,28 +9,29 @@
 
 package com.arcanc.biomorphosis.content.registration;
 
-import com.arcanc.biomorphosis.content.block.BioBaseBlock;
-import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
-import com.arcanc.biomorphosis.content.block.BioFluidTransmitterBlock;
-import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
+import com.arcanc.biomorphosis.content.block.*;
+import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidTransmitter;
 import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
-import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidStorageRenderer;
-import com.arcanc.biomorphosis.content.block.block_entity.ber.BioFluidTransmitterRenderer;
-import com.arcanc.biomorphosis.content.block.block_entity.ber.NorphSourceRenderer;
+import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
+import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
-import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
-import com.arcanc.biomorphosis.content.block.block_entity.ber.LureCampfireRenderer;
+import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.display.CrusherRecipeDisplay;
+import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
+import com.arcanc.biomorphosis.data.recipe.slot_display.ItemStackWithChanceDisplay;
+import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
@@ -39,6 +40,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.shaders.FogShape;
+import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -49,8 +51,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -60,7 +64,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
+import net.minecraft.world.item.crafting.display.RecipeDisplay;
+import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -78,6 +84,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -194,6 +201,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<BioCrusherBlock> CRUSHER = register("crusher", BioCrusherBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -248,6 +263,12 @@ public final class Registration
                 makeType(NorphSource :: new,
                         NorphSourceRenderer :: new,
                         BlockReg.NORPH_SOURCE));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioCrusher>> BE_CRUSHER = BLOCK_ENTITIES.register(
+                "crusher",
+                makeType(BioCrusher :: new,
+                        BioCrusherRenderer :: new,
+                        BlockReg.CRUSHER));
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
@@ -371,7 +392,9 @@ public final class Registration
                         Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
                         return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
                     },
-                props -> props.slopeFindDistance(2).levelDecreasePerBlock(2).explosionResistance(100),
+                props -> props.slopeFindDistance(2).
+                        levelDecreasePerBlock(2).
+                        explosionResistance(100),
                 typeProps -> typeProps.
                         lightLevel(0).
                         density(3000).
@@ -380,6 +403,50 @@ public final class Registration
                         canSwim(true).
                         canExtinguish(true).
                         canHydrate(true).
+                        fallDistanceModifier(0f));
+
+        public static final FluidEntry LYMPH = FluidEntry.make("lymph",
+                BioFluidType.ColorParams.constantColor(new Vector4f(230, 255, 200, 255)),
+                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
+                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                {
+                    Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                    return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+                },
+                props -> props.slopeFindDistance(3).
+                        levelDecreasePerBlock(1).
+                        explosionResistance(100),
+                typeProps -> typeProps.
+                        lightLevel(0).
+                        density(1500).
+                        viscosity(1500).
+                        rarity(RarityExtension.BIO_COMMON.getValue()).
+                        canHydrate(true).
+                        canExtinguish(true).
+                        canHydrate(false).
+                        fallDistanceModifier(0f));
+
+        public static final FluidEntry ADRENALINE = FluidEntry.make("adrenaline",
+                BioFluidType.ColorParams.constantColor(new Vector4f(173, 216, 230, 255)),
+                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
+                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                {
+                    Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                    return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+                },
+                props -> props.slopeFindDistance(4).
+                        levelDecreasePerBlock(1).
+                        explosionResistance(100),
+                typeProps -> typeProps.
+                        lightLevel(0).
+                        density(1000).
+                        viscosity(1000).
+                        rarity(RarityExtension.BIO_RARE.getValue()).
+                        canHydrate(true).
+                        canExtinguish(true).
+                        canHydrate(false).
                         fallDistanceModifier(0f));
 
         public record FluidEntry(DeferredHolder<Fluid, BioBaseFluid> still,
@@ -608,6 +675,100 @@ public final class Registration
         }
     }
 
+    public static class RecipeReg
+    {
+        public static final DeferredRegister<RecipeBookCategory> CATEGORIES = DeferredRegister.create(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Database.MOD_ID);
+        public static final DeferredRegister<RecipeDisplay.Type<?>> RECIPE_DISPLAY_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_DISPLAY, Database.MOD_ID);
+        public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Database.MOD_ID);
+        public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Database.MOD_ID);
+
+        public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput, CrusherRecipeDisplay> CRUSHER_RECIPE = new RecipeEntry<>("crusher", RecipeBookCategory :: new, CrusherRecipeDisplay.CODEC, CrusherRecipeDisplay.STREAM_CODEC, CrusherRecipe.CrusherRecipeSerializer :: new);
+
+
+        public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
+        {
+            private final DeferredHolder<RecipeBookCategory, RecipeBookCategory> category;
+            private final DeferredHolder<RecipeDisplay.Type<?>, RecipeDisplay.Type<D>> display;
+            private final DeferredHolder<RecipeType<?>, RecipeType<R>> recipeType;
+            private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<R>> serializer;
+
+            public RecipeEntry(String name, Supplier<RecipeBookCategory> categorySupplier, MapCodec<D> displayCodec, StreamCodec<RegistryFriendlyByteBuf, D> displayStreamCodec, Supplier<RecipeSerializer<R>> serializer)
+            {
+                this.category = CATEGORIES.register(name, categorySupplier);
+                this.display = RECIPE_DISPLAY_TYPES.register(name, () -> new RecipeDisplay.Type<>(displayCodec, displayStreamCodec));
+                this.recipeType = RECIPE_TYPES.register(name, () -> new RecipeType<>()
+                {
+                    @Override
+                    public String toString()
+                    {
+                        return Database.rl(name).toString();
+                    }
+                });
+                this.serializer = RECIPE_SERIALIZERS.register(name, serializer);
+            }
+
+            public DeferredHolder<RecipeBookCategory, RecipeBookCategory> getCategory()
+            {
+                return category;
+            }
+
+            public DeferredHolder<RecipeDisplay.Type<?>, RecipeDisplay.Type<D>> getDisplay()
+            {
+                return display;
+            }
+
+            public DeferredHolder<RecipeType<?>, RecipeType<R>> getRecipeType()
+            {
+                return recipeType;
+            }
+
+            public DeferredHolder<RecipeSerializer<?>, RecipeSerializer<R>> getSerializer()
+            {
+                return serializer;
+            }
+        }
+
+        private static void init(IEventBus bus)
+        {
+            CATEGORIES.register(bus);
+            RECIPE_DISPLAY_TYPES.register(bus);
+            RECIPE_TYPES.register(bus);
+            RECIPE_SERIALIZERS.register(bus);
+        }
+    }
+
+    public static class IngredientReg
+    {
+        public static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, Database.MOD_ID);
+
+        public static final DeferredHolder<IngredientType<?>, IngredientType<IngredientWithSize>> SIZED_INGREDIENT = INGREDIENT_TYPES.register(
+                "sized_ingredient",
+                () -> new IngredientType<>(IngredientWithSize.CODEC, IngredientWithSize.STREAM_CODEC));
+
+        private static void init (IEventBus bus)
+        {
+            INGREDIENT_TYPES.register(bus);
+        }
+    }
+
+    public static class SlotDisplayReg
+    {
+        public static final DeferredRegister<SlotDisplay.Type<?>> SLOT_DISPLAY_TYPES = DeferredRegister.create(Registries.SLOT_DISPLAY, Database.MOD_ID);
+
+        public static final DeferredHolder<SlotDisplay.Type<?>, SlotDisplay.Type<ItemStackWithChanceDisplay>> ITEM_STACK_WITH_CHANCE = SLOT_DISPLAY_TYPES.register(
+                "stack_with_chance",
+                () -> new SlotDisplay.Type<>(ItemStackWithChanceDisplay.CODEC, ItemStackWithChanceDisplay.STREAM_CODEC));
+
+        public static final DeferredHolder<SlotDisplay.Type<?>, SlotDisplay.Type<ResourcesDisplay>> RESOURCES = SLOT_DISPLAY_TYPES.register(
+                "resources",
+                () -> new SlotDisplay.Type<>(ResourcesDisplay.CODEC, ResourcesDisplay.STREAM_CODEC));
+
+        private static void init(IEventBus bus)
+        {
+            SLOT_DISPLAY_TYPES.register(bus);
+        }
+    }
+
     public static class CreativeTabReg
     {
         public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Database.MOD_ID);
@@ -656,7 +817,10 @@ public final class Registration
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
+        SlotDisplayReg.init(bus);
+        IngredientReg.init(bus);
         BookDataReg.init(bus);
+        RecipeReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
         FluidReg.init(bus);

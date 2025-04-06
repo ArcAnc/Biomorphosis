@@ -31,8 +31,8 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
 {
     private static final float MIN_X =  3.01F/16F;
     private static final float MAX_X = 12.99F/16F;
-    private static final float MIN_Y =  0.01F/16F;
-    private static final float MAX_Y = 15.99F/16F;
+    private static final float MIN_Y =  2.01F/16F;
+    private static final float MAX_Y = 14.99F/16F;
     private static final float MIN_Z =  3.01F/16F;
     private static final float MAX_Z = 12.99F/16F;
 

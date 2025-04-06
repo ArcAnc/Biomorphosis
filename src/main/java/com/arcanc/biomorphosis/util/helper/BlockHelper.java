@@ -93,6 +93,16 @@ public class BlockHelper
         return state;
     }
 
+    public static @NotNull BlockState nextHorizontalDirection(@NotNull BlockState state)
+    {
+        if (state.hasProperty(BlockProperties.HORIZONTAL_FACING))
+        {
+            int dirIndex = state.getValue(BlockProperties.HORIZONTAL_FACING).get2DDataValue();
+            return state.setValue(BlockProperties.HORIZONTAL_FACING, Direction.from2DDataValue((dirIndex + 1) % 4));
+        }
+        return state;
+    }
+
     public static @NotNull ResourceLocation getRegistryName (Block block)
     {
         return BuiltInRegistries.BLOCK.getKey(block);

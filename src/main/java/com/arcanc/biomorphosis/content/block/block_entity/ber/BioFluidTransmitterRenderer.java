@@ -68,7 +68,7 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
             Vec3 p0 = points.get(point);
             Vec3 p1 = points.get(point + 1);
 
-            Vec3 direction = p1.subtract(p0).normalize();
+            Vec3 direction = p0.subtract(p1).normalize();
             Vec3 tangent = new Vec3(0, 1, 0);
             if (Math.abs(direction.y) > 0.99)
                 tangent = new Vec3(1, 0, 0);
@@ -105,8 +105,8 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
     private void addQuad(@NotNull VertexConsumer vertexConsumer, @NotNull PoseStack matrix, int segment, @NotNull Vector3f v0, @NotNull Vector3f v1, @NotNull Vector3f v2, @NotNull Vector3f v3, Vector3f normalCur, Vector3f normalNext, int packedLight, int packedOverlay)
     {
         vertexConsumer.addVertex(matrix.last().pose(), v0.x(), v0.y(), v0.z()).setColor(33, 12, 12, 175).setUv(0, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur);
-        vertexConsumer.addVertex(matrix.last().pose(), v1.x(), v1.y(), v1.z()).setColor(33, 12, 12,175).setUv(0, (segment + 1) * (1 / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
-        vertexConsumer.addVertex(matrix.last().pose(), v2.x(), v2.y(), v2.z()).setColor(33, 12, 12, 175).setUv(1, (segment + 1)  * (1 / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
+        vertexConsumer.addVertex(matrix.last().pose(), v1.x(), v1.y(), v1.z()).setColor(33, 12, 12,175).setUv(0, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
+        vertexConsumer.addVertex(matrix.last().pose(), v2.x(), v2.y(), v2.z()).setColor(33, 12, 12, 175).setUv(1, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
         vertexConsumer.addVertex(matrix.last().pose(), v3.x(), v3.y(), v3.z()).setColor(33, 12, 12, 175).setUv(1, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur);
     }
 

@@ -13,8 +13,6 @@ import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -29,7 +27,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -37,7 +34,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -47,7 +43,7 @@ import java.util.*;
 public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInterfaces.IWrencheable, ServerTickableBE
 {
 
-    private final static int PERIOD = 20;
+    private final static int PERIOD = 40;
 
     private final List<PathData> pathData = new ArrayList<>();
 
@@ -148,17 +144,16 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                 return InteractionResult.TRY_WITH_EMPTY_HAND;
             List<BlockPos> path = PathFinder.findPath(BlockPos.containing(start), getBlockPos(), BlockPos.containing(end), level);
             List<Vec3> edgePath = EdgePathFinder.findEdgePath(path, level);
+            List<Vec3> interpolatedPath = PathInterpolator.interpolatePath(edgePath);
             stack.remove(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA);
-            this.pathData.add(new PathData(BlockPos.containing(start), BlockPos.containing(end), path, edgePath));
+            this.pathData.add(new PathData(BlockPos.containing(start), BlockPos.containing(end), path, interpolatedPath));
             this.markDirty();
-
-            //FluidTransportHandler.addTransport(level, new FluidTransportHandler.FluidTransport(start, getBlockPos().getBottomCenter(), end, new FluidStack(Fluids.WATER, 100), edgePath));
             return InteractionResult.SUCCESS;
         }
         return InteractionResult.TRY_WITH_EMPTY_HAND;
     }
 
-    public static class PathFinder
+    private static class PathFinder
     {
         public static @NotNull List<BlockPos> findPath(BlockPos start, BlockPos middle, BlockPos end, Level level)
         {
@@ -270,7 +265,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
         }
     }
 
-    public static class EdgePathFinder
+    private static class EdgePathFinder
     {
 
         public static @NotNull List<Vec3> findEdgePath(@NotNull List<BlockPos> blockPath, Level level)
@@ -495,6 +490,29 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
         }
     }
 
+    private static class PathInterpolator
+    {
+        private static final int MAX_STEPS_AMOUNT = 5;
+
+        public static @NotNull List<Vec3> interpolatePath(@NotNull List<Vec3> edgePath)
+        {
+            List<Vec3> resultedPath = new ArrayList<>();
+            resultedPath.add(edgePath.getFirst());
+            for (int q = 0; q < edgePath.size() - 1; q++)
+            {
+                Vec3 start = edgePath.get(q);
+                Vec3 finish = edgePath.get(q + 1);
+
+                Vec3 sf = start.subtract(finish);
+                double length = sf.length();
+                int partsAmount = Math.max(1, (int)Math.round(length * MAX_STEPS_AMOUNT));
+                for (int step = 0; step < partsAmount; step++)
+                    resultedPath.add(start.lerp(finish, (float)step/partsAmount));
+            }
+            resultedPath.add(edgePath.getLast());
+            return resultedPath;
+        }
+    }
     public record PathData(BlockPos start, BlockPos finish, List<BlockPos> blockPath, List<Vec3> edgePath)
     {
         public static final Codec<PathData> CODEC = RecordCodecBuilder.create(instance -> instance.group(

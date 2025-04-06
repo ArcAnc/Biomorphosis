@@ -153,7 +153,7 @@ public class Database
     {
         public static final class Fluids
         {
-            public static final String HANDLER = "handler";
+            public static final String HANDLER = "fluid_handler";
             public static final String TANK = "tank";
             public static final String TANKS = "tanks";
             public static final String MODE = "mode";
@@ -163,7 +163,21 @@ public class Database
             {
                 public static final String FLUID = "fluid";
                 public static final String CAPACITY = "capacity";
-                public static final String TYPE = "type";
+            }
+        }
+
+        public static final class Items
+        {
+            public static final String HANDLER = "item_handler";
+            public static final String HOLDER = "holder";
+            public static final String HOLDERS = "holders";
+            public static final String MODE = "mode";
+            public static final String MODES = "modes";
+            public static final String INTS = "ints";
+            public static final class Holder
+            {
+                public static final String ITEM = "item";
+                public static final String CAPACITY = "capacity";
             }
         }
     }

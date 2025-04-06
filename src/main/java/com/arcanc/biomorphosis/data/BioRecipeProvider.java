@@ -10,15 +10,23 @@
 package com.arcanc.biomorphosis.data;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
+import com.arcanc.biomorphosis.data.recipe.builders.CrusherRecipeBuilder;
+import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 public class BioRecipeProvider extends RecipeProvider
@@ -38,6 +46,17 @@ public class BioRecipeProvider extends RecipeProvider
                 requires(Registration.ItemReg.QUEENS_BRAIN).
                 requires(Items.WRITABLE_BOOK).
                 save(this.output);
+
+        CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
+                new BioBaseRecipe.BiomassInfo(10),
+                Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 2.0f)),
+                Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
+                200)).
+                setInput(new IngredientWithSize(Ingredient.of(Blocks.COBBLESTONE))).
+                setResult(new ItemStack(Blocks.GRAVEL)).
+                addSecondaryOutput(new StackWithChance(new ItemStack(Blocks.SAND), 0.15f)).
+        unlockedBy(getHasName(Blocks.COBBLESTONE), has(Blocks.COBBLESTONE)).
+        save(this.output, Database.rl("gravel_from_cobblestone").toString());
     }
 
     public static class Runner extends RecipeProvider.Runner

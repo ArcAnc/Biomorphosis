@@ -1,0 +1,36 @@
+{
+  "type": "biomorphosis:crusher",
+  "input": {
+    "amount": 1,
+    "ingredient": "minecraft:cobblestone"
+  },
+  "resources": {
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 1,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 10
+    },
+    "lymph": {
+      "modifier": 2.0,
+      "per_second": 1,
+      "required": false
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:gravel"
+  },
+  "secondary_results": [
+    {
+      "chance": 0.15,
+      "item": {
+        "count": 1,
+        "id": "minecraft:sand"
+      }
+    }
+  ]
+}

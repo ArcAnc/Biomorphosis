@@ -237,14 +237,14 @@ public abstract class FluidTransportHandler
         CLIENT_INSTANCE.getTransport(RenderHelper.mc().level).
                 forEach(trn ->
                 {
-                    trn.lerpPos(event.getPartialTick().getRealtimeDeltaTicks());
+                    trn.lerpPos(event.getPartialTick().getRealtimeDeltaTicks() / 5);
                     renderTransport(event, trn);
                 });
     }
 
-    private static final int SLICES = 8;
-    private static final int STACKS = 8;
-    private static final float RADIUS = 0.1f;
+    private static final int latSegments = 8;
+    private static final int lonSegments = 8;
+    private static final float RADIUS = 0.08f;
 
     private static void renderTransport(@NotNull RenderLevelStageEvent event, @NotNull FluidTransport trn)
     {
@@ -261,33 +261,29 @@ public abstract class FluidTransportHandler
         RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
         Tesselator tesselator = Tesselator.getInstance();
-        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_TEX_COLOR);
+        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        for (int q = 0; q <= STACKS; q++)
+        for (int lat = 0; lat < latSegments; lat++)
         {
-            float phi1 = (float) (Math.PI * q / STACKS);
-            float phi2 = (float) (Math.PI * (q + 1) / STACKS);
+            float theta1 = (float) (Math.PI * lat / latSegments);
+            float theta2 = (float) (Math.PI * (lat + 1) / latSegments);
 
-            float v0 = still.getV0();
-            float v1 = still.getV1();
-
-            float vCoord1 = still.getV0() + (v1 - v0) * (q / (float) STACKS);
-            float vCoord2 = v0 + (v1 - v0) * ((q + 1) / (float) STACKS);
-
-            for (int j = 0; j <= SLICES; j++)
+            for (int lon = 0; lon < lonSegments; lon++)
             {
-                float theta = (float) (2 * Math.PI * j / SLICES);
+                float phi1 = (float) (2 * Math.PI * lon / lonSegments);
+                float phi2 = (float) (2 * Math.PI * (lon + 1) / lonSegments);
 
-                float x1 = (float) trn.prevPos.x() + (float) (RADIUS * Math.sin(phi1) * Math.cos(theta));
-                float y1 = (float) trn.prevPos.y() + (float) (RADIUS * Math.cos(phi1));
-                float z1 = (float) trn.prevPos.z() + (float) (RADIUS * Math.sin(phi1) * Math.sin(theta));
+                Vec3 trnPos = trn.prevPos;
 
-                float x2 = (float) trn.prevPos.x() + (float) (RADIUS * Math.sin(phi2) * Math.cos(theta));
-                float y2 = (float) trn.prevPos.y() + (float) (RADIUS * Math.cos(phi2));
-                float z2 = (float) trn.prevPos.z() + (float) (RADIUS * Math.sin(phi2) * Math.sin(theta));
+                float[] v1 = sphereVertex(trnPos.x(), trnPos.y(), trnPos.z(), RADIUS, theta1, phi1);
+                float[] v2 = sphereVertex(trnPos.x(), trnPos.y(), trnPos.z(), RADIUS, theta1, phi2);
+                float[] v3 = sphereVertex(trnPos.x(), trnPos.y(), trnPos.z(), RADIUS, theta2, phi2);
+                float[] v4 = sphereVertex(trnPos.x(), trnPos.y(), trnPos.z(), RADIUS, theta2, phi1);
 
-                builder.addVertex(poseStack.last().pose(), x1, y1, z1).setUv(still.getU0(), vCoord1).setColor(renderProps.getTintColor());
-                builder.addVertex(poseStack.last().pose(), x2, y2, z2).setUv(still.getU0(), vCoord2).setColor(renderProps.getTintColor());
+                builder.addVertex(poseStack.last().pose(), v1[0], v1[1], v1[2]).setUv(still.getU0(), still.getV0()).setColor(renderProps.getTintColor());
+                builder.addVertex(poseStack.last().pose(), v2[0], v2[1], v2[2]).setUv(still.getU1(), still.getV0()).setColor(renderProps.getTintColor());
+                builder.addVertex(poseStack.last().pose(), v3[0], v3[1], v3[2]).setUv(still.getU1(), still.getV1()).setColor(renderProps.getTintColor());
+                builder.addVertex(poseStack.last().pose(), v4[0], v4[1], v4[2]).setUv(still.getU0(), still.getV1()).setColor(renderProps.getTintColor());
             }
         }
         RenderSystem.enableDepthTest();
@@ -296,6 +292,14 @@ public abstract class FluidTransportHandler
             BufferUploader.drawWithShader(data);
         RenderSystem.disableDepthTest();
         poseStack.popPose();
+    }
+
+    private static float @NotNull [] sphereVertex(double cx, double cy, double cz, float r, float theta, float phi)
+    {
+        float x = (float) (r * Math.sin(theta) * Math.cos(phi)) + (float) cx;
+        float y = (float) (r * Math.cos(theta)) + (float) cy;
+        float z = (float) (r * Math.sin(theta) * Math.sin(phi)) + (float) cz;
+        return new float[]{x, y, z};
     }
 
     public static void registerHandler()
@@ -422,7 +426,7 @@ public abstract class FluidTransportHandler
 
         public void tick(@NotNull Level ticker)
         {
-            if (ticker.getGameTime() % 4 != 0)
+            if (ticker.getGameTime() % 5 != 0)
                 return;
             if (this.step < this.route.size() - 1)
             {

@@ -36,6 +36,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.NORPH_SOURCE, "Norph Source");
         this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Reservoir");
         this.addBlock(Registration.BlockReg.FLUID_TRANSMITTER, "Fluid Transmitter");
+        this.addBlock(Registration.BlockReg.CRUSHER, "Crusher");
 
         this.addItem(Registration.FluidReg.BIOMASS.bucket(), "Biomass Bucket");
         this.add(Registration.FluidReg.BIOMASS.still().getId().toLanguageKey(), "Biomass");
@@ -43,11 +44,23 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.FluidReg.BIOMASS.block(), "Biomass");
         this.add(Registration.FluidReg.BIOMASS.type().get().getDescriptionId(), "Biomass");
 
+        this.addItem(Registration.FluidReg.LYMPH.bucket(), "Lymph Bucket");
+        this.add(Registration.FluidReg.LYMPH.still().getId().toLanguageKey(), "Lymph");
+        this.add(Registration.FluidReg.LYMPH.flowing().getId().toLanguageKey(), "Lymph");
+        this.addBlock(Registration.FluidReg.LYMPH.block(), "Lymph");
+        this.add(Registration.FluidReg.LYMPH.type().get().getDescriptionId(), "Lymph");
+
+        this.addItem(Registration.FluidReg.ADRENALINE.bucket(), "Adrenaline Bucket");
+        this.add(Registration.FluidReg.ADRENALINE.still().getId().toLanguageKey(), "Adrenaline");
+        this.add(Registration.FluidReg.ADRENALINE.flowing().getId().toLanguageKey(), "Adrenaline");
+        this.addBlock(Registration.FluidReg.ADRENALINE.block(), "Adrenaline");
+        this.add(Registration.FluidReg.ADRENALINE.type().get().getDescriptionId(), "Adrenaline");
+
         //-----------------------------
         // JADE
 
-        this.add("config.jade.plugin_" + Database.JadeInfo.IDs.FLUID_RENDERER.toLanguageKey(), "Test Fluid Render");
-        this.add(Database.JadeInfo.Translations.FLUID_AMOUNT, "%s Amount: %s/%s");
+        //this.add("config.jade.plugin_" + Database.JadeInfo.IDs.FLUID_RENDERER.toLanguageKey(), "Test Fluid Render");
+        //this.add(Database.JadeInfo.Translations.FLUID_AMOUNT, "%s Amount: %s/%s");
 
         //-----------------------------
         //BOOK

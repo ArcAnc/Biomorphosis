@@ -33,13 +33,11 @@ public class FluidStackHolder implements IFluidTank
     @OnlyIn(Dist.CLIENT)
     private int clientFluidAmount = 0;
 
-    public FluidStackHolder(FluidStack stack, int capacity, /*HolderType type, Set<BasicSidedStorage.RelativeFace> accessibleFaces,*/ Predicate<FluidStack> validator, HolderCallback callback)
+    public FluidStackHolder(FluidStack stack, int capacity, Predicate<FluidStack> validator, HolderCallback callback)
     {
         Preconditions.checkArgument(capacity > 0, "Capacity must be greater than zero");
         this.fluid = Preconditions.checkNotNull(stack, "FluidStack can't be null");
         this.capacity = capacity;
-//        this.type = Preconditions.checkNotNull(type, "Holder Type can't be null");
-        //this.accessibleFaces = Preconditions.checkNotNull(accessibleFaces, "Accessible Faces can't be null");
         this.validator = Preconditions.checkNotNull(validator, "Validator can't be null");
         this.callback = Preconditions.checkNotNull(callback, "Callback can't be null");
     }
@@ -142,8 +140,6 @@ public class FluidStackHolder implements IFluidTank
 
         tag.put(Database.Capabilities.Fluids.Holder.FLUID, this.fluid.saveOptional(registries));
         tag.putInt(Database.Capabilities.Fluids.Holder.CAPACITY, this.capacity);
-        //tag.putInt(Database.Capabilities.Fluids.Holder.TYPE, this.type.ordinal());
-        //tag.putIntArray(Database.Capabilities.Fluids.Holder.FACES, this.accessibleFaces.stream().map(BasicSidedStorage.RelativeFace :: ordinal).toList());
         return tag;
     }
 
@@ -151,10 +147,6 @@ public class FluidStackHolder implements IFluidTank
     {
         this.capacity = tag.getInt(Database.Capabilities.Fluids.Holder.CAPACITY);
         this.fluid = FluidStack.parseOptional(registries, tag.getCompound(Database.Capabilities.Fluids.Holder.FLUID));
-        //this.type = HolderType.values()[tag.getInt(Database.Capabilities.Fluids.Holder.TYPE)];
-        //this.accessibleFaces = Arrays.stream(tag.getIntArray(Database.Capabilities.Fluids.Holder.FACES)).
-        //        mapToObj(id -> BasicSidedStorage.RelativeFace.values()[id]).collect(Collectors.toSet());
-
     }
 
     public boolean isEmpty()
@@ -182,11 +174,9 @@ public class FluidStackHolder implements IFluidTank
     public static class Builder
     {
         private FluidStack stack = FluidStack.EMPTY;
-        //private HolderType tankType = HolderType.ALL;
         private Predicate<FluidStack> validator = FluidStack -> true;
         private int capacity = 1000;
         private HolderCallback callback = holder -> {};
-        //private Set<BasicSidedStorage.RelativeFace> accessibleFaces = new HashSet<>();
 
         private Builder ()
         {}
@@ -215,21 +205,9 @@ public class FluidStackHolder implements IFluidTank
             return this;
         }
 
-        /*public Builder setAccessibleFaces(Set<BasicSidedStorage.RelativeFace> accessibleFaces)
-        {
-            this.accessibleFaces = accessibleFaces;
-            return this;
-        }
-
-        public Builder addAccessibleFaces(BasicSidedStorage.RelativeFace... faces)
-        {
-            this.accessibleFaces.addAll(List.of(faces));
-            return this;
-        }
-        */
         public @NotNull FluidStackHolder build()
         {
-            return new FluidStackHolder(this.stack, this.capacity,/*this.accessibleFaces,*/ this.validator, this.callback);
+            return new FluidStackHolder(this.stack, this.capacity, this.validator, this.callback);
         }
     }
 
@@ -237,13 +215,5 @@ public class FluidStackHolder implements IFluidTank
     public interface HolderCallback
     {
         void update(FluidStackHolder holder);
-    }
-
-    public enum HolderType
-    {
-        ALL,
-        INPUT,
-        OUTPUT,
-        INTERNAL
     }
 }
