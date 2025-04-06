@@ -13,6 +13,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.Containers;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -134,5 +135,25 @@ public class ItemHelper
     public static @NotNull ResourceLocation getRegistryName(Item item)
     {
         return BuiltInRegistries.ITEM.getKey(item);
+    }
+
+    public static void dropContents (Level level, BlockPos pos, Optional<IItemHandler> inventory)
+    {
+        if (level != null && pos != null)
+        {
+            inventory.ifPresent(handler ->
+                    dropContents(level, pos, handler));
+        }
+    }
+
+    public static void dropContents (Level level, BlockPos pos, IItemHandler inventory)
+    {
+        if (level != null && pos != null)
+        {
+            for (int q = 0; q < inventory.getSlots() ; q++)
+            {
+                Containers.dropItemStack(level, pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d, inventory.getStackInSlot(q));
+            }
+        }
     }
 }
