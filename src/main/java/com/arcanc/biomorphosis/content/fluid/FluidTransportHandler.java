@@ -174,7 +174,7 @@ public abstract class FluidTransportHandler
         {
             Level level = event.getLevel();
             Set<FluidTransport> transports = getTransportTable(level);
-            NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(transports.stream().toList()));
+            NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(transports.stream().toList(), S2CFluidTransportPacket.TransportAction.SYNC));
         }
     }
 
@@ -204,12 +204,12 @@ public abstract class FluidTransportHandler
         if (addList.isEmpty())
             return;
         addList.forEach(transport -> handler.getTransport(serverLevel).add(transport));
-        addList.clear();
         serverLevel.players().forEach(serverPlayer ->
         {
             if (serverPlayer.level().dimension().compareTo(serverLevel.dimension()) == 0)
-                NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(handler.getTransport(serverLevel).stream().toList()));
+                NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(addList.stream().toList(), S2CFluidTransportPacket.TransportAction.ADD));
         });
+        addList.clear();
     }
 
     private static void removeTransport(Level level)
@@ -221,12 +221,12 @@ public abstract class FluidTransportHandler
         if (removeList.isEmpty())
             return;
         removeList.forEach(transport -> handler.getTransport(serverLevel).remove(transport));
-        removeList.clear();
         serverLevel.players().forEach(serverPlayer ->
         {
             if (serverPlayer.level().dimension().compareTo(serverLevel.dimension()) == 0)
-                NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(handler.getTransport(serverLevel).stream().toList()));
+                NetworkEngine.sendToPlayer(serverPlayer, new S2CFluidTransportPacket(removeList.stream().toList(), S2CFluidTransportPacket.TransportAction.REMOVE));
         });
+        removeList.clear();
     }
 
     private static void transportRenderer(final @NotNull RenderLevelStageEvent event)

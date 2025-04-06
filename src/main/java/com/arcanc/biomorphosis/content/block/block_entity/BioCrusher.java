@@ -189,8 +189,8 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             BlockPos pos = getBlockPos();
             BlockState state = getBlockState();
             Direction direction = state.getValue(BioCrusherBlock.HORIZONTAL_FACING);
-            Vec3 spawnPos = pos.getCenter().add(0.5d * direction.getStepX(), 0, 0.5d * direction.getStepZ());
-            Vec3 spawnVelocity = new Vec3(0.4d * direction.getStepX(), 0.2d, 0.4d * direction.getStepZ());
+            Vec3 spawnPos = pos.getCenter().add(0.6d * direction.getStepX(), 0, 0.6d * direction.getStepZ());
+            Vec3 spawnVelocity = new Vec3(0.3d * direction.getStepX(), 0.1d, 0.3d * direction.getStepZ());
             ItemEntity entity = new ItemEntity(level, spawnPos.x(), spawnPos.y(), spawnPos.z(), toSpawn, spawnVelocity.x(), spawnVelocity.y(), spawnVelocity.z());
             entity.setDefaultPickUpDelay();
             level.addFreshEntity(entity);
@@ -200,7 +200,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
                 RandomSource rand = level.getRandom();
                 for (StackWithChance stack : recipe.secondaryResults())
                 {
-                    if (stack.chance() <= rand.nextFloat())
+                    if (rand.nextFloat() <= stack.chance())
                     {
                         entity = new ItemEntity(level, spawnPos.x(), spawnPos.y(), spawnPos.z(), stack.stack(), spawnVelocity.x(), spawnVelocity.y(), spawnVelocity.z());
                         entity.setDefaultPickUpDelay();

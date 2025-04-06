@@ -11,13 +11,21 @@ package com.arcanc.biomorphosis.content.block;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.FluidHelper;
+import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.RenderShape;
@@ -25,9 +33,11 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.fluids.FluidUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
@@ -71,6 +81,50 @@ public class BioCrusherBlock extends BioNorphDependentBlock<BioCrusher>
         BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
         BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
         BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
+    }
+
+    @Override
+    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack,
+                                                   @NotNull BlockState state,
+                                                   @NotNull Level level,
+                                                   @NotNull BlockPos pos,
+                                                   @NotNull Player player,
+                                                   @NotNull InteractionHand hand,
+                                                   @NotNull BlockHitResult hitResult)
+    {
+        if (FluidHelper.isFluidHandler(stack))
+        {
+            if (level.isClientSide())
+                return InteractionResult.SUCCESS;
+            else
+                return FluidUtil.interactWithFluidHandler(player, hand, level, pos, null) ?
+                        InteractionResult.SUCCESS_SERVER :
+                        InteractionResult.TRY_WITH_EMPTY_HAND;
+        }
+        return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
+    }
+
+    @Override
+    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state,
+                                                        @NotNull Level level,
+                                                        @NotNull BlockPos pos,
+                                                        @NotNull Player player,
+                                                        @NotNull BlockHitResult hitResult)
+    {
+        if (player.isShiftKeyDown())
+        {
+            if (ItemHelper.isItemHandler(level, pos))
+                if (level.isClientSide())
+                    return InteractionResult.SUCCESS;
+                else
+                {
+                    player.addItem(ItemHelper.getItemHandler(level, pos).
+                            map(handler -> handler.extractItem(0, Integer.MAX_VALUE, false)).
+                            orElse(ItemStack.EMPTY));
+                    return InteractionResult.SUCCESS_SERVER;
+                }
+        }
+        return super.useWithoutItem(state, level, pos, player, hitResult);
     }
 
     @Override
