@@ -11,7 +11,8 @@
       "required": false
     },
     "biomass": {
-      "per_second": 10
+      "per_second": 10,
+      "required": true
     },
     "lymph": {
       "modifier": 2.0,

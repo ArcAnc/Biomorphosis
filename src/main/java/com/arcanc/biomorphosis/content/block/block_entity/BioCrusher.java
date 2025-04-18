@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block.block_entity;
 import com.arcanc.biomorphosis.content.block.BioCrusherBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
 import com.arcanc.biomorphosis.util.Database;
@@ -154,14 +155,23 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             return true;
         else
         {
-            ItemStack result = ItemStack.EMPTY;
-            if (this.consumedFluidsData.biomass >= recipe.getResources().biomass().perSecond() * recipe.getResources().time())
-                result = recipe.result().copy();
+            ItemStack[] result = new ItemStack[]{ recipe.result().copy()};
+            BioBaseRecipe.BiomassInfo biomass = recipe.getResources().biomass();
+            int totalBiomassAmount = biomass.perSecond() * timeToCheck;
 
-            result = recipe.getResources().lymph().map(lymph ->
+            if (biomass.required())
             {
-                ItemStack returnedStack = recipe.result().copy();
-                int totalLymphAmount = lymph.perSecond() * recipe.getResources().time();
+                if (this.consumedFluidsData.biomass < totalBiomassAmount)
+                    result[0] = ItemStack.EMPTY;
+            }
+            else
+                if (this.consumedFluidsData.biomass >= totalBiomassAmount)
+                    result[0] = recipe.result().copy();
+
+            result[0] = recipe.getResources().lymph().map(lymph ->
+            {
+                ItemStack returnedStack = result[0].copy();
+                int totalLymphAmount = lymph.perSecond() * timeToCheck;
                 if (lymph.required())
                 {
                     if (this.consumedFluidsData.lymph < totalLymphAmount)
@@ -171,20 +181,19 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
                     if (this.consumedFluidsData.lymph >= totalLymphAmount)
                         returnedStack.setCount(Mth.ceil(returnedStack.getCount() * lymph.modifier()));
                 return returnedStack;
-            }).orElse(result);
+            }).orElse(result[0]);
 
-            ItemStack finalResult = result;
-            result = recipe.getResources().adrenaline().map(adrenaline ->
+            result[0] = recipe.getResources().adrenaline().map(adrenaline ->
             {
-               ItemStack returnedStack = finalResult;
-               int totalAdrenalineAmount = adrenaline.perSecond() * recipe.getResources().time();
+               ItemStack returnedStack = result[0];
+               int totalAdrenalineAmount = adrenaline.perSecond() * timeToCheck;
                if (adrenaline.required())
                    if (this.consumedFluidsData.adrenaline < totalAdrenalineAmount)
                        returnedStack = ItemStack.EMPTY;
                return returnedStack;
-            }).orElse(result);
+            }).orElse(result[0]);
 
-            ItemStack toSpawn = result;
+            ItemStack toSpawn = result[0];
 
             BlockPos pos = getBlockPos();
             BlockState state = getBlockState();
@@ -218,8 +227,9 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
 
     private void consumeResources(@NotNull CrusherRecipe recipe)
     {
-        FluidStack extractedBiomass = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.BIOMASS.still(), recipe.getResources().biomass().perSecond()), false);
-        this.consumedFluidsData.biomass += extractedBiomass.getAmount();
+        FluidStack extractedBiomass = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.BIOMASS.still(), recipe.getResources().biomass().perSecond()), true);
+        if (extractedBiomass.getAmount() == recipe.getResources().biomass().perSecond())
+            this.consumedFluidsData.biomass += this.fluidHandler.extract(null, extractedBiomass, false).getAmount();
         recipe.getResources().lymph().ifPresent(lymph ->
         {
             FluidStack extracted = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.LYMPH.still(), lymph.perSecond()), true);

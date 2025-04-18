@@ -48,7 +48,7 @@ public class BioRecipeProvider extends RecipeProvider
                 save(this.output);
 
         CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
-                new BioBaseRecipe.BiomassInfo(10),
+                new BioBaseRecipe.BiomassInfo(true,10),
                 Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 2.0f)),
                 Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
                 200)).

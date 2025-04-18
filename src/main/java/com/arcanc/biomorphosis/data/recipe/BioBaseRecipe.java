@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.data.recipe;
 
 import com.arcanc.biomorphosis.data.recipe.input.BioBaseInput;
+import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
@@ -20,6 +21,8 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
+import java.util.function.BooleanSupplier;
+import java.util.function.Supplier;
 
 public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
 {
@@ -38,13 +41,16 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
     @Override
     public boolean matches(@NotNull T input, @NotNull Level level)
     {
-        if (this.resources.biomass().perSecond() <= 0)
-            return false;
-
         int time = this.resources.time();
 
-        if (this.resources.biomass().perSecond() > input.biomass().getAmount())
-            return false;
+        boolean biomassCheck = ((BooleanSupplier)() ->
+        {
+            if (!this.resources.biomass.required())
+                return true;
+            if (this.resources.biomass().perSecond() > 0 && time > 0)
+                return this.resources.biomass().perSecond() <= input.biomass().getAmount();
+            return true;
+        }).getAsBoolean();
 
         boolean adrenalineCheck = this.resources.adrenaline().map(adrenaline ->
         {
@@ -68,7 +74,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
             return true;
         }).orElse(true);
 
-        return adrenalineCheck && lymphCheck;
+        return biomassCheck && adrenalineCheck && lymphCheck;
     }
 
     @Override
@@ -77,14 +83,17 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
         return true;
     }
 
-    public record BiomassInfo(int perSecond)
+    public record BiomassInfo(boolean required, int perSecond)
     {
         public static final Codec<BiomassInfo> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
+                        Codec.BOOL.fieldOf("required").forGetter(BiomassInfo :: required),
                         Codec.INT.fieldOf("per_second").forGetter(BiomassInfo :: perSecond)).
                 apply(instance, BiomassInfo :: new));
 
         public static final StreamCodec<ByteBuf, BiomassInfo> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.BOOL,
+                BiomassInfo::required,
                 ByteBufCodecs.INT,
                 BiomassInfo :: perSecond,
                 BiomassInfo :: new);
