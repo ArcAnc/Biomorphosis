@@ -11,14 +11,18 @@ package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
+import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import net.minecraft.world.level.block.CampfireBlock;
+import com.arcanc.biomorphosis.util.Database;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
@@ -31,6 +35,7 @@ public class CommonEvents
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         FluidTransportHandler.registerHandler();
+        modEventBus.addListener(CommonEvents :: registerEntityAttributes);
 /*        registerContainerMenuEvents();
         modEventBus.addListener(CommonEvents :: commonSetup);
 
@@ -45,6 +50,20 @@ public class CommonEvents
         NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: saveLevel);
         NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: playerLoad);
 */    }
+
+    @SuppressWarnings("unchecked")
+    private static void registerEntityAttributes(final @NotNull EntityAttributeCreationEvent event)
+    {
+        Registration.EntityReg.ENTITY_TYPES.getEntries().stream().
+                map(DeferredHolder::get).
+                filter(entityType -> entityType.getBaseClass().isAssignableFrom(LivingEntity.class)).
+                map(entityType -> (BioEntityType<LivingEntity>)entityType).
+                forEach(bioEntityType ->
+                        event.put(bioEntityType,
+                            bioEntityType.getEntityAttributeProvider().
+                                    provide().
+                                    build()));
+    }
 
     private static void registerCapabilitiesEvent(final @NotNull RegisterCapabilitiesEvent event)
     {

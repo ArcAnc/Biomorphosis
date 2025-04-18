@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.block.BioCrusherBlock;
 import com.arcanc.biomorphosis.content.block.BioFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.BioFluidTransmitterBlock;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
+import com.arcanc.biomorphosis.content.item.BioSpawnEgg;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.mojang.datafixers.util.Pair;
@@ -37,6 +38,7 @@ import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemp
 import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
 import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
@@ -66,6 +68,8 @@ public class SummaryModelProvider extends ModelProvider
         createBucketModel(Registration.FluidReg.BIOMASS, itemModels);
         createBucketModel(Registration.FluidReg.LYMPH, itemModels);
         createBucketModel(Registration.FluidReg.ADRENALINE, itemModels);
+
+        itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)

@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.RecipeRenderHandler;
+import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
@@ -20,6 +21,7 @@ import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.data.SummaryModelProvider;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
+import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
@@ -32,6 +34,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
@@ -58,6 +61,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: clientSetup);
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
+        modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
         modEventBus.addListener(ClientEvents :: setupItemColor);
         modEventBus.addListener(ClientEvents :: setupModels);
@@ -105,6 +109,17 @@ public final class ClientEvents
                 map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity>)type).
                 filter(type -> type.getRenderer() != null).
                 forEach(type -> event.registerBlockEntityRenderer(type, type.getRenderer()));
+
+        Registration.EntityReg.ENTITY_TYPES.getEntries().stream().
+                map(DeferredHolder :: get).
+                filter(entityType -> entityType instanceof BioEntityType<? extends Entity>).
+                map(entityType -> (BioEntityType<? extends Entity>)entityType).
+                forEach(entityType -> event.registerEntityRenderer(entityType, entityType.getRendererProvider()));
+    }
+
+    private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)
+    {
+
     }
 
     private static void gatherData(final @NotNull GatherDataEvent.Client event)
@@ -123,7 +138,8 @@ public final class ClientEvents
 
         gen.addProvider(true, BioLootTableProvider.create(
                 List.of(
-                        new LootTableProvider.SubProviderEntry(BioBlockLoot::new, LootContextParamSets.BLOCK)),
+                        new LootTableProvider.SubProviderEntry(BioBlockLoot::new, LootContextParamSets.BLOCK),
+                        new LootTableProvider.SubProviderEntry(BioEntityLoot::new, LootContextParamSets.ENTITY)),
                 packOutput,
                 lookupProvider));
 

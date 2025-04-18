@@ -6,6 +6,7 @@
   "biomorphosis.block.fluids.adrenaline.block": "Adrenaline",
   "biomorphosis.block.fluids.biomass.block": "Biomass",
   "biomorphosis.block.fluids.lymph.block": "Lymph",
+  "biomorphosis.block.lure_campfire": "Lure Campfire",
   "biomorphosis.block.norph": "Norph",
   "biomorphosis.block.norph_overlay": "Norph",
   "biomorphosis.block.norph_source": "Norph Source",
@@ -32,6 +33,7 @@
   "biomorphosis.book.page.title.test_basic_5": "</item;minecraft:mud/>Title with mud icon",
   "biomorphosis.book.page.title.test_basic_6": "</item;minecraft:sand/>Title with sand icon",
   "biomorphosis.book.page.title.test_next_lvl": "</item;minecraft:iron_ingot/>Second Page Title",
+  "biomorphosis.entity.queen": "Queen",
   "biomorphosis.fluid_type.adrenaline": "Adrenaline",
   "biomorphosis.fluid_type.biomass": "Biomass",
   "biomorphosis.fluid_type.lymph": "Lymph",
@@ -54,5 +56,6 @@
   "biomorphosis.item.fluids.biomass.bucket": "Biomass Bucket",
   "biomorphosis.item.fluids.lymph.bucket": "Lymph Bucket",
   "biomorphosis.item.queens_brain": "Queen's Brain",
+  "biomorphosis.item.spawning_egg_queen": "Queen Spawn Egg",
   "biomorphosis.item.wrench": "Manipulator"
 }

@@ -11,16 +11,20 @@ package com.arcanc.biomorphosis.content.block.block_entity;
 
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
+import com.arcanc.biomorphosis.content.entity.Queen;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
@@ -96,7 +100,19 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
 
     private void summonMobs()
     {
+        Level level = this.getLevel();
+        RandomSource rnd = level.getRandom();
+        double angle = rnd.nextDouble() * 2 * Math.PI;
+        double distance = 32 + rnd.nextDouble() * (48 - 32);
+        double dx = Math.cos(angle) * distance;
+        double dz = Math.sin(angle) * distance;
+
+        BlockPos surfacePos = level.getHeightmapPos(Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, BlockPos.containing(this.getBlockPos().getBottomCenter().add(dx, 0, dz)));
+
+        Queen queen = new Queen(level, surfacePos.getBottomCenter(), this.getBlockPos());
+        level.addFreshEntity(queen);
         timer = 0;
+        level.removeBlock(this.getBlockPos(), false);
     }
 
     private int getSummonTime()

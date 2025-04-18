@@ -12,7 +12,9 @@ package com.arcanc.biomorphosis.data.lang;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.data.PackOutput;
+import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.common.data.LanguageProvider;
+import org.jetbrains.annotations.NotNull;
 
 public class EnUsProvider extends LanguageProvider
 {
@@ -37,24 +39,13 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Reservoir");
         this.addBlock(Registration.BlockReg.FLUID_TRANSMITTER, "Fluid Transmitter");
         this.addBlock(Registration.BlockReg.CRUSHER, "Crusher");
+        this.addBlock(Registration.BlockReg.LURE_CAMPFIRE, "Lure Campfire");
 
-        this.addItem(Registration.FluidReg.BIOMASS.bucket(), "Biomass Bucket");
-        this.add(Registration.FluidReg.BIOMASS.still().getId().toLanguageKey(), "Biomass");
-        this.add(Registration.FluidReg.BIOMASS.flowing().getId().toLanguageKey(), "Biomass");
-        this.addBlock(Registration.FluidReg.BIOMASS.block(), "Biomass");
-        this.add(Registration.FluidReg.BIOMASS.type().get().getDescriptionId(), "Biomass");
+        this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
+        this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");
+        this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
 
-        this.addItem(Registration.FluidReg.LYMPH.bucket(), "Lymph Bucket");
-        this.add(Registration.FluidReg.LYMPH.still().getId().toLanguageKey(), "Lymph");
-        this.add(Registration.FluidReg.LYMPH.flowing().getId().toLanguageKey(), "Lymph");
-        this.addBlock(Registration.FluidReg.LYMPH.block(), "Lymph");
-        this.add(Registration.FluidReg.LYMPH.type().get().getDescriptionId(), "Lymph");
-
-        this.addItem(Registration.FluidReg.ADRENALINE.bucket(), "Adrenaline Bucket");
-        this.add(Registration.FluidReg.ADRENALINE.still().getId().toLanguageKey(), "Adrenaline");
-        this.add(Registration.FluidReg.ADRENALINE.flowing().getId().toLanguageKey(), "Adrenaline");
-        this.addBlock(Registration.FluidReg.ADRENALINE.block(), "Adrenaline");
-        this.add(Registration.FluidReg.ADRENALINE.type().get().getDescriptionId(), "Adrenaline");
+        this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen");
 
         //-----------------------------
         // JADE
@@ -95,5 +86,21 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT, "Back");
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT, "Next");
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE, "To Title");
+    }
+
+    private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)
+    {
+        this.addItem(entry.bucket(), description + " Bucket");
+        this.add(entry.still().getId().toLanguageKey(), description);
+        this.add(entry.flowing().getId().toLanguageKey(), description);
+        this.addBlock(entry.block(), description);
+        this.add(entry.type().get().getDescriptionId(), description);
+    }
+
+    private void addEntity(Registration.EntityReg.@NotNull EntityEntry<?> entity, String description)
+    {
+        this.addEntityType(entity.getEntityHolder(), description);
+        if (entity.getEggHolder() != null)
+            this.addItem(entity.getEggHolder(), description + " Spawn Egg");
     }
 }

@@ -22,6 +22,10 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
+import com.arcanc.biomorphosis.content.entity.BioEntityType;
+import com.arcanc.biomorphosis.content.entity.Queen;
+import com.arcanc.biomorphosis.content.entity.QueenGuard;
+import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
@@ -59,6 +63,8 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -102,6 +108,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 
 public final class Registration
@@ -123,6 +130,99 @@ public final class Registration
         private static void init (@NotNull final IEventBus bus)
         {
             TYPES.register(bus);
+        }
+    }
+
+    public static class EntityReg
+    {
+
+        public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, Database.MOD_ID);
+
+        public static final EntityEntry<Queen> MOB_QUEEN = makeEntityType(
+                "queen",
+                Queen.class,
+                Queen :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        sized(1.6f, 2.3f).
+                        eyeHeight(2.05f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 20).
+                                add(Attributes.ATTACK_DAMAGE, 3).
+                                add(Attributes.FOLLOW_RANGE, 32).
+                                add(Attributes.MOVEMENT_SPEED, 0.15f).
+                                add(Attributes.ARMOR, 4)).
+                        rendererProvider(QueenRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+
+        /*public static final EntityEntry<QueenGuard> MOB_QUEEN_GUARD = makeEntityType(
+                "queen_guard",
+                QueenGuard.class,
+                QueenGuard :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(2.1f).
+                        sized(2.3f, 2.2f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(5).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 30).
+                                add(Attributes.ATTACK_DAMAGE, 6).
+                                add(Attributes.FOLLOW_RANGE, 12).
+                                add(Attributes.MOVEMENT_SPEED, 0.8f).
+                                add(Attributes.ARMOR, 6)),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));*/
+
+        private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
+                                                                      Class<T> entityClass,
+                                                                      EntityType.EntityFactory<T> factory,
+                                                                      MobCategory category,
+                                                                      UnaryOperator<BioEntityType.BioTypeBuilder<T>> typeBuilder,
+                                                                      Consumer<Item.Properties> additionalProperties)
+        {
+            return new EntityEntry<>(name, entityClass, factory, category, typeBuilder, additionalProperties);
+        }
+
+        public static class EntityEntry<T extends Entity>
+        {
+            private final DeferredHolder<EntityType<?>, EntityType<T>> entityHolder;
+            private final DeferredHolder<Item, SpawnEggItem> eggHolder;
+
+            @SuppressWarnings("unchecked")
+            public EntityEntry(String name,
+                               Class<T> entityClass,
+                               EntityType.EntityFactory<T> factory,
+                               MobCategory category,
+                               UnaryOperator<BioEntityType.BioTypeBuilder<T>> typeBuilder,
+                               Consumer<Item.Properties> additionalProperties)
+            {
+                this.entityHolder = ENTITY_TYPES.register(name, key -> typeBuilder.apply(BioEntityType.BioTypeBuilder.of(factory, category)).build(ResourceKey.create(Registries.ENTITY_TYPE, key)));
+                this.eggHolder = Mob.class.isAssignableFrom(entityClass) ?
+                        Registration.ItemReg.register("spawning_egg_" + name, properties -> new BioSpawnEgg((EntityType<? extends Mob>) entityHolder.get(), properties), additionalProperties) :
+                        null;
+            }
+
+            public DeferredHolder<EntityType<?>, EntityType<T>> getEntityHolder()
+            {
+                return entityHolder;
+            }
+
+            @Nullable
+            public DeferredHolder<Item, SpawnEggItem> getEggHolder()
+            {
+                return eggHolder;
+            }
+        }
+
+        public static void init(IEventBus bus)
+        {
+            ENTITY_TYPES.register(bus);
         }
     }
 
@@ -825,6 +925,7 @@ public final class Registration
         ItemReg.init(bus);
         FluidReg.init(bus);
         BETypeReg.init(bus);
+        EntityReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
     }

@@ -1,4 +1,4 @@
-// 1.21.4	2025-03-30T04:34:53.3933111	Biomorphosis: Models
+// 1.21.4	2025-04-08T12:55:10.7890422	Biomorphosis: Models
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 52365930b4a549eafc6134c9947716413cf6be27 assets/biomorphosis/blockstates/fluids/adrenaline/block.json
@@ -27,6 +27,7 @@ fca23f39b5d3db17eaa1ebec55c40009c9672fbd assets/biomorphosis/items/norph.json
 f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.json
 2ae66ecc02316263aa70af1b61b2025cdefcd3b1 assets/biomorphosis/items/norph_stairs.json
 80565881afccba97b77badd5737e290d36f46b6d assets/biomorphosis/items/queens_brain.json
+90e82158411c9d235f05bc36e4447cb3c645a9ec assets/biomorphosis/items/spawning_egg_queen.json
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 e1cabae948c3750372d968bf077fd293dbfc8689 assets/biomorphosis/models/block/crusher.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
