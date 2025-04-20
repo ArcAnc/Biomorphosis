@@ -10,19 +10,19 @@
 package com.arcanc.biomorphosis.data.recipe;
 
 import com.arcanc.biomorphosis.data.recipe.input.BioBaseInput;
-import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
 
 public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
 {
@@ -81,6 +81,13 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
     public boolean isSpecial() 
     {
         return true;
+    }
+
+    @Override
+    public @NotNull String group()
+    {
+        ResourceLocation id = BuiltInRegistries.RECIPE_BOOK_CATEGORY.getKey(recipeBookCategory());
+        return id != null ? id.getPath() : "";
     }
 
     public record BiomassInfo(boolean required, int perSecond)

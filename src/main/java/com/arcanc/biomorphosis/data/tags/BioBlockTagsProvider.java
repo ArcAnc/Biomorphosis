@@ -36,7 +36,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.NORPH_STAIRS.get()).
                 add(Registration.BlockReg.FLUID_STORAGE.get()).
                 add(Registration.BlockReg.FLUID_TRANSMITTER.get()).
-                add(Registration.BlockReg.CRUSHER.get());
+                add(Registration.BlockReg.CRUSHER.get()).
+                add(Registration.BlockReg.STOMACH.get());
         this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
         this.tag(BioBlockTags.NORPH_AVOID).add(Blocks.LAVA);
     }

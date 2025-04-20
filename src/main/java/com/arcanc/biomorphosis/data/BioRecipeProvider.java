@@ -12,18 +12,24 @@ package com.arcanc.biomorphosis.data;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.builders.CrusherRecipeBuilder;
+import com.arcanc.biomorphosis.data.recipe.builders.StomachRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.tags.ItemTags;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -31,6 +37,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class BioRecipeProvider extends RecipeProvider
 {
+
     protected BioRecipeProvider(HolderLookup.Provider registries, RecipeOutput output)
     {
         super(registries, output);
@@ -57,6 +64,17 @@ public class BioRecipeProvider extends RecipeProvider
                 addSecondaryOutput(new StackWithChance(new ItemStack(Blocks.SAND), 0.15f)).
         unlockedBy(getHasName(Blocks.COBBLESTONE), has(Blocks.COBBLESTONE)).
         save(this.output, Database.rl("gravel_from_cobblestone").toString());
+
+        StomachRecipeBuilder.newBuilder(
+                new BioBaseRecipe.ResourcesInfo(
+                    new BioBaseRecipe.BiomassInfo(false, 2),
+                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 1.5f)),
+                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
+                    100)).
+                setInput(new IngredientWithSize(tag(ItemTags.MEAT))).
+                setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
+        unlockedBy("has_meat", has(ItemTags.MEAT)).
+        save(this.output, Database.rl("biomass_from_meat").toString());
     }
 
     public static class Runner extends RecipeProvider.Runner

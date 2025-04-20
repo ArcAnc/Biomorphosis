@@ -10,10 +10,7 @@
 package com.arcanc.biomorphosis.content.registration;
 
 import com.arcanc.biomorphosis.content.block.*;
-import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
-import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
-import com.arcanc.biomorphosis.content.block.block_entity.BioFluidTransmitter;
-import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
+import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -24,16 +21,18 @@ import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.entity.Queen;
-import com.arcanc.biomorphosis.content.entity.QueenGuard;
 import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.data.recipe.display.CrusherRecipeDisplay;
+import com.arcanc.biomorphosis.data.recipe.display.StomachRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
+import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ItemStackWithChanceDisplay;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
@@ -309,6 +308,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<BioStomachBlock> STOMACH = register("stomach", BioStomachBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -369,6 +376,12 @@ public final class Registration
                 makeType(BioCrusher :: new,
                         BioCrusherRenderer :: new,
                         BlockReg.CRUSHER));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioStomach>> BE_STOMACH = BLOCK_ENTITIES.register(
+                "stomach",
+                makeType(BioStomach :: new,
+                        BioStomachRenderer :: new,
+                        BlockReg.STOMACH));
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
@@ -783,7 +796,7 @@ public final class Registration
         public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Database.MOD_ID);
 
         public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput, CrusherRecipeDisplay> CRUSHER_RECIPE = new RecipeEntry<>("crusher", RecipeBookCategory :: new, CrusherRecipeDisplay.CODEC, CrusherRecipeDisplay.STREAM_CODEC, CrusherRecipe.CrusherRecipeSerializer :: new);
-
+        public static final RecipeEntry<StomachRecipe, StomachRecipeInput, StomachRecipeDisplay> STOMACH_RECIPE = new RecipeEntry<>("stomach", RecipeBookCategory :: new, StomachRecipeDisplay.CODEC, StomachRecipeDisplay.STREAM_CODEC, StomachRecipe.StomachRecipeSerializer :: new);
 
         public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
         {

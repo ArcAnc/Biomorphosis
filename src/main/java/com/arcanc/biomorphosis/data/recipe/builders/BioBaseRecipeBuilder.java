@@ -16,9 +16,11 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -68,5 +70,19 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
         this.criteria.forEach(advancement::addCriterion);
         R recipe = getRecipe();
         output.accept(key, recipe, advancement.build(key.location().withPrefix("recipes/")));
+    }
+
+    @Override
+    public void save(@NotNull RecipeOutput recipeOutput, @NotNull String id)
+    {
+        ResourceLocation resourcelocation = RecipeBuilder.getDefaultRecipeId(this.getResult());
+        ResourceLocation resourcelocation1 = ResourceLocation.parse(id);
+        if (resourcelocation1.equals(resourcelocation))
+            throw new IllegalStateException("Recipe " + id + " should remove its 'save' argument as it is equal to default one");
+        else
+        {
+            R recipe = getRecipe();
+            this.save(recipeOutput, ResourceKey.create(Registries.RECIPE, resourcelocation1.withPrefix(recipe.group() + "/")));
+        }
     }
 }

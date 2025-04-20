@@ -154,6 +154,11 @@ public class FluidStackHolder implements IFluidTank
         return this.fluid.isEmpty() || this.fluid.getAmount() == 0;
     }
 
+    public boolean isFull()
+    {
+        return getFluidAmount() >= getCapacity();
+    }
+
     @OnlyIn(Dist.CLIENT)
     public int getClientFluidAmount()
     {

@@ -90,4 +90,32 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
     {
         return super.getModelData().derive().with(ACCESS_PROPERTIES, this.config.copy()).build();
     }
+
+    protected static final class ConsumedFluidsData
+    {
+        public int biomass = 0;
+        public int lymph = 0;
+        public int adrenaline = 0;
+
+        public void clearData()
+        {
+            this.biomass = 0;
+            this.lymph = 0;
+            this.adrenaline = 0;
+        }
+
+        public void writeData(@NotNull CompoundTag tag)
+        {
+            tag.putInt("biomass", this.biomass);
+            tag.putInt("lymph", this.lymph);
+            tag.putInt("adrenaline", this.adrenaline);
+        }
+
+        public void readData(@NotNull CompoundTag tag)
+        {
+            this.biomass = tag.getInt("biomass");
+            this.lymph = tag.getInt("lymph");
+            this.adrenaline = tag.getInt("adrenaline");
+        }
+    }
 }

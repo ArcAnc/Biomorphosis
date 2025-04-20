@@ -67,7 +67,7 @@ public class FluidLevelAnimator
                 int realFluidAmount = fluidSidedStorage.getFluidInTank(q).getAmount();
                 int clientFluidAmount = fluidSidedStorage.getClientFluidAmountInTank(q);
                 if (clientFluidAmount != realFluidAmount)
-                    fluidSidedStorage.setClientFluidAmountInTank(q, Mth.lerpDiscrete(ANIMATION_SPEED, clientFluidAmount, realFluidAmount));
+                    fluidSidedStorage.setClientFluidAmountInTank(q, Math.min(Mth.lerpDiscrete(ANIMATION_SPEED, clientFluidAmount, realFluidAmount), handler.getTankCapacity(q)));
             }
         }
     }

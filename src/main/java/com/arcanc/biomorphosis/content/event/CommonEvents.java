@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
+import com.arcanc.biomorphosis.content.block.block_entity.BioStomach;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
@@ -74,6 +75,8 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FLUID_STORAGE.get(), BioFluidStorage :: getHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_CRUSHER.get(), BioCrusher :: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CRUSHER.get(), BioCrusher :: getItemHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_STOMACH.get(), BioStomach:: getFluidHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_STOMACH.get(), BioStomach :: getItemHandler);
     }
 
 /*    private static void registerContainerMenuEvents()

@@ -1,4 +1,4 @@
-// 1.21.4	2025-04-08T12:55:10.7890422	Biomorphosis: Models
+// 1.21.4	2025-04-20T04:25:04.6201683	Biomorphosis: Models
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 52365930b4a549eafc6134c9947716413cf6be27 assets/biomorphosis/blockstates/fluids/adrenaline/block.json
@@ -11,6 +11,7 @@ d7700da8fb8738cc580741fc4be8678d65dbc404 assets/biomorphosis/blockstates/lure_ca
 69693f5a42a318a089de94f58827d024301c5645 assets/biomorphosis/blockstates/norph_overlay.json
 16b4fefbddbbade25a2e348afb4df79741b0e564 assets/biomorphosis/blockstates/norph_source.json
 a7614592725a327b4af5fb872dd27a3cd0e173d7 assets/biomorphosis/blockstates/norph_stairs.json
+a9eef4bbfbe949e3cb98580a3b86cbcc941c8e4d assets/biomorphosis/blockstates/stomach.json
 fa958b9b103f7e47d72bf2d20a0fbfb789fb1b4e assets/biomorphosis/items/book.json
 1fb6862792b8865b8ddf7f7694379a3887aad774 assets/biomorphosis/items/creative_tab_icon.json
 aab942a0d0363dfb75291dbb7d25e9ba01bc74dc assets/biomorphosis/items/crusher.json
@@ -28,6 +29,7 @@ f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.
 2ae66ecc02316263aa70af1b61b2025cdefcd3b1 assets/biomorphosis/items/norph_stairs.json
 80565881afccba97b77badd5737e290d36f46b6d assets/biomorphosis/items/queens_brain.json
 90e82158411c9d235f05bc36e4447cb3c645a9ec assets/biomorphosis/items/spawning_egg_queen.json
+40bce3a42e47be4e788ae4add381515809868474 assets/biomorphosis/items/stomach.json
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 e1cabae948c3750372d968bf077fd293dbfc8689 assets/biomorphosis/models/block/crusher.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
@@ -43,6 +45,7 @@ e6ad1f272bd9f538e16e05bb28a4c4c6d801ce2e assets/biomorphosis/models/block/fluid_
 80e5a824961c37ffb6281e9ac247791d956fa129 assets/biomorphosis/models/block/norph_stairs.json
 7f170d3e8e50c9a277670ce08a9884e4bf18ba1b assets/biomorphosis/models/block/norph_stairs_inner.json
 de2c4302c6b4953e7a3a0ebde35707040b11ebde assets/biomorphosis/models/block/norph_stairs_outer.json
+711d7d5404a3b1e8a17dbfa94c532dc386197846 assets/biomorphosis/models/block/stomach.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
 55563bd38cba9be063ebf73b5f415adc5c4506b2 assets/biomorphosis/models/item/flesh_piece.json
