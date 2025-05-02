@@ -1,4 +1,5 @@
 {
+  "biomorphosis.block.catcher": "Biofluid Extractor",
   "biomorphosis.block.crusher": "Crusher",
   "biomorphosis.block.flesh": "Flesh Block",
   "biomorphosis.block.fluid_storage": "Fluid Reservoir",
@@ -11,7 +12,7 @@
   "biomorphosis.block.norph_overlay": "Norph",
   "biomorphosis.block.norph_source": "Norph Source",
   "biomorphosis.block.norph_stairs": "Norph Stairs",
-  "biomorphosis.block.stomach": "Stomach",
+  "biomorphosis.block.stomach": "Organic Reprocessor",
   "biomorphosis.book.chapter.advanced": "</block;minecraft:beacon/>Advanced Chapter",
   "biomorphosis.book.chapter.basic": "</block;minecraft:dirt/>Basic Chapter",
   "biomorphosis.book.chapter.title": "</item;minecraft:writable_book/>Patch Notes",

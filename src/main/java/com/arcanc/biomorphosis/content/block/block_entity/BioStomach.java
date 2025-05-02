@@ -67,7 +67,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
     {
         super(Registration.BETypeReg.BE_STOMACH.get(), pos, blockState);
         this.quickCheck = RecipeManager.createCheck(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get());
-        setSideMode(BasicSidedStorage.RelativeFace.UP, BasicSidedStorage.FaceMode.INPUT).
+        setSideMode(BasicSidedStorage.RelativeFace.FRONT, BasicSidedStorage.FaceMode.INPUT).
             setSideMode(BasicSidedStorage.RelativeFace.RIGHT, BasicSidedStorage.FaceMode.OUTPUT);
 
         this.fluidHandler = new FluidSidedStorage().

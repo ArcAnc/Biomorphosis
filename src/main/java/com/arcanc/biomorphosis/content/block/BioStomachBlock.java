@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.block;
 
-import com.arcanc.biomorphosis.content.block.block_entity.BioCrusher;
 import com.arcanc.biomorphosis.content.block.block_entity.BioStomach;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
@@ -20,7 +19,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.ItemTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -36,7 +34,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -115,7 +112,7 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
     {
         if (stack.isEmpty())
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
-        if (stack.is(ItemTags.MEAT))
+        if (!FluidHelper.isFluidHandler(stack))
         {
             if (level.isClientSide())
                 return InteractionResult.SUCCESS;
@@ -127,12 +124,12 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
                     return InteractionResult.SUCCESS_SERVER;
                 });
         }
-        if (FluidHelper.isFluidHandler(stack))
+        else
         {
             if (level.isClientSide())
                 return InteractionResult.SUCCESS;
             else
-                return FluidUtil.interactWithFluidHandler(player, hand, level, pos, null) ?
+                return FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection()) ?
                         InteractionResult.SUCCESS_SERVER :
                         InteractionResult.TRY_WITH_EMPTY_HAND;
         }

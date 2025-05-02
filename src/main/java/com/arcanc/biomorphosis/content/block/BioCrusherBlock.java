@@ -97,7 +97,7 @@ public class BioCrusherBlock extends BioNorphDependentBlock<BioCrusher>
             if (level.isClientSide())
                 return InteractionResult.SUCCESS;
             else
-                return FluidUtil.interactWithFluidHandler(player, hand, level, pos, null) ?
+                return FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection()) ?
                         InteractionResult.SUCCESS_SERVER :
                         InteractionResult.TRY_WITH_EMPTY_HAND;
         }

@@ -316,6 +316,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<BioCatcherBlock> CATCHER = register("catcher", BioCatcherBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -383,6 +391,12 @@ public final class Registration
                         BioStomachRenderer :: new,
                         BlockReg.STOMACH));
 
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioCatcher>> BE_CATCHER = BLOCK_ENTITIES.register(
+                "catcher",
+                makeType(BioCatcher :: new,
+                        BioCatcherRenderer :: new,
+                        BlockReg.CATCHER));
+
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
                                                                                              Supplier<? extends Block> valid)
@@ -412,8 +426,7 @@ public final class Registration
 
             public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks)
             {
-                super(factory, validBlocks, false);
-                this.renderer = provider;
+                this(factory, provider, validBlocks, false);
             }
 
             public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks, boolean onlyOpsNbtAccess)

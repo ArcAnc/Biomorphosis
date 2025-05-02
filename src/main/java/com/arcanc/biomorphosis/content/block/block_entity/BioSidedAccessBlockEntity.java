@@ -59,7 +59,7 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
 
     public boolean isAccessible(Direction direction)
     {
-        return getFaceModeForDirection(direction) != BasicSidedStorage.FaceMode.INTERNAL;
+        return getFaceModeForDirection(direction) != BasicSidedStorage.FaceMode.INTERNAL && getFaceModeForDirection(direction) != BasicSidedStorage.FaceMode.BLOCKED;
     }
 
     public BasicSidedStorage.FaceMode getFaceModeForDirection(Direction dir)

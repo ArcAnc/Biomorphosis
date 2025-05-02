@@ -1,6 +1,6 @@
 /**
  * @author ArcAnc
- * Created at: 22.02.2025
+ * Created at: 22.04.2025
  * Copyright (c) 2025
  * <p>
  * This code is licensed under "Arc's License of Common Sense"
@@ -9,10 +9,9 @@
 
 package com.arcanc.biomorphosis.content.block;
 
-import com.arcanc.biomorphosis.content.block.block_entity.BioFluidStorage;
-import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.content.block.block_entity.BioCatcher;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
-import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
@@ -21,6 +20,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -29,27 +29,31 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import org.jetbrains.annotations.NotNull;
 
-public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage>
+public class BioCatcherBlock extends BioNorphDependentBlock<BioCatcher>
 {
+    public static final MapCodec<BioCatcherBlock> CODEC = simpleCodec(BioCatcherBlock :: new);
+    public static final VoxelShape SHAPE = Shapes.or(
+            Shapes.box(0.125, 0, 0.125, 0.875, 0.0625, 0.875),
+            Shapes.box(0.125, 0, 0, 0.875, 0.0625, 0.125),
+            Shapes.box(0.1875, 0.0625, 0.8125, 0.8125, 0.1875, 0.9375),
+            Shapes.box(0.3125, 0.0625, 0.9375, 0.375, 0.25, 1),
+            Shapes.box(0.125, 0, 0.875, 0.875, 0.0625, 1),
+            Shapes.box(0.875, 0, 0.125, 1, 0.0625, 0.875),
+            Shapes.box(0, 0, 0.125, 0.125, 0.0625, 0.875),
+            Shapes.box(0.1875, 0.0625, 0.0625, 0.8125, 0.1875, 0.1875),
+            Shapes.box(0.8125, 0.0625, 0.1875, 0.9375, 0.1875, 0.8125),
+            Shapes.box(0.0625, 0.0625, 0.1875, 0.1875, 0.1875, 0.8125),
+            Shapes.box(0.625, 0.0625, 0.9375, 0.6875, 0.25, 1),
+            Shapes.box(0.9375, 0.0625, 0.625, 1, 0.25, 0.6875),
+            Shapes.box(0.9375, 0.0625, 0.3125, 1, 0.25, 0.375),
+            Shapes.box(0.3125, 0.0625, 0, 0.375, 0.25, 0.0625),
+            Shapes.box(0.625, 0.0625, 0, 0.6875, 0.25, 0.0625),
+            Shapes.box(0, 0.0625, 0.625, 0.0625, 0.25, 0.6875),
+            Shapes.box(0, 0.0625, 0.3125, 0.0625, 0.25, 0.375));
 
-    private static final VoxelShape SHAPE = Shapes.or(
-            box(3, 2, 3, 13, 14, 13),
-            box(1, 14, 1, 15, 16, 15),
-            box(1, 0, 1, 15, 2, 15),
-            box(2,2,2, 4, 5, 4),
-            box(2, 11, 2, 4, 14, 4),
-            box(2, 11, 12, 4, 14, 14),
-            box(2, 2, 12, 4, 5, 14),
-            box(12, 11, 12, 14, 14, 14),
-            box(12, 2, 12, 14, 5, 14),
-            box(12, 11, 2, 14, 14, 4),
-            box(12, 2, 2, 14,5, 4));
-
-    public static final MapCodec<BioFluidStorageBlock> CODEC = simpleCodec(BioFluidStorageBlock :: new);
-
-    public BioFluidStorageBlock(Properties blockProps)
+    public BioCatcherBlock(Properties props)
     {
-        super(BioFluidStorage :: new, blockProps);
+        super(Registration.BETypeReg.BE_CATCHER, props);
     }
 
     @Override
@@ -69,7 +73,6 @@ public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage
                 return FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection()) ?
                         InteractionResult.SUCCESS_SERVER :
                         InteractionResult.TRY_WITH_EMPTY_HAND;
-
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
@@ -84,7 +87,13 @@ public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage
     }
 
     @Override
-    protected @NotNull MapCodec<BioFluidStorageBlock> codec()
+    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    {
+        return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    protected @NotNull MapCodec<BioCatcherBlock> codec()
     {
         return CODEC;
     }

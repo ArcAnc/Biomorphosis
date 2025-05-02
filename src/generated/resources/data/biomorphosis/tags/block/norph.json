@@ -6,6 +6,7 @@
     "biomorphosis:fluid_storage",
     "biomorphosis:fluid_transmitter",
     "biomorphosis:crusher",
-    "biomorphosis:stomach"
+    "biomorphosis:stomach",
+    "biomorphosis:catcher"
   ]
 }
