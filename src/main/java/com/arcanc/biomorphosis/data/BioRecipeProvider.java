@@ -12,31 +12,42 @@ package com.arcanc.biomorphosis.data;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.builders.CrusherRecipeBuilder;
+import com.arcanc.biomorphosis.data.recipe.builders.ForgeRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.builders.StomachRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
-import net.minecraft.core.HolderGetter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.IOException;
+import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Stream;
 
 public class BioRecipeProvider extends RecipeProvider
 {
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
     protected BioRecipeProvider(HolderLookup.Provider registries, RecipeOutput output)
     {
@@ -75,6 +86,51 @@ public class BioRecipeProvider extends RecipeProvider
                 setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
         unlockedBy("has_meat", has(ItemTags.MEAT)).
         save(this.output, Database.rl("biomass_from_meat").toString());
+
+        generateBioForgeVanillaEnhancedRecipes();
+    }
+
+    private void generateBioForgeVanillaEnhancedRecipes()
+    {
+        Path path = FMLPaths.GAMEDIR.get().resolve("vanilla_recipes");
+
+        try(Stream<Path> paths = Files.walk(path))
+        {
+            paths.filter(possiblePath -> possiblePath.toString().endsWith(".json")).
+                    forEach(recipePath ->
+                    {
+                        try (Reader recipeReader = Files.newBufferedReader(recipePath))
+                        {
+                            JsonObject jsonObject = GSON.fromJson(recipeReader, JsonObject.class);
+                            if (jsonObject.has("type") && !jsonObject.get("type").getAsString().equals("minecraft:smelting"))
+                                return;
+                            String recipeName = recipePath.getFileName().toString();
+                            String resultedRecipeName = recipeName.substring(0, recipeName.length() - 5);
+                            Ingredient input = Ingredient.of(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(jsonObject.get("ingredient").getAsString())));
+                            ItemStack result = ItemStack.OPTIONAL_CODEC.parse(JsonOps.INSTANCE, jsonObject.getAsJsonObject("result")).getOrThrow();
+                            int cookingTime = jsonObject.has("cookingtime") ? jsonObject.get("cookingtime").getAsInt() : 200;
+
+                            ForgeRecipeBuilder.newBuilder(
+                                            new BioBaseRecipe.ResourcesInfo(
+                                                    new BioBaseRecipe.BiomassInfo(true, 2),
+                                                    Optional.empty(),
+                                                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
+                                                    cookingTime)).
+                                    setInput(new IngredientWithSize(input)).
+                                    setResult(result).
+                                    unlockedBy(getHasName(input.getValues().get(0).value()), has(input.getValues().get(0).value())).
+                                    save(this.output, Database.rl(resultedRecipeName).toString());
+                        }
+                        catch (Exception e)
+                        {
+                            Database.LOGGER.warn("Failed to parse vanilla recipe: {} - {}", recipePath, e);
+                        }
+                    });
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 
     public static class Runner extends RecipeProvider.Runner

@@ -27,11 +27,14 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
 import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.data.recipe.display.CrusherRecipeDisplay;
+import com.arcanc.biomorphosis.data.recipe.display.ForgeRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.display.StomachRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
+import com.arcanc.biomorphosis.data.recipe.input.ForgeRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ItemStackWithChanceDisplay;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
@@ -324,6 +327,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<BioForgeBlock> FORGE = register("forge", BioForgeBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -397,6 +408,12 @@ public final class Registration
                         BioCatcherRenderer :: new,
                         BlockReg.CATCHER));
 
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioForge>> BE_FORGE = BLOCK_ENTITIES.register(
+                "forge",
+                makeType(BioForge :: new,
+                        BioForgeRenderer :: new,
+                        BlockReg.FORGE));
+
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
                                                                                              Supplier<? extends Block> valid)
@@ -456,6 +473,7 @@ public final class Registration
         public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
+        public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", Item :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));
 
         private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
         {
@@ -810,6 +828,7 @@ public final class Registration
 
         public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput, CrusherRecipeDisplay> CRUSHER_RECIPE = new RecipeEntry<>("crusher", RecipeBookCategory :: new, CrusherRecipeDisplay.CODEC, CrusherRecipeDisplay.STREAM_CODEC, CrusherRecipe.CrusherRecipeSerializer :: new);
         public static final RecipeEntry<StomachRecipe, StomachRecipeInput, StomachRecipeDisplay> STOMACH_RECIPE = new RecipeEntry<>("stomach", RecipeBookCategory :: new, StomachRecipeDisplay.CODEC, StomachRecipeDisplay.STREAM_CODEC, StomachRecipe.StomachRecipeSerializer :: new);
+        public static final RecipeEntry<ForgeRecipe, ForgeRecipeInput, ForgeRecipeDisplay> FORGE_RECIPE = new RecipeEntry<>("forge", RecipeBookCategory :: new, ForgeRecipeDisplay.CODEC, ForgeRecipeDisplay.STREAM_CODEC, ForgeRecipe.ForgeRecipeSerializer :: new);
 
         public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
         {

@@ -42,6 +42,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.LURE_CAMPFIRE, "Lure Campfire");
         this.addBlock(Registration.BlockReg.STOMACH, "Organic Reprocessor");
         this.addBlock(Registration.BlockReg.CATCHER, "Biofluid Extractor");
+        this.addBlock(Registration.BlockReg.FORGE, "BioForge");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");

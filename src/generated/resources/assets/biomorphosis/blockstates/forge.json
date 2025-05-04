@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=east,is_double=false": {
+      "model": "biomorphosis:block/forge",
+      "y": 270
+    },
+    "facing=east,is_double=true": {
+      "model": "biomorphosis:block/forge_double",
+      "y": 270
+    },
+    "facing=north,is_double=false": {
+      "model": "biomorphosis:block/forge",
+      "y": 180
+    },
+    "facing=north,is_double=true": {
+      "model": "biomorphosis:block/forge_double",
+      "y": 180
+    },
+    "facing=south,is_double=false": {
+      "model": "biomorphosis:block/forge"
+    },
+    "facing=south,is_double=true": {
+      "model": "biomorphosis:block/forge_double"
+    },
+    "facing=west,is_double=false": {
+      "model": "biomorphosis:block/forge",
+      "y": 90
+    },
+    "facing=west,is_double=true": {
+      "model": "biomorphosis:block/forge_double",
+      "y": 90
+    }
+  }
+}

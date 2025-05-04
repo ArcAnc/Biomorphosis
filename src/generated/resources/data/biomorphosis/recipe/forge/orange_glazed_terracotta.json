@@ -1,0 +1,23 @@
+{
+  "type": "biomorphosis:forge",
+  "input": {
+    "amount": 1,
+    "ingredient": "minecraft:orange_terracotta"
+  },
+  "resources": {
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 1,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 2,
+      "required": true
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:orange_glazed_terracotta"
+  }
+}

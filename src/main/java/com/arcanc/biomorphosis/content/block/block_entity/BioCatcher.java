@@ -71,13 +71,15 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         super(Registration.BETypeReg.BE_CATCHER.get(), pos, blockState);
         this.entityCatchZone = CATCH_ZONE.move(pos);
 
+        setSideMode(BasicSidedStorage.RelativeFace.DOWN, BasicSidedStorage.FaceMode.OUTPUT);
+
         this.fluidHandler = new FluidSidedStorage().
                 addHolder(FluidStackHolder.newBuilder().
                                 setCallback(hold -> this.markDirty()).
                                 setValidator(stack -> stack.is(Registration.FluidReg.LYMPH.type().get())).
                                 setCapacity(200).
                                 build(),
-                        BasicSidedStorage.FaceMode.INPUT);
+                        BasicSidedStorage.FaceMode.OUTPUT);
     }
 
     @Override
@@ -195,7 +197,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache()
     {
-        return cache;
+        return this.cache;
     }
 
     @Override
