@@ -473,7 +473,7 @@ public final class Registration
         public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
-        public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", Item :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));
+        public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", BioBaseItem :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));
 
         private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
         {
