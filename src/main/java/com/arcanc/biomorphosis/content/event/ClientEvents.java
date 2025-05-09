@@ -15,14 +15,12 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.BioBookProvider;
-import com.arcanc.biomorphosis.data.BioRecipeProvider;
-import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
-import com.arcanc.biomorphosis.data.SummaryModelProvider;
+import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
+import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
 import com.arcanc.biomorphosis.util.Database;
@@ -143,11 +141,16 @@ public final class ClientEvents
                 packOutput,
                 lookupProvider));
 
+        BioRegistryData.register(new BioBookProvider());
+        BioRegistryData.register(new BioMultiblockProvider());
+
         gen.addProvider(true, new DatapackBuiltinEntriesProvider(
                 packOutput,
                 lookupProvider,
-                BioBookProvider.registerBookContent(),
+                BioRegistryData.getBuilder(),
                 Set.of(Database.MOD_ID)));
+
+        BioRegistryData.clear();
     }
 
     private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)

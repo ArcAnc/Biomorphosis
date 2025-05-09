@@ -19,6 +19,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -29,6 +30,7 @@ public class CommonEvents
 
     public static void registerCommonEvents(@NotNull final IEventBus modEventBus)
     {
+
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         FluidTransportHandler.registerHandler();

@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.registration;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
 import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
@@ -959,11 +960,27 @@ public final class Registration
         }
     }
 
+    public static class MultiblockReg
+    {
+        public static final ResourceKey<Registry<IMultiblockDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("multiblock"));
+
+        private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+        {
+            event.dataPackRegistry(DEFINITION_KEY, IMultiblockDefinition.CODEC, IMultiblockDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
+        }
+
+        public static void init(@NotNull final IEventBus modEventBus)
+        {
+            modEventBus.addListener(MultiblockReg :: registerDataPackRegister);
+        }
+    }
+
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
         SlotDisplayReg.init(bus);
         IngredientReg.init(bus);
+        MultiblockReg.init(bus);
         BookDataReg.init(bus);
         RecipeReg.init(bus);
         BlockReg.init(bus);

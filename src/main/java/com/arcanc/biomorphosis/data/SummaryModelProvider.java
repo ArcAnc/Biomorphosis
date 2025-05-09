@@ -66,6 +66,8 @@ public class SummaryModelProvider extends ModelProvider
         createBucketModel(Registration.FluidReg.ADRENALINE, itemModels);
 
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
+
+        itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)

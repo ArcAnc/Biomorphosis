@@ -14,9 +14,9 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.book.BookChapterBuilder;
 import com.arcanc.biomorphosis.data.book.BookPageBuilder;
+import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -25,15 +25,18 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BioBookProvider extends RegistrySetBuilder
+public class BioBookProvider extends BioRegistryData
 {
     private final Map<ResourceLocation, BookChapterData> chapterDataMap = new HashMap<>();
     private final Map<ResourceLocation, BookPageData> pageDataMap = new HashMap<>();
 
     public BioBookProvider()
-    {}
+    {
+        super();
+    }
 
-    private void addContent()
+    @Override
+    protected void addContent()
     {
         addChapter(Database.GUI.GuideBook.Chapters.TITLE.location(), BookChapterBuilder.newChapter().
                 setId(Database.GUI.GuideBook.Chapters.TITLE.location()).
@@ -234,29 +237,22 @@ public class BioBookProvider extends RegistrySetBuilder
 
     private void addChapter(ResourceLocation location, BookChapterData data)
     {
-        chapterDataMap.putIfAbsent(location, data);
+        this.chapterDataMap.putIfAbsent(location, data);
     }
 
     private void addPage(ResourceLocation location, BookPageData data)
     {
-        pageDataMap.putIfAbsent(location, data);
+        this.pageDataMap.putIfAbsent(location, data);
     }
 
-    public static @NotNull BioBookProvider registerBookContent()
+    @Override
+    protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
     {
-        BioBookProvider bookProvider = new BioBookProvider();
-        bookProvider.addContent();
-        bookProvider.registerContent();
-        return bookProvider;
-    }
-
-    private void registerContent()
-    {
-        addChapters(context ->
-                chapterDataMap.forEach((location, bookChapterData) ->
+        registrySetBuilder.add(Registration.BookDataReg.CHAPTER_KEY, context ->
+                this.chapterDataMap.forEach((location, bookChapterData) ->
                         context.register(getChapterKey(location), bookChapterData)));
-        addPages(context ->
-                pageDataMap.forEach((location, bookPageData) ->
+        registrySetBuilder.add(Registration.BookDataReg.PAGE_KEY, context ->
+                this.pageDataMap.forEach((location, bookPageData) ->
                         context.register(getPageKey(location), bookPageData)));
     }
 
@@ -270,20 +266,5 @@ public class BioBookProvider extends RegistrySetBuilder
     {
         Preconditions.checkNotNull(location);
         return getResourceKey(Registration.BookDataReg.CHAPTER_KEY, location);
-    }
-
-    private <T> @NotNull ResourceKey<T> getResourceKey(ResourceKey<Registry<T>> registryKey, ResourceLocation location)
-    {
-        return ResourceKey.create(registryKey, location);
-    }
-
-    private void addChapters(RegistryBootstrap<BookChapterData> bootstrap)
-    {
-        this.add(Registration.BookDataReg.CHAPTER_KEY, bootstrap);
-    }
-
-    private void addPages(RegistryBootstrap<BookPageData> bootstrap)
-    {
-        this.add(Registration.BookDataReg.PAGE_KEY, bootstrap);
     }
 }

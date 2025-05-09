@@ -1,4 +1,4 @@
-// 1.21.4	2025-05-04T04:20:12.1228034	Biomorphosis: Models
+// 1.21.4	2025-05-09T19:21:21.8761175	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
@@ -26,6 +26,7 @@ dd50913161638f687d28bc9bf71799476d46eaf8 assets/biomorphosis/items/fluids/biomas
 9cda51b82986dc7023d336bf592b868207250a29 assets/biomorphosis/items/fluid_storage.json
 b3b8a23b020ef617055610fc578af5046e9a5c33 assets/biomorphosis/items/fluid_transmitter.json
 1b7c4c2dcbb9ba52ebff460b92cac7dc45ff82ad assets/biomorphosis/items/forge.json
+e8c8b092a8d46933d996ff8480c6431e83f724c7 assets/biomorphosis/items/forge_upgrade.json
 3e01b1e33ccb002a2117bca15d53ce426d511951 assets/biomorphosis/items/lure_campfire.json
 fca23f39b5d3db17eaa1ebec55c40009c9672fbd assets/biomorphosis/items/norph.json
 74b119b80a366333584a8c1d608636d08726a0e5 assets/biomorphosis/items/norph_overlay.json
@@ -56,6 +57,7 @@ de2c4302c6b4953e7a3a0ebde35707040b11ebde assets/biomorphosis/models/block/norph_
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
 55563bd38cba9be063ebf73b5f415adc5c4506b2 assets/biomorphosis/models/item/flesh_piece.json
+b4f3f4d76287d781b1e9554929dc36f185190ed8 assets/biomorphosis/models/item/forge_upgrade.json
 43bca131a1dcf798991959dffd6c5449c1eb4226 assets/biomorphosis/models/item/norph_overlay.json
 b301e9dceb6504c676af214d83b5865f5efce02c assets/biomorphosis/models/item/queens_brain.json
 9a32dcef59b3da11bbc88b20dec302404c935a61 assets/biomorphosis/models/item/wrench.json
