@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.LazyDataLoader;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
@@ -64,7 +65,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
 
     private final FluidSidedStorage fluidHandler;
 
-    private LazyEntityLoader entityLoader;
+    private LazyDataLoader<BioCatcher> entityLoader;
 
     public BioCatcher(BlockPos pos, BlockState blockState)
     {
@@ -134,7 +135,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     {
         if (this.entityLoader != null)
         {
-            this.entityLoader.loadCaptureEntity(this);
+            this.entityLoader.loadData(this);
             this.entityLoader = null;
             if (!this.level.isClientSide())
                 markDirty();
@@ -253,11 +254,5 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             Vec2 rot = TagHelper.readVec2(infoTag, "entity_rot");
             return new EntityInfo(pos, rot);
         }
-    }
-
-    @FunctionalInterface
-    private interface LazyEntityLoader
-    {
-        void loadCaptureEntity(BioCatcher be);
     }
 }

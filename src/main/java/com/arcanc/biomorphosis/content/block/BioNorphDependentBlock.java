@@ -62,7 +62,7 @@ public class BioNorphDependentBlock<T extends BioBaseBlockEntity> extends BioBas
             dropBlock(level, pos);
     }
 
-    private boolean isConnectedToNorph(@NotNull Level level,
+    public boolean isConnectedToNorph(@NotNull Level level,
                                        @NotNull BlockPos pos,
                                        @NotNull BlockState state)
     {

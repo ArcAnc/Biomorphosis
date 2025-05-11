@@ -10,8 +10,11 @@
 package com.arcanc.biomorphosis.util.helper;
 
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -44,6 +47,29 @@ public class DirectionHelper
         return state.getOptionalValue(BlockHelper.BlockProperties.HORIZONTAL_FACING).
                 or(() -> state.getOptionalValue(BlockHelper.BlockProperties.FACING)).
                 orElse(Direction.NORTH);
+    }
+
+    public static Rotation rotationFromNorth(@NotNull Direction direction)
+    {
+        return switch (direction)
+        {
+            case NORTH -> Rotation.NONE;
+            case EAST -> Rotation.CLOCKWISE_90;
+            case SOUTH -> Rotation.CLOCKWISE_180;
+            case WEST -> Rotation.COUNTERCLOCKWISE_90;
+            default -> throw new IllegalArgumentException("Unsupported direction: " + direction);
+        };
+    }
+
+    public static BlockPos rotatePosition(BlockPos pos, @NotNull Direction direction)
+    {
+        return switch (direction)
+        {
+            case SOUTH -> new BlockPos(-pos.getX(), pos.getY(), -pos.getZ());
+            case WEST  -> new BlockPos(pos.getZ(), pos.getY(), -pos.getX());
+            case EAST  -> new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
+            default    -> pos;
+        };
     }
 
 }

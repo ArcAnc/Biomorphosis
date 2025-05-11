@@ -12,6 +12,8 @@ package com.arcanc.biomorphosis.content.registration;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
+import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBE;
+import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -336,6 +338,15 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        /*FIXME: REMOVE_TEST_BLOCK*/
+        public static final DeferredBlock<TestStaticBlock> TEST_STATIC_MULTIBLOCK = register("test_static", TestStaticBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -414,6 +425,13 @@ public final class Registration
                 makeType(BioForge :: new,
                         BioForgeRenderer :: new,
                         BlockReg.FORGE));
+
+        /*FIXME: REMOVE TEST BE*/
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TestStaticBE>> BE_MULTIBLOCK_STATIC_TEST = BLOCK_ENTITIES.register(
+                "test_static_be",
+                makeType(TestStaticBE :: new,
+                        BlockReg.TEST_STATIC_MULTIBLOCK)
+        );
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,

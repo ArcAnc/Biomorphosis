@@ -91,6 +91,9 @@ public class SummaryModelProvider extends ModelProvider
         createStomachModel(blockModels);
         createCatcherModel(blockModels);
         createForgeModel(blockModels);
+
+        /*FIXME: remove this model*/
+        blockModels.createTrivialCube(Registration.BlockReg.TEST_STATIC_MULTIBLOCK.get());
     }
 
     //------------------------------------------------------------------------------
