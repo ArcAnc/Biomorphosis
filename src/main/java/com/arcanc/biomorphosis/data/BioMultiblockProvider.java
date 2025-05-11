@@ -42,7 +42,7 @@ public class BioMultiblockProvider extends BioRegistryData
     protected void addContent()
     {
         addMultiblock(staticBuilder(Database.rl("static_test")).
-                addPart(new BlockPos(0,0,0), Blocks.STONE.defaultBlockState()).
+                addPart(new BlockPos(0, 0, 1), Blocks.BIRCH_STAIRS.defaultBlockState()).
                 addPart(new BlockPos(0, 1, 0), Blocks.DIAMOND_BLOCK.defaultBlockState()).
                 addPart(new BlockPos(1, 0, 0), Blocks.BIRCH_STAIRS.defaultBlockState().
                         setValue(StairBlock.FACING, Direction.SOUTH)).

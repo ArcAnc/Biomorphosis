@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.data.multiblock;
 
-import com.arcanc.biomorphosis.content.block.multiblock.BlockStateMap;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.StaticMultiblockDefinition;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;

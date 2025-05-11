@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.block.multiblock.definition;
 
-import com.arcanc.biomorphosis.content.block.multiblock.BlockStateMap;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;

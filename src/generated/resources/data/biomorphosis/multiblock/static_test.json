@@ -2,8 +2,14 @@
   "type": "static",
   "id": "biomorphosis:static_test",
   "structure": {
-    "0, 0, 0": {
-      "Name": "minecraft:stone"
+    "0, 0, 1": {
+      "Name": "minecraft:birch_stairs",
+      "Properties": {
+        "facing": "north",
+        "half": "bottom",
+        "shape": "straight",
+        "waterlogged": "false"
+      }
     },
     "0, 1, 0": {
       "Name": "minecraft:diamond_block"

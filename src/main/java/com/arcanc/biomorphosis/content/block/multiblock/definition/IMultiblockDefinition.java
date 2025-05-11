@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.block.multiblock.definition;
 
-import com.arcanc.biomorphosis.content.block.multiblock.BlockStateMap;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

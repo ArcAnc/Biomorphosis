@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
+import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -20,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,6 +38,8 @@ public class BlockHelper
         public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;
 
         public static final BooleanProperty IS_DOUBLE = BooleanProperty.create("is_double");
+
+        public static final EnumProperty<MultiblockState> MULTIBLOCK_STATE = EnumProperty.create("multiblock_state", MultiblockState.class);
     }
 
     public static Optional<BlockEntity> getTileEntity(BlockGetter world, Vec3 pos)
@@ -103,6 +107,26 @@ public class BlockHelper
             return state.setValue(BlockProperties.HORIZONTAL_FACING, Direction.from2DDataValue((dirIndex + 1) % 4));
         }
         return state;
+    }
+
+    public static boolean statesEquivalent(@NotNull BlockState expected, @NotNull BlockState actual)
+    {
+        if (expected.getBlock() != actual.getBlock())
+            return false;
+
+        for (Property<?> property : expected.getProperties())
+        {
+            if (!actual.hasProperty(property))
+                return false;
+
+            Comparable<?> expectedValue = expected.getValue(property);
+            Comparable<?> actualValue = actual.getValue(property);
+
+            if (!expectedValue.equals(actualValue))
+                return false;
+        }
+
+        return true;
     }
 
     public static @NotNull ResourceLocation getRegistryName (Block block)
