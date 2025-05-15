@@ -51,7 +51,7 @@ public class BioMultiblockProvider extends BioRegistryData
         addMultiblock(dynamicBuilder(Database.rl("dynamic_test")).
                 setBehavior(DynamicMultiblockDefinition.ScanBehavior.DFS).
                 setMaxSize(new BlockPos(3, 6, 3)).
-                setAllowedBlockType(Registration.BlockReg.FLUID_STORAGE.get()).
+                setAllowedBlockType(Registration.BlockReg.TEST_DYNAMIC_MULTIBLOCK.get()).
                 end());
     }
 

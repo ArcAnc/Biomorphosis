@@ -29,7 +29,6 @@ public class StaticMultiblockDefinition implements IMultiblockDefinition
     {
         this.id = id;
         this.structure = map;
-
     }
 
     @Override

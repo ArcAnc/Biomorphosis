@@ -7,12 +7,13 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.multiblock.base.static_data;
+package com.arcanc.biomorphosis.content.block.multiblock.base.type;
 
+import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.StaticMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -37,14 +38,13 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.image.DataBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public abstract class StaticMultiblockPart extends BioMultiblockPart
+public abstract class StaticMultiblockPart extends BioMultiblockPart implements ServerTickableBE
 {
     private static final int MORPH_TIME_TICKS = 20 * 15;
     private static final AABB INGREDIENTS_ZONE = new AABB(1/16f, 1/16f, 1/16f, 15/16f, 15/16f, 15/16f);
@@ -64,32 +64,46 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart
     @Override
     public void tickServer()
     {
-        super.tickServer();
-
-        if (!isMaster(getBlockPos()))
+        if (this.level == null)
             return;
-        if (getMultiblockState() == MultiblockState.MORPHING)
-        {
-            if (!isStillValidDuringMorphing())
-            {
-                disassembleMultiblock();
-                return;
-            }
-            if (this.morphProgress >= morphSequence.size())
-            {
-                onMorphComplete();
-                return;
-            }
 
-            this.accumulatedTicks +=1f;
-            while (this.accumulatedTicks >= this.morphDelay)
+        if (!isMultiblockPart())
+            tryFormMultiblock();
+        else
+        {
+            if (getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING)
+                multiblockMorphing();
+            else if (getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
             {
-                placeNextMorphBlock();
-                this.accumulatedTicks -= this.morphDelay;
+                if (!isMultiblockStillValid())
+                    disassembleMultiblock();
+                else
+                    multiblockServerTick();
             }
         }
-        else if (getMultiblockState() == MultiblockState.FORMED)
-            serverTick();
+    }
+
+    public void multiblockMorphing()
+    {
+        if (!isMaster())
+            return;
+        if (!isStillValidDuringMorphing())
+        {
+            disassembleMultiblock();
+            return;
+        }
+        if (this.morphProgress >= this.morphSequence.size())
+        {
+            onMorphComplete();
+            return;
+        }
+
+        this.accumulatedTicks +=1f;
+        while (this.accumulatedTicks >= this.morphDelay)
+        {
+            placeNextMorphBlock();
+            this.accumulatedTicks -= this.morphDelay;
+        }
     }
 
     private void onMorphComplete()
@@ -154,7 +168,7 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart
         return false;
     }
 
-    protected abstract void serverTick();
+    protected abstract void multiblockServerTick();
 
     protected boolean isStillValidDuringMorphing()
     {
@@ -267,7 +281,7 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart
     {
         if (this.level == null)
             return false;
-        if (!isMaster(getBlockPos()))
+        if (!isMaster())
             return true;
         List<Pair<BlockPos, BlockState>> structure = this.definition.getStructure(getLevel(), getBlockPos()).getStates().
                 entrySet().
@@ -301,7 +315,7 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart
     {
         if (this.level == null)
             return;
-        if (!isMaster(getBlockPos()))
+        if (!isMaster())
             return;
 
         List<Pair<BlockPos, BlockState>> structure = this.definition.getStructure(getLevel(), getBlockPos()).getStates().
@@ -379,5 +393,12 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart
             list.add(pairTag);
         });
         tag.put("morph_sequence", list);
+    }
+
+    @Override
+    public void setRemoved()
+    {
+        onDisassemble();
+        super.setRemoved();
     }
 }

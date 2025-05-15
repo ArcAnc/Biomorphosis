@@ -43,7 +43,7 @@ public class StaticMultiblockBuilder
         Preconditions.checkNotNull(stateMap);
         if (stateMap.isEmpty())
             return this;
-        stateMap.forEach(this.stateMap :: putIfAbsent);
+        stateMap.forEach(this :: addPart);
         return this;
     }
 

@@ -7,19 +7,17 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.multiblock.base.static_data;
+package com.arcanc.biomorphosis.content.block.multiblock.base.type;
 
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 public class StaticMultiblockPartBlock<T extends BioMultiblockPart> extends MultiblockPartBlock<T>

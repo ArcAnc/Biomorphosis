@@ -1,0 +1,117 @@
+/**
+ * @author ArcAnc
+ * Created at: 14.05.2025
+ * Copyright (c) 2025
+ * <p>
+ * This code is licensed under "Arc's License of Common Sense"
+ * Details can be found in the license file in the root folder of this project
+ */
+
+package com.arcanc.biomorphosis.content.block.multiblock.base.type;
+
+import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
+import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
+import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
+import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.ZoneHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Map;
+
+public abstract class DynamicMultiblockPart extends BioMultiblockPart
+{
+    public DynamicMultiblockPart(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
+    {
+        super(type, pos, blockState);
+    }
+
+    public void onPlace(@NotNull ServerLevel level, BlockPos pos, @NotNull BlockState state)
+    {
+        if (state.hasProperty(MultiblockPartBlock.STATE) && state.getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
+            return;
+
+        this.definition = level.registryAccess().lookup(Registration.MultiblockReg.DEFINITION_KEY).
+                flatMap(registry -> registry.filterElements(definition ->
+                {
+                    if (definition.type() == MultiblockType.STATIC)
+                        return false;
+                    DynamicMultiblockDefinition dynDef = (DynamicMultiblockDefinition) definition;
+                    return dynDef.getAllowedBlockType().equals(BlockHelper.getRegistryName(this.getBlockState().getBlock()));
+                }).
+                listElements().
+                findFirst().
+                map(Holder.Reference::value)).
+                orElse(null);
+
+        if (!(this.definition instanceof DynamicMultiblockDefinition dynDefinition))
+            return;
+
+        BlockStateMap map = dynDefinition.getStructure(level, pos);
+
+        if (map.getStates().isEmpty())
+            return;
+
+        /*It's MASTER!!*/
+        if (map.getStates().size() == 1)
+            markAsPartOfMultiblock(getBlockPos());
+        else
+            for (Map.Entry<BlockPos, BlockState> entry : map.getStates().entrySet())
+            {
+                BlockPos targetRealPos = getBlockPos().offset(entry.getKey());
+                if (entry.getKey().equals(BlockPos.ZERO))
+                    continue;
+                BlockPos masterPos = BlockHelper.castTileEntity(level, targetRealPos, this.getClass()).
+                        map(part -> part.isMaster() ? targetRealPos : null).orElse(null);
+                if (masterPos == null)
+                    continue;
+                BlockPos multiblockSize = dynDefinition.size();
+                boolean markAsMaster = ZoneHelper.getPoses(masterPos, ZoneHelper.RadiusOptions.of(ZoneHelper.ZoneType.SQUARE, multiblockSize.getX(), multiblockSize.getY(), multiblockSize.getZ())).
+                        noneMatch(checkPos -> checkPos.equals(getBlockPos()));
+                if (markAsMaster)
+                    markAsPartOfMultiblock(getBlockPos());
+                else
+                {
+                    markAsPartOfMultiblock(masterPos);
+                    BlockHelper.castTileEntity(level, masterPos, this.getClass()).
+                            ifPresent(DynamicMultiblockPart :: updateCapabilities);
+                    break;
+                }
+            }
+    }
+
+    public void onRemove(ServerLevel level, BlockPos pos, BlockState state)
+    {
+        getMasterPos().
+                flatMap(master -> BlockHelper.castTileEntity(level, master, this.getClass())).
+                ifPresent(DynamicMultiblockPart::updateCapabilities);
+    }
+
+    @Override
+    protected void tryFormMultiblock()
+    {
+    }
+
+    @Override
+    protected boolean isMultiblockStillValid()
+    {
+        return true;
+    }
+
+    @Override
+    protected void onDisassemble()
+    {
+
+    }
+
+    protected abstract void updateCapabilities();
+
+}

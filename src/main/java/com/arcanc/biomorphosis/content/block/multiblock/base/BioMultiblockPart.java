@@ -10,69 +10,31 @@
 package com.arcanc.biomorphosis.content.block.multiblock.base;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioBaseBlockEntity;
-import com.arcanc.biomorphosis.content.block.block_entity.tick.ClientTickableBE;
-import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRoleBehavior;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.MasterRoleBehavior;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.SlaveRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.LazyDataLoader;
-import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
-import java.util.function.Predicate;
 
-public abstract class BioMultiblockPart extends BioBaseBlockEntity implements ServerTickableBE, ClientTickableBE
+public abstract class BioMultiblockPart extends BioBaseBlockEntity
 {
-    @Nullable
-    protected BlockPos masterPos;
-    protected Predicate<BlockPos> isMaster = pos -> getMasterPos().map(mPos -> mPos.equals(pos)).orElse(false);
     protected IMultiblockDefinition definition;
-
-    private LazyDataLoader<BioMultiblockPart> dataLoader;
+    protected IMultiblockRoleBehavior roleBehavior;
 
     public BioMultiblockPart(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
-    }
-
-    @Override
-    public void tickClient()
-    {
-        loadDefinition();
-    }
-
-    @Override
-    public void tickServer()
-    {
-        if (this.level == null)
-            return;
-
-        loadDefinition();
-
-        if (!isMultiblockPart())
-            tryFormMultiblock();
-        else if (!isMultiblockStillValid() && getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
-            disassembleMultiblock();
-    }
-
-    private void loadDefinition()
-    {
-        if (this.dataLoader != null)
-        {
-            this.dataLoader.loadData(this);
-            this.dataLoader = null;
-            if (!this.level.isClientSide())
-                markDirty();
-        }
     }
 
     public Optional<IMultiblockDefinition> getDefinition()
@@ -82,36 +44,41 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity implements Se
 
     public Optional<BlockPos> getMasterPos()
     {
-        return Optional.ofNullable(this.masterPos);
+        return this.roleBehavior.getMasterPos();
     }
 
     public boolean isMultiblockPart()
     {
-        return this.masterPos != null;
+        return this.roleBehavior != null;
     }
 
-    public boolean isMaster(@NotNull BlockPos pos)
+    public boolean isMaster()
     {
-        return this.isMaster.test(pos);
+        return this.roleBehavior.isMaster();
+    }
+
+    protected IMultiblockRoleBehavior setRoleBehavior(@NotNull BlockPos masterPos)
+    {
+        return masterPos.equals(getBlockPos()) ? new MasterRoleBehavior(this) : new SlaveRoleBehavior(this).setMasterPos(masterPos);
     }
 
     protected void markAsPartOfMultiblock(BlockPos masterPos)
     {
-        this.masterPos = masterPos;
+        this.roleBehavior = setRoleBehavior(masterPos);
         setMultiblockState(MultiblockState.FORMED);
         markDirty();
     }
 
     protected void startMorphing(BlockPos masterPos)
     {
-        this.masterPos = masterPos;
+        this.roleBehavior = setRoleBehavior(masterPos);
         setMultiblockState(MultiblockState.MORPHING);
         markDirty();
     }
 
     protected void resetMultiblockState()
     {
-        this.masterPos = null;
+        this.roleBehavior = null;
         setMultiblockState(MultiblockState.DISASSEMBLED);
         markDirty();
     }
@@ -122,7 +89,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity implements Se
             return;
         BlockPos pos = getBlockPos();
         BlockState current = this.level.getBlockState(pos);
-        if (current.getBlock() instanceof MultiblockPartBlock<?> block)
+        if (current.getBlock() instanceof MultiblockPartBlock<?>)
             this.level.setBlockAndUpdate(pos, current.setValue(MultiblockPartBlock.STATE, state));
     }
 
@@ -161,17 +128,17 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity implements Se
     @Override
     public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
-        if (tag.contains("master_pos"))
-            this.masterPos = TagHelper.readBlockPos(tag, "master_pos");
+        if (tag.contains("role"))
+            this.roleBehavior = IMultiblockRoleBehavior.load(tag.getCompound("role"), this);
         if (tag.contains("definition"))
-            this.dataLoader = blockEntity ->
-            {
-                Level level = blockEntity.getLevel();
-                this.definition = level.registryAccess().lookup(Registration.MultiblockReg.DEFINITION_KEY).
-                        map(registry -> registry.get(ResourceLocation.parse(tag.getString("definition"))).
-                                orElseThrow().
-                                value()).orElse(null);
-            };
+        {
+            ResourceLocation location = ResourceLocation.parse(tag.getString("definition"));
+            this.definition = registries.lookup(Registration.MultiblockReg.DEFINITION_KEY).
+                    flatMap(registry -> registry.
+                            get(ResourceKey.create(Registration.MultiblockReg.DEFINITION_KEY, location)).
+                            map(Holder.Reference :: value)).
+            orElse(null);
+        }
         else
             this.definition = null;
     }
@@ -179,7 +146,8 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity implements Se
     @Override
     public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
     {
-        getMasterPos().ifPresent(pos -> TagHelper.writeBlockPos(pos, tag, "master_pos"));
+        if (this.roleBehavior != null)
+            tag.put("role", IMultiblockRoleBehavior.save(this.roleBehavior));
         getDefinition().ifPresent(definition -> tag.putString("definition", definition.getId().toString()));
     }
 }

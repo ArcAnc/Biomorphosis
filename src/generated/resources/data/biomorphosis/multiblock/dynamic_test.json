@@ -1,6 +1,6 @@
 {
   "type": "dynamic",
-  "allowed_block_type": "biomorphosis:fluid_storage",
+  "allowed_block_type": "biomorphosis:test_dynamic",
   "behavior": "dfs",
   "id": "biomorphosis:dynamic_test",
   "max_size": [

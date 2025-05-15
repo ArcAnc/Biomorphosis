@@ -94,6 +94,7 @@ public class SummaryModelProvider extends ModelProvider
 
         /*FIXME: remove this model*/
         blockModels.createTrivialCube(Registration.BlockReg.TEST_STATIC_MULTIBLOCK.get());
+        blockModels.createTrivialCube(Registration.BlockReg.TEST_DYNAMIC_MULTIBLOCK.get());
     }
 
     //------------------------------------------------------------------------------

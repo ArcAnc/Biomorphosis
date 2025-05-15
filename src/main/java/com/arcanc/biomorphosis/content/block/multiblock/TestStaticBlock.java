@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.block.multiblock;
 
-import com.arcanc.biomorphosis.content.block.multiblock.base.static_data.StaticMultiblockPartBlock;
+import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPartBlock;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.BlockGetter;

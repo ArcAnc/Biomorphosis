@@ -12,6 +12,8 @@ package com.arcanc.biomorphosis.content.registration;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
+import com.arcanc.biomorphosis.content.block.multiblock.TestDynamicBE;
+import com.arcanc.biomorphosis.content.block.multiblock.TestDynamicBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBE;
 import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
@@ -346,6 +348,14 @@ public final class Registration
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+        public static final DeferredBlock<TestDynamicBlock> TEST_DYNAMIC_MULTIBLOCK = register("test_dynamic", TestDynamicBlock:: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
 
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
@@ -431,6 +441,11 @@ public final class Registration
                 "test_static_be",
                 makeType(TestStaticBE :: new,
                         BlockReg.TEST_STATIC_MULTIBLOCK)
+        );
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TestDynamicBE>> BE_MULTIBLOCK_DYNAMIC_TEST = BLOCK_ENTITIES.register(
+                "test_dynamic_be",
+                makeType(TestDynamicBE :: new,
+                        BlockReg.TEST_DYNAMIC_MULTIBLOCK)
         );
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,

@@ -1,4 +1,4 @@
-// 1.21.4	2025-05-11T16:29:29.4273486	Registries
+// 1.21.4	2025-05-14T14:34:56.2965244	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -25,5 +25,5 @@ e239b97ae704adde51b257ef799ed57dac88c42a data/biomorphosis/book/page/test_basic_
 1821d987e3ce09824f30a04117e394346bdae7e5 data/biomorphosis/book/page/test_basic_8.json
 7ab5e5077f3e5337df5026cc7fb70e152f771182 data/biomorphosis/book/page/test_basic_9.json
 b0f18c63f158d1407ba9ec8f3202b894b083add9 data/biomorphosis/book/page/test_next_lvl.json
-6aa5c27b4005d0e2ab484e20fd0787c1c4fcde8b data/biomorphosis/multiblock/dynamic_test.json
+05268d165080c18b7ef500757b9c3af91b8f2c01 data/biomorphosis/multiblock/dynamic_test.json
 d60d1dac20ccf987c093d429f81d89a3fc76a7be data/biomorphosis/multiblock/static_test.json
