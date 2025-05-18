@@ -140,6 +140,11 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
         return getHolderCapacity(null, tank);
     }
 
+    public void setTankCapacity(int tank, int value)
+    {
+        getHolderAt(null, tank).ifPresent(holder -> holder.setCapacity(value));
+    }
+
     @Override
     public boolean isFluidValid(int tank, @NotNull FluidStack stack)
     {

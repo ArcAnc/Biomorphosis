@@ -12,10 +12,7 @@ package com.arcanc.biomorphosis.content.registration;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
-import com.arcanc.biomorphosis.content.block.multiblock.TestDynamicBE;
-import com.arcanc.biomorphosis.content.block.multiblock.TestDynamicBlock;
-import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBE;
-import com.arcanc.biomorphosis.content.block.multiblock.TestStaticBlock;
+import com.arcanc.biomorphosis.content.block.multiblock.*;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -340,6 +337,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 
+        public static final DeferredBlock<MultiblockFluidStorageBlock> MULTIBLOCK_FLUID_STORAGE = register("multiblock_fluid_storage", MultiblockFluidStorageBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
         /*FIXME: REMOVE_TEST_BLOCK*/
         public static final DeferredBlock<TestStaticBlock> TEST_STATIC_MULTIBLOCK = register("test_static", TestStaticBlock :: new,
                 properties -> properties.mapColor(MapColor.PODZOL).
@@ -435,6 +440,12 @@ public final class Registration
                 makeType(BioForge :: new,
                         BioForgeRenderer :: new,
                         BlockReg.FORGE));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockFluidStorage>> BE_MULTIBLOCK_FLUID_STORAGE = BLOCK_ENTITIES.register(
+                "multiblock_fluid_storage",
+                makeType(MultiblockFluidStorage :: new,
+                        MultiblockFluidStorageRenderer :: new,
+                        BlockReg.MULTIBLOCK_FLUID_STORAGE));
 
         /*FIXME: REMOVE TEST BE*/
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TestStaticBE>> BE_MULTIBLOCK_STATIC_TEST = BLOCK_ENTITIES.register(

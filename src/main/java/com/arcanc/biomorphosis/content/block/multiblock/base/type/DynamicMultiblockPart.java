@@ -12,20 +12,27 @@ package com.arcanc.biomorphosis.content.block.multiblock.base.type;
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.MasterRoleBehavior;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.SlaveRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class DynamicMultiblockPart extends BioMultiblockPart
 {
@@ -36,6 +43,8 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
 
     public void onPlace(@NotNull ServerLevel level, BlockPos pos, @NotNull BlockState state)
     {
+        /*FIXME: надо проверить механизм создания мультиблока. Сейчас он слегка кривой, потому что можно слить 2 мультиблока в 1, как так и надо. + размер определяется слегка не верно*/
+
         if (state.hasProperty(MultiblockPartBlock.STATE) && state.getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
             return;
 
@@ -90,10 +99,47 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
 
     public void onRemove(ServerLevel level, BlockPos pos, BlockState state)
     {
-        getMasterPos().
+        if (!isMaster())
+            getMasterPos().
                 flatMap(master -> BlockHelper.castTileEntity(level, master, this.getClass())).
-                ifPresent(DynamicMultiblockPart::updateCapabilities);
+                ifPresent(DynamicMultiblockPart :: updateCapabilities);
+        else
+        {
+            Set<BlockPos> poses = new HashSet<>();
+            for (Direction dir : Direction.values())
+            {
+                BlockPos toCheckPos = pos.relative(dir);
+                BlockState toCheckState = level.getBlockState(toCheckPos);
+                if (state.is(toCheckState.getBlock()))
+                    poses.add(toCheckPos);
+            }
+            if (poses.isEmpty())
+                return;
+            BlockPos startPos = poses.stream().findAny().get();
+            BlockStateMap map = this.definition.getStructure(level, startPos);
+            BlockPos newMasterPos = map.getStates().keySet().
+                    stream().
+                    findAny().
+                    orElse(null);
+            if (newMasterPos == null)
+                return;
+            BlockPos realMasterPos = startPos.offset(newMasterPos);
+            BlockHelper.castTileEntity(level, realMasterPos, this.getClass()).
+                    ifPresent(newMaster ->
+                    {
+                        newMaster.changeRoleBehavior(new MasterRoleBehavior(newMaster));
+                        this.transferRequiredData(newMaster);
+                        newMaster.updateCapabilities();
+                    });
+            map.getStates().keySet().stream().
+                    filter(entry -> !entry.equals(newMasterPos)).
+                    forEach(slavePos ->
+                            BlockHelper.castTileEntity(level, startPos.offset(slavePos), this.getClass()).
+                                ifPresent(part -> part.changeRoleBehavior(new SlaveRoleBehavior(part).setMasterPos(realMasterPos))));
+        }
     }
+
+    protected abstract void transferRequiredData(DynamicMultiblockPart target);
 
     @Override
     protected void tryFormMultiblock()

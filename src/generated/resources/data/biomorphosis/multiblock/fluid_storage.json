@@ -1,0 +1,11 @@
+{
+  "type": "dynamic",
+  "allowed_block_type": "biomorphosis:multiblock_fluid_storage",
+  "behavior": "bfs",
+  "id": "biomorphosis:fluid_storage",
+  "max_size": [
+    2,
+    3,
+    2
+  ]
+}

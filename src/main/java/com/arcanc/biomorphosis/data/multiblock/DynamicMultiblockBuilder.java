@@ -43,6 +43,11 @@ public class DynamicMultiblockBuilder
         return this;
     }
 
+    public DynamicMultiblockBuilder setMaxSize(int x, int y, int z)
+    {
+        return setMaxSize(new BlockPos(x, y, z));
+    }
+
     public DynamicMultiblockBuilder setAllowedBlockType(Block block)
     {
         Preconditions.checkNotNull(block);

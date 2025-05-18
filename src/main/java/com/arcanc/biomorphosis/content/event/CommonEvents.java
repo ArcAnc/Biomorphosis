@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.block.block_entity.*;
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
@@ -19,7 +20,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -71,6 +71,7 @@ public class CommonEvents
                 forEach(item -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), item));
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FLUID_STORAGE.get(), BioFluidStorage :: getHandler);
+        event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_FLUID_STORAGE.get(), MultiblockFluidStorage :: getHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_CRUSHER.get(), BioCrusher :: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CRUSHER.get(), BioCrusher :: getItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_STOMACH.get(), BioStomach:: getFluidHandler);

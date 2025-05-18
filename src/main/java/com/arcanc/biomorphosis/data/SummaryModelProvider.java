@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.data;
 
 import com.arcanc.biomorphosis.content.block.*;
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
@@ -92,6 +93,10 @@ public class SummaryModelProvider extends ModelProvider
         createCatcherModel(blockModels);
         createForgeModel(blockModels);
 
+
+        /*FIXME: change block model*/
+        //blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get());
+        createMultiblockFluidStorage(blockModels);
         /*FIXME: remove this model*/
         blockModels.createTrivialCube(Registration.BlockReg.TEST_STATIC_MULTIBLOCK.get());
         blockModels.createTrivialCube(Registration.BlockReg.TEST_DYNAMIC_MULTIBLOCK.get());
@@ -117,6 +122,44 @@ public class SummaryModelProvider extends ModelProvider
     //------------------------------------------------------------------------------
     // BLOCK MODELS
     //------------------------------------------------------------------------------
+
+    private void createMultiblockFluidStorage(@NotNull BlockModelGenerators blockModels)
+    {
+        DeferredBlock<MultiblockFluidStorageBlock> block = Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE;
+        ResourceLocation blockLoc = TextureMapping.getBlockTexture(block.get());
+
+        TextureMapping mapping = new TextureMapping().
+                put(TextureSlot.SIDE, blockLoc.withSuffix("/side_transparent")).
+                put(TextureSlot.UP, blockLoc.withSuffix("/top")).
+                put(TextureSlot.DOWN, blockLoc.withSuffix("/top")).
+                put(TextureSlot.PARTICLE, blockLoc.withSuffix("/side_transparent")).
+                put(TextureSlot.CONTENT, blockLoc.withSuffix("/side"));
+
+        ExtendedModelTemplateBuilder template = BLOCK.extend().
+                renderType("cutout").
+                guiLight(UnbakedModel.GuiLight.SIDE).
+                requiredTextureSlot(TextureSlot.SIDE).
+                requiredTextureSlot(TextureSlot.UP).
+                requiredTextureSlot(TextureSlot.DOWN).
+                requiredTextureSlot(TextureSlot.PARTICLE).
+                requiredTextureSlot(TextureSlot.CONTENT).
+                element(elementBuilder -> elementBuilder.
+                        from(0, 0, 0).
+                        to(16, 16, 16).
+                        allFaces((direction, faceBuilder) ->
+                        {
+                            faceBuilder.uvs(0, 0, 16, 16);
+                            if (direction.getAxis().isHorizontal())
+                                faceBuilder.texture(TextureSlot.SIDE);
+                            else if (direction == Direction.UP)
+                                faceBuilder.texture(TextureSlot.UP);
+                            else
+                                faceBuilder.texture(TextureSlot.DOWN);
+                        }));
+
+        ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).create(block.get(), blockModels.modelOutput);
+        blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(block.get(), modelLocation));
+    }
 
     private void createForgeModel(@NotNull BlockModelGenerators blockModels)
     {

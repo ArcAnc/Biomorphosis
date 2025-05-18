@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.fluid;
 
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
@@ -61,7 +62,6 @@ public class FluidLevelAnimator
             IFluidHandler handler = fluidHandler.get();
             if (!(handler instanceof FluidSidedStorage fluidSidedStorage))
                 continue;
-
             for (int q = 0; q < handler.getTanks(); q++)
             {
                 int realFluidAmount = fluidSidedStorage.getFluidInTank(q).getAmount();

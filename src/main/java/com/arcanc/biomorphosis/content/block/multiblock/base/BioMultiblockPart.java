@@ -44,7 +44,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
 
     public Optional<BlockPos> getMasterPos()
     {
-        return this.roleBehavior.getMasterPos();
+        return isMultiblockPart() ? this.roleBehavior.getMasterPos() : Optional.empty();
     }
 
     public boolean isMultiblockPart()
@@ -54,7 +54,13 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
 
     public boolean isMaster()
     {
-        return this.roleBehavior.isMaster();
+        return isMultiblockPart() && this.roleBehavior.isMaster();
+    }
+
+    protected void changeRoleBehavior(IMultiblockRoleBehavior roleBehavior)
+    {
+        this.roleBehavior = roleBehavior;
+        markDirty();
     }
 
     protected IMultiblockRoleBehavior setRoleBehavior(@NotNull BlockPos masterPos)

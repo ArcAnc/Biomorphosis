@@ -60,6 +60,14 @@ public class FluidStackHolder implements IFluidTank
         update();
     }
 
+    public void setCapacity (int value)
+    {
+        this.capacity = Math.clamp(value, 0, Integer.MAX_VALUE);
+        if (this.fluid.getAmount() > this.capacity)
+            this.fluid.setAmount(this.capacity);
+        update();
+    }
+
     @Override
     public int getFluidAmount()
     {

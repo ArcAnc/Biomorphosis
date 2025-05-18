@@ -8,6 +8,7 @@
     "biomorphosis:crusher",
     "biomorphosis:stomach",
     "biomorphosis:catcher",
-    "biomorphosis:forge"
+    "biomorphosis:forge",
+    "biomorphosis:multiblock_fluid_storage"
   ]
 }
