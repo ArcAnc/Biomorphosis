@@ -10,8 +10,9 @@
 package com.arcanc.biomorphosis.content.gui.screen.container;
 
 import com.arcanc.biomorphosis.content.gui.BioSlot;
-import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
+import com.google.common.base.Preconditions;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -26,8 +27,14 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 public abstract class BioContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T>
 {
+    private final List<InfoArea> infoAreas = new ArrayList<>();
+
     public BioContainerScreen(T menu, Inventory playerInventory, Component title)
     {
         super(menu, playerInventory, title);
@@ -37,7 +44,24 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
-        renderTooltip(guiGraphics, mouseX, mouseY);
+
+        for (InfoArea area : this.infoAreas)
+            area.render(guiGraphics, mouseX, mouseY, partialTick);
+
+        List<Component> resultedTooltip = new ArrayList<>();
+        for (InfoArea area : this.infoAreas)
+            area.fillTooltip(mouseX, mouseY, resultedTooltip);
+
+        if (resultedTooltip.isEmpty())
+            renderTooltip(guiGraphics, mouseX, mouseY);
+        else
+            guiGraphics.renderTooltip(getFont(), resultedTooltip, Optional.empty(), mouseX, mouseY);
+    }
+
+    protected void addInfoArea(InfoArea info)
+    {
+        Preconditions.checkNotNull(info);
+        this.infoAreas.add(info);
     }
 
     @Override

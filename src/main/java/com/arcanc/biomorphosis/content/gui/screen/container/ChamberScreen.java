@@ -22,7 +22,6 @@ public class ChamberScreen extends BioContainerScreen<ChamberMenu>
         super(menu, playerInventory, title);
     }
 
-
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY)
     {

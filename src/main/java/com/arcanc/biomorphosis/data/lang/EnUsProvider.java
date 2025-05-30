@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.lang;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.data.PackOutput;
-import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
@@ -89,6 +88,16 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT, "Back");
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT, "Next");
         this.add(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE, "To Title");
+
+        //-----------------------------
+        //TOOLTIP
+
+        this.add(Database.GUI.HOLD_SHIFT, "Hold §6SHIFT§r for additional info");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_SHORT_TOOLTIP, "%s mB");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_EXTENDED_TOOLTIP, "%s/%s mB");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_DENSITY, "Density: %s kg/m³");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_TEMPERATURE, "Temperature: %s K");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_VISCOSITY, "Viscosity: %s m²/s");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)

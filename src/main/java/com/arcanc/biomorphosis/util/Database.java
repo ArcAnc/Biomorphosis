@@ -68,6 +68,22 @@ public class Database
     {
         private static final String GUI = "gui";
 
+        public static final String HOLD_SHIFT = rl(GUI + ".tooltip.info.hold_shift").toLanguageKey();
+        public static final class InfoArea
+        {
+            public static final class FluidArea
+            {
+                public static final class Tooltip
+                {
+                    public static final String NORMAL_SHORT_TOOLTIP = rl(GUI + ".tooltip.info.fluid.normal.short").toLanguageKey();
+                    public static final String NORMAL_EXTENDED_TOOLTIP = rl(GUI + ".tooltip.info.fluid.normal.extended").toLanguageKey();
+                    public static final String ADVANCED_TOOLTIP_DENSITY = rl(GUI + ".tooltip.info.fluid.advanced.density").toLanguageKey();
+                    public static final String ADVANCED_TOOLTIP_TEMPERATURE = rl(GUI + ".tooltip.info.fluid.advanced.temperature").toLanguageKey();
+                    public static final String ADVANCED_TOOLTIP_VISCOSITY = rl(GUI + ".tooltip.info.fluid.advanced.viscosity").toLanguageKey();
+                }
+            }
+        }
+
         public static final class Textures
         {
             public static final class Tooltip
@@ -136,9 +152,9 @@ public class Database
                     public static final String SHAPELESS = rl(GUI + ".book.page.component.recipe.shapeless").toLanguageKey();
                     public static final String TICKS = rl(GUI + ".book.page.component.recipe.ticks").toLanguageKey();
                     public static final String EXP = rl(GUI + ".book.page.component.recipe.experience").toLanguageKey();
-                    public static final String ARROW_LEFT = rl(GUI + "book.page.component.arrow.back").toLanguageKey();
-                    public static final String ARROW_RIGHT = rl(GUI + "book.page.component.arrow.forward").toLanguageKey();
-                    public static final String ARROW_TO_TITLE = rl(GUI + "book.page.component.arrow.to_title").toLanguageKey();
+                    public static final String ARROW_LEFT = rl(GUI + ".book.page.component.arrow.back").toLanguageKey();
+                    public static final String ARROW_RIGHT = rl(GUI + ".book.page.component.arrow.forward").toLanguageKey();
+                    public static final String ARROW_TO_TITLE = rl(GUI + ".book.page.component.arrow.to_title").toLanguageKey();
                 }
             }
         }

@@ -32,8 +32,8 @@ public class TooltipBorderHandler
 
     public static void registerHandler()
     {
-        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler::tooltipDisplayEvent);
-        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler::tooltipBackgroundEvent);
+        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipDisplayEvent);
+        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
     }
 
     private static void tooltipDisplayEvent(final @NotNull CustomEvents.TooltipDisplayEvent event)
