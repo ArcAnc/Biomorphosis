@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.block.block_entity.*;
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
@@ -50,6 +51,9 @@ public class CommonEvents
         NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: playerLoad);
 */    }
 
+
+
+
     @SuppressWarnings("unchecked")
     private static void registerEntityAttributes(final @NotNull EntityAttributeCreationEvent event)
     {
@@ -79,6 +83,7 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_CATCHER.get(), BioCatcher:: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge:: getItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge:: getFluidHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER.get(), MultiblockChamber :: getItemHandler);
     }
 
 /*    private static void registerContainerMenuEvents()

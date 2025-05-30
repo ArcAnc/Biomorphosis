@@ -17,15 +17,21 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<MultiblockFluidStorage>
 {
+    private static final VoxelShape SHAPE = box(0.001f, 0.001f, 0.001f, 15.999f, 15.999f, 15.999f);
+
     public MultiblockFluidStorageBlock(Properties props)
     {
         super(Registration.BETypeReg.BE_MULTIBLOCK_FLUID_STORAGE, props);
@@ -35,6 +41,15 @@ public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<Mult
     protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
     {
         return RenderShape.INVISIBLE;
+    }
+
+    @Override
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
+                                           @NotNull BlockGetter level,
+                                           @NotNull BlockPos pos,
+                                           @NotNull CollisionContext context)
+    {
+        return super.getShape(state, level, pos, context);
     }
 
     @Override

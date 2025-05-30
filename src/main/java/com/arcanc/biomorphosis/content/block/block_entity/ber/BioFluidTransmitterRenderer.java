@@ -124,7 +124,4 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
 
     private record SegmentData(Vector3f[] mesh, Vector3f[] normals)
     {}
-
-    private record TubeData(List<SegmentData> data)
-    {}
 }

@@ -126,7 +126,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         Level level = blockEntity.getLevel();
         BlockPos pos = blockEntity.getBlockPos();
         float uvSize = 1/3f;
-        VertexConsumer builder = bufferSource.getBuffer(RenderType.cutout());
+        VertexConsumer builder = bufferSource.getBuffer(RenderType.translucent());
         TextureAtlasSprite sprite = dir.getAxis().isHorizontal() ?
                 getTextureLocation(blockEntity, "/side_transparent") :
                 getTextureLocation(blockEntity, "/top");

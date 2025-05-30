@@ -9,6 +9,7 @@
     "biomorphosis:stomach",
     "biomorphosis:catcher",
     "biomorphosis:forge",
-    "biomorphosis:multiblock_fluid_storage"
+    "biomorphosis:multiblock_fluid_storage",
+    "biomorphosis:multiblock_chamber"
   ]
 }

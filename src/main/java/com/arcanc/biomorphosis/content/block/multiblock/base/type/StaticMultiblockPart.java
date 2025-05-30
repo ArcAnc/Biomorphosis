@@ -280,7 +280,7 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
     protected boolean isMultiblockStillValid()
     {
         if (this.level == null)
-            return false;
+            return true;
         if (!isMaster())
             return true;
         List<Pair<BlockPos, BlockState>> structure = this.definition.getStructure(getLevel(), getBlockPos()).getStates().
@@ -393,12 +393,5 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
             list.add(pairTag);
         });
         tag.put("morph_sequence", list);
-    }
-
-    @Override
-    public void setRemoved()
-    {
-        onDisassemble();
-        super.setRemoved();
     }
 }

@@ -16,11 +16,13 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -29,11 +31,12 @@ import java.util.function.Predicate;
  * <p>Modified by ArcAnc</p>
  */
 
-public abstract class BioContainerMenu extends AbstractContainerMenu //implements IScreenMessageReceive
+public abstract class BioContainerMenu extends AbstractContainerMenu
 {
 
     private final Runnable setChanged;
     private final Predicate<Player> isValid;
+    public int ownSlotCount;
 
     protected BioContainerMenu(@NotNull MenuContext ctx)
     {
@@ -43,9 +46,64 @@ public abstract class BioContainerMenu extends AbstractContainerMenu //implement
     }
 
     @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slot)
+    {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slotObject = this.slots.get(slot);
+        if(slotObject.hasItem())
+        {
+            ItemStack itemstack1 = slotObject.getItem();
+            itemstack = itemstack1.copy();
+            if(slot < this.ownSlotCount)
+            {
+                if(!this.moveItemStackTo(itemstack1, this.ownSlotCount, this.slots.size(), true))
+                    return ItemStack.EMPTY;
+            }
+            else if(!this.moveItemStackToWithMayPlace(itemstack1, 0, ownSlotCount))
+                return ItemStack.EMPTY;
+
+            if(itemstack1.isEmpty())
+                slotObject.set(ItemStack.EMPTY);
+            else
+                slotObject.setChanged();
+        }
+
+        return itemstack;
+    }
+
+    protected boolean moveItemStackToWithMayPlace(ItemStack pStack, int pStartIndex, int pEndIndex)
+    {
+        return moveItemStackToWithMayPlace(this.slots, this :: moveItemStackTo, pStack, pStartIndex, pEndIndex);
+    }
+
+    public static boolean moveItemStackToWithMayPlace(
+            List<Slot> slots, MoveItemsFunc move, ItemStack pStack, int pStartIndex, int pEndIndex
+    )
+    {
+        boolean inAllowedRange = true;
+        int allowedStart = pStartIndex;
+        for(int q = pStartIndex; q < pEndIndex; q++)
+        {
+            boolean mayplace = slots.get(q).mayPlace(pStack);
+            if(inAllowedRange&&!mayplace)
+            {
+                if(move.moveItemStackTo(pStack, allowedStart, q, false))
+                    return true;
+                inAllowedRange = false;
+            }
+            else if(!inAllowedRange&&mayplace)
+            {
+                allowedStart = q;
+                inAllowedRange = true;
+            }
+        }
+        return inAllowedRange&&move.moveItemStackTo(pStack, allowedStart, pEndIndex, false);
+    }
+
+    @Override
     public boolean stillValid(@NotNull Player player)
     {
-        return isValid.test(player);
+        return this.isValid.test(player);
     }
 
     protected static @NotNull MenuContext blockCtx(MenuType<?> pMenuType, int pContainerId, BlockEntity be)
@@ -59,7 +117,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu //implement
         {
             BlockPos pos = be.getBlockPos();
             Level level = be.getLevel();
-            if(level==null||level.getBlockEntity(pos)!=be)
+            if(level == null || level.getBlockEntity(pos) != be)
                 return false;
             else
                 return !(p.distanceToSqr(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D) > 64.0D);
@@ -88,5 +146,10 @@ public abstract class BioContainerMenu extends AbstractContainerMenu //implement
             MenuType<?> type, int id, Runnable setChanged, Predicate<Player> isValid
     )
     {
+    }
+
+    public interface MoveItemsFunc
+    {
+        boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection);
     }
 }

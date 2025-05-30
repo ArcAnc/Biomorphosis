@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.data;
 
+import com.arcanc.biomorphosis.content.gui.BioSlot;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.core.HolderLookup;
@@ -37,6 +38,12 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
         //-------------------------------------------------------------------------------
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/tooltip/special_background"), Optional.of(Database.rl("tooltip/special_background"))));
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/tooltip/special_frame"), Optional.of(Database.rl("tooltip/special_frame"))));
+
+        //-------------------------------------------------------------------------------
+        // TOOLTIPS
+        //-------------------------------------------------------------------------------
+        atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/frame"), Optional.of(BioSlot.FRAME)));
+        atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/mask"), Optional.of(BioSlot.MASK)));
     }
 
     @Override

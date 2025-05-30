@@ -40,6 +40,7 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
 import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -63,6 +64,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
         modEventBus.addListener(ClientEvents :: setupItemColor);
         modEventBus.addListener(ClientEvents :: setupModels);
+        modEventBus.addListener(ClientEvents :: registerMenuScreens);
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
@@ -104,7 +106,7 @@ public final class ClientEvents
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().
                 map(DeferredHolder :: get).
                 filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType).
-                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity>)type).
+                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).
                 filter(type -> type.getRenderer() != null).
                 forEach(type -> event.registerBlockEntityRenderer(type, type.getRenderer()));
 
@@ -113,6 +115,15 @@ public final class ClientEvents
                 filter(entityType -> entityType instanceof BioEntityType<? extends Entity>).
                 map(entityType -> (BioEntityType<? extends Entity>)entityType).
                 forEach(entityType -> event.registerEntityRenderer(entityType, entityType.getRendererProvider()));
+    }
+
+    private static void registerMenuScreens(final RegisterMenuScreensEvent event)
+    {
+        Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().map(DeferredHolder :: get).
+                filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>).
+                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).
+                filter(type -> type.getScreenConstructor() != null).
+                forEach(type -> event.register(type.getMenuProvider().getType(), type.getScreenConstructor()));
     }
 
     private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)

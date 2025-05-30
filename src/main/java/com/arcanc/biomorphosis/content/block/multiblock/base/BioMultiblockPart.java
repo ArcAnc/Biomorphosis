@@ -14,7 +14,9 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRol
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.MasterRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.SlaveRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;

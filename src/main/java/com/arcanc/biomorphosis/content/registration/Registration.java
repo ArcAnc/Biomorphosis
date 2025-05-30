@@ -27,6 +27,9 @@ import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
+import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
+import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
+import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
@@ -52,6 +55,7 @@ import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
@@ -101,6 +105,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
+import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -343,24 +348,15 @@ public final class Registration
                         strength(2, 2).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
 
-        /*FIXME: REMOVE_TEST_BLOCK*/
-        public static final DeferredBlock<TestStaticBlock> TEST_STATIC_MULTIBLOCK = register("test_static", TestStaticBlock :: new,
+        public static final DeferredBlock<MultiblockChamberBlock> MULTIBLOCK_CHAMBER = register("multiblock_chamber", MultiblockChamberBlock :: new,
                 properties -> properties.mapColor(MapColor.PODZOL).
                         instrument(NoteBlockInstrument.BIT).
                         strength(2, 2).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
-        public static final DeferredBlock<TestDynamicBlock> TEST_DYNAMIC_MULTIBLOCK = register("test_dynamic", TestDynamicBlock:: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
-
+                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
 
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
@@ -447,59 +443,79 @@ public final class Registration
                         MultiblockFluidStorageRenderer :: new,
                         BlockReg.MULTIBLOCK_FLUID_STORAGE));
 
-        /*FIXME: REMOVE TEST BE*/
-        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TestStaticBE>> BE_MULTIBLOCK_STATIC_TEST = BLOCK_ENTITIES.register(
-                "test_static_be",
-                makeType(TestStaticBE :: new,
-                        BlockReg.TEST_STATIC_MULTIBLOCK)
-        );
-        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<TestDynamicBE>> BE_MULTIBLOCK_DYNAMIC_TEST = BLOCK_ENTITIES.register(
-                "test_dynamic_be",
-                makeType(TestDynamicBE :: new,
-                        BlockReg.TEST_DYNAMIC_MULTIBLOCK)
-        );
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChamber>> BE_MULTIBLOCK_CHAMBER = BLOCK_ENTITIES.register(
+                "multiblock_chamber",
+                makeType(MultiblockChamber :: new,
+                        MultiblockChamberRenderer :: new,
+                        MenuTypeReg.CHAMBER,
+                        ChamberScreen :: new,
+                        BlockReg.MULTIBLOCK_CHAMBER));
 
+        public static <T extends BlockEntity,  C extends BioContainerMenu, S extends BioContainerScreen<C>> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
+                                                                                             BlockEntityRendererProvider<T> provider,
+                                                                                             MenuTypeReg.ArgContainer<T, C> menuProvider,
+                                                                                             MenuScreens.ScreenConstructor<C, S> screenConstructor,
+                                                                                             Supplier<? extends Block> valid)
+        {
+            return makeTypeMultipleBlocks(create, provider, menuProvider, screenConstructor, ImmutableSet.of(valid));
+        }
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
                                                                                              Supplier<? extends Block> valid)
         {
-            return makeTypeMultipleBlocks(create, provider, ImmutableSet.of(valid));
+            return makeTypeMultipleBlocks(create, provider, null, null, ImmutableSet.of(valid));
         }
 
         public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
         {
-            return makeTypeMultipleBlocks(create, null, ImmutableSet.of(valid));
+            return makeTypeMultipleBlocks(create, null, null, null, ImmutableSet.of(valid));
         }
 
-        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
+        public static <T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> @NotNull Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
                 BlockEntityType.BlockEntitySupplier<T> create,
                 BlockEntityRendererProvider<T> rendererProvider,
+                MenuTypeReg.ArgContainer<T, C> menuProvider,
+                MenuScreens.ScreenConstructor<C, S> screenConstructor,
                 Collection<? extends Supplier<? extends Block>> valid
         )
         {
             return () -> new BioBlockEntityType<>(
-                    create, rendererProvider, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
+                    create, rendererProvider, menuProvider, screenConstructor, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
         }
 
-        public static class BioBlockEntityType<T extends BlockEntity> extends BlockEntityType<T>
+        public static class BioBlockEntityType<T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> extends BlockEntityType<T>
         {
 
             private final BlockEntityRendererProvider<T> renderer;
+            private final MenuTypeReg.ArgContainer<T, C> menuProvider;
+            private final MenuScreens.ScreenConstructor<C, S> screenConstructor;
 
-            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks)
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
             {
-                this(factory, provider, validBlocks, false);
+                this(factory, provider, menuProvider, screenConstructor, validBlocks, false);
             }
 
-            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
             {
                 super(factory, validBlocks, onlyOpsNbtAccess);
                 this.renderer = provider;
+                this.menuProvider = menuProvider;
+                this.screenConstructor = screenConstructor;
             }
 
             public BlockEntityRendererProvider<T> getRenderer()
             {
                 return renderer;
+            }
+
+            public MenuTypeReg.ArgContainer<T, C> getMenuProvider()
+            {
+                return menuProvider;
+            }
+
+            public MenuScreens.ScreenConstructor<C, S> getScreenConstructor()
+            {
+                return screenConstructor;
             }
         }
 
@@ -782,6 +798,11 @@ public final class Registration
     public static class MenuTypeReg
     {
         public static final DeferredRegister<MenuType<?>> MENU_TYPES = DeferredRegister.create(BuiltInRegistries.MENU, Database.MOD_ID);
+
+        public static final ArgContainer<MultiblockChamber, ChamberMenu> CHAMBER = registerArg(
+                "chamber",
+                ChamberMenu :: makeServer,
+                ChamberMenu :: makeClient);
 
         public static <T, C extends BioContainerMenu>
         @NotNull ArgContainer<T, C> registerArg(

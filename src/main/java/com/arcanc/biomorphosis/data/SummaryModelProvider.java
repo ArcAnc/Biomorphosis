@@ -93,13 +93,9 @@ public class SummaryModelProvider extends ModelProvider
         createCatcherModel(blockModels);
         createForgeModel(blockModels);
 
-
-        /*FIXME: change block model*/
-        //blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get());
         createMultiblockFluidStorage(blockModels);
-        /*FIXME: remove this model*/
-        blockModels.createTrivialCube(Registration.BlockReg.TEST_STATIC_MULTIBLOCK.get());
-        blockModels.createTrivialCube(Registration.BlockReg.TEST_DYNAMIC_MULTIBLOCK.get());
+        /*FIXME: create normal model for chamber*/
+        createMultiblockChamberModel(blockModels);
     }
 
     //------------------------------------------------------------------------------
@@ -122,6 +118,11 @@ public class SummaryModelProvider extends ModelProvider
     //------------------------------------------------------------------------------
     // BLOCK MODELS
     //------------------------------------------------------------------------------
+
+    private void createMultiblockChamberModel(BlockModelGenerators blockModels)
+    {
+        blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_CHAMBER.get());
+    }
 
     private void createMultiblockFluidStorage(@NotNull BlockModelGenerators blockModels)
     {

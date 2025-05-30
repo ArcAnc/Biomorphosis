@@ -9,6 +9,16 @@
       "type": "minecraft:single",
       "resource": "biomorphosis:gui/tooltip/special_frame",
       "sprite": "biomorphosis:tooltip/special_frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "biomorphosis:gui/slots/frame",
+      "sprite": "biomorphosis:slot/frame"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "biomorphosis:gui/slots/mask",
+      "sprite": "biomorphosis:slot/mask"
     }
   ]
 }

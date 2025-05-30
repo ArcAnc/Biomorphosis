@@ -159,6 +159,7 @@ public class Database
             public static final String MODE = "mode";
             public static final String MODES = "modes";
             public static final String INTS = "ints";
+            public static final String INDEX_TO_MODE = "index_to_mode";
             public static final class Holder
             {
                 public static final String FLUID = "fluid";
@@ -174,6 +175,7 @@ public class Database
             public static final String MODE = "mode";
             public static final String MODES = "modes";
             public static final String INTS = "ints";
+            public static final String INDEX_TO_MODE = "index_to_mode";
             public static final class Holder
             {
                 public static final String ITEM = "item";

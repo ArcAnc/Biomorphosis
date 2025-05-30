@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
@@ -209,7 +210,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
         CompoundTag fullTag = new CompoundTag();
         fullTag.put(Database.Capabilities.Fluids.TANKS, list);
         ListTag modesInfo = new ListTag();
-        for (Map.Entry<FaceMode, List<Integer>> entry : BY_SIDE.entrySet())
+        for (Map.Entry<FaceMode, List<Integer>> entry : this.BY_SIDE.entrySet())
         {
             CompoundTag tag = new CompoundTag();
             tag.putInt(Database.Capabilities.Fluids.MODE, entry.getKey().ordinal());
@@ -217,6 +218,13 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
             modesInfo.add(tag);
         }
         fullTag.put(Database.Capabilities.Fluids.MODES, modesInfo);
+        ListTag indexToMode = new ListTag();
+        for (Map.Entry<Integer, FaceMode> entry : this.SLOT_TO_MODE.entrySet())
+        {
+            IntTag tag = IntTag.valueOf(entry.getValue().ordinal());
+            indexToMode.add(tag);
+        }
+        fullTag.put(Database.Capabilities.Fluids.INDEX_TO_MODE, indexToMode);
         return fullTag;
     }
 
@@ -241,6 +249,12 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
                     boxed().
                     collect(Collectors.toCollection(ArrayList :: new));
             this.BY_SIDE.put(mode, indexes);
+        }
+        ListTag indexToMode = nbt.getList(Database.Capabilities.Fluids.INDEX_TO_MODE, Tag.TAG_INT);
+        for (int q = 0; q < indexToMode.size(); q++)
+        {
+            FaceMode mode = FaceMode.values()[indexToMode.getInt(q)];
+            this.SLOT_TO_MODE.put(q, mode);
         }
     }
 }

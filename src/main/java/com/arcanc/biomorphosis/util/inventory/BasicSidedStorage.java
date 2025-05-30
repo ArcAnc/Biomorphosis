@@ -23,13 +23,21 @@ public abstract class BasicSidedStorage<STORAGE, HOLDER, UNIT>
 {
     protected final List<HOLDER> holders = new ArrayList<>();
     protected final Map<FaceMode, List<Integer>> BY_SIDE = new EnumMap<>(Arrays.stream(FaceMode.values()).collect(Collectors.toMap(Function.identity(), key -> new ArrayList<>())));
+    protected final Map<Integer, FaceMode> SLOT_TO_MODE = new HashMap<>();
 
     public STORAGE addHolder(HOLDER holder, FaceMode mode)
     {
         int id = this.holders.size();
         this.holders.add(Preconditions.checkNotNull(holder));
         this.BY_SIDE.computeIfAbsent(Preconditions.checkNotNull(mode), key -> new ArrayList<>()).add(id);
+        this.SLOT_TO_MODE.put(id, mode);
         return getStorage();
+    }
+
+    public Optional<FaceMode> getModeForIndex(int index)
+    {
+        validateHolderIndex(index);
+        return Optional.ofNullable(SLOT_TO_MODE.get(index));
     }
 
     public abstract STORAGE getStorage();

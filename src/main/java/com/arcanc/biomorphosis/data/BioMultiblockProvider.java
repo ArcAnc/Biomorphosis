@@ -9,6 +9,8 @@
 
 package com.arcanc.biomorphosis.data;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamberBlock;
+import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -24,6 +26,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -48,10 +51,18 @@ public class BioMultiblockProvider extends BioRegistryData
                         setValue(StairBlock.FACING, Direction.SOUTH)).
                 end());
 
-        addMultiblock(dynamicBuilder(Database.rl("dynamic_test")).
-                setBehavior(DynamicMultiblockDefinition.ScanBehavior.DFS).
-                setMaxSize(new BlockPos(3, 6, 3)).
-                setAllowedBlockType(Registration.BlockReg.TEST_DYNAMIC_MULTIBLOCK.get()).
+        Map<BlockPos, BlockState> chamberMap = new HashMap<>();
+        for (int x = -1; x < 2; x++)
+            for (int z = -1 ; z < 2; z++)
+                for (int y = 0; y < 5; y++)
+                {
+                    if (x == 0 && y == 0 && z == 0)
+                        continue;
+                    chamberMap.putIfAbsent(new BlockPos(x, y, z), Registration.BlockReg.MULTIBLOCK_CHAMBER.get().defaultBlockState().setValue(MultiblockChamberBlock.STATE, MultiblockState.FORMED));
+                }
+
+        addMultiblock(staticBuilder(Database.rl("chamber")).
+                addParts(chamberMap).
                 end());
 
         addMultiblock(dynamicBuilder(Database.rl("fluid_storage")).

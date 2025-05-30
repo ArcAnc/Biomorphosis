@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
@@ -170,6 +171,13 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
             modesInfo.add(tag);
         }
         fullTag.put(Database.Capabilities.Items.MODES, modesInfo);
+        ListTag indexToMode = new ListTag();
+        for (Map.Entry<Integer, FaceMode> entry : this.SLOT_TO_MODE.entrySet())
+        {
+            IntTag tag = IntTag.valueOf(entry.getValue().ordinal());
+            indexToMode.add(tag);
+        }
+        fullTag.put(Database.Capabilities.Items.INDEX_TO_MODE, indexToMode);
         return fullTag;
     }
 
@@ -194,6 +202,12 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
                     boxed().
                     collect(Collectors.toCollection(ArrayList:: new));
             this.BY_SIDE.put(mode, indexes);
+        }
+        ListTag indexToMode = nbt.getList(Database.Capabilities.Items.INDEX_TO_MODE, Tag.TAG_INT);
+        for (int q = 0; q < indexToMode.size(); q++)
+        {
+            FaceMode mode = FaceMode.values()[indexToMode.getInt(q)];
+            this.SLOT_TO_MODE.put(q, mode);
         }
     }
 }
