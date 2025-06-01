@@ -71,6 +71,14 @@ public class Database
         public static final String HOLD_SHIFT = rl(GUI + ".tooltip.info.hold_shift").toLanguageKey();
         public static final class InfoArea
         {
+            public static final class ProgressBar
+            {
+                public static class Tooltip
+                {
+                    public static final String PERCENT = rl(GUI + ".tooltip.info.progress_bar.percent").toLanguageKey();
+                    public static final String DIRECT = rl(GUI + ".tooltip.info.progress_bar.direct").toLanguageKey();
+                }
+            }
             public static final class FluidArea
             {
                 public static final class Tooltip

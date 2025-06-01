@@ -51,7 +51,7 @@ public class FluidInfoArea extends InfoArea
     @Override
     protected void fillTooltipOverArea(int mouseX, int mouseY, List<Component> tooltip)
     {
-        FluidStack stack = tank.getFluid();
+        FluidStack stack = this.tank.getFluid();
         if (stack.isEmpty())
             return;
         Fluid fluid = stack.getFluid();
@@ -75,9 +75,10 @@ public class FluidInfoArea extends InfoArea
                             withStyle(style)).
                     withStyle(ChatFormatting.GRAY));
 
-        tooltip.add(Component.empty());
 
         if (mc.options.advancedItemTooltips)
+        {
+            tooltip.add(Component.empty());
             if (!Screen.hasShiftDown())
                 tooltip.add(Component.translatable(Database.GUI.HOLD_SHIFT).withStyle(ChatFormatting.DARK_GRAY));
             else
@@ -95,6 +96,7 @@ public class FluidInfoArea extends InfoArea
                                         withStyle(style)).
                         withStyle(ChatFormatting.GRAY));
             }
+        }
     }
 
     @Override

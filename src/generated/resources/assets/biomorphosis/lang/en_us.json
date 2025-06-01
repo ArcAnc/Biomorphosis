@@ -59,6 +59,8 @@
   "biomorphosis.gui.tooltip.info.fluid.normal.extended": "%s/%s mB",
   "biomorphosis.gui.tooltip.info.fluid.normal.short": "%s mB",
   "biomorphosis.gui.tooltip.info.hold_shift": "Hold §6SHIFT§r for additional info",
+  "biomorphosis.gui.tooltip.info.progress_bar.direct": "%s / %s",
+  "biomorphosis.gui.tooltip.info.progress_bar.percent": "%s / %s %%",
   "biomorphosis.item.book": "Guide",
   "biomorphosis.item.flesh_piece": "Piece Of Flash",
   "biomorphosis.item.fluids.adrenaline.bucket": "Adrenaline Bucket",

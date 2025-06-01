@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.google.common.base.Preconditions;
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
@@ -134,6 +135,13 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         }
 
         guiGraphics.pose().popPose();
+    }
+
+    @Override
+    protected void clearWidgets()
+    {
+        super.clearWidgets();
+        this.infoAreas.clear();
     }
 
     /*FIXME: дописать отправку кастомной даты на сервер. Нужно для всяких настроек через гуи*/

@@ -98,6 +98,8 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_DENSITY, "Density: %s kg/m³");
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_TEMPERATURE, "Temperature: %s K");
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_VISCOSITY, "Viscosity: %s m²/s");
+        this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.PERCENT, "%s / %s %%");
+        this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.DIRECT, "%s / %s");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)

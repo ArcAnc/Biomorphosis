@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block.norph;
 import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
@@ -171,7 +172,9 @@ public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInte
         Set<Direction> possibleDirs = getPossibleDirections(state, level, pos);
         if (!possibleDirs.isEmpty())
         {
-            possibleDirs.stream().findAny().ifPresent(direction ->
+            possibleDirs.stream().
+                    findAny().
+                    ifPresent(direction ->
             {
                 if (random.nextGaussian() > 0.3d)
                     return;
@@ -186,7 +189,10 @@ public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInte
 
     private Set<Direction> getPossibleDirections(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos)
     {
-        return Arrays.stream(Direction.values()).filter(direction -> !state.getValue(MultifaceBlock.getFaceProperty(direction)) && MultifaceBlock.canAttachTo(level, pos, direction)).
+        return Arrays.stream(Direction.values()).filter(direction -> !state.getValue(MultifaceBlock.getFaceProperty(direction)) &&
+                        MultifaceBlock.canAttachTo(level, pos, direction) &&
+                        !level.getBlockState(pos.relative(direction)).
+                                is(BioBlockTags.NORPH_AVOID)).
                 collect(Collectors.toSet());
     }
 
@@ -277,7 +283,9 @@ public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInte
         {
             BlockState state = level.getBlockState(spreadPos.pos());
             if (getSourcePos(level, spreadPos.pos()) != null)
-                return stateCanBeReplaced(level, pos, spreadPos.pos(), spreadPos.face(), state) && this.block.isValidStateForPlacement(level, state, spreadPos.pos(), spreadPos.face());
+                return stateCanBeReplaced(level, pos, spreadPos.pos(), spreadPos.face(), state) &&
+                        this.block.isValidStateForPlacement(level, state, spreadPos.pos(), spreadPos.face()) &&
+                        !level.getBlockState(pos.relative(spreadPos.face())).is(BioBlockTags.NORPH_AVOID);
             return false;
         }
 

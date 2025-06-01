@@ -19,7 +19,8 @@ import java.util.List;
 
 public abstract class InfoArea
 {
-    public static final ResourceLocation TANK = Database.rl("textures/gui/fluid.png");
+    public static final ResourceLocation TANK = Database.rl("textures/gui/elements/fluid.png");
+    public static final ResourceLocation PROGRESS = Database.rl("textures/gui/elements/progress.png");
 
     protected final Rect2i area;
 
@@ -36,5 +37,5 @@ public abstract class InfoArea
 
     protected abstract void fillTooltipOverArea(int mouseX, int mouseY, List<Component> tooltip);
 
-    public abstract void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTick);
+    public abstract void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick);
 }
