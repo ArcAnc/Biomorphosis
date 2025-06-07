@@ -69,6 +69,13 @@ public class Database
         private static final String GUI = "gui";
 
         public static final String HOLD_SHIFT = rl(GUI + ".tooltip.info.hold_shift").toLanguageKey();
+
+        public static final class ChamberButton
+        {
+            public static final String START = rl(GUI + ".tooltip.chamber_button.start").toLanguageKey();
+            public static final String PROCESS = rl(GUI + ".tooltip.chamber_button.work").toLanguageKey();
+        }
+
         public static final class InfoArea
         {
             public static final class ProgressBar

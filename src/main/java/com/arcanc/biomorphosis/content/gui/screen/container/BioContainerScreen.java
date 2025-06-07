@@ -11,10 +11,14 @@ package com.arcanc.biomorphosis.content.gui.screen.container;
 
 import com.arcanc.biomorphosis.content.gui.BioSlot;
 import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
+import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
+import com.arcanc.biomorphosis.content.network.NetworkEngine;
+import com.arcanc.biomorphosis.content.network.packets.C2SGuiData;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.base.Preconditions;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
@@ -31,10 +35,12 @@ import org.joml.Vector4f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public abstract class BioContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T>
 {
     private final List<InfoArea> infoAreas = new ArrayList<>();
+    protected static final ResourceLocation BACKGROUND = Database.rl("textures/gui/background.png");
 
     public BioContainerScreen(T menu, Inventory playerInventory, Component title)
     {
@@ -57,6 +63,19 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
             renderTooltip(guiGraphics, mouseX, mouseY);
         else
             guiGraphics.renderTooltip(getFont(), resultedTooltip, Optional.empty(), mouseX, mouseY);
+    }
+
+    @Override
+    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
+    {
+        RenderHelper.blit(guiGraphics,
+                RenderType :: guiTextured,
+                BACKGROUND,
+                this.getGuiLeft(), this.getGuiTop(),
+                0, 0,
+                getXSize(), getYSize(),
+                256, 256,
+                256, 256);
     }
 
     protected void addInfoArea(InfoArea info)
@@ -144,9 +163,18 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         this.infoAreas.clear();
     }
 
-    /*FIXME: дописать отправку кастомной даты на сервер. Нужно для всяких настроек через гуи*/
-    protected void sendUpdateToServer(CompoundTag data)
+    protected void sendUpdateToServer(@NotNull Consumer<CompoundTag> additionalInfo)
     {
+        CompoundTag tag = new CompoundTag();
 
+        additionalInfo.accept(tag);
+        addTypeInfo(tag);
+        NetworkEngine.sendToServer(new C2SGuiData(this.menu.containerId, tag));
+    }
+
+    private void addTypeInfo(CompoundTag tag)
+    {
+        if (this.menu instanceof IGuiContextInfoProvider provider)
+            provider.writeContextInfo(tag);
     }
 }

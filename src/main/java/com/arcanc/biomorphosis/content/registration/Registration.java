@@ -31,13 +31,16 @@ import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
 import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
 import com.arcanc.biomorphosis.content.item.*;
+import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
 import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
+import com.arcanc.biomorphosis.data.recipe.display.ChamberRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.display.CrusherRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.display.ForgeRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.display.StomachRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.data.recipe.input.ChamberRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.input.ForgeRecipeInput;
 import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
@@ -105,7 +108,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.checkerframework.checker.units.qual.C;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -895,6 +897,7 @@ public final class Registration
         public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput, CrusherRecipeDisplay> CRUSHER_RECIPE = new RecipeEntry<>("crusher", RecipeBookCategory :: new, CrusherRecipeDisplay.CODEC, CrusherRecipeDisplay.STREAM_CODEC, CrusherRecipe.CrusherRecipeSerializer :: new);
         public static final RecipeEntry<StomachRecipe, StomachRecipeInput, StomachRecipeDisplay> STOMACH_RECIPE = new RecipeEntry<>("stomach", RecipeBookCategory :: new, StomachRecipeDisplay.CODEC, StomachRecipeDisplay.STREAM_CODEC, StomachRecipe.StomachRecipeSerializer :: new);
         public static final RecipeEntry<ForgeRecipe, ForgeRecipeInput, ForgeRecipeDisplay> FORGE_RECIPE = new RecipeEntry<>("forge", RecipeBookCategory :: new, ForgeRecipeDisplay.CODEC, ForgeRecipeDisplay.STREAM_CODEC, ForgeRecipe.ForgeRecipeSerializer :: new);
+        public static final RecipeEntry<ChamberRecipe, ChamberRecipeInput, ChamberRecipeDisplay> CHAMBER_RECIPE = new RecipeEntry<>("chamber", RecipeBookCategory :: new, ChamberRecipeDisplay.CODEC, ChamberRecipeDisplay.STREAM_CODEC, ChamberRecipe.ChamberRecipeSerializer :: new);
 
         public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
         {

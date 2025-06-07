@@ -128,7 +128,6 @@ public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
 
     public static class CrusherRecipeSerializer implements RecipeSerializer<CrusherRecipe>
     {
-
         public static final MapCodec<CrusherRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.
                 group(
                         IngredientWithSize.CODEC.fieldOf("input").forGetter(CrusherRecipe :: input),

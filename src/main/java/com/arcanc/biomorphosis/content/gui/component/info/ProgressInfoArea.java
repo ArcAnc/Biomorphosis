@@ -28,8 +28,8 @@ import java.util.function.Supplier;
 
 public class ProgressInfoArea extends InfoArea
 {
-    private final ProgressInfo info;
-    private final ResourceLocation progressTexture;
+    protected final ProgressInfo info;
+    protected final ResourceLocation progressTexture;
 
     public ProgressInfoArea(Rect2i area, ProgressInfo info)
     {
@@ -97,13 +97,14 @@ public class ProgressInfoArea extends InfoArea
         float width = this.area.getWidth() * percent;
         float textureWidth = 22 * percent;
 
-
-        /*FIXME: сделать отрисовку через флоаты. Текущий метод слегка кривой*/
-        guiGraphics.blit(RenderType :: guiTextured, this.progressTexture,
-                this.area.getX(), this.area.getY(),
+        RenderHelper.blit(guiGraphics,
+                RenderType :: guiTextured,
+                this.progressTexture,
+                this.area.getX(),
+                this.area.getY(),
                 0, 16,
-                (int)width, this.area.getHeight(),
-                (int)textureWidth, 15,
+                width, this.area.getHeight(),
+                textureWidth, 15,
                 32, 32);
     }
 

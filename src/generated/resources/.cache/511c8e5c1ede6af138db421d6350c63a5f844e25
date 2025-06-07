@@ -1,4 +1,5 @@
-// 1.21.4	2025-05-04T08:21:32.413831	Biomorphosis: Recipes
+// 1.21.4	2025-06-07T17:28:34.0980462	Biomorphosis: Recipes
+646ec736b9d37c94190cc677831365912853dfa2 data/biomorphosis/advancement/recipes/chamber/crusher_from_norph.json
 53ca7d03c4fad46eefd634954c81776b94b059d7 data/biomorphosis/advancement/recipes/crusher/gravel_from_cobblestone.json
 abc9b28e18aea01f0b04f1d9fc47619a2780e873 data/biomorphosis/advancement/recipes/forge/baked_potato.json
 6a40b49974689c6a3aa95675e40ec8aad55b366a data/biomorphosis/advancement/recipes/forge/black_glazed_terracotta.json
@@ -70,6 +71,7 @@ adb2260bfe9e44d92a8ca4a471317dd1e85dc873 data/biomorphosis/advancement/recipes/f
 acc3ad6f4948aff2a119782f9185c6466f79861e data/biomorphosis/advancement/recipes/misc/book.json
 a4b34413fa7babd0a7ee7ad8998d7cf04430a971 data/biomorphosis/advancement/recipes/stomach/biomass_from_meat.json
 cab5ad79e47eaa5bd8f4d3a9c83044bf2ed33f4e data/biomorphosis/recipe/book.json
+cc9ba94ce71c7486b81b19ecc89063b33078f531 data/biomorphosis/recipe/chamber/crusher_from_norph.json
 eba548dd59a91236f96fab8dcb8bd0324636e2ae data/biomorphosis/recipe/crusher/gravel_from_cobblestone.json
 1e404df4422b1f6421502d5be9983165f1cf4cac data/biomorphosis/recipe/forge/baked_potato.json
 816c719824860a1012a8a777f137eb5a3f8e0431 data/biomorphosis/recipe/forge/black_glazed_terracotta.json

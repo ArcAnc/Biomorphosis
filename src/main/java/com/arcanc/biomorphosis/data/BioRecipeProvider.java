@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.data;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
+import com.arcanc.biomorphosis.data.recipe.builders.ChamberRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.builders.CrusherRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.builders.ForgeRecipeBuilder;
 import com.arcanc.biomorphosis.data.recipe.builders.StomachRecipeBuilder;
@@ -86,6 +87,15 @@ public class BioRecipeProvider extends RecipeProvider
                 setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
         unlockedBy("has_meat", has(ItemTags.MEAT)).
         save(this.output, Database.rl("biomass_from_meat").toString());
+
+        ChamberRecipeBuilder.newBuilder(400).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.SHEARS))).
+                setResult(new ItemStack(Registration.BlockReg.CRUSHER)).
+        unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS)).
+        unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
+        save(this.output, Database.rl("crusher_from_norph").toString());
 
         generateBioForgeVanillaEnhancedRecipes();
     }

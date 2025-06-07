@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_norph": {
+      "conditions": {
+        "items": [
+          {
+            "items": "biomorphosis:norph"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_shears": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:shears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomorphosis:chamber/crusher_from_norph"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_shears",
+      "has_norph"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomorphosis:chamber/crusher_from_norph"
+    ]
+  }
+}

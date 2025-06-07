@@ -10,7 +10,12 @@
 package com.arcanc.biomorphosis.content.gui.container_menu;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioBaseBlockEntity;
+import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
+import com.arcanc.biomorphosis.content.gui.sync.IScreenMessageReceiver;
+import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -21,8 +26,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Predicate;
 
 /**
@@ -31,19 +39,76 @@ import java.util.function.Predicate;
  * <p>Modified by ArcAnc</p>
  */
 
-public abstract class BioContainerMenu extends AbstractContainerMenu
+public abstract class BioContainerMenu extends AbstractContainerMenu implements IScreenMessageReceiver, IGuiContextInfoProvider
 {
-
     private final Runnable setChanged;
     private final Predicate<Player> isValid;
     public int ownSlotCount;
+    private final ContextType contextType;
 
     protected BioContainerMenu(@NotNull MenuContext ctx)
     {
         super(ctx.type, ctx.id);
+        this.contextType = ctx.contextType;
         this.setChanged = ctx.setChanged;
         this.isValid = ctx.isValid;
     }
+
+    public ContextType getContextType()
+    {
+        return contextType;
+    }
+
+    @Override
+    public void receiveMessage(ServerPlayer player, CompoundTag tag)
+    {
+        if (wrongPacketData(tag))
+            return;
+
+        handleMessage(player, tag);
+    }
+
+    @Override
+    public void writeContextInfo(CompoundTag tag)
+    {
+        switch (getContextType())
+        {
+            case BLOCK -> Optional.ofNullable(getBlockPos()).
+                    ifPresent(pos -> TagHelper.writeBlockPos(pos, tag, "block_entity_pos"));
+            case ITEM -> Optional.ofNullable(getEquipmentSlot()).
+                    ifPresent(slot -> tag.putInt("item_slot", slot.ordinal()));
+            case ENTITY -> Optional.ofNullable(getUuid()).
+                    ifPresent(uuid -> tag.putUUID("entity_uuid", uuid));
+            case null, default -> {}
+        }
+    }
+
+    protected abstract void handleMessage(ServerPlayer player, CompoundTag tag);
+    protected @Nullable BlockPos getBlockPos()
+    {
+        return null;
+    }
+    protected @Nullable EquipmentSlot getEquipmentSlot()
+    {
+        return null;
+    }
+    protected @Nullable UUID getUuid()
+    {
+        return null;
+    }
+
+    private boolean wrongPacketData(CompoundTag tag)
+    {
+        return switch (this.contextType)
+        {
+            case BLOCK -> !tag.contains("block_entity_pos");
+            case ITEM -> !tag.contains("item_slot");
+            case ENTITY -> !tag.contains("entity_uuid");
+            case GENERIC -> false;
+            case null -> true;
+        };
+    }
+
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slot)
@@ -85,7 +150,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu
         for(int q = pStartIndex; q < pEndIndex; q++)
         {
             boolean mayplace = slots.get(q).mayPlace(pStack);
-            if(inAllowedRange&&!mayplace)
+            if(inAllowedRange && !mayplace)
             {
                 if(move.moveItemStackTo(pStack, allowedStart, q, false))
                     return true;
@@ -108,7 +173,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu
 
     protected static @NotNull MenuContext blockCtx(MenuType<?> pMenuType, int pContainerId, BlockEntity be)
     {
-        return new MenuContext(pMenuType, pContainerId, () ->
+        return new MenuContext(pMenuType, pContainerId, ContextType.BLOCK, () ->
         {
             be.setChanged();
             if(be instanceof BioBaseBlockEntity bioBE)
@@ -128,7 +193,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu
             MenuType<?> pMenuType, int pContainerId, Inventory playerInv, EquipmentSlot slot, ItemStack stack
     )
     {
-        return new MenuContext(pMenuType, pContainerId, () -> {
+        return new MenuContext(pMenuType, pContainerId, ContextType.ITEM, () -> {
         }, p -> {
             if(p != playerInv.player)
                 return false;
@@ -136,14 +201,14 @@ public abstract class BioContainerMenu extends AbstractContainerMenu
         });
     }
 
-    protected static @NotNull MenuContext clientCtx(MenuType<?> pMenuType, int pContainerId)
+    protected static @NotNull MenuContext clientCtx(MenuType<?> pMenuType, int pContainerId, ContextType type)
     {
-        return new MenuContext(pMenuType, pContainerId, () -> {
+        return new MenuContext(pMenuType, pContainerId, type, () -> {
         }, $ -> true);
     }
 
     protected record MenuContext(
-            MenuType<?> type, int id, Runnable setChanged, Predicate<Player> isValid
+            MenuType<?> type, int id, ContextType contextType, Runnable setChanged, Predicate<Player> isValid
     )
     {
     }
@@ -151,5 +216,13 @@ public abstract class BioContainerMenu extends AbstractContainerMenu
     public interface MoveItemsFunc
     {
         boolean moveItemStackTo(ItemStack stack, int startIndex, int endIndex, boolean reverseDirection);
+    }
+
+    public enum ContextType
+    {
+        BLOCK,
+        ITEM,
+        ENTITY,
+        GENERIC;
     }
 }

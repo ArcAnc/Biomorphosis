@@ -62,6 +62,11 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
                     BasicSidedStorage.FaceMode.ALL);
     }
 
+    public void tryStart()
+    {
+
+    }
+
     @Override
     protected void multiblockServerTick()
     {

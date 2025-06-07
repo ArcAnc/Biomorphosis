@@ -53,6 +53,8 @@
   "biomorphosis.gui.book.page.component.recipe.shaped": "Shaped",
   "biomorphosis.gui.book.page.component.recipe.shapeless": "Shapeless",
   "biomorphosis.gui.book.page.component.recipe.ticks": "Ticks: %s",
+  "biomorphosis.gui.tooltip.chamber_button.start": "Start Process",
+  "biomorphosis.gui.tooltip.chamber_button.work": "Processing...",
   "biomorphosis.gui.tooltip.info.fluid.advanced.density": "Density: %s kg/m³",
   "biomorphosis.gui.tooltip.info.fluid.advanced.temperature": "Temperature: %s K",
   "biomorphosis.gui.tooltip.info.fluid.advanced.viscosity": "Viscosity: %s m²/s",
