@@ -12,9 +12,12 @@ package com.arcanc.biomorphosis.content.gui.container_menu;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.gui.BioSlot;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
+import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
@@ -54,12 +57,16 @@ public class ChamberMenu extends BioContainerMenu
     }
 
     @Override
-    protected void handleMessage(ServerPlayer player, @NotNull CompoundTag tag)
+    protected void handleMessage(@NotNull ServerPlayer player, @NotNull CompoundTag tag)
     {
+        ServerLevel level = player.serverLevel();
+        BlockPos bePos = TagHelper.readBlockPos(tag, "block_entity_pos");
+        BlockHelper.castTileEntity(level, bePos, MultiblockChamber.class).
+                ifPresent(MultiblockChamber :: tryStart);
     }
 
     @Override
-    protected BlockPos getBlockPos()
+    public BlockPos getBlockPos()
     {
         return pos;
     }

@@ -84,15 +84,15 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
     }
 
     protected abstract void handleMessage(ServerPlayer player, CompoundTag tag);
-    protected @Nullable BlockPos getBlockPos()
+    public @Nullable BlockPos getBlockPos()
     {
         return null;
     }
-    protected @Nullable EquipmentSlot getEquipmentSlot()
+    public @Nullable EquipmentSlot getEquipmentSlot()
     {
         return null;
     }
-    protected @Nullable UUID getUuid()
+    public @Nullable UUID getUuid()
     {
         return null;
     }

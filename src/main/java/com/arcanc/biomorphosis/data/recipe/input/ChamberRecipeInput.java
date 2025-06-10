@@ -9,14 +9,22 @@
 
 package com.arcanc.biomorphosis.data.recipe.input;
 
+import com.arcanc.biomorphosis.data.recipe.builders.ChamberRecipeBuilder;
 import com.google.common.base.Preconditions;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+
 public class ChamberRecipeInput extends BioBaseInput
 {
     public final ItemStack[] stacks;
+
+    public ChamberRecipeInput(@NotNull List<ItemStack> items)
+    {
+        this (items.toArray(new ItemStack[]{}));
+    }
 
     public ChamberRecipeInput(ItemStack stack0,
                               ItemStack stack1,

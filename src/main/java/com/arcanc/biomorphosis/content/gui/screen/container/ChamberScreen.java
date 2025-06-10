@@ -9,8 +9,15 @@
 
 package com.arcanc.biomorphosis.content.gui.screen.container;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
+import com.arcanc.biomorphosis.content.gui.component.ChamberButtonStart;
+import com.arcanc.biomorphosis.content.gui.component.info.ChamberProgressArea;
+import com.arcanc.biomorphosis.content.gui.component.info.ProgressInfoArea;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +35,14 @@ public class ChamberScreen extends BioContainerScreen<ChamberMenu>
     protected void init()
     {
         super.init();
+
+        BlockHelper.castTileEntity(RenderHelper.mc().level, this.menu.getBlockPos(), MultiblockChamber.class).ifPresent(chamber ->
+        {
+            addInfoArea(new ChamberProgressArea(new Rect2i(this.getGuiLeft() + 110, this.getGuiTop() + 15, 45, 13), new ProgressInfoArea.ProgressInfo(chamber :: getWorkedTime, chamber :: getMaxWorkedTime)));
+            addRenderableWidget(new ChamberButtonStart(this.getGuiLeft() + 40, this.getGuiTop() + 10, 20, 20, button ->
+                    sendUpdateToServer(tag -> {}),
+                    new ChamberButtonStart.ClickLimitation(chamber :: getWorkedTime, chamber :: getMaxWorkedTime)));
+        });
     }
 
     @Override

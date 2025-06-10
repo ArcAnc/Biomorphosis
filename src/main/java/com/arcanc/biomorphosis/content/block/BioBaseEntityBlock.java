@@ -91,7 +91,8 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
                     interaction = interaction.getGuiMaster();
                     if(interaction != null && interaction.canUseGui(player))
                     {
-                        serverPlayer.openMenu(interaction, byteBuf -> byteBuf.writeBlockPos(pos));
+                        BlockPos masterPos = interaction.getGuiMaster().getBlockPos();
+                        serverPlayer.openMenu(interaction, byteBuf -> byteBuf.writeBlockPos(masterPos));
                         return InteractionResult.SUCCESS_SERVER;
                     }
                 }
