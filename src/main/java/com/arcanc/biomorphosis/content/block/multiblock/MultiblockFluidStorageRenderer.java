@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.block.multiblock;
 
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;

@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.block.block_entity.tick;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 /*This code was taken from Immersive Engineering. Thanks BluSunrize, it's perfect*/

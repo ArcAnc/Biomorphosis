@@ -14,10 +14,12 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
 import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
 import com.arcanc.biomorphosis.util.model.obj.SphereObj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -25,22 +27,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.client.model.generators.loaders.ObjModelBuilder;
-import net.neoforged.neoforge.client.model.obj.ObjLoader;
-import net.neoforged.neoforge.client.model.obj.ObjModel;
-import net.neoforged.neoforge.client.model.obj.ObjTokenizer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.GeoRenderer;
-import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-
-import java.util.List;
 
 public class MultiblockChamberRenderer extends GeoBlockRenderer<MultiblockChamber>
 {
@@ -56,9 +51,45 @@ public class MultiblockChamberRenderer extends GeoBlockRenderer<MultiblockChambe
     {
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
 
+        int maxTime = animatable.getMaxWorkedTime();
+        int currentTime = animatable.getWorkedTime();
+
+        if (maxTime <= 0 || currentTime >= maxTime)
+            renderItemInside(poseStack, animatable, bufferSource, partialTick, packedLight, packedOverlay, renderColor);
+
+        Level level = animatable.getLevel();
+        if (level == null)
+            return;
+        float percent = Math.clamp(currentTime / (float)maxTime, 0.1f, 1.0f);
+        float angle = (level.getGameTime() % 360 + partialTick);
+
         poseStack.pushPose();
         poseStack.translate(0, 1.5f, 0);
+        poseStack.mulPose(Axis.YP.rotationDegrees(angle));
+        poseStack.scale(percent, percent, percent);
         this.sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
+        poseStack.popPose();
+    }
+
+    private void renderItemInside(PoseStack poseStack, MultiblockChamber animatable, MultiBufferSource bufferSource, float partialTick, int packedLight, int packedOverlay, int renderColor)
+    {
+        ItemStackSidedStorage storage = MultiblockChamber.getItemHandler(animatable, null);
+        if (storage == null)
+            return;
+        ItemStack stack = storage.getStackInSlot(0);
+        if (stack.isEmpty())
+            return;
+
+        Level level = animatable.getLevel();
+        if (level == null)
+            return;
+        float angle = (animatable.getLevel().getGameTime() % 360 + partialTick);
+
+        poseStack.pushPose();
+        poseStack.translate(0, 1.25f, 0);
+        poseStack.mulPose(Axis.YP.rotationDegrees(angle));
+        poseStack.scale(1.5f, 1.5f, 1.5f);
+        RenderHelper.renderItem().renderStatic(stack, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, animatable.getLevel(), 0);
         poseStack.popPose();
     }
 

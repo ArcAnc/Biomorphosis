@@ -9,9 +9,7 @@
 
 package com.arcanc.biomorphosis.content.block.block_entity;
 
-import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
