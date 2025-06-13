@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.entity.ai.goals.MoveToLureGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

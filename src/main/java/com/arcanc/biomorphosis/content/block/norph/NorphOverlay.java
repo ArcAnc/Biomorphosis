@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.block.norph;
 import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;

@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.data.recipe.input;
 
-import com.arcanc.biomorphosis.data.recipe.builders.ChamberRecipeBuilder;
 import com.google.common.base.Preconditions;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;

@@ -9,7 +9,6 @@
 
 package com.arcanc.biomorphosis.content.fluid;
 
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
