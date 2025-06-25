@@ -10,6 +10,7 @@
     "biomorphosis:catcher",
     "biomorphosis:forge",
     "biomorphosis:multiblock_fluid_storage",
-    "biomorphosis:multiblock_chamber"
+    "biomorphosis:multiblock_chamber",
+    "biomorphosis:multiblock_morpher"
   ]
 }

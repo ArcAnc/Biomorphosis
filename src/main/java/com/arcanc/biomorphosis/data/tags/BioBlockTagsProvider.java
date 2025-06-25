@@ -41,7 +41,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.CATCHER.get()).
                 add(Registration.BlockReg.FORGE.get()).
                 add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get()).
-                add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get());
+                add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
+                add(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
         this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
         this.tag(BioBlockTags.NORPH_AVOID).
                 add(Blocks.LAVA).

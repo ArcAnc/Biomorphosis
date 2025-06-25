@@ -114,6 +114,13 @@
         "multiblock_state": "formed"
       }
     },
+    "0, 0, 0": {
+      "Name": "biomorphosis:multiblock_chamber",
+      "Properties": {
+        "facing": "north",
+        "multiblock_state": "formed"
+      }
+    },
     "0, 0, 1": {
       "Name": "biomorphosis:multiblock_chamber",
       "Properties": {

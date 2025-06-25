@@ -27,20 +27,27 @@ import java.util.List;
 
 public class BioObjModel
 {
-    private final List<Vector3f> vertices = new ArrayList<>();
-    private final List<Vector2f> uvs = new ArrayList<>();
-    private final List<Vector3f> normals = new ArrayList<>();
-    private final List<Face> faces = new ArrayList<>();
-    private final ResourceLocation texture;
+    protected final List<Vector3f> vertices = new ArrayList<>();
+    protected final List<Vector2f> uvs = new ArrayList<>();
+    protected final List<Vector3f> normals = new ArrayList<>();
+    protected final List<Face> faces = new ArrayList<>();
+    protected final ResourceLocation texture;
+    protected final boolean flipUV;
 
     public static @NotNull BioObjModel newModel(ResourceLocation texture)
     {
-        return new BioObjModel(texture);
+        return new BioObjModel(texture, false);
     }
 
-    protected BioObjModel (ResourceLocation texture)
+    public static @NotNull BioObjModel newModel(ResourceLocation texture, boolean flipUV)
+    {
+        return new BioObjModel(texture, flipUV);
+    }
+
+    public BioObjModel (ResourceLocation texture, boolean flipUV)
     {
         this.texture = texture;
+        this.flipUV = flipUV;
     }
 
     public BioObjModel addVertex(float x, float y, float z)
@@ -50,7 +57,7 @@ public class BioObjModel
     public BioObjModel addVertex(Vector3f vertex)
     {
         Preconditions.checkNotNull(vertex);
-        vertices.add(vertex);
+        this.vertices.add(vertex);
         return this;
     }
 
@@ -61,7 +68,7 @@ public class BioObjModel
     public BioObjModel addUV(Vector2f uv)
     {
         Preconditions.checkNotNull(uv);
-        uvs.add(uv);
+        this.uvs.add(uv);
         return this;
     }
 
@@ -72,7 +79,7 @@ public class BioObjModel
     public BioObjModel addNormal(Vector3f normal)
     {
         Preconditions.checkNotNull(normal);
-        normals.add(normal);
+        this.normals.add(normal);
         return this;
     }
 
@@ -81,9 +88,9 @@ public class BioObjModel
         Preconditions.checkNotNull(vertex);
         Preconditions.checkNotNull(uv);
         Preconditions.checkNotNull(normal);
-        vertices.add(vertex);
-        uvs.add(uv);
-        normals.add(normal);
+        this.vertices.add(vertex);
+        this.uvs.add(uv);
+        this.normals.add(normal);
         return this;
     }
 
@@ -131,13 +138,24 @@ public class BioObjModel
 
         for (BioObjModel.Face face : this.faces)
         {
+            Vector2f uv0 = uvs.get(face.v01());
+            Vector2f uv1 = uvs.get(face.v11());
+            Vector2f uv2 = uvs.get(face.v21());
+
+            if (this.flipUV)
+            {
+                uv0 = new Vector2f(uv0.x(), 1 - uv0.y());
+                uv1 = new Vector2f(uv1.x(), 1 - uv1.y());
+                uv2 = new Vector2f(uv2.x(), 1 - uv2.y());
+            }
+
             builder.addVertex(matrix,
                             vertices.get(face.v00()).x(),
                             vertices.get(face.v00()).y(),
                             vertices.get(face.v00()).z()).
                     setColor(color).
-                    setUv(uvs.get(face.v01()).x(),
-                            uvs.get(face.v01()).y()).
+                    setUv(uv0.x(),
+                            uv0.y()).
                     setOverlay(overlay).
                     setLight(light).
                     setNormal(normal,
@@ -150,8 +168,8 @@ public class BioObjModel
                             vertices.get(face.v10()).y(),
                             vertices.get(face.v10()).z()).
                     setColor(color).
-                    setUv(uvs.get(face.v11()).x(),
-                            uvs.get(face.v11()).y()).
+                    setUv(uv1.x(),
+                            uv1.y()).
                     setOverlay(overlay).
                     setLight(light).
                     setNormal(normal,
@@ -164,8 +182,8 @@ public class BioObjModel
                             vertices.get(face.v20()).y(),
                             vertices.get(face.v20()).z()).
                     setColor(color).
-                    setUv(uvs.get(face.v21()).x(),
-                            uvs.get(face.v21()).y()).
+                    setUv(uv2.x(),
+                            uv2.y()).
                     setOverlay(overlay).
                     setLight(light).
                     setNormal(normal,

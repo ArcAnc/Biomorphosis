@@ -15,7 +15,7 @@ public class SphereObj extends BioObjModel
 {
     public SphereObj(ResourceLocation texture)
     {
-        super(texture);
+        super(texture, false);
         addVertex(0f, -0.5f, 0);
         addVertex(0f, 0.5f, 0);
         addVertex(0.0669875f, 0.4330125f, 0.25f);

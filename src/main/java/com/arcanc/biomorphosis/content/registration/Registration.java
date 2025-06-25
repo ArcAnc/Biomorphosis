@@ -360,6 +360,14 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
 
+        public static final DeferredBlock<MultiblockMorpherBlock> MULTIBLOCK_MORPHER = register("multiblock_morpher", MultiblockMorpherBlock :: new,
+                properties -> properties.mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
@@ -444,6 +452,12 @@ public final class Registration
                 makeType(MultiblockFluidStorage :: new,
                         MultiblockFluidStorageRenderer :: new,
                         BlockReg.MULTIBLOCK_FLUID_STORAGE));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockMorpher>> BE_MULTIBLOCK_MORPHER = BLOCK_ENTITIES.register(
+                "multiblock_morpher",
+                makeType(MultiblockMorpher :: new,
+                        MultiblockMorpherRenderer :: new,
+                        BlockReg.MULTIBLOCK_MORPHER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChamber>> BE_MULTIBLOCK_CHAMBER = BLOCK_ENTITIES.register(
                 "multiblock_chamber",

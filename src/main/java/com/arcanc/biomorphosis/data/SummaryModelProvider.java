@@ -94,8 +94,9 @@ public class SummaryModelProvider extends ModelProvider
         createForgeModel(blockModels);
 
         createMultiblockFluidStorage(blockModels);
-        /*FIXME: create normal model for chamber*/
         createMultiblockChamberModel(blockModels);
+        /*FIXME: сделать нормальную модель для морфера*/
+        blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
     }
 
     //------------------------------------------------------------------------------

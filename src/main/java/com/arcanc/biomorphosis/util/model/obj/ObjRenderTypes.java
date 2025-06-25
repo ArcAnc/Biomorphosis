@@ -27,9 +27,15 @@ public class ObjRenderTypes
         return RenderTypeProviders.TRIANGLES_SOLID.apply(texture);
     }
 
+    public static RenderType trianglesTranslucent(ResourceLocation texture)
+    {
+        return RenderTypeProviders.TRIANGLES_TRANSLUCENT.apply(texture);
+    }
+
     private static class RenderTypeProviders extends RenderType
     {
 		public static Function<ResourceLocation, RenderType> TRIANGLES_SOLID = Util.memoize(RenderTypeProviders :: trianglesSolid);
+        public static Function<ResourceLocation, RenderType> TRIANGLES_TRANSLUCENT = Util.memoize(RenderTypeProviders :: trianglesTranslucent);
 
         private static @NotNull RenderType trianglesSolid(ResourceLocation loc)
         {
@@ -37,10 +43,24 @@ public class ObjRenderTypes
                     setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER).
                     setTextureState(new RenderStateShard.TextureStateShard(loc, TriState.FALSE, false)).
                     setTransparencyState(RenderStateShard.NO_TRANSPARENCY).
+                    setCullState(RenderStateShard.NO_CULL).
                     setLightmapState(LIGHTMAP).
                     setOverlayState(OVERLAY).
                     createCompositeState(true);
             return create("triangles_solid", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 1536, true, false, state);
+        }
+
+        private static @NotNull RenderType trianglesTranslucent(ResourceLocation loc)
+        {
+            RenderType.CompositeState state =  RenderType.CompositeState.builder().
+                    setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER).
+                    setTextureState(new RenderStateShard.TextureStateShard(loc, TriState.FALSE, false)).
+                    setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).
+                    setCullState(NO_CULL).
+                    setLightmapState(LIGHTMAP).
+                    setOverlayState(OVERLAY).
+                    createCompositeState(true);
+            return create("triangles_solid", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 1536, true, true, state);
         }
 
         private RenderTypeProviders(String s, VertexFormat v, VertexFormat.Mode m, int i, boolean b, boolean b2, Runnable r, Runnable r2)

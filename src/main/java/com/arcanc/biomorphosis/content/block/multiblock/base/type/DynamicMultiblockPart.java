@@ -24,6 +24,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -140,7 +141,7 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
     protected abstract void transferRequiredData(DynamicMultiblockPart target);
 
     @Override
-    protected void tryFormMultiblock()
+    protected void tryFormMultiblock(Level level)
     {
     }
 
@@ -151,7 +152,7 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
     }
 
     @Override
-    protected void onDisassemble()
+    public void onDisassemble()
     {
 
     }

@@ -20,12 +20,9 @@ import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
@@ -44,20 +41,20 @@ public class BioMultiblockProvider extends BioRegistryData
     @Override
     protected void addContent()
     {
-        addMultiblock(staticBuilder(Database.rl("static_test")).
+        /*addMultiblock(staticBuilder(Database.rl("static_test")).
                 addPart(new BlockPos(0, 0, 1), Blocks.BIRCH_STAIRS.defaultBlockState()).
                 addPart(new BlockPos(0, 1, 0), Blocks.DIAMOND_BLOCK.defaultBlockState()).
                 addPart(new BlockPos(1, 0, 0), Blocks.BIRCH_STAIRS.defaultBlockState().
                         setValue(StairBlock.FACING, Direction.SOUTH)).
                 end());
-
+        */
         Map<BlockPos, BlockState> chamberMap = new HashMap<>();
         for (int x = -1; x < 2; x++)
             for (int z = -1 ; z < 2; z++)
                 for (int y = 0; y < 5; y++)
                 {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
+                    //if (x == 0 && y == 0 && z == 0)
+                        //continue;
                     chamberMap.putIfAbsent(new BlockPos(x, y, z), Registration.BlockReg.MULTIBLOCK_CHAMBER.get().defaultBlockState().setValue(MultiblockChamberBlock.STATE, MultiblockState.FORMED));
                 }
 

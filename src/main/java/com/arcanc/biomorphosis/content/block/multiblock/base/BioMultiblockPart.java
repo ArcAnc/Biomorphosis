@@ -21,6 +21,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -35,6 +36,11 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
     public BioMultiblockPart(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
+    }
+
+    public void setDefinition(IMultiblockDefinition definition)
+    {
+        this.definition = definition;
     }
 
     public Optional<IMultiblockDefinition> getDefinition()
@@ -68,21 +74,21 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
         return masterPos.equals(getBlockPos()) ? new MasterRoleBehavior(this) : new SlaveRoleBehavior(this).setMasterPos(masterPos);
     }
 
-    protected void markAsPartOfMultiblock(BlockPos masterPos)
+    public void markAsPartOfMultiblock(BlockPos masterPos)
     {
         this.roleBehavior = setRoleBehavior(masterPos);
         setMultiblockState(MultiblockState.FORMED);
         markDirty();
     }
 
-    protected void startMorphing(BlockPos masterPos)
+    public void startMorphing(BlockPos masterPos)
     {
         this.roleBehavior = setRoleBehavior(masterPos);
         setMultiblockState(MultiblockState.MORPHING);
         markDirty();
     }
 
-    protected void resetMultiblockState()
+    public void resetMultiblockState()
     {
         this.roleBehavior = null;
         setMultiblockState(MultiblockState.DISASSEMBLED);
@@ -105,14 +111,14 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
         resetMultiblockState();
     }
 
-    protected boolean isConnectedToNorph()
+    protected boolean isConnectedToNorph(Level level)
     {
-        if (this.level == null)
+        if (level == null)
             return false;
         BlockState state = getBlockState();
         if (!(state.getBlock() instanceof MultiblockPartBlock<?> block))
             return false;
-        return block.isConnectedToNorph(this.level, getBlockPos(), state);
+        return block.isConnectedToNorph(level, getBlockPos(), state);
     }
 
     protected MultiblockState getMultiblockState()
@@ -125,11 +131,11 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
 
     }
 
-    protected abstract void tryFormMultiblock();
+    protected abstract void tryFormMultiblock(Level level);
 
     protected abstract boolean isMultiblockStillValid();
 
-    protected abstract void onDisassemble();
+    public abstract void onDisassemble();
 
     @Override
     public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
