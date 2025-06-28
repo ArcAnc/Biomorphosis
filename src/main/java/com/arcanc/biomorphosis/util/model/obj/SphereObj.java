@@ -9,10 +9,40 @@
 
 package com.arcanc.biomorphosis.util.model.obj;
 
+import com.google.common.base.Function;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SphereObj extends BioObjModel
 {
+    private final List<Integer> usedIndexes = new ArrayList<>();
+    private final List<Vector3f> transformedPoints = new ArrayList<>();
+
+    private static final float[] pulseShape = new float[]
+            {
+            0.00f, 0.02f, 0.04f, 0.06f, 0.07f, 0.08f, 0.09f, 0.10f, 0.11f, 0.12f,
+            0.13f, 0.15f, 0.145f, 0.13f, 0.12f, 0.11f, 0.10f, 0.09f, 0.05f, 0.04f,
+            0.02f, 0.01f, 0.01f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.01f, 0.03f, 0.05f,
+            0.06f, 0.05f, 0.04f, 0.03f, 0.02f, 0.01f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f,
+            0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f, 0.00f
+    };
+
     public SphereObj(ResourceLocation texture)
     {
         super(texture, false);
@@ -561,125 +591,252 @@ public class SphereObj extends BioObjModel
         addNormal(0.3535523884115301f, -0.7071069909195669f, 0.6123727721259152f);
         addNormal(0.35355425158540577f, -0.7071085031708112f, 0.6123699502175286f);
 
-        newFace(3,1,1,8,2,1,2,3,1);
-        newFace(12,4,2,7,5,2,1,6,2);
-        newFace(8,7,3,13,8,3,2,9,3);
-        newFace(17,10,4,12,11,4,1,12,4);
-        newFace(13,13,5,18,14,5,2,15,5);
-        newFace(22,16,6,17,17,6,1,18,6);
-        newFace(18,19,7,23,20,7,2,21,7);
-        newFace(27,22,8,22,23,8,1,24,8);
-        newFace(23,25,9,28,26,9,2,27,9);
-        newFace(32,28,10,27,29,10,1,30,10);
-        newFace(28,31,11,33,32,11,2,33,11);
-        newFace(37,34,12,32,35,12,1,36,12);
-        newFace(33,37,13,38,38,13,2,39,13);
-        newFace(42,40,14,37,41,14,1,42,14);
-        newFace(38,43,15,43,44,15,2,45,15);
-        newFace(47,46,16,42,47,16,1,48,16);
-        newFace(43,49,17,48,50,17,2,51,17);
-        newFace(52,52,18,47,53,18,1,54,18);
-        newFace(48,55,19,53,56,19,2,57,19);
-        newFace(57,58,20,52,59,20,1,60,20);
-        newFace(53,61,21,58,62,21,2,63,21);
-        newFace(62,64,22,57,65,22,1,66,22);
-        newFace(58,67,23,3,68,23,2,69,23);
-        newFace(7,70,24,62,71,24,1,72,24);
-        newFace(23,73,25,24,74,25,28,75,25);
-        newFace(24,76,26,29,77,26,28,78,26);
-        newFace(28,79,27,29,80,27,33,81,27);
-        newFace(29,82,28,34,83,28,33,84,28);
-        newFace(33,85,29,34,86,29,38,87,29);
-        newFace(34,88,30,39,89,30,38,90,30);
-        newFace(38,91,31,39,92,31,43,93,31);
-        newFace(39,94,32,44,95,32,43,96,32);
-        newFace(43,97,33,44,98,33,48,99,33);
-        newFace(44,100,34,49,101,34,48,102,34);
-        newFace(48,103,35,49,104,35,53,105,35);
-        newFace(49,106,36,54,107,36,53,108,36);
-        newFace(53,109,37,54,110,37,58,111,37);
-        newFace(54,112,38,59,113,38,58,114,38);
-        newFace(58,115,39,59,116,39,3,117,39);
-        newFace(59,118,40,4,119,40,3,120,40);
-        newFace(3,121,41,4,122,41,8,123,41);
-        newFace(4,124,42,9,125,42,8,126,42);
-        newFace(8,127,43,9,128,43,13,129,43);
-        newFace(9,130,44,14,131,44,13,132,44);
-        newFace(13,133,45,14,134,45,18,135,45);
-        newFace(14,136,46,19,137,46,18,138,46);
-        newFace(18,139,47,19,140,47,23,141,47);
-        newFace(19,142,48,24,143,48,23,144,48);
-        newFace(19,145,49,20,146,49,24,147,49);
-        newFace(20,148,50,25,149,50,24,150,50);
-        newFace(24,151,51,25,152,51,29,153,51);
-        newFace(25,154,52,30,155,52,29,156,52);
-        newFace(29,157,53,30,158,53,34,159,53);
-        newFace(30,160,54,35,161,54,34,162,54);
-        newFace(34,163,55,35,164,55,39,165,55);
-        newFace(35,166,56,40,167,56,39,168,56);
-        newFace(39,169,57,40,170,57,44,171,57);
-        newFace(40,172,58,45,173,58,44,174,58);
-        newFace(44,175,59,45,176,59,49,177,59);
-        newFace(45,178,60,50,179,60,49,180,60);
-        newFace(49,181,61,50,182,61,54,183,61);
-        newFace(50,184,62,55,185,62,54,186,62);
-        newFace(54,187,63,55,188,63,59,189,63);
-        newFace(55,190,64,60,191,64,59,192,64);
-        newFace(59,193,65,60,194,65,4,195,65);
-        newFace(60,196,66,5,197,66,4,198,66);
-        newFace(4,199,67,5,200,67,9,201,67);
-        newFace(5,202,68,10,203,68,9,204,68);
-        newFace(9,205,69,10,206,69,14,207,69);
-        newFace(10,208,70,15,209,70,14,210,70);
-        newFace(14,211,71,15,212,71,19,213,71);
-        newFace(15,214,72,20,215,72,19,216,72);
-        newFace(15,217,73,16,218,73,20,219,73);
-        newFace(16,220,74,21,221,74,20,222,74);
-        newFace(20,223,75,21,224,75,25,225,75);
-        newFace(21,226,76,26,227,76,25,228,76);
-        newFace(25,229,77,26,230,77,30,231,77);
-        newFace(26,232,78,31,233,78,30,234,78);
-        newFace(30,235,79,31,236,79,35,237,79);
-        newFace(31,238,80,36,239,80,35,240,80);
-        newFace(35,241,81,36,242,81,40,243,81);
-        newFace(36,244,82,41,245,82,40,246,82);
-        newFace(40,247,83,41,248,83,45,249,83);
-        newFace(41,250,84,46,251,84,45,252,84);
-        newFace(45,253,85,46,254,85,50,255,85);
-        newFace(46,256,86,51,257,86,50,258,86);
-        newFace(50,259,87,51,260,87,55,261,87);
-        newFace(51,262,88,56,263,88,55,264,88);
-        newFace(55,265,89,56,266,89,60,267,89);
-        newFace(56,268,90,61,269,90,60,270,90);
-        newFace(60,271,91,61,272,91,5,273,91);
-        newFace(61,274,92,6,275,92,5,276,92);
-        newFace(5,277,93,6,278,93,10,279,93);
-        newFace(6,280,94,11,281,94,10,282,94);
-        newFace(10,283,95,11,284,95,15,285,95);
-        newFace(11,286,96,16,287,96,15,288,96);
-        newFace(11,289,97,12,290,97,16,291,97);
-        newFace(12,292,98,17,293,98,16,294,98);
-        newFace(16,295,99,17,296,99,21,297,99);
-        newFace(17,298,100,22,299,100,21,300,100);
-        newFace(21,301,101,22,302,101,26,303,101);
-        newFace(22,304,102,27,305,102,26,306,102);
-        newFace(26,307,103,27,308,103,31,309,103);
-        newFace(27,310,104,32,311,104,31,312,104);
-        newFace(31,313,105,32,314,105,36,315,105);
-        newFace(32,316,106,37,317,106,36,318,106);
-        newFace(36,319,107,37,320,107,41,321,107);
-        newFace(37,322,108,42,323,108,41,324,108);
-        newFace(41,325,109,42,326,109,46,327,109);
-        newFace(42,328,110,47,329,110,46,330,110);
-        newFace(46,331,111,47,332,111,51,333,111);
-        newFace(47,334,112,52,335,112,51,336,112);
-        newFace(51,337,113,52,338,113,56,339,113);
-        newFace(52,340,114,57,341,114,56,342,114);
-        newFace(56,343,115,57,344,115,61,345,115);
-        newFace(57,346,116,62,347,116,61,348,116);
-        newFace(61,349,117,62,350,117,6,351,117);
-        newFace(62,352,118,7,353,118,6,354,118);
-        newFace(6,355,119,7,356,119,11,357,119);
-        newFace(7,358,120,12,359,120,11,360,120);
+        newFace(3, 1, 1, 8, 2, 1, 2, 3, 1);
+        newFace(12, 4, 2, 7, 5, 2, 1, 6, 2);
+        newFace(8, 7, 3, 13, 8, 3, 2, 9, 3);
+        newFace(17, 10, 4, 12, 11, 4, 1, 12, 4);
+        newFace(13, 13, 5, 18, 14, 5, 2, 15, 5);
+        newFace(22, 16, 6, 17, 17, 6, 1, 18, 6);
+        newFace(18, 19, 7, 23, 20, 7, 2, 21, 7);
+        newFace(27, 22, 8, 22, 23, 8, 1, 24, 8);
+        newFace(23, 25, 9, 28, 26, 9, 2, 27, 9);
+        newFace(32, 28, 10, 27, 29, 10, 1, 30, 10);
+        newFace(28, 31, 11, 33, 32, 11, 2, 33, 11);
+        newFace(37, 34, 12, 32, 35, 12, 1, 36, 12);
+        newFace(33, 37, 13, 38, 38, 13, 2, 39, 13);
+        newFace(42, 40, 14, 37, 41, 14, 1, 42, 14);
+        newFace(38, 43, 15, 43, 44, 15, 2, 45, 15);
+        newFace(47, 46, 16, 42, 47, 16, 1, 48, 16);
+        newFace(43, 49, 17, 48, 50, 17, 2, 51, 17);
+        newFace(52, 52, 18, 47, 53, 18, 1, 54, 18);
+        newFace(48, 55, 19, 53, 56, 19, 2, 57, 19);
+        newFace(57, 58, 20, 52, 59, 20, 1, 60, 20);
+        newFace(53, 61, 21, 58, 62, 21, 2, 63, 21);
+        newFace(62, 64, 22, 57, 65, 22, 1, 66, 22);
+        newFace(58, 67, 23, 3, 68, 23, 2, 69, 23);
+        newFace(7, 70, 24, 62, 71, 24, 1, 72, 24);
+        newFace(23, 73, 25, 24, 74, 25, 28, 75, 25);
+        newFace(24, 76, 26, 29, 77, 26, 28, 78, 26);
+        newFace(28, 79, 27, 29, 80, 27, 33, 81, 27);
+        newFace(29, 82, 28, 34, 83, 28, 33, 84, 28);
+        newFace(33, 85, 29, 34, 86, 29, 38, 87, 29);
+        newFace(34, 88, 30, 39, 89, 30, 38, 90, 30);
+        newFace(38, 91, 31, 39, 92, 31, 43, 93, 31);
+        newFace(39, 94, 32, 44, 95, 32, 43, 96, 32);
+        newFace(43, 97, 33, 44, 98, 33, 48, 99, 33);
+        newFace(44, 100, 34, 49, 101, 34, 48, 102, 34);
+        newFace(48, 103, 35, 49, 104, 35, 53, 105, 35);
+        newFace(49, 106, 36, 54, 107, 36, 53, 108, 36);
+        newFace(53, 109, 37, 54, 110, 37, 58, 111, 37);
+        newFace(54, 112, 38, 59, 113, 38, 58, 114, 38);
+        newFace(58, 115, 39, 59, 116, 39, 3, 117, 39);
+        newFace(59, 118, 40, 4, 119, 40, 3, 120, 40);
+        newFace(3, 121, 41, 4, 122, 41, 8, 123, 41);
+        newFace(4, 124, 42, 9, 125, 42, 8, 126, 42);
+        newFace(8, 127, 43, 9, 128, 43, 13, 129, 43);
+        newFace(9, 130, 44, 14, 131, 44, 13, 132, 44);
+        newFace(13, 133, 45, 14, 134, 45, 18, 135, 45);
+        newFace(14, 136, 46, 19, 137, 46, 18, 138, 46);
+        newFace(18, 139, 47, 19, 140, 47, 23, 141, 47);
+        newFace(19, 142, 48, 24, 143, 48, 23, 144, 48);
+        newFace(19, 145, 49, 20, 146, 49, 24, 147, 49);
+        newFace(20, 148, 50, 25, 149, 50, 24, 150, 50);
+        newFace(24, 151, 51, 25, 152, 51, 29, 153, 51);
+        newFace(25, 154, 52, 30, 155, 52, 29, 156, 52);
+        newFace(29, 157, 53, 30, 158, 53, 34, 159, 53);
+        newFace(30, 160, 54, 35, 161, 54, 34, 162, 54);
+        newFace(34, 163, 55, 35, 164, 55, 39, 165, 55);
+        newFace(35, 166, 56, 40, 167, 56, 39, 168, 56);
+        newFace(39, 169, 57, 40, 170, 57, 44, 171, 57);
+        newFace(40, 172, 58, 45, 173, 58, 44, 174, 58);
+        newFace(44, 175, 59, 45, 176, 59, 49, 177, 59);
+        newFace(45, 178, 60, 50, 179, 60, 49, 180, 60);
+        newFace(49, 181, 61, 50, 182, 61, 54, 183, 61);
+        newFace(50, 184, 62, 55, 185, 62, 54, 186, 62);
+        newFace(54, 187, 63, 55, 188, 63, 59, 189, 63);
+        newFace(55, 190, 64, 60, 191, 64, 59, 192, 64);
+        newFace(59, 193, 65, 60, 194, 65, 4, 195, 65);
+        newFace(60, 196, 66, 5, 197, 66, 4, 198, 66);
+        newFace(4, 199, 67, 5, 200, 67, 9, 201, 67);
+        newFace(5, 202, 68, 10, 203, 68, 9, 204, 68);
+        newFace(9, 205, 69, 10, 206, 69, 14, 207, 69);
+        newFace(10, 208, 70, 15, 209, 70, 14, 210, 70);
+        newFace(14, 211, 71, 15, 212, 71, 19, 213, 71);
+        newFace(15, 214, 72, 20, 215, 72, 19, 216, 72);
+        newFace(15, 217, 73, 16, 218, 73, 20, 219, 73);
+        newFace(16, 220, 74, 21, 221, 74, 20, 222, 74);
+        newFace(20, 223, 75, 21, 224, 75, 25, 225, 75);
+        newFace(21, 226, 76, 26, 227, 76, 25, 228, 76);
+        newFace(25, 229, 77, 26, 230, 77, 30, 231, 77);
+        newFace(26, 232, 78, 31, 233, 78, 30, 234, 78);
+        newFace(30, 235, 79, 31, 236, 79, 35, 237, 79);
+        newFace(31, 238, 80, 36, 239, 80, 35, 240, 80);
+        newFace(35, 241, 81, 36, 242, 81, 40, 243, 81);
+        newFace(36, 244, 82, 41, 245, 82, 40, 246, 82);
+        newFace(40, 247, 83, 41, 248, 83, 45, 249, 83);
+        newFace(41, 250, 84, 46, 251, 84, 45, 252, 84);
+        newFace(45, 253, 85, 46, 254, 85, 50, 255, 85);
+        newFace(46, 256, 86, 51, 257, 86, 50, 258, 86);
+        newFace(50, 259, 87, 51, 260, 87, 55, 261, 87);
+        newFace(51, 262, 88, 56, 263, 88, 55, 264, 88);
+        newFace(55, 265, 89, 56, 266, 89, 60, 267, 89);
+        newFace(56, 268, 90, 61, 269, 90, 60, 270, 90);
+        newFace(60, 271, 91, 61, 272, 91, 5, 273, 91);
+        newFace(61, 274, 92, 6, 275, 92, 5, 276, 92);
+        newFace(5, 277, 93, 6, 278, 93, 10, 279, 93);
+        newFace(6, 280, 94, 11, 281, 94, 10, 282, 94);
+        newFace(10, 283, 95, 11, 284, 95, 15, 285, 95);
+        newFace(11, 286, 96, 16, 287, 96, 15, 288, 96);
+        newFace(11, 289, 97, 12, 290, 97, 16, 291, 97);
+        newFace(12, 292, 98, 17, 293, 98, 16, 294, 98);
+        newFace(16, 295, 99, 17, 296, 99, 21, 297, 99);
+        newFace(17, 298, 100, 22, 299, 100, 21, 300, 100);
+        newFace(21, 301, 101, 22, 302, 101, 26, 303, 101);
+        newFace(22, 304, 102, 27, 305, 102, 26, 306, 102);
+        newFace(26, 307, 103, 27, 308, 103, 31, 309, 103);
+        newFace(27, 310, 104, 32, 311, 104, 31, 312, 104);
+        newFace(31, 313, 105, 32, 314, 105, 36, 315, 105);
+        newFace(32, 316, 106, 37, 317, 106, 36, 318, 106);
+        newFace(36, 319, 107, 37, 320, 107, 41, 321, 107);
+        newFace(37, 322, 108, 42, 323, 108, 41, 324, 108);
+        newFace(41, 325, 109, 42, 326, 109, 46, 327, 109);
+        newFace(42, 328, 110, 47, 329, 110, 46, 330, 110);
+        newFace(46, 331, 111, 47, 332, 111, 51, 333, 111);
+        newFace(47, 334, 112, 52, 335, 112, 51, 336, 112);
+        newFace(51, 337, 113, 52, 338, 113, 56, 339, 113);
+        newFace(52, 340, 114, 57, 341, 114, 56, 342, 114);
+        newFace(56, 343, 115, 57, 344, 115, 61, 345, 115);
+        newFace(57, 346, 116, 62, 347, 116, 61, 348, 116);
+        newFace(61, 349, 117, 62, 350, 117, 6, 351, 117);
+        newFace(62, 352, 118, 7, 353, 118, 6, 354, 118);
+        newFace(6, 355, 119, 7, 356, 119, 11, 357, 119);
+        newFace(7, 358, 120, 12, 359, 120, 11, 360, 120);
+    }
+
+    private void applyDisplacementToFace(@NotNull Face face, float displacement)
+    {
+        Vector3f first = this.vertices.get(face.v00());
+        Vector3f second = this.vertices.get(face.v10());
+        Vector3f third = this.vertices.get(face.v20());
+
+        if (!this.usedIndexes.contains(face.v00()))
+        {
+            this.transformedPoints.set(face.v00(), applyDisplacement(first, this.normals.get(face.v02()), displacement));
+            this.usedIndexes.add(face.v00());
+        }
+        if (!this.usedIndexes.contains(face.v10()))
+        {
+            this.transformedPoints.set(face.v10(), applyDisplacement(second, this.normals.get(face.v12()), displacement));
+            this.usedIndexes.add(face.v10());
+        }
+
+        if (!this.usedIndexes.contains(face.v20()))
+        {
+            this.transformedPoints.set(face.v20(), applyDisplacement(third, this.normals.get(face.v22()), displacement));
+            this.usedIndexes.add(face.v20());
+        }
+    }
+
+    private @NotNull Vector3f applyDisplacement(Vector3f vertex, Vector3f normal, float displacement)
+    {
+        Vector3f result = new Vector3f(vertex);
+
+        return result.add(new Vector3f(normal).mul(displacement));
+    }
+
+    @Override
+    public void render(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+    {
+        Matrix4f matrix = mStack.last().pose();
+        PoseStack.Pose normal = mStack.last();
+
+        VertexConsumer builder = bufferSource.getBuffer(type.apply(this.texture));
+
+        List<Vector3f> vertices = this.transformedPoints;
+        List<Vector2f> uvs = this.uvs;
+        List<Vector3f> normals = this.normals;
+
+        float time = System.nanoTime() / 1000_000_000f;
+        float displacement = pulse(time, 20);
+
+        this.transformedPoints.clear();
+        this.usedIndexes.clear();
+        for (int q = 0; q < this.vertices.size(); q++)
+            this.transformedPoints.add(new Vector3f());
+
+        for (BioObjModel.Face face : this.faces)
+        {
+            applyDisplacementToFace(face, displacement);
+        }
+
+        for (BioObjModel.Face face : this.faces)
+        {
+            Vector2f uv0 = uvs.get(face.v01());
+            Vector2f uv1 = uvs.get(face.v11());
+            Vector2f uv2 = uvs.get(face.v21());
+
+            if (this.flipUV)
+            {
+                uv0 = new Vector2f(uv0.x(), 1 - uv0.y());
+                uv1 = new Vector2f(uv1.x(), 1 - uv1.y());
+                uv2 = new Vector2f(uv2.x(), 1 - uv2.y());
+            }
+
+            builder.addVertex(matrix,
+                    vertices.get(face.v00()).x(),
+                    vertices.get(face.v00()).y(),
+                    vertices.get(face.v00()).z()).
+                    setColor(color).
+                    setUv(uv0.x(),
+                    uv0.y()).
+                    setOverlay(overlay).
+                    setLight(light).
+                    setNormal(normal,
+                    normals.get(face.v02()).x(),
+                    normals.get(face.v02()).y(),
+                    normals.get(face.v02()).z());
+
+            builder.addVertex(matrix,
+                    vertices.get(face.v10()).x(),
+                    vertices.get(face.v10()).y(),
+                    vertices.get(face.v10()).z()).
+                    setColor(color).
+                    setUv(uv1.x(),
+                    uv1.y()).
+                    setOverlay(overlay).
+                    setLight(light).
+                    setNormal(normal,
+                    normals.get(face.v12()).x(),
+                    normals.get(face.v12()).y(),
+                    normals.get(face.v12()).z());
+
+            builder.addVertex(matrix,
+                    vertices.get(face.v20()).x(),
+                    vertices.get(face.v20()).y(),
+                    vertices.get(face.v20()).z()).
+                    setColor(color).
+                    setUv(uv2.x(),
+                    uv2.y()).
+                    setOverlay(overlay).
+                    setLight(light).
+                    setNormal(normal,
+                    normals.get(face.v22()).x(),
+                    normals.get(face.v22()).y(),
+                    normals.get(face.v22()).z());
+        }
+    }
+
+    private float pulse(float time, float bpm)
+    {
+        float freq = bpm / 60f;
+        float phase = (time * freq) % 1f;
+
+        float indexFloat = phase * (pulseShape.length - 1);
+        int index = (int)indexFloat;
+        int next = Math.min(index + 1, pulseShape.length - 1);
+
+        float displacement = indexFloat - index;
+
+        return Mth.lerp(displacement, pulseShape[index], pulseShape[next]);
     }
 }

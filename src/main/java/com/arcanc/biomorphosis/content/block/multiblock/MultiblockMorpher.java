@@ -50,7 +50,7 @@ import java.util.stream.Collectors;
 public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockEntity
 {
 	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private final RawAnimation MORPH = RawAnimation.begin().thenPlay("morphing");
+	private final RawAnimation MORPH = RawAnimation.begin().thenPlayAndHold("morphing");
 	private final RawAnimation HOLD = RawAnimation.begin().thenPlayAndHold("hold");
 
 	private static final int PREPARATION_TIME_TICKS = 20 * 10;
@@ -409,8 +409,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		controllers.add(new AnimationController<>(this, "animation", 0, state ->
 		{
 			MultiblockMorpher morpher = state.getAnimatable();
-			if (morpher.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING &&
-				morpher.isPreparationPhase())
+			if (morpher.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING)
 				return state.setAndContinue(MORPH);
 			else
 				return state.setAndContinue(HOLD);

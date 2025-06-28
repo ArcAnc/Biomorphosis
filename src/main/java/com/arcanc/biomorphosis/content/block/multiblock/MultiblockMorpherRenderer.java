@@ -15,9 +15,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.model.obj.MorpherBaseObj;
-import com.arcanc.biomorphosis.util.model.obj.MorpherEggObj;
-import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
+import com.arcanc.biomorphosis.util.model.obj.*;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -36,6 +34,8 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 
 	private final MorpherBaseObj baseModel = new MorpherBaseObj(Database.rl("textures/block/morpher.png"));
 	private final MorpherEggObj eggModel = new MorpherEggObj(Database.rl("textures/block/morpher.png"));
+	private final SphereObj sphereModel = new SphereObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
+	private final SphereGreenObj sphereGreenModel = new SphereGreenObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
 
 	public MultiblockMorpherRenderer(BlockEntityRendererProvider.Context ctx)
 	{
@@ -51,10 +51,15 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 
 		poseStack.pushPose();
 
+		this.baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
+
 		if ((state.getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING &&
 			animatable.isPreparationPhase()) ||
 			state.getValue(MultiblockPartBlock.STATE) != MultiblockState.MORPHING)
-			this.baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
+			{
+				poseStack.popPose();
+				return;
+			}
 		else
 		{
 			IMultiblockDefinition definition = animatable.getDefinition().get();
@@ -62,12 +67,20 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 
 			/*FIXME: добавить плавное изменение размера. Сейчас оно слегка дёрганное*/
 
-			float value = ((float) animatable.getMorphProgress() / map.getStates().size());
+			float value = ((float) (animatable.getMorphProgress())/ map.getStates().size());
 			BlockPos maxSize = map.getSize();
 			int maxScale = Math.max(maxSize.getX(), Math.max(maxSize.getY(), maxSize.getZ()));
-			value = Math.clamp(value * maxScale, 1.0f, maxScale);
+			value = Math.clamp(value * maxScale, 0.2f, maxScale);
+			poseStack.translate(0, -(0.5f * value) + value , 0f);
 			poseStack.scale(value, value, value);
-			this.eggModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
+			//this.eggModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
+			this.sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
+			poseStack.popPose();
+
+			poseStack.pushPose();
+			poseStack.translate(0f, -0.05f, 0f);
+			poseStack.scale(value, value, value);
+			this.sphereGreenModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
 		}
 		poseStack.popPose();
 	}

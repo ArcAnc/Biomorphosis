@@ -860,7 +860,6 @@ public class MorpherEggObj extends BioObjModel
 			applyDisplacement(this.vertices.get(face.v20()), this.normals.get(face.v22()), this.vertexPhases.get(face.v20()), timeSeconds, thresholdY, amplitude, frequency);
 			this.usedIndexes.add(face.v20());
 		}
-
 	}
 
 	private void applyDisplacement(@NotNull Vector3f vertex, Vector3f normal, float phase, float timeSeconds, float thresholdY, float amplitude, float frequency)
