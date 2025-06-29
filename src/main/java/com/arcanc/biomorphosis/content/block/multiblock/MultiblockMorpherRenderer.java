@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
@@ -65,15 +66,15 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 			IMultiblockDefinition definition = animatable.getDefinition().get();
 			BlockStateMap map = definition.getStructure(animatable.getLevel(), animatable.getBlockPos());
 
-			/*FIXME: добавить плавное изменение размера. Сейчас оно слегка дёрганное*/
+			float progressPartial = animatable.getMorphProgress() + (animatable.getAccumulatedTicks() + partialTick) / animatable.getMorphDelay();
 
-			float value = ((float) (animatable.getMorphProgress())/ map.getStates().size());
+			float value = progressPartial / map.getStates().size();
 			BlockPos maxSize = map.getSize();
 			int maxScale = Math.max(maxSize.getX(), Math.max(maxSize.getY(), maxSize.getZ()));
-			value = Math.clamp(value * maxScale, 0.2f, maxScale);
+
+			value = Mth.lerp(value, 0.2f, maxScale);
 			poseStack.translate(0, -(0.5f * value) + value , 0f);
 			poseStack.scale(value, value, value);
-			//this.eggModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
 			this.sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
 			poseStack.popPose();
 

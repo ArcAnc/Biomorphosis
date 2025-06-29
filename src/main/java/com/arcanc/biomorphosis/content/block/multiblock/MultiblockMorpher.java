@@ -118,6 +118,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 			placeNextMorphBlock(level);
 			this.accumulatedTicks -= this.morphDelay;
 		}
+		markDirty();
 	}
 
 
@@ -173,7 +174,6 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		if(pair.getFirst().equals(BlockPos.ZERO))
 		{
 			this.morphProgress++;
-			this.markDirty();
 			return;
 		}
 		BlockPos offsetPos = getBlockPos().offset(pair.getFirst());
@@ -184,7 +184,6 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		BlockHelper.castTileEntity(level, offsetPos, StaticMultiblockPart.class).
 				ifPresent(part -> part.startMorphing(getBlockPos()));
 		this.morphProgress++;
-		this.markDirty();
 	}
 
 	@SuppressWarnings("deprecation")
@@ -333,9 +332,19 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		return preparationTimer;
 	}
 
-	public int getMorphProgress()
+	public float getMorphProgress()
 	{
-		return morphProgress;
+		return this.morphProgress;
+	}
+
+	public float getAccumulatedTicks()
+	{
+		return this.accumulatedTicks;
+	}
+
+	public float getMorphDelay()
+	{
+		return this.morphDelay;
 	}
 
 	@Override
