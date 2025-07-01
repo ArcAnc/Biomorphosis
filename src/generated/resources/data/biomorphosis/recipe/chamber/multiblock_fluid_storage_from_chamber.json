@@ -1,0 +1,24 @@
+{
+  "type": "biomorphosis:chamber",
+  "input": [
+    {
+      "amount": 4,
+      "ingredient": "#c:slime_balls"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:fluid_storage"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0,
+      "required": false
+    },
+    "time": 150
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:multiblock_fluid_storage"
+  }
+}

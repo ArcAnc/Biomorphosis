@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.data;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorageBlock;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
+import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.mojang.datafixers.util.Pair;
@@ -21,6 +22,7 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
+import net.minecraft.client.renderer.item.SpecialModelWrapper;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
@@ -69,6 +71,10 @@ public class SummaryModelProvider extends ModelProvider
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
+
+        itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem(),
+                new SpecialModelWrapper.Unbaked(ResourceLocation.fromNamespaceAndPath("minecraft", "item/template_skull"),
+                        new MultiblockMorpherSpecialRenderer.Unbaked(Database.rl("multiblock_morpher_item"))));
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)

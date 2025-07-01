@@ -1,6 +1,26 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_blast_furnace": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:blast_furnace"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_flesh": {
+      "conditions": {
+        "items": [
+          {
+            "items": "biomorphosis:flesh"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_norph": {
       "conditions": {
         "items": [
@@ -11,19 +31,9 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_shears": {
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:shears"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomorphosis:chamber/crusher_from_norph"
+        "recipe": "biomorphosis:chamber/forge_from_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -31,13 +41,14 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_shears",
-      "has_norph"
+      "has_norph",
+      "has_flesh",
+      "has_blast_furnace"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomorphosis:chamber/crusher_from_norph"
+      "biomorphosis:chamber/forge_from_chamber"
     ]
   }
 }

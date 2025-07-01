@@ -30,6 +30,7 @@ public class EnUsProvider extends LanguageProvider
         this.addItem(Registration.ItemReg.BOOK, "Guide");
         this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
         this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
+        this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
 
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
@@ -42,6 +43,8 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.STOMACH, "Organic Reprocessor");
         this.addBlock(Registration.BlockReg.CATCHER, "Biofluid Extractor");
         this.addBlock(Registration.BlockReg.FORGE, "BioForge");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE, "Expandable Fluid Storage");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_MORPHER, "Morpher");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");

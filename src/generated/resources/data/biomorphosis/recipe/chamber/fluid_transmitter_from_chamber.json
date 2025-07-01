@@ -2,8 +2,8 @@
   "type": "biomorphosis:chamber",
   "input": [
     {
-      "amount": 1,
-      "ingredient": "biomorphosis:norph"
+      "amount": 2,
+      "ingredient": "biomorphosis:flesh"
     },
     {
       "amount": 1,
@@ -11,7 +11,11 @@
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:shears"
+      "ingredient": "#c:slime_balls"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:ender_pearls"
     }
   ],
   "resources": {
@@ -23,6 +27,6 @@
   },
   "result": {
     "count": 1,
-    "id": "biomorphosis:crusher"
+    "id": "biomorphosis:fluid_transmitter"
   }
 }

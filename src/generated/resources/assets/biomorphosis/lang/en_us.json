@@ -9,6 +9,8 @@
   "biomorphosis.block.fluids.lymph.block": "Lymph",
   "biomorphosis.block.forge": "BioForge",
   "biomorphosis.block.lure_campfire": "Lure Campfire",
+  "biomorphosis.block.multiblock_fluid_storage": "Expandable Fluid Storage",
+  "biomorphosis.block.multiblock_morpher": "Morpher",
   "biomorphosis.block.norph": "Norph",
   "biomorphosis.block.norph_overlay": "Norph",
   "biomorphosis.block.norph_source": "Norph Source",
@@ -68,6 +70,7 @@
   "biomorphosis.item.fluids.adrenaline.bucket": "Adrenaline Bucket",
   "biomorphosis.item.fluids.biomass.bucket": "Biomass Bucket",
   "biomorphosis.item.fluids.lymph.bucket": "Lymph Bucket",
+  "biomorphosis.item.forge_upgrade": "Gene Optimizer",
   "biomorphosis.item.queens_brain": "Queen's Brain",
   "biomorphosis.item.spawning_egg_queen": "Queen Spawn Egg",
   "biomorphosis.item.wrench": "Manipulator"

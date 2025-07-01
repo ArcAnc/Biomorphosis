@@ -358,7 +358,8 @@ public final class Registration
                         strength(2, 2).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
+                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()),
+                false);
 
         public static final DeferredBlock<MultiblockMorpherBlock> MULTIBLOCK_MORPHER = register("multiblock_morpher", MultiblockMorpherBlock :: new,
                 properties -> properties.mapColor(MapColor.PODZOL).
@@ -370,10 +371,15 @@ public final class Registration
 
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
+            return register(name, block, additionalProps, itemAddProps, true);
+        }
+
+        private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
+        {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
             Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
             DeferredBlock<B> blockGetter = BLOCKS.register(name, ()-> block.apply(props));
-            ItemReg.ITEMS.register(name, () -> new BioBaseBlockItem(blockGetter.get(), itemProps));
+            ItemReg.ITEMS.register(name, () -> new BioBaseBlockItem(blockGetter.get(), itemProps, addItemToCreative));
             return blockGetter;
         }
 

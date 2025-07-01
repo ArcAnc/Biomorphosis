@@ -15,7 +15,10 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.model.obj.*;
+import com.arcanc.biomorphosis.util.model.obj.MorpherBaseObj;
+import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
+import com.arcanc.biomorphosis.util.model.obj.SphereGreenObj;
+import com.arcanc.biomorphosis.util.model.obj.SphereObj;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -24,7 +27,9 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
@@ -33,10 +38,9 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorpher>
 {
 
-	private final MorpherBaseObj baseModel = new MorpherBaseObj(Database.rl("textures/block/morpher.png"));
-	private final MorpherEggObj eggModel = new MorpherEggObj(Database.rl("textures/block/morpher.png"));
-	private final SphereObj sphereModel = new SphereObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
-	private final SphereGreenObj sphereGreenModel = new SphereGreenObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
+	private static final MorpherBaseObj baseModel = new MorpherBaseObj(Database.rl("textures/block/morpher.png"));
+	private static final SphereObj sphereModel = new SphereObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
+	private static final SphereGreenObj sphereGreenModel = new SphereGreenObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
 
 	public MultiblockMorpherRenderer(BlockEntityRendererProvider.Context ctx)
 	{
@@ -52,7 +56,7 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 
 		poseStack.pushPose();
 
-		this.baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
+		baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
 
 		if ((state.getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING &&
 			animatable.isPreparationPhase()) ||
@@ -75,13 +79,13 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 			value = Mth.lerp(value, 0.2f, maxScale);
 			poseStack.translate(0, -(0.5f * value) + value , 0f);
 			poseStack.scale(value, value, value);
-			this.sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
+			sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, renderColor);
 			poseStack.popPose();
 
 			poseStack.pushPose();
 			poseStack.translate(0f, -0.05f, 0f);
 			poseStack.scale(value, value, value);
-			this.sphereGreenModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
+			sphereGreenModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
 		}
 		poseStack.popPose();
 	}
@@ -90,5 +94,19 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 	public @Nullable RenderType getRenderType(MultiblockMorpher animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
 	{
 		return RenderType.entityTranslucent(texture);
+	}
+
+	public static void renderItem(@NotNull ItemDisplayContext displayContext,
+								  @NotNull PoseStack poseStack,
+								  @NotNull MultiBufferSource bufferSource,
+								  int packedLight,
+								  int packedOverlay,
+								  boolean hasFoilType)
+	{
+		poseStack.pushPose();
+		poseStack.translate(0.5f, 0f, 0.5f);
+		poseStack.scale(0.85f, 0.85f, 0.85f);
+		baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, -1);
+		poseStack.popPose();
 	}
 }

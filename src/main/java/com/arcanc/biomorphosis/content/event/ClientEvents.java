@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
+import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
@@ -37,10 +38,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -65,6 +63,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: setupItemColor);
         modEventBus.addListener(ClientEvents :: setupModels);
         modEventBus.addListener(ClientEvents :: registerMenuScreens);
+        modEventBus.addListener(ClientEvents :: registerItemSpecialRenderers);
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
@@ -124,6 +123,12 @@ public final class ClientEvents
                 map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).
                 filter(type -> type.getScreenConstructor() != null).
                 forEach(type -> event.register(type.getMenuProvider().getType(), type.getScreenConstructor()));
+    }
+
+    private static void registerItemSpecialRenderers(final @NotNull RegisterSpecialModelRendererEvent event)
+    {
+        event.register(Database.rl("multiblock_morpher_item"),
+                MultiblockMorpherSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
     private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)

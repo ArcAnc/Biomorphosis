@@ -23,9 +23,23 @@ public class BioBaseBlockItem extends BlockItem implements ItemInterfaces.IMustA
             Database.GUI.Textures.Tooltip.TOOLTIP_BACKGROUND,
             Database.GUI.Textures.Tooltip.TOOLTIP_DECORATIONS, true));
 
-    public BioBaseBlockItem(Block block, Properties properties)
+    private final boolean addToCreative;
+
+    public BioBaseBlockItem(Block block, Properties properties, boolean addToCreative)
     {
         super(block, properties);
+        this.addToCreative = addToCreative;
+    }
+
+    public BioBaseBlockItem(Block block, Properties properties)
+    {
+        this(block, properties, true);
+    }
+
+    @Override
+    public boolean addSelfToCreativeTab()
+    {
+        return this.addToCreative;
     }
 
     @Override
