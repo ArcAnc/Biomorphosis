@@ -47,7 +47,7 @@ public class ChamberMenu extends BioContainerMenu
         ItemHelper.getItemHandler(level, chamberPos).ifPresent(handler ->
         {
             this.addSlot(new BioSlot.Output(this, handler, 0, 77, 13));
-            for (int q = 0; q < 12; q++)
+            for (int q = 0; q < MultiblockChamber.MAX_SLOT_AMOUNT; q++)
                 this.addSlot(new BioSlot(this, handler, q + 1, 29 + (q % 6) * 19, 38 + (q / 6) * 19));
             this.ownSlotCount = 13;
         });

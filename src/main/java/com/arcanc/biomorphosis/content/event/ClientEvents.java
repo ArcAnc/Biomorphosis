@@ -21,6 +21,7 @@ import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
+import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
@@ -34,6 +35,7 @@ import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
@@ -68,6 +70,16 @@ public final class ClientEvents
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
         NeoForge.EVENT_BUS.addListener(FluidLevelAnimator :: renderFrame);
+        NeoForge.EVENT_BUS.addListener(ClientEvents :: receiveRecipesEvent);
+    }
+
+    private static void receiveRecipesEvent(final @NotNull RecipesReceivedEvent event)
+    {
+        ChamberRecipe.CHAMBER_RECIPES.clear();
+        ChamberRecipe.CHAMBER_RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
+                stream().
+                map(RecipeHolder :: value).
+                toList());
     }
 
     private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)

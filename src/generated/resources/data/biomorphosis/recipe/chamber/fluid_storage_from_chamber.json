@@ -6,7 +6,11 @@
       "ingredient": "#c:barrels/wooden"
     },
     {
-      "amount": 2,
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
       "ingredient": "biomorphosis:flesh"
     },
     {

@@ -21,6 +21,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -36,23 +38,8 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         FluidTransportHandler.registerHandler();
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
-/*        registerContainerMenuEvents();
-        modEventBus.addListener(CommonEvents :: commonSetup);
-
-
-
-        modEventBus.addListener(CommonEvents :: gatherData);
-
-        //fluidTransport
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: levelTickEvent);
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: loadLevel);
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: unloadLevel);
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: saveLevel);
-        NeoForge.EVENT_BUS.addListener(FluidTransportHandler :: playerLoad);
-*/    }
-
-
-
+        NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
+   }
 
     @SuppressWarnings("unchecked")
     private static void registerEntityAttributes(final @NotNull EntityAttributeCreationEvent event)
@@ -86,37 +73,8 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER.get(), MultiblockChamber :: getItemHandler);
     }
 
-/*    private static void registerContainerMenuEvents()
+    private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)
     {
-        NeoForge.EVENT_BUS.addListener(NContainerMenu:: onContainerOpened);
-        NeoForge.EVENT_BUS.addListener(NContainerMenu :: onContainerClosed);
+        event.sendRecipes(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get());
     }
-
-    private static void commonSetup(final FMLCommonSetupEvent event)
-    {
-        Nedaire.getLogger().info("{} Started Server Initialization", NDatabase.MOD_ID);
-
-        Nedaire.getLogger().info("{} Finished Server Initialization", NDatabase.MOD_ID);
-    }
-
-    private static void gatherData(final @NotNull GatherDataEvent.Client event)
-    {
-        //ExistingFileHelper ext = event.getExistingFileHelper();
-        DataGenerator gen = event.getGenerator();
-        PackOutput packOutput = gen.getPackOutput();
-        //CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
-
-        gen.addProvider(true, new EnUsProvider(packOutput));
-        gen.addProvider(event.includeClient(), new NItemModelProvider(packOutput, ext));
-        gen.addProvider(event.includeClient(), new NBlockStateProvider(packOutput, ext));
-        gen.addProvider(event.includeClient(), new NSpriteSourceProvider(packOutput, lookupProvider, ext));
-
-        gen.addProvider(event.includeServer(), new DatapackBuiltinEntriesProvider(
-                packOutput,
-                lookupProvider,
-                NMultiblockStructureProvider.registerMultiblocksStructure(),
-                Set.of(NDatabase.MOD_ID)));
-    }*/
-
 }

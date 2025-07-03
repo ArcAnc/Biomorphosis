@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.book_data.page.component.recipes;
 import com.arcanc.biomorphosis.api.book.recipe.RecipeRenderer;
 import com.arcanc.biomorphosis.content.event.CustomEvents;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -25,7 +26,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -145,17 +145,17 @@ public class RecipeRenderHandler
             ItemStack highlighted = ItemStack.EMPTY;
             ItemStack stack = ItemStack.EMPTY;
 
-            List<SizedIngredient> ingr = recipe.pattern.ingredients().
+            List<IngredientWithSize> ingr = recipe.pattern.ingredients().
                     stream().
                     map(ingredient -> ingredient.orElse(null)).
-                    map(ingredient -> ingredient != null ? new SizedIngredient(ingredient, 1) : null).
+                    map(ingredient -> ingredient != null ? new IngredientWithSize(ingredient, 1) : null).
                     collect(Collectors.toList());
             Minecraft mc = RenderHelper.mc();
             ItemStack result = recipe.assemble(CraftingInput.EMPTY, mc.level.registryAccess());
-            ingr.add(9, new SizedIngredient(Ingredient.of(result.getItem()), result.getCount()));
+            ingr.add(9, new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
             for (int q = 0 ; q < ingr.size(); q++)
             {
-                SizedIngredient in = ingr.get(q);
+                IngredientWithSize in = ingr.get(q);
                 stack = in != null ? RenderHelper.getStackAtCurrentTime(in) : ItemStack.EMPTY;
 
                 guiGraphics.pose().pushPose();
@@ -214,11 +214,11 @@ public class RecipeRenderHandler
             ItemStack highlighted = ItemStack.EMPTY;
             ItemStack stack = ItemStack.EMPTY;
 
-            NonNullList<SizedIngredient> ingr = NonNullList.create();
-            ingr.add(new SizedIngredient(cookingRecipe.input(), 1));
+            NonNullList<IngredientWithSize> ingr = NonNullList.create();
+            ingr.add(new IngredientWithSize(cookingRecipe.input(), 1));
             Minecraft mc = RenderHelper.mc();
             ItemStack result = cookingRecipe.assemble(new SingleRecipeInput(ItemStack.EMPTY), mc.level.registryAccess());
-            ingr.add(SizedIngredient.of(result.getItem(), result.getCount()));
+            ingr.add(new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
             int time = cookingRecipe.cookingTime();
             float exp = cookingRecipe.experience();
 

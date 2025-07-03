@@ -105,7 +105,8 @@ public class BioRecipeProvider extends RecipeProvider
 
         ChamberRecipeBuilder.newBuilder(400).
                 addInput(new IngredientWithSize(tag(Tags.Items.BARRELS_WOODEN))).
-                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH), 2)).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
                 setResult(new ItemStack(Registration.BlockReg.FLUID_STORAGE)).
         unlockedBy(getHasName(Items.BARREL), has(Tags.Items.BARRELS_WOODEN)).
@@ -114,7 +115,8 @@ public class BioRecipeProvider extends RecipeProvider
         save(this.output, Database.rl("fluid_storage_from_chamber").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
-                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH), 2)).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
                 addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
                 addInput(new IngredientWithSize(tag(Tags.Items.ENDER_PEARLS))).
@@ -152,9 +154,13 @@ public class BioRecipeProvider extends RecipeProvider
         save(this.output, Database.rl("crusher_from_chamber").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
-                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH), 2)).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
-                addInput(new IngredientWithSize(Ingredient.of(Items.IRON_BARS), 4)).
+                addInput(new IngredientWithSize(Ingredient.of(Items.IRON_BARS))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.IRON_BARS))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.IRON_BARS))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.IRON_BARS))).
                 addInput(new IngredientWithSize(Ingredient.of(Items.COMPARATOR))).
                 setResult(new ItemStack(Registration.BlockReg.CATCHER)).
         unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
@@ -164,9 +170,11 @@ public class BioRecipeProvider extends RecipeProvider
         save(this.output, Database.rl("catcher_from_chamber").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
-                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH), 2)).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+                addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
-                addInput(new IngredientWithSize(Ingredient.of(Items.BLAST_FURNACE), 2)).
+                addInput(new IngredientWithSize(Ingredient.of(Items.BLAST_FURNACE))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.BLAST_FURNACE))).
                 setResult(new ItemStack(Registration.BlockReg.FORGE)).
         unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
         unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
@@ -185,7 +193,10 @@ public class BioRecipeProvider extends RecipeProvider
                 save(this.output);
 
         ChamberRecipeBuilder.newBuilder(150).
-                addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS), 4)).
+                addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
+                addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
+                addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
+                addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLUID_STORAGE))).
                 setResult(new ItemStack(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE)).
                 unlockedBy(getHasName(Items.SLIME_BALL), has(Tags.Items.SLIME_BALLS)).

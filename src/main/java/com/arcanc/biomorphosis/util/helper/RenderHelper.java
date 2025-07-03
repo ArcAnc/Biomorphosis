@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.util.helper;
 
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -58,6 +59,12 @@ public class RenderHelper
     public static void openGuideScreen()
     {
         Minecraft.getInstance().setScreen(new GuideScreen());
+    }
+
+    public static ItemStack getStackAtCurrentTime(@NotNull IngredientWithSize ingredient)
+    {
+        return getStackAtCurrentTime(ingredient.ingredient().getValues().stream().
+                map(itemHolder -> new ItemStack(itemHolder, ingredient.amount())).toList());
     }
 
     public static ItemStack getStackAtCurrentTime(@NotNull SizedIngredient ingredient)

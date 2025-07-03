@@ -26,17 +26,27 @@ public class Database
         public static final String FLUID_TRANSMIT = "fluid_transmit_data";
     }
 
-    public static final class JadeInfo
+    public static final class Integration
     {
-        public static final class IDs
+        public static final class JadeInfo
         {
-            public static final ResourceLocation FLUID_RENDERER = rl("jade_fluid_renderer");
+            public static final class IDs
+            {
+                public static final ResourceLocation FLUID_RENDERER = rl("jade_fluid_renderer");
+            }
+            public static final class Translations
+            {
+                public static final String FLUID_AMOUNT = rl("jade.fluid").toLanguageKey();
+            }
         }
-        public static final class Translations
+
+        public static final class JeiInfo
         {
-            public static final String FLUID_AMOUNT = rl("jade.fluid").toLanguageKey();
+            public static final ResourceLocation ID = rl("plugin");
+            public static final String CHAMBER_RECIPE_NAME = rl("jei.chamber.recipe_category.title").toLanguageKey();
         }
     }
+
     public static final class FluidInfo
     {
         public static @NotNull ResourceLocation getStillLoc(String name)
@@ -64,6 +74,7 @@ public class Database
             return rl("fluids/" + name + "/bucket");
         }
     }
+
     public static final class GUI
     {
         private static final String GUI = "gui";
@@ -105,6 +116,10 @@ public class Database
             {
                 public static final ResourceLocation TOOLTIP_BACKGROUND = Database.rl("special");
                 public static final ResourceLocation TOOLTIP_DECORATIONS = Database.rl("special");
+            }
+            public static final class JEI
+            {
+                public static final ResourceLocation TIME = Database.rl("textures/" + GUI + "/elements/jei/time.png");
             }
         }
 

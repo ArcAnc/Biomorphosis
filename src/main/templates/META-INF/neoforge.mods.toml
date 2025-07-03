@@ -44,9 +44,9 @@ file="META-INF/accesstransformer.cfg"
     ordering = "AFTER"
     side = "BOTH"
 [[dependencies.${ mod_id }]]
-    modId="roughlyenoughitems"
+    modId="jei"
     type="optional"
-    versionRange = "${rei_version}"
+    versionRange = "${jei_version}"
     ordering = "AFTER"
     side = "BOTH"
 [[dependencies.${ mod_id }]]

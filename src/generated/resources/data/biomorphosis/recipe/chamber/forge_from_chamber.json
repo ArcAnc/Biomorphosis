@@ -2,7 +2,11 @@
   "type": "biomorphosis:chamber",
   "input": [
     {
-      "amount": 2,
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
       "ingredient": "biomorphosis:flesh"
     },
     {
@@ -10,7 +14,11 @@
       "ingredient": "biomorphosis:norph"
     },
     {
-      "amount": 2,
+      "amount": 1,
+      "ingredient": "minecraft:blast_furnace"
+    },
+    {
+      "amount": 1,
       "ingredient": "minecraft:blast_furnace"
     }
   ],

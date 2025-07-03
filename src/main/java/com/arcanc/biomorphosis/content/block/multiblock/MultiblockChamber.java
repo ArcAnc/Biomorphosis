@@ -47,6 +47,8 @@ import java.util.List;
 
 public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockEntity, BlockInterfaces.IInteractionObject<MultiblockChamber>
 {
+    public static final int MAX_SLOT_AMOUNT = 12;
+
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private final ItemStackSidedStorage itemHandler;
@@ -69,7 +71,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
                                 setCapacity(64).
                                 build(),
                         BasicSidedStorage.FaceMode.OUTPUT);
-        for (int q = 0; q < 12; q++)
+        for (int q = 0; q < MAX_SLOT_AMOUNT; q++)
             this.itemHandler.addHolder(ItemStackHolder.newBuilder().
                             setCallback(holder -> this.markDirty()).
                             setValidator(stack -> true).
@@ -186,7 +188,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     {
         List<ItemStack> items = new ArrayList<>();
 
-        for (int q = 0; q < 12; q++)
+        for (int q = 0; q < MAX_SLOT_AMOUNT; q++)
             items.add(this.itemHandler.getStackInSlot(q + 1));
         return items;
     }

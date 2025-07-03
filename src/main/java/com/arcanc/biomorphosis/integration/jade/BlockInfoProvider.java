@@ -39,14 +39,14 @@ public enum BlockInfoProvider implements IBlockComponentProvider,
             tooltip.add(icon);
             tooltip.append(Component.translatable(Database.JadeInfo.Translations.FLUID_AMOUNT, data.getString("fluid"), data.getInt("fluid_amount"), data.getInt("max_fluid")));
         */
-            tooltip.add(Component.translatable(Database.JadeInfo.Translations.FLUID_AMOUNT, data.getString("fluid"), data.getInt("fluid_amount"), data.getInt("max_fluid")));
+            tooltip.add(Component.translatable(Database.Integration.JadeInfo.Translations.FLUID_AMOUNT, data.getString("fluid"), data.getInt("fluid_amount"), data.getInt("max_fluid")));
         }
     }
 
     @Override
     public ResourceLocation getUid()
     {
-        return Database.JadeInfo.IDs.FLUID_RENDERER;
+        return Database.Integration.JadeInfo.IDs.FLUID_RENDERER;
     }
 
     @Override

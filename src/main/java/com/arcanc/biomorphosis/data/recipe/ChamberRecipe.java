@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.data.recipe;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.display.ChamberRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
@@ -36,6 +37,8 @@ import java.util.Optional;
 
 public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
 {
+    public static final List<ChamberRecipe> CHAMBER_RECIPES = new ArrayList<>();
+
     private final List<IngredientWithSize> input = new ArrayList<>();
     private final ItemStack result;
 
@@ -56,7 +59,7 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
     {
         super(resources);
         Preconditions.checkNotNull(inputs);
-        Preconditions.checkState(inputs.size() < 12);
+        Preconditions.checkState(inputs.size() < MultiblockChamber.MAX_SLOT_AMOUNT);
         this.input.addAll(inputs);
         this.result = result;
     }

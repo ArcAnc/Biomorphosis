@@ -73,5 +73,6 @@
   "biomorphosis.item.forge_upgrade": "Gene Optimizer",
   "biomorphosis.item.queens_brain": "Queen's Brain",
   "biomorphosis.item.spawning_egg_queen": "Queen Spawn Egg",
-  "biomorphosis.item.wrench": "Manipulator"
+  "biomorphosis.item.wrench": "Manipulator",
+  "biomorphosis.jei.chamber.recipe_category.title": "Chamber"
 }

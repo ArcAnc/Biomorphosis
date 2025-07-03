@@ -59,6 +59,12 @@ public class EnUsProvider extends LanguageProvider
         //this.add(Database.JadeInfo.Translations.FLUID_AMOUNT, "%s Amount: %s/%s");
 
         //-----------------------------
+        // JEI
+
+        this.add(Database.Integration.JeiInfo.CHAMBER_RECIPE_NAME, "Chamber");
+
+
+        //-----------------------------
         //BOOK
         this.add(Database.GUI.GuideBook.Chapters.TITLE.langKey(), "</item;minecraft:writable_book/>Patch Notes");
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");

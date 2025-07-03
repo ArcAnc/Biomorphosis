@@ -2,7 +2,11 @@
   "type": "biomorphosis:chamber",
   "input": [
     {
-      "amount": 2,
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
       "ingredient": "biomorphosis:flesh"
     },
     {
@@ -10,7 +14,19 @@
       "ingredient": "biomorphosis:norph"
     },
     {
-      "amount": 4,
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
       "ingredient": "minecraft:iron_bars"
     },
     {
