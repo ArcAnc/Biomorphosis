@@ -141,6 +141,8 @@ public final class ClientEvents
     {
         event.register(Database.rl("multiblock_morpher_item"),
                 MultiblockMorpherSpecialRenderer.Unbaked.MAP_CODEC);
+        /*event.register(Database.rl("multiblock_chamber_item"),
+                GeckolibSpecialRenderer.Unbaked.MAP_CODEC);*/
     }
 
     private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)

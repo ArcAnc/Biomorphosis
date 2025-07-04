@@ -358,6 +358,7 @@ public final class Registration
                         strength(2, 2).
                         sound(SoundType.HONEY_BLOCK).
                         noOcclusion(),
+                MultiblockChamberBlockItem :: new,
                 properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()),
                 false);
 
@@ -383,6 +384,15 @@ public final class Registration
             return blockGetter;
         }
 
+        private static <B extends Block, I extends BioBaseBlockItem> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, @NotNull BlockItemFactory<I> itemFactory, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
+        {
+            BlockBehaviour.Properties props = setId(name, props(additionalProps));
+            Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
+            DeferredBlock<B> blockGetter = BLOCKS.register(name, ()-> block.apply(props));
+            ItemReg.ITEMS.register(name, () -> itemFactory.create(blockGetter.get(), itemProps, addItemToCreative));
+            return blockGetter;
+        }
+
         private static BlockBehaviour.@NotNull Properties setId(String id, BlockBehaviour.@NotNull Properties props)
         {
             ResourceKey<Block> resourceKey = ResourceKey.create(Registries.BLOCK, Database.rl(id));
@@ -392,6 +402,12 @@ public final class Registration
         private static BlockBehaviour.@NotNull Properties props (Consumer<BlockBehaviour.Properties> additionalProps)
         {
             return Util.make(BlockBehaviour.Properties.of(), additionalProps);
+        }
+
+        @FunctionalInterface
+        private interface BlockItemFactory<ITEM extends BioBaseBlockItem>
+        {
+            ITEM create(Block block, Item.Properties itemProps, boolean addToCreative);
         }
 
         private static void init (@NotNull final IEventBus bus)

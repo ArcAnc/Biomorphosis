@@ -40,6 +40,7 @@ import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import software.bernie.geckolib.renderer.GeckolibSpecialRenderer;
 
 import java.util.EnumSet;
 import java.util.Optional;
@@ -72,9 +73,13 @@ public class SummaryModelProvider extends ModelProvider
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
 
+        itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem(),
+                new SpecialModelWrapper.Unbaked(Database.rl("item/multiblock_chamber"),
+                        new GeckolibSpecialRenderer.Unbaked()));
+
         itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem(),
-                new SpecialModelWrapper.Unbaked(ResourceLocation.fromNamespaceAndPath("minecraft", "item/template_skull"),
-                        new MultiblockMorpherSpecialRenderer.Unbaked(Database.rl("multiblock_morpher_item"))));
+                new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_morpher"),
+                        new MultiblockMorpherSpecialRenderer.Unbaked()));
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)
@@ -101,8 +106,8 @@ public class SummaryModelProvider extends ModelProvider
 
         createMultiblockFluidStorage(blockModels);
         createMultiblockChamberModel(blockModels);
-        /*FIXME: сделать нормальную модель для морфера*/
-        blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
+
+        //blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
     }
 
     //------------------------------------------------------------------------------
@@ -2373,7 +2378,8 @@ public class SummaryModelProvider extends ModelProvider
     protected @NotNull Stream<? extends Holder<Block>> getKnownBlocks()
     {
         return Registration.BlockReg.BLOCKS.getEntries().
-                stream();
+                stream().
+                filter(holder -> !holder.is(Registration.BlockReg.MULTIBLOCK_MORPHER.getId()));
     }
 
     @Override

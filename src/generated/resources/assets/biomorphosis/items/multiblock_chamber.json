@@ -1,6 +1,9 @@
 {
   "model": {
-    "type": "minecraft:model",
-    "model": "biomorphosis:block/multiblock_chamber"
+    "type": "minecraft:special",
+    "base": "biomorphosis:item/multiblock_chamber",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
   }
 }

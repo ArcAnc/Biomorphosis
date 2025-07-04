@@ -41,6 +41,7 @@ public class BioJeiPlugin implements IModPlugin
     public void registerCategories(@NotNull IRecipeCategoryRegistration registration)
     {
         registration.addRecipeCategories(new ChamberRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        /*FIXME: нужны категории и для других типов рецептов. Там не сложно, но скучно*/
     }
 
     @Override
