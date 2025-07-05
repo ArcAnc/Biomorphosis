@@ -37,7 +37,7 @@ import java.util.Optional;
 
 public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
 {
-    public static final List<ChamberRecipe> CHAMBER_RECIPES = new ArrayList<>();
+    public static final List<ChamberRecipe> RECIPES = new ArrayList<>();
 
     private final List<IngredientWithSize> input = new ArrayList<>();
     private final ItemStack result;

@@ -22,6 +22,7 @@ import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
+import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
@@ -75,8 +76,14 @@ public final class ClientEvents
 
     private static void receiveRecipesEvent(final @NotNull RecipesReceivedEvent event)
     {
-        ChamberRecipe.CHAMBER_RECIPES.clear();
-        ChamberRecipe.CHAMBER_RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
+        ChamberRecipe.RECIPES.clear();
+        ChamberRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
+                stream().
+                map(RecipeHolder :: value).
+                toList());
+
+        CrusherRecipe.RECIPES.clear();
+        CrusherRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());
@@ -141,8 +148,6 @@ public final class ClientEvents
     {
         event.register(Database.rl("multiblock_morpher_item"),
                 MultiblockMorpherSpecialRenderer.Unbaked.MAP_CODEC);
-        /*event.register(Database.rl("multiblock_chamber_item"),
-                GeckolibSpecialRenderer.Unbaked.MAP_CODEC);*/
     }
 
     private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)

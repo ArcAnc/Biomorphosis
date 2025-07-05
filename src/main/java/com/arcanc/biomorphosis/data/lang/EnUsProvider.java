@@ -45,6 +45,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.FORGE, "BioForge");
         this.addBlock(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE, "Expandable Fluid Storage");
         this.addBlock(Registration.BlockReg.MULTIBLOCK_MORPHER, "Morpher");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_CHAMBER, "Chamber");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");
@@ -62,7 +63,13 @@ public class EnUsProvider extends LanguageProvider
         // JEI
 
         this.add(Database.Integration.JeiInfo.CHAMBER_RECIPE_NAME, "Chamber");
+        this.add(Database.Integration.JeiInfo.CRUSHER_RECIPE_NAME, "Crusher");
 
+        this.add(Database.Integration.JeiInfo.REQUIRED, "Required");
+        this.add(Database.Integration.JeiInfo.OPTIONAL, "Optional");
+        this.add(Database.Integration.JeiInfo.PER_TICK, "%s mB/tick");
+        this.add(Database.Integration.JeiInfo.WITH_ADRENALINE, "x%s Speed");
+        this.add(Database.Integration.JeiInfo.WITH_LYMPH, "x%s Output");
 
         //-----------------------------
         //BOOK
@@ -101,7 +108,7 @@ public class EnUsProvider extends LanguageProvider
         //-----------------------------
         //TOOLTIP
 
-        this.add(Database.GUI.HOLD_SHIFT, "Hold §6SHIFT§r for additional info");
+        this.add(Database.GUI.HOLD_SHIFT, "Hold §4SHIFT§r for additional info");
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_SHORT_TOOLTIP, "%s mB");
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_EXTENDED_TOOLTIP, "%s/%s mB");
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_DENSITY, "Density: %s kg/m³");

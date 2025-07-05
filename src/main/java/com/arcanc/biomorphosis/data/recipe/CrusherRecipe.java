@@ -35,6 +35,8 @@ import java.util.Optional;
 
 public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
 {
+    public static final List<CrusherRecipe> RECIPES = new ArrayList<>();
+
     private final IngredientWithSize input;
     private final ItemStack result;
     private final List<StackWithChance> secondaryResults;

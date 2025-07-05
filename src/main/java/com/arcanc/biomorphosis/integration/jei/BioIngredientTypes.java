@@ -10,17 +10,12 @@
 package com.arcanc.biomorphosis.integration.jei;
 
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import mezz.jei.api.ingredients.IIngredientType;
-import org.jetbrains.annotations.NotNull;
 
 public class BioIngredientTypes
 {
-    public static final IIngredientType<IngredientWithSize> SIZED_INGREDIENT_TYPE = new IIngredientType<>()
-    {
-        @Override
-        public @NotNull Class<IngredientWithSize> getIngredientClass()
-        {
-            return IngredientWithSize.class;
-        }
-    };
+    public static final IIngredientType<StackWithChance> STACK_WITH_CHANCE_TYPE = () -> StackWithChance.class;
+
+    public static final IIngredientType<IngredientWithSize> INGREDIENT_WITH_SIZE_TYPE = () -> IngredientWithSize.class;
 }

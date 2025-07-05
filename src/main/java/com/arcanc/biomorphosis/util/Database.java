@@ -44,6 +44,13 @@ public class Database
         {
             public static final ResourceLocation ID = rl("plugin");
             public static final String CHAMBER_RECIPE_NAME = rl("jei.chamber.recipe_category.title").toLanguageKey();
+            public static final String CRUSHER_RECIPE_NAME = rl("jei.crusher.recipe_category.title").toLanguageKey();
+
+            public static final String REQUIRED = rl("jei.required.title").toLanguageKey();
+            public static final String OPTIONAL = rl("jei.optional.title").toLanguageKey();
+            public static final String PER_TICK = rl("jei.per_tick.title").toLanguageKey();
+            public static final String WITH_ADRENALINE = rl("jei.with_boost.adrenaline.title").toLanguageKey();
+            public static final String WITH_LYMPH = rl("jei.with_boost.lymph.title").toLanguageKey();
         }
     }
 
@@ -120,6 +127,7 @@ public class Database
             public static final class JEI
             {
                 public static final ResourceLocation TIME = Database.rl("textures/" + GUI + "/elements/jei/time.png");
+                public static final ResourceLocation SECONDARY_OUTPUT = Database.rl("textures/" + GUI + "/elements/jei/secondary_output.png");
             }
         }
 

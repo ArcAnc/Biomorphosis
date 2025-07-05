@@ -75,6 +75,8 @@ public class CommonEvents
 
     private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)
     {
+        /*FIXME: переписать систему отправки рецептов. Нужно ее автоматизировать*/
         event.sendRecipes(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get());
+        event.sendRecipes(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get());
     }
 }

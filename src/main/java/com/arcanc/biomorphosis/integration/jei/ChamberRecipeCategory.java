@@ -19,7 +19,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.mojang.math.Axis;
-import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -48,6 +47,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
 
     private int progress;
     private int maxTime;
+
     private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(48, -69, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
 
     private final int maxPerRow = 6;
@@ -55,7 +55,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
 
     public ChamberRecipeCategory(@NotNull IGuiHelper guiHelper)
     {
-        this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER));
+        this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER));
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     private void addInputSlot (@NotNull IRecipeLayoutBuilder builder, int x, int y, IngredientWithSize ingredient)
     {
         IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
-        slotBuilder.add(BioIngredientTypes.SIZED_INGREDIENT_TYPE, ingredient);
+        slotBuilder.add(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, ingredient);
     }
 
     @Override

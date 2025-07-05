@@ -26,7 +26,7 @@ public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWit
     @Override
     public @NotNull IIngredientType<IngredientWithSize> getIngredientType()
     {
-        return BioIngredientTypes.SIZED_INGREDIENT_TYPE;
+        return BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE;
     }
 
     @Override
@@ -36,7 +36,8 @@ public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWit
     }
 
     @Override
-    public @NotNull Object getUid(@NotNull IngredientWithSize ingredient, @NotNull UidContext context) {
+    public @NotNull Object getUid(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
+    {
         return RenderHelper.getStackAtCurrentTime(ingredient);
     }
 

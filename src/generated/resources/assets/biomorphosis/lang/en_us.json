@@ -9,6 +9,7 @@
   "biomorphosis.block.fluids.lymph.block": "Lymph",
   "biomorphosis.block.forge": "BioForge",
   "biomorphosis.block.lure_campfire": "Lure Campfire",
+  "biomorphosis.block.multiblock_chamber": "Chamber",
   "biomorphosis.block.multiblock_fluid_storage": "Expandable Fluid Storage",
   "biomorphosis.block.multiblock_morpher": "Morpher",
   "biomorphosis.block.norph": "Norph",
@@ -62,7 +63,7 @@
   "biomorphosis.gui.tooltip.info.fluid.advanced.viscosity": "Viscosity: %s m²/s",
   "biomorphosis.gui.tooltip.info.fluid.normal.extended": "%s/%s mB",
   "biomorphosis.gui.tooltip.info.fluid.normal.short": "%s mB",
-  "biomorphosis.gui.tooltip.info.hold_shift": "Hold §6SHIFT§r for additional info",
+  "biomorphosis.gui.tooltip.info.hold_shift": "Hold §4SHIFT§r for additional info",
   "biomorphosis.gui.tooltip.info.progress_bar.direct": "%s / %s",
   "biomorphosis.gui.tooltip.info.progress_bar.percent": "%s / %s %%",
   "biomorphosis.item.book": "Guide",
@@ -74,5 +75,11 @@
   "biomorphosis.item.queens_brain": "Queen's Brain",
   "biomorphosis.item.spawning_egg_queen": "Queen Spawn Egg",
   "biomorphosis.item.wrench": "Manipulator",
-  "biomorphosis.jei.chamber.recipe_category.title": "Chamber"
+  "biomorphosis.jei.chamber.recipe_category.title": "Chamber",
+  "biomorphosis.jei.crusher.recipe_category.title": "Crusher",
+  "biomorphosis.jei.optional.title": "Optional",
+  "biomorphosis.jei.per_tick.title": "%s mB/tick",
+  "biomorphosis.jei.required.title": "Required",
+  "biomorphosis.jei.with_boost.adrenaline.title": "x%s Speed",
+  "biomorphosis.jei.with_boost.lymph.title": "x%s Output"
 }
