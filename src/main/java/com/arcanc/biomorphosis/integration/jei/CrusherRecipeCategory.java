@@ -17,7 +17,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
-import com.mojang.math.Axis;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -43,12 +42,10 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     public static final IRecipeType<CrusherRecipe> RECIPE_TYPE = IRecipeType.create(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().getId(), CrusherRecipe.class);
 
     private final IDrawable icon;
-    private final IDrawable arrow;
 
     public CrusherRecipeCategory(@NotNull IGuiHelper guiHelper)
     {
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.CRUSHER));
-        this.arrow = guiHelper.createAnimatedRecipeArrow(400);
     }
 
     @Override
@@ -178,15 +175,11 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
             });
             guiGraphics.pose().popPose();
         }
-        guiGraphics.pose().pushPose();
-        guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(90));
-        this.arrow.draw(guiGraphics, 55, -58);
-        guiGraphics.pose().popPose();
+
+        guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
 
         guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, 5, 55, 0, 0, 8, 8, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 55, 0, false);
-        guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 46, 85, 0, 0, 11, 11, 16, 16, 16, 16);
-
     }
 
     @Override
