@@ -47,32 +47,32 @@ public class CustomEvents
 
         public int getX()
         {
-            return x;
+            return this.x;
         }
 
         public int getY()
         {
-            return y;
+            return this.y;
         }
 
         public int getWidth()
         {
-            return width;
+            return this.width;
         }
 
         public int getHeight()
         {
-            return height;
+            return this.height;
         }
 
         public GuiGraphics getGuiGraphics()
         {
-            return guiGraphics;
+            return this.guiGraphics;
         }
 
         public ItemStack getStack()
         {
-            return stack;
+            return this.stack;
         }
     }
 
@@ -91,8 +91,8 @@ public class CustomEvents
 
         public void addCustomRenderers()
         {
-            if (!additionalRenderers.isEmpty())
-                additionalRenderers.forEach(AbstractRecipeComponent.RecipeRenderCache :: addNewRenderer);
+            if (!this.additionalRenderers.isEmpty())
+                this.additionalRenderers.forEach(AbstractRecipeComponent.RecipeRenderCache :: addNewRenderer);
         }
     }
 }

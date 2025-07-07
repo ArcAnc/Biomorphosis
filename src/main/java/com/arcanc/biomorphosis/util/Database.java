@@ -45,6 +45,9 @@ public class Database
             public static final ResourceLocation ID = rl("plugin");
             public static final String CHAMBER_RECIPE_NAME = rl("jei.chamber.recipe_category.title").toLanguageKey();
             public static final String CRUSHER_RECIPE_NAME = rl("jei.crusher.recipe_category.title").toLanguageKey();
+            public static final String STOMACH_RECIPE_NAME = rl("jei.stomach.recipe_category.title").toLanguageKey();
+            public static final String FORGE_RECIPE_NAME = rl("jei.forge.recipe_category.title").toLanguageKey();
+
 
             public static final String REQUIRED = rl("jei.required.title").toLanguageKey();
             public static final String OPTIONAL = rl("jei.optional.title").toLanguageKey();
@@ -153,25 +156,6 @@ public class Database
                 public static final PageInfo PATCH_NOTES = new PageInfo(rl("patch_notes"));
                 public static final PageInfo TEST_BASIC_1 = new PageInfo(rl("test_1"));
                 public static final PageInfo TEST_BASIC_2 = new PageInfo(rl("test_next_lvl"));
-                public static final PageInfo TEST_BASIC_3 = new PageInfo(rl("test_basic_3"));
-                public static final PageInfo TEST_BASIC_4 = new PageInfo(rl("test_basic_4"));
-                public static final PageInfo TEST_BASIC_5 = new PageInfo(rl("test_basic_5"));
-                public static final PageInfo TEST_BASIC_6 = new PageInfo(rl("test_basic_6"));
-                public static final PageInfo TEST_BASIC_7 = new PageInfo(rl("test_basic_7"));
-                public static final PageInfo TEST_BASIC_8 = new PageInfo(rl("test_basic_8"));
-                public static final PageInfo TEST_BASIC_9 = new PageInfo(rl("test_basic_9"));
-                public static final PageInfo TEST_BASIC_10 = new PageInfo(rl("test_basic_10"));
-                public static final PageInfo TEST_BASIC_11 = new PageInfo(rl("test_basic_11"));
-                public static final PageInfo TEST_BASIC_12 = new PageInfo(rl("test_basic_12"));
-                public static final PageInfo TEST_BASIC_13 = new PageInfo(rl("test_basic_13"));
-                public static final PageInfo TEST_BASIC_14 = new PageInfo(rl("test_basic_14"));
-                public static final PageInfo TEST_BASIC_15 = new PageInfo(rl("test_basic_15"));
-                public static final PageInfo TEST_BASIC_16 = new PageInfo(rl("test_basic_16"));
-                public static final PageInfo TEST_BASIC_17 = new PageInfo(rl("test_basic_17"));
-                public static final PageInfo TEST_BASIC_18 = new PageInfo(rl("test_basic_18"));
-                public static final PageInfo TEST_BASIC_19 = new PageInfo(rl("test_basic_19"));
-                public static final PageInfo TEST_BASIC_20 = new PageInfo(rl("test_basic_20"));
-                public static final PageInfo TEST_BASIC_21 = new PageInfo(rl("test_basic_21"));
                 public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)

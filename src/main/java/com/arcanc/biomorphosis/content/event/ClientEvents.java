@@ -23,6 +23,8 @@ import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
+import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
@@ -84,6 +86,18 @@ public final class ClientEvents
 
         CrusherRecipe.RECIPES.clear();
         CrusherRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get()).
+                stream().
+                map(RecipeHolder :: value).
+                toList());
+
+        StomachRecipe.RECIPES.clear();
+        StomachRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get()).
+                stream().
+                map(RecipeHolder :: value).
+                toList());
+
+        ForgeRecipe.RECIPES.clear();
+        ForgeRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());

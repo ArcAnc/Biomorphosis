@@ -12,6 +12,8 @@ package com.arcanc.biomorphosis.integration.jei;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
+import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.integration.jei.ingredient.IngredientWithSizeHelper;
 import com.arcanc.biomorphosis.integration.jei.ingredient.IngredientWithSizeRenderer;
@@ -37,7 +39,6 @@ public class BioJeiPlugin implements IModPlugin
     @Override
     public void registerIngredients(@NotNull IModIngredientRegistration registration)
     {
-        Database.LOGGER.warn("Регистрация Ингредиентов");
         registration.register(BioIngredientTypes.STACK_WITH_CHANCE_TYPE,
                 Set.of(),
                 new StackWithChanceHelper(),
@@ -54,18 +55,19 @@ public class BioJeiPlugin implements IModPlugin
     @Override
     public void registerCategories(@NotNull IRecipeCategoryRegistration registration)
     {
-        Database.LOGGER.warn("Регистрация категорий");
         registration.addRecipeCategories(new ChamberRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CrusherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        /*FIXME: нужны категории и для других типов рецептов. Там не сложно, но скучно*/
+        registration.addRecipeCategories(new StomachRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        registration.addRecipeCategories(new ForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
     public void registerRecipes(@NotNull IRecipeRegistration registration)
     {
-        Database.LOGGER.warn("Регистрация Рецептов");
         registration.addRecipes(ChamberRecipeCategory.RECIPE_TYPE, ChamberRecipe.RECIPES);
         registration.addRecipes(CrusherRecipeCategory.RECIPE_TYPE, CrusherRecipe.RECIPES);
+        registration.addRecipes(StomachRecipeCategory.RECIPE_TYPE, StomachRecipe.RECIPES);
+        registration.addRecipes(ForgeRecipeCategory.RECIPE_TYPE, ForgeRecipe.RECIPES);
     }
 
     @Override
@@ -73,6 +75,8 @@ public class BioJeiPlugin implements IModPlugin
     {
         registration.addCraftingStation(ChamberRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER));
         registration.addCraftingStation(CrusherRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.CRUSHER));
+        registration.addCraftingStation(StomachRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.STOMACH));
+        registration.addCraftingStation(ForgeRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.FORGE));
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -75,8 +76,8 @@ public class CommonEvents
 
     private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)
     {
-        /*FIXME: переписать систему отправки рецептов. Нужно ее автоматизировать*/
-        event.sendRecipes(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get());
-        event.sendRecipes(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get());
+        event.sendRecipes(Registration.RecipeReg.RECIPE_TYPES.getEntries().stream().
+                map(DeferredHolder::get).
+                toArray(RecipeType[]::new));
     }
 }

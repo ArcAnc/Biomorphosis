@@ -32,6 +32,8 @@ import java.util.Optional;
 
 public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
 {
+    public static final List<ForgeRecipe> RECIPES = new ArrayList<>();
+
     private final IngredientWithSize input;
     private final ItemStack result;
 

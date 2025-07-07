@@ -34,6 +34,8 @@ import java.util.Optional;
 
 public class StomachRecipe extends BioBaseRecipe<StomachRecipeInput>
 {
+    public static final List<StomachRecipe> RECIPES = new ArrayList<>();
+
     private final IngredientWithSize input;
     private final FluidStack result;
 

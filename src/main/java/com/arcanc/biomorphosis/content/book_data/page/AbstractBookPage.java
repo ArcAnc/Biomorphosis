@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.book_data.page.component.*;
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -35,7 +36,7 @@ public abstract class AbstractBookPage extends AbstractWidget
     private static final Pattern PATTERN = Pattern.compile(
             "</(item|block);([\\w:]+)/>" + "|" +
                     "</tag;(item|block|fluid);([\\w:]+)/>" + "|" +
-                    "</recipe;([\\w:]+);([\\w:]+)/>" + "|" +
+                    "</recipe;([\\w:]+);([^>]+)/>" + "|" +
                     "</entity;([\\w:]+)/>"
     );
 
@@ -89,7 +90,6 @@ public abstract class AbstractBookPage extends AbstractWidget
         {
             components.add(new TextPageComponent(Component.literal(string.substring(lastEnd))));
         }
-
         return components;
     }
 

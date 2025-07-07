@@ -10,23 +10,40 @@
 package com.arcanc.biomorphosis.content.book_data.page.component.recipes;
 
 import com.arcanc.biomorphosis.api.book.recipe.RecipeRenderer;
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.event.CustomEvents;
+import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.component.icon.FluidIcon;
+import com.arcanc.biomorphosis.content.gui.component.info.ProgressInfoArea;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
+import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
+import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
+import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +53,7 @@ import java.util.stream.Collectors;
 public class RecipeRenderHandler
 {
     /*FIXME: добавить остальные типи рецептов для рендера*/
+    /*FIXME: переписать на кастомные компоненты. Потому что заебало вручную отрисовывать все текстуры предметов*/
 
     public static void registerRenderers()
     {
@@ -50,6 +68,10 @@ public class RecipeRenderHandler
         event.addRenderer(RecipeType.CAMPFIRE_COOKING, cookingRecipeRenderer);
         event.addRenderer(RecipeType.SMELTING, cookingRecipeRenderer);
         event.addRenderer(RecipeType.SMOKING, cookingRecipeRenderer);
+        event.addRenderer(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), new ChamberRecipeRenderer());
+        event.addRenderer(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get(), new CrusherRecipeRenderer());
+        event.addRenderer(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get(), new ForgeRecipeRenderer());
+        event.addRenderer(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get(), new StomachRecipeRenderer());
     }
 
     private static class CraftingRecipeRenderer implements RecipeRenderer
@@ -251,12 +273,9 @@ public class RecipeRenderHandler
             if (!highlighted.isEmpty())
                 guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
             else if (mouseX >= arrowPos.x && mouseY >= arrowPos.y && mouseX <= arrowPos.x + 14 && mouseY <= arrowPos.y + 14)
-
                 guiGraphics.renderTooltip(mc.font, List.of(Component.translatable(Database.GUI.GuideBook.Pages.Components.TICKS, time)), Optional.empty(), mouseX, mouseY);
             else if (mouseX >= expPos.x + 18 && mouseY >= expPos.y + 2 && mouseX <= expPos.x + 18 + 11 && mouseY <= expPos.y + 2 +11)
                 guiGraphics.renderTooltip(mc.font, List.of(Component.translatable(Database.GUI.GuideBook.Pages.Components.EXP, exp)), Optional.empty(), mouseX, mouseY);
-
-
         }
 
         @Override
@@ -269,6 +288,469 @@ public class RecipeRenderHandler
         public int getWidth()
         {
             return 48;
+        }
+    }
+
+    private static class ChamberRecipeRenderer implements RecipeRenderer
+    {
+        private int progress;
+        private int maxTime;
+        private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(48, -53, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
+
+        @Override
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        {
+            if (!(recipe instanceof ChamberRecipe chamberRecipe))
+                return;
+            Minecraft mc = RenderHelper.mc();
+            ItemStack highlighted = ItemStack.EMPTY;
+
+            List<IngredientWithSize> inputs = chamberRecipe.input();
+            ItemStack result = chamberRecipe.result();
+
+            final int maxPerRow = 6;
+            final int startY = 10;
+            int rows = Mth.ceil(inputs.size() / (MultiblockChamber.MAX_SLOT_AMOUNT / 2f));
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(xPos, yPos, 0);
+
+            int drawn = 0;
+            for (int row = 0; row < rows; row++)
+            {
+                int squaresInRow = Math.min(maxPerRow, inputs.size() - drawn);
+                int rowWidth = squaresInRow * 19;
+
+                int startX = (this.getWidth() - rowWidth) / 2;
+                for (int col = 0; col < squaresInRow; col++)
+                {
+                    int x = startX + col * 19;
+                    int y = startY + row * 19;
+                    IngredientWithSize ingredient = inputs.get(row * maxPerRow + col);
+                    ItemStack stack = RenderHelper.getStackAtCurrentTime(ingredient);
+
+                    guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, x - 1, y - 1, 18, 18);
+                    guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+
+                    guiGraphics.renderItem(stack, x, y);
+                    if (mouseX >= xPos + x && mouseY >= yPos + y && mouseX <= xPos + x + 16 && mouseY <= yPos + y + 16)
+                        highlighted = stack;
+                }
+                drawn += squaresInRow;
+            }
+
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 35, 74, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 35, 74, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+
+            guiGraphics.renderItem(result, 36, 75);
+            if (mouseX >= xPos + 35 && mouseY >= yPos + 74 && mouseX <= xPos + 35 + 16 && mouseY <= yPos + 74 + 16)
+                highlighted = result;
+
+            this.maxTime = chamberRecipe.getResources().time();
+            this.progress = (int)(System.currentTimeMillis() / 10 % maxTime);
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(90));
+            this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 55, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.drawString(mc.font, Component.literal(Integer.toString(chamberRecipe.getResources().time())), 5, 55, 0, false);
+            guiGraphics.pose().popPose();
+
+            if (!highlighted.isEmpty())
+                guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+        }
+
+        @Override
+        public int getHeight()
+        {
+            return 95;
+        }
+
+        @Override
+        public int getWidth()
+        {
+            return 120;
+        }
+    }
+
+    private static class CrusherRecipeRenderer implements RecipeRenderer
+    {
+
+        @Override
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        {
+            if (!(recipe instanceof CrusherRecipe crusherRecipe))
+                return;
+
+            Minecraft mc = RenderHelper.mc();
+            Font font = mc.font;
+            ItemStack highlighted = ItemStack.EMPTY;
+            boolean shift = GuideScreen.hasShiftDown();
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(xPos, yPos, 0);
+
+            IngredientWithSize ingredient = crusherRecipe.input();
+            ItemStack stack = RenderHelper.getStackAtCurrentTime(ingredient);
+
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.renderItem(stack, 42, 35);
+            if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
+                highlighted = stack.copy();
+
+            stack = crusherRecipe.result();
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 10 - 1, 80 - 1, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 10 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.renderItem(stack, 10, 80);
+            if (mouseX >= xPos + 10 && mouseY >= yPos + 80 && mouseX <= xPos + 10 + 16 && mouseY <= yPos + 80 + 16)
+                highlighted = stack.copy();
+
+            if (crusherRecipe.secondaryResults().isEmpty())
+                return;
+            for (int q = 0; q < crusherRecipe.secondaryResults().size(); q++)
+            {
+                StackWithChance secondaryResult = crusherRecipe.secondaryResults().get(q);
+                stack = secondaryResult.stack();
+                int x = 60 + q % 2 * 19;
+                int y = 80 + q / 2 * 30;
+                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, x - 1, y - 1, 18, 18);
+                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+                guiGraphics.renderItem(stack, x, y);
+                guiGraphics.drawString(mc.font, Component.literal(String.format("%.1f", secondaryResult.chance() * 100) + "%"), x - 2, y + 20, -1, false);
+                if (mouseX >= xPos + x && mouseY >= yPos + y && mouseX <= xPos + x + 16 && mouseY <= yPos + y + 16)
+                    highlighted = stack.copy();
+            }
+
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(),crusherRecipe.getResources().biomass().perSecond() * crusherRecipe.getResources().time()));
+            biomass.render(guiGraphics, 7, 10, 20, 10);
+
+            crusherRecipe.getResources().adrenaline().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * crusherRecipe.getResources().time()));
+                icon.render(guiGraphics, 40, 10, 20, 10);
+            });
+
+            crusherRecipe.getResources().lymph().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * crusherRecipe.getResources().time()));
+                icon.render(guiGraphics, 70, 10, 20, 10);
+            });
+
+            if (!shift)
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.6f, 0.6f, 0.6f);
+                guiGraphics.drawString(font, Component.translatable(Database.GUI.HOLD_SHIFT), 5, 1, 0, false);
+                guiGraphics.pose().popPose();
+            }
+            else
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+                guiGraphics.drawString(font, crusherRecipe.getResources().biomass().required() ?
+                                Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                        20, 5, 0, false);
+                guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, crusherRecipe.getResources().biomass().perSecond()),
+                        10, 50, 0, false);
+
+                crusherRecipe.getResources().adrenaline().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            80, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_ADRENALINE, info.modifier()),
+                            80, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            80, 55, 0, false);
+                });
+
+                crusherRecipe.getResources().lymph().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            140, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_LYMPH, info.modifier()),
+                            140, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            140, 55, 0, false);
+                });
+                guiGraphics.pose().popPose();
+            }
+
+            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
+
+            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, 5, 62, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(crusherRecipe.getResources().time())), 15, 62, 0, false);
+
+            guiGraphics.pose().popPose();
+
+            if (!highlighted.isEmpty())
+                guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+        }
+
+        @Override
+        public int getHeight()
+        {
+            return 110;
+        }
+
+        @Override
+        public int getWidth()
+        {
+            return 100;
+        }
+    }
+
+    private static class ForgeRecipeRenderer implements RecipeRenderer
+    {
+        private int progress;
+        private int maxTime;
+        private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(55, -61, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
+
+        @Override
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        {
+            if (!(recipe instanceof ForgeRecipe forgeRecipe))
+                return;
+            Minecraft mc = RenderHelper.mc();
+            Font font = mc.font;
+            ItemStack highlighted = ItemStack.EMPTY;
+            boolean shift = GuideScreen.hasShiftDown();
+
+            IngredientWithSize input = forgeRecipe.input();
+            ItemStack result = forgeRecipe.result();
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(xPos, yPos, 0);
+
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+
+            ItemStack stack = RenderHelper.getStackAtCurrentTime(input);
+            guiGraphics.renderItem(stack, 42, 35);
+            if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
+                highlighted = stack.copy();
+
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 80 - 1, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+
+            stack = result;
+            guiGraphics.renderItem(stack, 42, 80);
+            if (mouseX >= xPos + 42 && mouseY >= yPos + 80 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 80 + 16)
+                highlighted = stack.copy();
+
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), forgeRecipe.getResources().biomass().perSecond() * forgeRecipe.getResources().time()));
+            biomass.render(guiGraphics, 7, 10, 20, 10);
+
+            forgeRecipe.getResources().adrenaline().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * forgeRecipe.getResources().time()));
+                icon.render(guiGraphics, 40, 10, 20, 10);
+            });
+
+            forgeRecipe.getResources().lymph().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * forgeRecipe.getResources().time()));
+                icon.render(guiGraphics, 70, 10, 20, 10);
+            });
+
+            if (!shift)
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.6f, 0.6f, 0.6f);
+                guiGraphics.drawString(font, Component.translatable(Database.GUI.HOLD_SHIFT), 5, 1, 0, false);
+                guiGraphics.pose().popPose();
+            }
+            else
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+                guiGraphics.drawString(font, forgeRecipe.getResources().biomass().required() ?
+                                Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                        20, 5, 0, false);
+                guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, forgeRecipe.getResources().biomass().perSecond()),
+                        10, 50, 0, false);
+
+                forgeRecipe.getResources().adrenaline().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            80, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_ADRENALINE, info.modifier()),
+                            80, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            80, 55, 0, false);
+                });
+
+                forgeRecipe.getResources().lymph().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            140, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_LYMPH, info.modifier()),
+                            140, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            140, 55, 0, false);
+                });
+                guiGraphics.pose().popPose();
+            }
+
+            this.maxTime = forgeRecipe.getResources().time();
+            this.progress = (int)(System.currentTimeMillis() / 10 % maxTime);
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(90));
+            this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(forgeRecipe.getResources().time())), 5, 65, 0, false);
+
+            guiGraphics.pose().popPose();
+
+            if (!highlighted.isEmpty())
+                guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+        }
+
+        @Override
+        public int getHeight()
+        {
+            return 100;
+        }
+
+        @Override
+        public int getWidth()
+        {
+            return 100;
+        }
+    }
+
+    private static class StomachRecipeRenderer implements RecipeRenderer
+    {
+        private int progress;
+        private int maxTime;
+        private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(55, -61, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
+
+        @Override
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        {
+            if (!(recipe instanceof StomachRecipe stomachRecipe))
+                return;
+            Minecraft mc = RenderHelper.mc();
+            Font font = mc.font;
+            ItemStack highlighted = ItemStack.EMPTY;
+            boolean shift = GuideScreen.hasShiftDown();
+
+            IngredientWithSize input = stomachRecipe.input();
+            ItemStack stack = RenderHelper.getStackAtCurrentTime(input);
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().translate(xPos, yPos, 0);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+
+            guiGraphics.renderItem(stack, 42, 35);
+            if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
+                highlighted = stack;
+
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), stomachRecipe.getResources().biomass().perSecond() * stomachRecipe.getResources().time()));
+            biomass.render(guiGraphics, 7, 10, 20, 10);
+
+            stomachRecipe.getResources().adrenaline().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * stomachRecipe.getResources().time()));
+                icon.render(guiGraphics, 40, 10, 20, 10);
+            });
+
+            stomachRecipe.getResources().lymph().ifPresent(info ->
+            {
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * stomachRecipe.getResources().time()));
+                icon.render(guiGraphics, 70, 10, 20, 10);
+            });
+
+            if (!shift)
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.6f, 0.6f, 0.6f);
+                guiGraphics.drawString(font, Component.translatable(Database.GUI.HOLD_SHIFT), 5, 1, 0, false);
+                guiGraphics.pose().popPose();
+            }
+            else
+            {
+                guiGraphics.pose().pushPose();
+                guiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+                guiGraphics.drawString(font, stomachRecipe.getResources().biomass().required() ?
+                                Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                        20, 5, 0, false);
+                guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, stomachRecipe.getResources().biomass().perSecond()),
+                        10, 50, 0, false);
+
+                stomachRecipe.getResources().adrenaline().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            80, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_ADRENALINE, info.modifier()),
+                            80, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            80, 55, 0, false);
+                });
+
+                stomachRecipe.getResources().lymph().ifPresent(info ->
+                {
+                    guiGraphics.drawString(font, info.required() ?
+                                    Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+                                    Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+                            140, 5, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_LYMPH, info.modifier()),
+                            140, 45, 0, false);
+                    guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+                            140, 55, 0, false);
+                });
+                guiGraphics.pose().popPose();
+            }
+
+            FluidIcon result = new FluidIcon(stomachRecipe.result());
+            result.render(guiGraphics, 42, 80, 16, 16);
+
+            this.maxTime = stomachRecipe.getResources().time();
+            this.progress = (int)(System.currentTimeMillis() / 10 % maxTime);
+
+            guiGraphics.pose().pushPose();
+            guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(90));
+            this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
+            guiGraphics.pose().popPose();
+
+            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(stomachRecipe.getResources().time())), 5, 65, 0, false);
+
+            guiGraphics.pose().popPose();
+
+            if (!highlighted.isEmpty())
+                guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+        }
+
+        @Override
+        public int getHeight()
+        {
+            return 100;
+        }
+
+        @Override
+        public int getWidth()
+        {
+            return 100;
         }
     }
 }

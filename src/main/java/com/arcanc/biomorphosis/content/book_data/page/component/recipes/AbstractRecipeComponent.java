@@ -31,8 +31,6 @@ import java.util.Optional;
 
 public class AbstractRecipeComponent extends AbstractPageComponent
 {
-    private static final Map<RecipeType<?>, RecipeRenderer> RECIPE_RENDERERS = new HashMap<>();
-
     private final ResourceLocation location;
     private Recipe<?> recipe;
 
