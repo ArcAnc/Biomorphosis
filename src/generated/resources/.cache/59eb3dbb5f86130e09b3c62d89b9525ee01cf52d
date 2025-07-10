@@ -1,4 +1,4 @@
-// 1.21.4	2025-06-25T01:15:42.316114047	Loot Tables
+// 1.21.4	2025-07-10T12:30:17.5945238	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
 35913fa2d5ad93c127ece70e3bb7640e3841aaee data/biomorphosis/loot_table/blocks/flesh.json
@@ -14,4 +14,5 @@ b3b0f233a54515880b90b3d391504eb422f6f253 data/biomorphosis/loot_table/blocks/nor
 753a70eba63f69653f0141043fae78423855a541 data/biomorphosis/loot_table/blocks/norph_source.json
 e77eeec0c661ea75f11e19b7d588ec1328bc01e3 data/biomorphosis/loot_table/blocks/norph_stairs.json
 d907b1d9635d5e959ff2a7d3e4be3d5c0af2d8d2 data/biomorphosis/loot_table/blocks/stomach.json
+4f39cc6af3bac5cf384aad32b3449fb99a009ff2 data/biomorphosis/loot_table/entities/ksigg.json
 d7f59c585db852852238b1653abc0a9eb5a387e1 data/biomorphosis/loot_table/entities/queen.json

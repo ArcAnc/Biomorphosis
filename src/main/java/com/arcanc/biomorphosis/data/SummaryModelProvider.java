@@ -15,6 +15,7 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.Util;
 import net.minecraft.client.data.models.BlockModelGenerators;
@@ -70,6 +71,7 @@ public class SummaryModelProvider extends ModelProvider
         createBucketModel(Registration.FluidReg.ADRENALINE, itemModels);
 
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
+        itemModels.generateSpawnEgg(Registration.EntityReg.MOB_KSIGG.getEggHolder().get(), MathHelper.ColorHelper.color(42, 34, 23), MathHelper.ColorHelper.color(14, 71, 20));
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
 
@@ -107,7 +109,7 @@ public class SummaryModelProvider extends ModelProvider
         createMultiblockFluidStorage(blockModels);
         createMultiblockChamberModel(blockModels);
 
-        //blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
+        blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
     }
 
     //------------------------------------------------------------------------------
@@ -2378,8 +2380,7 @@ public class SummaryModelProvider extends ModelProvider
     protected @NotNull Stream<? extends Holder<Block>> getKnownBlocks()
     {
         return Registration.BlockReg.BLOCKS.getEntries().
-                stream().
-                filter(holder -> !holder.is(Registration.BlockReg.MULTIBLOCK_MORPHER.getId()));
+                stream();
     }
 
     @Override

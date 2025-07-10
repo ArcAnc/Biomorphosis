@@ -35,5 +35,6 @@ public class BioItemTagsProvider extends ItemTagsProvider
         copy(BioBlockTags.NORPH_AVOID, BioItemTags.NORPH_AVOID);
         copy(BioBlockTags.NORPH_SOURCE, BioItemTags.NORPH_SOURCE);
         tag(BioItemTags.WRENCH).add(Registration.ItemReg.WRENCH.get());
+        tag(BioItemTags.KSIGG_FOOD).add(Registration.ItemReg.FLESH_PIECE.get());
     }
 }

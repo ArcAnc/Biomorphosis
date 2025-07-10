@@ -12,14 +12,17 @@ package com.arcanc.biomorphosis.data.loot;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
+import net.minecraft.data.loot.packs.VanillaEntityLoot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
 
@@ -40,8 +43,20 @@ public class BioEntityLoot extends EntityLootSubProvider
                         setRolls(ConstantValue.exactly(1.0f)).
                         add(
                                 LootItem.lootTableItem(Registration.ItemReg.QUEENS_BRAIN).
-                                        apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))
-                        ).
+                                        apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+
+        this.add(Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), LootTable.lootTable().
+                withPool(LootPool.lootPool().
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(
+                                LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+                                        apply(SetItemCountFunction.setCount(UniformGenerator.between(2, 5)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+                withPool(LootPool.lootPool().
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(LootItem.lootTableItem(Items.LEATHER).
+                                apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))).
                         when(LootItemKilledByPlayerCondition.killedByPlayer())));
     }
 

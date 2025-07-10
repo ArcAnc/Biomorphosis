@@ -55,6 +55,7 @@ public class EnUsProvider extends LanguageProvider
         this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
 
         this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen");
+        this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg");
 
         //-----------------------------
         // JADE

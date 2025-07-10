@@ -22,7 +22,9 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
+import com.arcanc.biomorphosis.content.entity.Ksigg;
 import com.arcanc.biomorphosis.content.entity.Queen;
+import com.arcanc.biomorphosis.content.entity.renderer.KsiggRenderer;
 import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
@@ -189,6 +191,27 @@ public final class Registration
                                 add(Attributes.MOVEMENT_SPEED, 0.8f).
                                 add(Attributes.ARMOR, 6)),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));*/
+
+        public static final EntityEntry<Ksigg> MOB_KSIGG = makeEntityType(
+                "ksigg",
+                Ksigg.class,
+                Ksigg :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(0.6f).
+                        sized(1.0f, 0.82f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 10).
+                                add(Attributes.ATTACK_DAMAGE, 2).
+                                add(Attributes.FOLLOW_RANGE, 12).
+                                add(Attributes.MOVEMENT_SPEED, 0.15f).
+                                add(Attributes.TEMPT_RANGE, 10.0f)).
+                        rendererProvider(KsiggRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,

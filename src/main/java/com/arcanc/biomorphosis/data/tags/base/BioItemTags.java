@@ -22,6 +22,8 @@ public class BioItemTags
     public static final TagKey<Item> NORPH_SOURCE = create("norph_source");
     public static final TagKey<Item> WRENCH = create("wrench");
 
+    public static final TagKey<Item> KSIGG_FOOD = create("ksigg_food");
+
     private static @NotNull TagKey<Item> create(String name)
     {
         return TagKey.create(Registries.ITEM, Database.rl(name));
