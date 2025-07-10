@@ -58,6 +58,7 @@ public class BioEntityLoot extends EntityLootSubProvider
                         add(LootItem.lootTableItem(Items.LEATHER).
                                 apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))).
                         when(LootItemKilledByPlayerCondition.killedByPlayer())));
+        this.add(Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), LootTable.lootTable());
     }
 
     @Override

@@ -52,7 +52,6 @@ import java.util.stream.Collectors;
 
 public class RecipeRenderHandler
 {
-    /*FIXME: добавить остальные типи рецептов для рендера*/
     /*FIXME: переписать на кастомные компоненты. Потому что заебало вручную отрисовывать все текстуры предметов*/
 
     public static void registerRenderers()

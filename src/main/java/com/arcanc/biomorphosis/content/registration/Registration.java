@@ -23,8 +23,10 @@ import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.entity.Ksigg;
+import com.arcanc.biomorphosis.content.entity.Larva;
 import com.arcanc.biomorphosis.content.entity.Queen;
 import com.arcanc.biomorphosis.content.entity.renderer.KsiggRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.LarvaRenderer;
 import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
@@ -200,8 +202,8 @@ public final class Registration
                 builder -> builder.
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
-                        eyeHeight(0.6f).
-                        sized(1.0f, 0.82f).
+                        eyeHeight(0.5f).
+                        sized(1.4f, 1.3f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
@@ -211,6 +213,28 @@ public final class Registration
                                 add(Attributes.MOVEMENT_SPEED, 0.15f).
                                 add(Attributes.TEMPT_RANGE, 10.0f)).
                         rendererProvider(KsiggRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+
+        public static final EntityEntry<Larva> MOB_LARVA = makeEntityType(
+                "larva",
+                Larva.class,
+                Larva :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(0.05f).
+                        sized(0.5f, 0.3f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 2).
+                                add(Attributes.ATTACK_DAMAGE, 1).
+                                add(Attributes.MOVEMENT_SPEED, 0.03f).
+                                add(Attributes.FOLLOW_RANGE, 12).
+                                add(Attributes.ARMOR, 20).
+                                add(Attributes.ARMOR_TOUGHNESS, 10)).
+                        rendererProvider(LarvaRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,

@@ -72,6 +72,7 @@ public class SummaryModelProvider extends ModelProvider
 
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_KSIGG.getEggHolder().get(), MathHelper.ColorHelper.color(42, 34, 23), MathHelper.ColorHelper.color(14, 71, 20));
+        itemModels.generateSpawnEgg(Registration.EntityReg.MOB_LARVA.getEggHolder().get(), MathHelper.ColorHelper.color(81, 39, 6), MathHelper.ColorHelper.color(237, 159, 1));
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
 

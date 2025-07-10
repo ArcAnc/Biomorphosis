@@ -39,8 +39,8 @@ public class KsiggRenderer extends GeoEntityRenderer<Ksigg>
     @Override
     public void preRender(PoseStack poseStack, @NotNull Ksigg animatable, @NotNull BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
     {
-        if (animatable.isBaby())
-            model.getBone("all").ifPresent(geoBone -> geoBone.updateScale(0.5f, 0.5f, 0.5f));
+        if (!animatable.isBaby())
+            model.getBone("all").ifPresent(geoBone -> geoBone.updateScale(1.5f, 1.5f, 1.5f));
         super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }
