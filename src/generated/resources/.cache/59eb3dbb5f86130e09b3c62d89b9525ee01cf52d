@@ -1,10 +1,12 @@
-// 1.21.4	2025-07-10T14:39:35.8618638	Loot Tables
+// 1.21.4	2025-07-14T21:08:00.43487178	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
 35913fa2d5ad93c127ece70e3bb7640e3841aaee data/biomorphosis/loot_table/blocks/flesh.json
 fa6c7be72601286ea76cd3524a4397135d15c884 data/biomorphosis/loot_table/blocks/fluid_storage.json
 ed67fa00cbe9a32cf137458be11b9d202771fb6c data/biomorphosis/loot_table/blocks/fluid_transmitter.json
 b17cfb3458574dd3d6b8a4f9c6821994abc08841 data/biomorphosis/loot_table/blocks/forge.json
+008be936dcee15dee1300aa23e7b9a9aa163ab3c data/biomorphosis/loot_table/blocks/glow_moss.json
+46ea9ff9c626cdc6e088a265ea8c9376f8fb0eb5 data/biomorphosis/loot_table/blocks/inner.json
 6f2ee4d4d678c96c38c415d845d8f40c74866e70 data/biomorphosis/loot_table/blocks/lure_campfire.json
 2c2753da7a4c011e6fa94926688b6cecf69cd095 data/biomorphosis/loot_table/blocks/multiblock_chamber.json
 b84d6076bc8beabb5af9088c141de8f2a42c55dc data/biomorphosis/loot_table/blocks/multiblock_fluid_storage.json
@@ -13,7 +15,14 @@ b84d6076bc8beabb5af9088c141de8f2a42c55dc data/biomorphosis/loot_table/blocks/mul
 b3b0f233a54515880b90b3d391504eb422f6f253 data/biomorphosis/loot_table/blocks/norph_overlay.json
 753a70eba63f69653f0141043fae78423855a541 data/biomorphosis/loot_table/blocks/norph_source.json
 e77eeec0c661ea75f11e19b7d588ec1328bc01e3 data/biomorphosis/loot_table/blocks/norph_stairs.json
+f8637f2a332bd185564ebe2d942cb00f506afa38 data/biomorphosis/loot_table/blocks/norphed_dirt.json
+ff2de77723ad15e0d30be175cd1f0c164d211f6b data/biomorphosis/loot_table/blocks/prop_0.json
+7d89a47a8db509d36e3ff99a32f378d82c0093a5 data/biomorphosis/loot_table/blocks/prop_1.json
+e3b41654316c418ac325a12105267829a5359332 data/biomorphosis/loot_table/blocks/prop_2.json
+04c5d9e23fcb85cbf4becf82b480e9dd2e3c8c51 data/biomorphosis/loot_table/blocks/roof.json
 d907b1d9635d5e959ff2a7d3e4be3d5c0af2d8d2 data/biomorphosis/loot_table/blocks/stomach.json
+720dbc8d066f86e66f99898f50d1ce5b17d2eb21 data/biomorphosis/loot_table/blocks/trampled_dirt.json
 4f39cc6af3bac5cf384aad32b3449fb99a009ff2 data/biomorphosis/loot_table/entities/ksigg.json
 b78b089d66f5654581e8976d3e09d5cf487ada3d data/biomorphosis/loot_table/entities/larva.json
 d7f59c585db852852238b1653abc0a9eb5a387e1 data/biomorphosis/loot_table/entities/queen.json
+6e99797553f93006f49a44f2eec1fff0749ac1ae data/biomorphosis/loot_table/entities/ziris.json

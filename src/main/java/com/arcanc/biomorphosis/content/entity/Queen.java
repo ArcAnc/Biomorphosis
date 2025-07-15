@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.entity.ai.goals.MoveToLureGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -95,7 +96,7 @@ public class Queen extends Monster implements GeoEntity
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(QueenGuard.class));
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, (entity, level) -> !(entity instanceof Queen) && ! (entity instanceof QueenGuard)));
+        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, (entity, level) -> !entity.getType().is(BioEntityTags.SWARM)));
 
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true));
         this.goalSelector.addGoal(2, new MoveToLureGoal(this, 1.0));

@@ -22,14 +22,19 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -222,7 +227,16 @@ public class BioRecipeProvider extends RecipeProvider
                                 return;
                             String recipeName = recipePath.getFileName().toString();
                             String resultedRecipeName = recipeName.substring(0, recipeName.length() - 5);
-                            Ingredient input = Ingredient.of(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(jsonObject.get("ingredient").getAsString())));
+                            String ingr = jsonObject.get("ingredient").getAsString();
+                            Ingredient input;
+                            if (ingr.startsWith("#"))
+                            {
+                                TagKey<Item> tag = TagKey.create(Registries.ITEM, ResourceLocation.parse(ingr.substring(1)));
+
+                                input = this.tag(tag);
+                            }
+                            else
+                                input = Ingredient.of(BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(ingr)));
                             ItemStack result = ItemStack.OPTIONAL_CODEC.parse(JsonOps.INSTANCE, jsonObject.getAsJsonObject("result")).getOrThrow();
                             int cookingTime = jsonObject.has("cookingtime") ? jsonObject.get("cookingtime").getAsInt() : 200;
 

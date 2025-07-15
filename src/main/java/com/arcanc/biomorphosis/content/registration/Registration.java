@@ -21,13 +21,11 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
-import com.arcanc.biomorphosis.content.entity.BioEntityType;
-import com.arcanc.biomorphosis.content.entity.Ksigg;
-import com.arcanc.biomorphosis.content.entity.Larva;
-import com.arcanc.biomorphosis.content.entity.Queen;
+import com.arcanc.biomorphosis.content.entity.*;
 import com.arcanc.biomorphosis.content.entity.renderer.KsiggRenderer;
 import com.arcanc.biomorphosis.content.entity.renderer.LarvaRenderer;
 import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.ZirisRenderer;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
@@ -88,21 +86,22 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.crafting.IngredientType;
@@ -235,6 +234,27 @@ public final class Registration
                                 add(Attributes.ARMOR, 20).
                                 add(Attributes.ARMOR_TOUGHNESS, 10)).
                         rendererProvider(LarvaRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+
+        public static final EntityEntry<Ziris> MOB_ZIRIS = makeEntityType(
+                "ziris",
+                Ziris.class,
+                Ziris :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(8).
+                        eyeHeight(1.0f).
+                        sized(0.5f, 1.2f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 20).
+                                add(Attributes.ATTACK_DAMAGE, 4).
+                                add(Attributes.FLYING_SPEED, 0.4f).
+                                add(Attributes.MOVEMENT_SPEED, 0.4f).
+                                add(Attributes.FOLLOW_RANGE, 16f)).
+                rendererProvider(ZirisRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
@@ -417,6 +437,113 @@ public final class Registration
                         noOcclusion(),
                 properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
 
+        public static final DeferredBlock<BioBaseBlock> PROP_0 = register("prop_0",
+                properties -> new BioBaseBlock(properties)
+                {
+                    private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
+
+                    @Override
+                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    {
+                        return SHAPE;
+                    }
+                },
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<BioBaseBlock> PROP_1 = register("prop_1",
+                properties -> new BioBaseBlock(properties)
+                {
+                    private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
+
+                    @Override
+                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    {
+                        return SHAPE;
+                    }
+                },
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<BioBaseBlock> PROP_2 = register("prop_2",
+                properties -> new BioBaseBlock(properties)
+                {
+                    private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
+
+                    @Override
+                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    {
+                        return SHAPE;
+                    }
+                },
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion(),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<GlowMossBlock> GLOW_MOSS = register("glow_moss",
+                GlowMossBlock :: new,
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK).
+                        noOcclusion().
+                        replaceable().
+                        noCollission().
+                        lightLevel(GlowLichenBlock.emission(7)),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT = register("norphed_dirt",
+                BioBaseBlock :: new,
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
+        public static final DeferredBlock<BioBaseBlock> INNER = register("inner",
+                BioBaseBlock :: new,
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
+        public static final DeferredBlock<BioBaseBlock> ROOF = register("roof",
+                BioBaseBlock :: new,
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+
+        public static final DeferredBlock<BioBaseBlock> TRAMPLED_DIRT = register("trampled_dirt",
+                BioBaseBlock :: new,
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
+                        instrument(NoteBlockInstrument.BIT).
+                        strength(2, 2).
+                        sound(SoundType.HONEY_BLOCK),
+                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             return register(name, block, additionalProps, itemAddProps, true);

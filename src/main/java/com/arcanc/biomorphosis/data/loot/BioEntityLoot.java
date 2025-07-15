@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.loot;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.EntityLootSubProvider;
-import net.minecraft.data.loot.packs.VanillaEntityLoot;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.item.Items;
@@ -59,6 +58,13 @@ public class BioEntityLoot extends EntityLootSubProvider
                                 apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))).
                         when(LootItemKilledByPlayerCondition.killedByPlayer())));
         this.add(Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), LootTable.lootTable());
+        this.add(Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), LootTable.lootTable().
+                withPool(LootPool.lootPool().
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(
+                                LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+                                    apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
     }
 
     @Override

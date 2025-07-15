@@ -49,6 +49,14 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE, "Expandable Fluid Storage");
         this.addBlock(Registration.BlockReg.MULTIBLOCK_MORPHER, "Morpher");
         this.addBlock(Registration.BlockReg.MULTIBLOCK_CHAMBER, "Chamber");
+        this.addBlock(Registration.BlockReg.PROP_0, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.PROP_1, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.PROP_2, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.GLOW_MOSS, "Glow Moss");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.INNER, "Inner");
+        this.addBlock(Registration.BlockReg.ROOF, "Roof");
+        this.addBlock(Registration.BlockReg.TRAMPLED_DIRT, "Trampled Dirt");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");
@@ -57,6 +65,7 @@ public class EnUsProvider extends LanguageProvider
         this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen");
         this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg");
         this.addEntity(Registration.EntityReg.MOB_LARVA, "Larva");
+        this.addEntity(Registration.EntityReg.MOB_ZIRIS, "Ziris");
 
         //-----------------------------
         // JADE

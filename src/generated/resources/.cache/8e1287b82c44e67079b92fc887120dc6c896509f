@@ -1,6 +1,6 @@
-// 1.21.4	2025-07-10T12:22:22.3142014	Tags for minecraft:item mod id biomorphosis
+// 1.21.4	2025-07-13T16:54:29.5702555	Tags for minecraft:item mod id biomorphosis
 91864a4b6f36d606529c09a42379389b151611b6 data/biomorphosis/tags/item/ksigg_food.json
-53e755e278d6ff31e0742e95b9f69e5b10a92bd2 data/biomorphosis/tags/item/norph.json
+de56a5af217dcc47e1491925e732b837eb77351f data/biomorphosis/tags/item/norph.json
 80810426eabfec1d31b1257f0dbb233c615cf0e2 data/biomorphosis/tags/item/norph_avoid.json
 9d842c4dc0b0ff676fa8409a04dfb4e6ff32d7fe data/biomorphosis/tags/item/norph_source.json
 0cf3f3b3cbdbfd902e613c3e85261f30a4cdcbad data/biomorphosis/tags/item/wrench.json

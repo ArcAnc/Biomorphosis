@@ -90,7 +90,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
                 if (state.getValue(LIT))
                 {
                     level.setBlockAndUpdate(pos, state.setValue(LIT, false));
-                    return sidedSuccess(level.isClientSide()).withoutItem();
+                    return InteractionResult.SUCCESS.withoutItem();
                 }
                 return InteractionResult.PASS;
             }).
