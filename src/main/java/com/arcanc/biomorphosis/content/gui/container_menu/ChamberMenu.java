@@ -67,6 +67,6 @@ public class ChamberMenu extends BioContainerMenu
     @Override
     public BlockPos getBlockPos()
     {
-        return pos;
+        return this.pos;
     }
 }

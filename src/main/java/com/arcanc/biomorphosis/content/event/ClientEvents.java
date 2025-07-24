@@ -195,6 +195,7 @@ public final class ClientEvents
 
         BioRegistryData.register(new BioBookProvider());
         BioRegistryData.register(new BioMultiblockProvider());
+        //BioRegistryData.register(new BioWorldGenProvider());
 
         gen.addProvider(true, new DatapackBuiltinEntriesProvider(
                 packOutput,
@@ -203,6 +204,8 @@ public final class ClientEvents
                 Set.of(Database.MOD_ID)));
 
         BioRegistryData.clear();
+
+        gen.addProvider(true, new BioSoundsProvider(packOutput));
     }
 
     private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)

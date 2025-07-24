@@ -58,7 +58,7 @@ public class Ksigg extends Animal implements GeoEntity
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(BuiltInRegistries.ENTITY_TYPE.stream().
-                filter(entityType -> entityType.is(BioEntityTags.SWARM)).
+                filter(entityType -> !entityType.is(BioEntityTags.SWARM)).
                 map(EntityType :: getBaseClass).
                 toArray(Class[] :: new)));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
@@ -99,27 +99,21 @@ public class Ksigg extends Animal implements GeoEntity
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return super.getAmbientSound();
+        return Registration.SoundReg.KSIGG.getIdleSound().get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return super.getHurtSound(damageSource);
+        return Registration.SoundReg.KSIGG.getHurtSound().get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound()
     {
-        return super.getDeathSound();
-    }
-
-    @Override
-    protected void playStepSound(@NotNull BlockPos pos, @NotNull BlockState state)
-    {
-        super.playStepSound(pos, state);
+        return Registration.SoundReg.KSIGG.getDeathSound().get();
     }
 
     @Nullable

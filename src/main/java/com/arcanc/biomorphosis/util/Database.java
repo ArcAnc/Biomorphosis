@@ -181,6 +181,56 @@ public class Database
             }
         }
 
+        public static final class Sounds
+        {
+            public static final String BLOCK_DESTROYED = Database.rl("sound.subtitle.block.destroyed").toLanguageKey();
+            public static final String BLOCK_PLACED = Database.rl("sound.subtitle.block.placed").toLanguageKey();
+            public static final String BLOCK_STEP_NORMAL = Database.rl("sound.subtitle.block.step.normal").toLanguageKey();
+            public static final String BLOCK_STEP_TRAMPLED = Database.rl("sound.subtitle.block.step.trampled").toLanguageKey();
+            public static final String BLOCK_STEP_LEAF = Database.rl("sound.subtitle.block.step.leaf").toLanguageKey();
+
+            public static final String BLOCK_CHEST_OPEN = Database.rl("sound.subtitle.block.chest.open").toLanguageKey();
+            public static final String BLOCK_CHEST_CLOSE = Database.rl("sound.subtitle.block.chest.close").toLanguageKey();
+
+            public static final EntitySoundSubtitle QUEEN = new EntitySoundSubtitle("queen");
+            public static final EntitySoundSubtitle KSIGG = new EntitySoundSubtitle("ksigg");
+            public static final EntitySoundSubtitle LARVA = new EntitySoundSubtitle("larva");
+            public static final EntitySoundSubtitle ZIRIS = new EntitySoundSubtitle("ziris");
+            public static final EntitySoundSubtitle INFESTOR = new EntitySoundSubtitle("infestor");
+            public static final EntitySoundSubtitle SWARMLING = new EntitySoundSubtitle("swarmling");
+
+
+
+            public static class EntitySoundSubtitle
+            {
+                private final String IDLE;
+                private final String HURT;
+                private final String DEATH;
+
+                public EntitySoundSubtitle(String name)
+                {
+                    this.IDLE = Database.rl("sound.subtitle." + name + ".idle").toLanguageKey();
+                    this.HURT = Database.rl("sound.subtitle." + name + ".hurt").toLanguageKey();
+                    this.DEATH = Database.rl("sound.subtitle." + name + ".death").toLanguageKey();
+                }
+
+                public String getIdle()
+                {
+                    return this.IDLE;
+                }
+
+                public String getHurt()
+                {
+                    return this.HURT;
+                }
+
+                public String getDeath()
+                {
+                    return this.DEATH;
+                }
+            }
+        }
+
         public static @NotNull ResourceLocation getTexturePath(String str)
         {
             return rl("textures/" + str + ".png");

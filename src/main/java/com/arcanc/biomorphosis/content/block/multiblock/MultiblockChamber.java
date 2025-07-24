@@ -267,6 +267,6 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     @Override
     public boolean canUseGui(@NotNull Player player)
     {
-        return getMasterPos().map(pos -> player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 16).orElse(false);
+        return getMasterPos().map(pos -> player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 64).orElse(false);
     }
 }

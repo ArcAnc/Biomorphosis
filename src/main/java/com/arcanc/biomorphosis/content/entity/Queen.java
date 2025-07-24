@@ -15,6 +15,8 @@ import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
@@ -95,7 +98,7 @@ public class Queen extends Monster implements GeoEntity
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(QueenGuard.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
         this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, (entity, level) -> !entity.getType().is(BioEntityTags.SWARM)));
 
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true));
@@ -166,8 +169,7 @@ public class Queen extends Monster implements GeoEntity
                     this.discard();
                     this.level().getEntitiesOfClass(QueenGuard.class, this.getBoundingBox().inflate(16))
                             .forEach(Entity :: discard);
-                    return;
-                }
+				}
             }
         }
     }
@@ -227,6 +229,24 @@ public class Queen extends Monster implements GeoEntity
     public int getCurrentSwingDuration()
     {
         return 30;
+    }
+
+    @Override
+    protected @Nullable SoundEvent getAmbientSound()
+    {
+        return Registration.SoundReg.QUEEN.getIdleSound().get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDeathSound()
+    {
+        return Registration.SoundReg.QUEEN.getDeathSound().get();
+    }
+
+    @Override
+    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    {
+        return Registration.SoundReg.QUEEN.getHurtSound().get();
     }
 
     @Override

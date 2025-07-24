@@ -53,19 +53,32 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.PROP_1, "Pile of Junk");
         this.addBlock(Registration.BlockReg.PROP_2, "Pile of Junk");
         this.addBlock(Registration.BlockReg.GLOW_MOSS, "Glow Moss");
-        this.addBlock(Registration.BlockReg.NORPHED_DIRT, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.MOSS, "Moss");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_0, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_STAIR_0, "Norphed Dirt Stairs");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_SLAB_0, "Norphed Dirt Slab");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_1, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_STAIR_1, "Norphed Dirt Stairs");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_SLAB_1, "Norphed Dirt Slab");
         this.addBlock(Registration.BlockReg.INNER, "Inner");
         this.addBlock(Registration.BlockReg.ROOF, "Roof");
+        this.addBlock(Registration.BlockReg.ROOF_STAIRS, "Roof Stairs");
+        this.addBlock(Registration.BlockReg.ROOF_SLAB, "Roof Slab");
+        this.addBlock(Registration.BlockReg.ROOF_DIRT, "Roof Dirt");
         this.addBlock(Registration.BlockReg.TRAMPLED_DIRT, "Trampled Dirt");
+        this.addBlock(Registration.BlockReg.HIVE_DECO, "Hive");
+        this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");
         this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
 
-        this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen");
-        this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg");
-        this.addEntity(Registration.EntityReg.MOB_LARVA, "Larva");
-        this.addEntity(Registration.EntityReg.MOB_ZIRIS, "Ziris");
+        this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen", Database.GUI.Sounds.QUEEN, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg", Database.GUI.Sounds.KSIGG, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_LARVA, "Larva", Database.GUI.Sounds.LARVA, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_ZIRIS, "Ziris", Database.GUI.Sounds.ZIRIS, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_INFESTOR, "Infestor", Database.GUI.Sounds.INFESTOR, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_SWARMLING, "Swarmling", Database.GUI.Sounds.SWARMLING, "stridulates");
 
         //-----------------------------
         // JADE
@@ -120,6 +133,17 @@ public class EnUsProvider extends LanguageProvider
 
         this.add(Database.GUI.ChamberButton.START, "Start Process");
         this.add(Database.GUI.ChamberButton.PROCESS, "Processing...");
+
+        //-----------------------------
+        //SOUND
+
+        this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
+        this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_NORMAL, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_TRAMPLED, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_LEAF, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_CHEST_OPEN, "Swarm chest opened");
+        this.add(Database.GUI.Sounds.BLOCK_CHEST_CLOSE, "Swarm chest closed");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)
@@ -131,11 +155,15 @@ public class EnUsProvider extends LanguageProvider
         this.add(entry.type().get().getDescriptionId(), description);
     }
 
-    private void addEntity(Registration.EntityReg.@NotNull EntityEntry<?> entity, String description)
+    private void addEntity(Registration.EntityReg.@NotNull EntityEntry<?> entity, String description, Database.GUI.Sounds.EntitySoundSubtitle subtitle, String idleAction)
     {
         this.addEntityType(entity.getEntityHolder(), description);
         if (entity.getEggHolder() != null)
             this.addItem(entity.getEggHolder(), description + " Spawn Egg");
+
+        this.add(subtitle.getIdle(), description + " " + idleAction);
+        this.add(subtitle.getHurt(), description + " hurts");
+        this.add(subtitle.getDeath(), description + " dies");
     }
 
     private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)

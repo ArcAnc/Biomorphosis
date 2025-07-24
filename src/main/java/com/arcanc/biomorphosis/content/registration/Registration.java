@@ -22,16 +22,15 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.entity.*;
-import com.arcanc.biomorphosis.content.entity.renderer.KsiggRenderer;
-import com.arcanc.biomorphosis.content.entity.renderer.LarvaRenderer;
-import com.arcanc.biomorphosis.content.entity.renderer.QueenRenderer;
-import com.arcanc.biomorphosis.content.entity.renderer.ZirisRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.*;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
+import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
+import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
@@ -64,6 +63,7 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -74,7 +74,10 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -88,6 +91,7 @@ import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -97,6 +101,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.phys.Vec3;
@@ -104,8 +109,10 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
@@ -257,6 +264,48 @@ public final class Registration
                 rendererProvider(ZirisRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
+        public static final EntityEntry<Infestor> MOB_INFESTOR = makeEntityType(
+                "infestor",
+                Infestor.class,
+                Infestor :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(0.8f).
+                        sized(0.5f, 0.9f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                        add(Attributes.MAX_HEALTH, 15).
+                        add(Attributes.ATTACK_DAMAGE, 4).
+                        add(Attributes.MOVEMENT_SPEED, 0.1f).
+                        add(Attributes.FOLLOW_RANGE, 16).
+                        add(Attributes.ARMOR, 2)).
+                        rendererProvider(InfestorRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+
+        public static final EntityEntry<Swarmling> MOB_SWARMLING= makeEntityType(
+                "swarmling",
+                Swarmling.class,
+                Swarmling :: new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(0.35f).
+                        sized(0.4f, 0.4f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(4).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                        add(Attributes.MAX_HEALTH, 15).
+                        add(Attributes.ATTACK_DAMAGE, 4).
+                        add(Attributes.MOVEMENT_SPEED, 0.1f).
+                        add(Attributes.FOLLOW_RANGE, 16).
+                        add(Attributes.ARMOR, 2)).
+                        rendererProvider(SwarmlingRenderer :: new),
+                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
                                                                       EntityType.EntityFactory<T> factory,
@@ -308,134 +357,125 @@ public final class Registration
     {
         public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(Database.MOD_ID);
 
+        private static final Consumer<BlockBehaviour.Properties> baseProps = props -> props.
+                mapColor(MapColor.PODZOL).
+                strength(2, 2).
+                sound(SoundReg.BLOCK_SOUNDS).
+                instrument(NoteBlockInstrument.BIT);
+
         public static final DeferredBlock<BioBaseBlock> FLESH = register("flesh", BioBaseBlock :: new,
                 properties -> properties.
                         mapColor(MapColor.COLOR_PURPLE).
                         strength(3, 3).
-                        sound(SoundType.HONEY_BLOCK).
-                        isValidSpawn((state, level, pos, value) -> false),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        isValidSpawn((state, level, pos, value) -> false).
+                        sound(SoundReg.BLOCK_SOUNDS),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<LureCampfireBlock> LURE_CAMPFIRE = register("lure_campfire", LureCampfireBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
+                properties -> properties.
+                        mapColor(MapColor.PODZOL).
                         instrument(NoteBlockInstrument.BASS).
                         strength(2, 2).
                         sound(SoundType.WOOD).
                         lightLevel(state -> state.getValue(BlockStateProperties.LIT) ? 15 : 0).
                         noOcclusion().
                         ignitedByLava(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                ItemReg.baseProps);
 
         public static final DeferredBlock<NorphSourceBlock> NORPH_SOURCE = register("norph_source", NorphSourceBlock:: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(3,3).
-                        sound(SoundType.HONEY_BLOCK).
+                properties -> baseProps.
+                        andThen(props -> props.
                         noOcclusion().
                         randomTicks().
-                        isValidSpawn((state, level, pos, value) -> false),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        isValidSpawn((state, level, pos, value) -> false)).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<NorphBlock> NORPH = register("norph", NorphBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
+                properties -> baseProps.
+                        andThen(props -> props.
                         strength(0.3f).
-                        sound(SoundType.HONEY_BLOCK).
-                        isValidSpawn((state, level, pos, value) -> false),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        isValidSpawn((state, level, pos, value) -> false)).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<NorphStairs> NORPH_STAIRS = register("norph_stairs", properties -> new NorphStairs(NORPH.get().defaultBlockState(), properties),
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
+                properties -> baseProps.
+                        andThen(props -> props.
                         strength(0.3f).
-                        sound(SoundType.HONEY_BLOCK).
                         noOcclusion().
-                        isValidSpawn((state, level, pos, value) -> false),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        isValidSpawn((state, level, pos, value) -> false)).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<NorphOverlay> NORPH_OVERLAY = register("norph_overlay", NorphOverlay :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
+                properties -> baseProps.
+                        andThen(props -> props.
                         strength(0.3f).
-                        sound(SoundType.HONEY_BLOCK).
                         noOcclusion().
                         noCollission().
-                        isValidSpawn((state, level, pos, value) -> false),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        isValidSpawn((state, level, pos, value) -> false)).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioFluidStorageBlock> FLUID_STORAGE = register("fluid_storage", BioFluidStorageBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2,2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioFluidTransmitterBlock> FLUID_TRANSMITTER = register("fluid_transmitter", BioFluidTransmitterBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2,2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioCrusherBlock> CRUSHER = register("crusher", BioCrusherBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioStomachBlock> STOMACH = register("stomach", BioStomachBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioCatcherBlock> CATCHER = register("catcher", BioCatcherBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioForgeBlock> FORGE = register("forge", BioForgeBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<MultiblockFluidStorageBlock> MULTIBLOCK_FLUID_STORAGE = register("multiblock_fluid_storage", MultiblockFluidStorageBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps.andThen(properties -> properties.
+                        rarity(RarityExtension.BIO_RARE.getValue())));
 
         public static final DeferredBlock<MultiblockChamberBlock> MULTIBLOCK_CHAMBER = register("multiblock_chamber", MultiblockChamberBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
                 MultiblockChamberBlockItem :: new,
-                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()),
+                ItemReg.baseProps.andThen(props -> props.
+                        rarity(RarityExtension.BIO_RARE.getValue())),
                 false);
 
         public static final DeferredBlock<MultiblockMorpherBlock> MULTIBLOCK_MORPHER = register("multiblock_morpher", MultiblockMorpherBlock :: new,
-                properties -> properties.mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps.andThen(props -> props.
+                        rarity(RarityExtension.BIO_RARE.getValue())));
 
         public static final DeferredBlock<BioBaseBlock> PROP_0 = register("prop_0",
                 properties -> new BioBaseBlock(properties)
@@ -448,13 +488,10 @@ public final class Registration
                         return SHAPE;
                     }
                 },
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> PROP_1 = register("prop_1",
                 properties -> new BioBaseBlock(properties)
@@ -467,13 +504,10 @@ public final class Registration
                         return SHAPE;
                     }
                 },
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> PROP_2 = register("prop_2",
                 properties -> new BioBaseBlock(properties)
@@ -486,64 +520,182 @@ public final class Registration
                         return SHAPE;
                     }
                 },
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
-                        noOcclusion(),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<GlowMossBlock> GLOW_MOSS = register("glow_moss",
                 GlowMossBlock :: new,
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK).
+                properties -> baseProps.
+                        andThen(props -> props.
                         noOcclusion().
-                        replaceable().
                         noCollission().
-                        lightLevel(GlowLichenBlock.emission(7)),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                        replaceable().
+                        lightLevel(GlowLichenBlock.emission(7))).
+                        accept(properties),
+                ItemReg.baseProps);
 
-        public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT = register("norphed_dirt",
+        public static final DeferredBlock<VineBlock> MOSS = register("moss",
+                properties -> new VineBlock(properties)
+                {
+                    @Override
+                    protected void randomTick(@NotNull BlockState state,
+                                              @NotNull ServerLevel level,
+                                              @NotNull BlockPos pos,
+                                              @NotNull RandomSource randomSource)
+                    {
+                    }
+                },
+                properties -> baseProps.
+                    andThen(BlockBehaviour.Properties :: noOcclusion).
+                    accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_0 = register("norphed_dirt_0",
                 BioBaseBlock :: new,
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<StairBlock> NORPHED_DIRT_STAIR_0 = register("norphed_dirt_stair_0",
+                properties -> new StairBlock(NORPHED_DIRT_0.get().
+                        defaultBlockState(), properties),
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<SlabBlock> NORPHED_DIRT_SLAB_0 = register("norphed_dirt_slab_0",
+                SlabBlock :: new,
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_1 = register("norphed_dirt_1",
+                BioBaseBlock :: new,
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<StairBlock> NORPHED_DIRT_STAIR_1 = register("norphed_dirt_stair_1",
+                properties -> new StairBlock(NORPHED_DIRT_1.get().
+                        defaultBlockState(), properties),
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<SlabBlock> NORPHED_DIRT_SLAB_1 = register("norphed_dirt_slab_1",
+                SlabBlock :: new,
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
         public static final DeferredBlock<BioBaseBlock> INNER = register("inner",
                 BioBaseBlock :: new,
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
 
         /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
-        public static final DeferredBlock<BioBaseBlock> ROOF = register("roof",
+
+        public static final DeferredBlock<BioBaseBlock> ROOF_DIRT = register("roof_dirt",
                 BioBaseBlock :: new,
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<BioBaseBlock> ROOF = register("roof",
+                properties -> new BioBaseBlock(properties)
+                {
+                    @Override
+                    protected void randomTick(@NotNull BlockState state,
+                                              @NotNull ServerLevel level,
+                                              @NotNull BlockPos pos,
+                                              @NotNull RandomSource random)
+                    {
+                        if (!level.isAreaLoaded(pos, 3))
+                            return;
+
+                        if (!canBeGrass(state, level, pos))
+                            level.setBlockAndUpdate(pos, ROOF_DIRT.get().defaultBlockState());
+                        else
+                        {
+                            BlockState defState = this.getInitDefaultState();
+
+                            for (int q = 0; q < 4; q++)
+                            {
+                                BlockPos targetPos = pos.offset(random.nextInt(3) - 1, random.nextInt(5) - 3, random.nextInt(3) - 1);
+                                if (level.getBlockState(targetPos).is(ROOF_DIRT.get()) && canBeGrass(defState, level, targetPos))
+                                    level.setBlockAndUpdate(targetPos, defState);
+                            }
+                        }
+                    }
+
+                    private boolean canBeGrass(@NotNull BlockState state,
+                                               @NotNull LevelReader levelReader,
+                                               @NotNull BlockPos pos)
+                    {
+                        BlockPos targetPos = pos.above();
+                        BlockState targetState = levelReader.getBlockState(targetPos);
+                        return LightEngine.getLightBlockInto(state, targetState, Direction.UP, targetState.getLightBlock()) < 15;
+                    }
+                },
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<StairBlock> ROOF_STAIRS = register("roof_stairs",
+                properties -> new StairBlock(ROOF.get().defaultBlockState(), properties),
+                properties -> baseProps.
+                    andThen(BlockBehaviour.Properties :: noOcclusion).
+                    accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<SlabBlock> ROOF_SLAB = register("roof_slab",
+                SlabBlock :: new,
+                properties -> baseProps.
+                    andThen(BlockBehaviour.Properties :: noOcclusion).
+                    accept(properties),
+                ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> TRAMPLED_DIRT = register("trampled_dirt",
                 BioBaseBlock :: new,
-                properties -> properties.
-                        mapColor(MapColor.PODZOL).
-                        instrument(NoteBlockInstrument.BIT).
-                        strength(2, 2).
-                        sound(SoundType.HONEY_BLOCK),
-                properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<BioBaseEntityBlock<HiveDeco>> HIVE_DECO = register("hive_deco",
+                properties -> new BioBaseEntityBlock<>(HiveDeco :: new, properties)
+                {
+                    @Override
+                    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+                    {
+                        return RenderShape.INVISIBLE;
+                    }
+                },
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
+        public static final DeferredBlock<BioChestBlock> CHEST = register("chest",
+                BioChestBlock :: new,
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             return register(name, block, additionalProps, itemAddProps, true);
@@ -663,6 +815,20 @@ public final class Registration
                         ChamberScreen :: new,
                         BlockReg.MULTIBLOCK_CHAMBER));
 
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HiveDeco>> BE_HIVE_DECO = BLOCK_ENTITIES.register(
+                "hive_deco",
+                makeType(HiveDeco :: new,
+                        HiveDecoRenderer :: new,
+                        BlockReg.HIVE_DECO));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioChest>> BE_CHEST = BLOCK_ENTITIES.register(
+                "chest",
+                makeType(BioChest :: new,
+                        BioChestRenderer :: new,
+                        MenuTypeReg.CHEST,
+                        ChestScreen:: new,
+                        BlockReg.CHEST));
+
         public static <T extends BlockEntity,  C extends BioContainerMenu, S extends BioContainerScreen<C>> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
                                                                                              MenuTypeReg.ArgContainer<T, C> menuProvider,
@@ -740,6 +906,8 @@ public final class Registration
     public static class ItemReg
     {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Database.MOD_ID);
+
+        private static final Consumer<Item.Properties> baseProps = props -> props.rarity(RarityExtension.BIO_COMMON.getValue());
 
         public static final DeferredItem<BioIconItem> CREATIVE_TAB_ICON = registerIcon("creative_tab_icon");
         public static final DeferredItem<BioBaseItem> QUEENS_BRAIN = register("queens_brain", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
@@ -1016,6 +1184,11 @@ public final class Registration
                 ChamberMenu :: makeServer,
                 ChamberMenu :: makeClient);
 
+        public static final ArgContainer<BioChest, ChestMenu> CHEST = registerArg(
+                "chest",
+                ChestMenu :: makeServer,
+                ChestMenu :: makeClient);
+
         public static <T, C extends BioContainerMenu>
         @NotNull ArgContainer<T, C> registerArg(
                 String name, ArgContainerConstructor<T, C> container, ClientContainerConstructor<C> client
@@ -1253,6 +1426,83 @@ public final class Registration
         }
     }
 
+    public static class SoundReg
+    {
+
+        /*FIXME: впихнуть звуки прям в тип моба*/
+
+        public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, Database.MOD_ID);
+
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_DESTROY = variable("block_destroy");
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_PLACE = variable("block_place");
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_NORMAL = variable("block_step");
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_TRAMPLED = variable("block_step_trampled");
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_LEAF = variable("block_step_leaf");
+
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_OPEN = variable("block_chest_open");
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_CLOSE = variable("block_chest_close");
+
+        public static final EntitySoundEntry QUEEN = new EntitySoundEntry("queen");
+        public static final EntitySoundEntry KSIGG = new EntitySoundEntry("ksigg");
+        public static final EntitySoundEntry INFESTOR = new EntitySoundEntry("infestor");
+        public static final EntitySoundEntry LARVA = new EntitySoundEntry("larva");
+        public static final EntitySoundEntry SWARMLING = new EntitySoundEntry("swarmling");
+        public static final EntitySoundEntry ZIRIS = new EntitySoundEntry("ziris");
+
+        public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, null, null);
+
+        private static @NotNull DeferredHolder<SoundEvent, SoundEvent> variable(String name)
+        {
+            return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Database.rl(name)));
+        }
+
+        private static @NotNull DeferredHolder<SoundEvent, SoundEvent> fixed(String name, float range)
+        {
+            return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(Database.rl(name), range));
+        }
+
+        public static class EntitySoundEntry
+        {
+            private final DeferredHolder<SoundEvent, SoundEvent> DEATH;
+            private final DeferredHolder<SoundEvent, SoundEvent> IDLE;
+            private final DeferredHolder<SoundEvent, SoundEvent> HURT;
+            private final String name;
+
+            public EntitySoundEntry(String name)
+            {
+                this.DEATH = variable(name + "_death");
+                this.IDLE = variable(name + "_idle");
+                this.HURT = variable(name + "_hurt");
+                this.name = name;
+            }
+
+            public DeferredHolder<SoundEvent, SoundEvent> getDeathSound()
+            {
+                return this.DEATH;
+            }
+
+            public DeferredHolder<SoundEvent, SoundEvent> getHurtSound()
+            {
+                return this.HURT;
+            }
+
+            public DeferredHolder<SoundEvent, SoundEvent> getIdleSound()
+            {
+                return this.IDLE;
+            }
+
+            public String getName()
+            {
+                return this.name;
+            }
+        }
+
+        private static void init (@NotNull final IEventBus bus)
+        {
+            SOUNDS.register(bus);
+        }
+    }
+
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
@@ -1261,6 +1511,7 @@ public final class Registration
         MultiblockReg.init(bus);
         BookDataReg.init(bus);
         RecipeReg.init(bus);
+        SoundReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
         FluidReg.init(bus);

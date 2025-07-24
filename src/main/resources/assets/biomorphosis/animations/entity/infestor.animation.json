@@ -154,7 +154,7 @@
 				}
 			}
 		},
-		"attack": {
+		"attack.swing": {
 			"animation_length": 1,
 			"bones": {
 				"armright": {

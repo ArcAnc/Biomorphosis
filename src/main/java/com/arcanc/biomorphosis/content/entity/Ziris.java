@@ -9,12 +9,15 @@
 
 package com.arcanc.biomorphosis.content.entity;
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -441,6 +444,24 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
                     return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
                 }),
                 DefaultAnimations.genericDeathController(this));
+    }
+
+    @Override
+    protected @Nullable SoundEvent getDeathSound()
+    {
+        return Registration.SoundReg.ZIRIS.getDeathSound().get();
+    }
+
+    @Override
+    protected @Nullable SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    {
+        return Registration.SoundReg.ZIRIS.getHurtSound().get();
+    }
+
+    @Override
+    protected @Nullable SoundEvent getAmbientSound()
+    {
+        return Registration.SoundReg.ZIRIS.getIdleSound().get();
     }
 
     @Override

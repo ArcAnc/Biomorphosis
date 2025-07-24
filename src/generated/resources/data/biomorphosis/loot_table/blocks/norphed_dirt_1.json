@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "biomorphosis:norphed_dirt"
+          "name": "biomorphosis:norphed_dirt_1"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "biomorphosis:blocks/norphed_dirt"
+  "random_sequence": "biomorphosis:blocks/norphed_dirt_1"
 }

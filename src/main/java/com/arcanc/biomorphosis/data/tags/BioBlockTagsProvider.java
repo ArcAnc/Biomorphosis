@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import org.jetbrains.annotations.NotNull;
@@ -45,11 +46,16 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.MULTIBLOCK_MORPHER.get()).
                 add(Registration.BlockReg.PROP_0.get()).
                 add(Registration.BlockReg.PROP_1.get()).
-                add(Registration.BlockReg.PROP_2.get());
+                add(Registration.BlockReg.PROP_2.get()).
+                add(Registration.BlockReg.HIVE_DECO.get()).
+                add(Registration.BlockReg.CHEST.get());
         this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
         this.tag(BioBlockTags.NORPH_AVOID).
                 add(Blocks.LAVA).
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
                 add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get());
+        this.tag(BlockTags.CLIMBABLE).
+                add(Registration.BlockReg.GLOW_MOSS.get()).
+                add(Registration.BlockReg.MOSS.get());
     }
 }

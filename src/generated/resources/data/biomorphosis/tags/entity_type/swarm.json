@@ -1,6 +1,10 @@
 {
   "values": [
     "biomorphosis:ksigg",
+    "biomorphosis:infestor",
+    "biomorphosis:larva",
+    "biomorphosis:swarmling",
+    "biomorphosis:ziris",
     "biomorphosis:queen"
   ]
 }

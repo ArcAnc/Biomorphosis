@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
+import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -34,12 +35,12 @@ public class CommonEvents
 
     public static void registerCommonEvents(@NotNull final IEventBus modEventBus)
     {
-
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         FluidTransportHandler.registerHandler();
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
         NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
+        ChestMenu.registerEvents();
    }
 
     @SuppressWarnings("unchecked")
@@ -72,6 +73,7 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge:: getItemHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge:: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER.get(), MultiblockChamber :: getItemHandler);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CHEST.get(), BioChest :: getItemHandler);
     }
 
     private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)

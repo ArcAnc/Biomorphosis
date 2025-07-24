@@ -65,6 +65,19 @@ public class BioEntityLoot extends EntityLootSubProvider
                                 LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
                                     apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
                         when(LootItemKilledByPlayerCondition.killedByPlayer())));
+        this.add(Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), LootTable.lootTable().
+                withPool(LootPool.lootPool().
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+                            apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+
+        this.add(Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), LootTable.lootTable().
+                withPool(LootPool.lootPool().
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+                            apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
     }
 
     @Override
