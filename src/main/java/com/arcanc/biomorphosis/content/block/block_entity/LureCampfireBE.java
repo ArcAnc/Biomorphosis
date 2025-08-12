@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block.block_entity;
 import com.arcanc.biomorphosis.content.block.LureCampfireBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.entity.Queen;
+import com.arcanc.biomorphosis.content.entity.QueenGuard;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
@@ -110,7 +111,15 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
 
         Queen queen = new Queen(level, surfacePos.getBottomCenter(), this.getBlockPos());
         level.addFreshEntity(queen);
-        timer = 0;
+
+        for (int q = 0; q < 4; q++)
+        {
+            QueenGuard guard = new QueenGuard(Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get(), level);
+            guard.moveTo(surfacePos.getBottomCenter());
+            guard.setQueen(queen);
+            level.addFreshEntity(guard);
+        }
+        this.timer = 0;
         level.removeBlock(this.getBlockPos(), false);
     }
 
