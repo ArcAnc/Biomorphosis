@@ -55,6 +55,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 import com.mojang.blaze3d.shaders.FogShape;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
@@ -65,6 +66,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -77,10 +79,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -92,6 +96,7 @@ import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -104,12 +109,12 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
@@ -123,9 +128,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -172,16 +175,19 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 20).
-                                add(Attributes.ATTACK_DAMAGE, 3).
+                                add(Attributes.MAX_HEALTH, 100).
+                                add(Attributes.ATTACK_DAMAGE, 15).
+                                add(Attributes.KNOCKBACK_RESISTANCE, 1.0f).
                                 add(Attributes.FOLLOW_RANGE, 32).
                                 add(Attributes.MOVEMENT_SPEED, 0.15f).
-                                add(Attributes.ARMOR, 4)).
+                                add(Attributes.ARMOR, 10)).
                         rendererProvider(QueenRenderer :: new),
-                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+                itemProps -> ItemReg.baseProps.
+                        andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
+                        accept(itemProps));
 
-        /*public static final EntityEntry<QueenGuard> MOB_QUEEN_GUARD = makeEntityType(
-                "queen_guard",
+        public static final EntityEntry<QueenGuard> MOB_QUEEN_GUARD = makeEntityType(
+                "guard",
                 QueenGuard.class,
                 QueenGuard :: new,
                 MobCategory.MONSTER,
@@ -189,16 +195,21 @@ public final class Registration
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
                         eyeHeight(2.1f).
-                        sized(2.3f, 2.2f).
+                        sized(1.3f, 2.2f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(5).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 30).
-                                add(Attributes.ATTACK_DAMAGE, 6).
-                                add(Attributes.FOLLOW_RANGE, 12).
-                                add(Attributes.MOVEMENT_SPEED, 0.8f).
-                                add(Attributes.ARMOR, 6)),
-                itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));*/
+                                add(Attributes.MAX_HEALTH, 150).
+                                add(Attributes.ATTACK_DAMAGE, 20).
+                                add(Attributes.KNOCKBACK_RESISTANCE, 1.0f).
+                                add(Attributes.FOLLOW_RANGE, 16).
+                                add(Attributes.MOVEMENT_SPEED, 0.3f).
+                                add(Attributes.ARMOR, 20).
+                                add(Attributes.ARMOR_TOUGHNESS, 10)).
+                        rendererProvider(QueenGuardRenderer :: new),
+                itemProps -> ItemReg.baseProps.
+                        andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
+                        accept(itemProps));
 
         public static final EntityEntry<Ksigg> MOB_KSIGG = makeEntityType(
                 "ksigg",
@@ -236,7 +247,7 @@ public final class Registration
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 2).
                                 add(Attributes.ATTACK_DAMAGE, 1).
-                                add(Attributes.MOVEMENT_SPEED, 0.03f).
+                                add(Attributes.MOVEMENT_SPEED, 0.1f).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.ARMOR, 20).
                                 add(Attributes.ARMOR_TOUGHNESS, 10)).
@@ -272,8 +283,8 @@ public final class Registration
                 builder -> builder.
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
-                        eyeHeight(0.8f).
-                        sized(0.5f, 0.9f).
+                        eyeHeight(1.5f).
+                        sized(1.2f, 1.6f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
@@ -293,8 +304,8 @@ public final class Registration
                 builder -> builder.
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
-                        eyeHeight(0.35f).
-                        sized(0.4f, 0.4f).
+                        eyeHeight(0.55f).
+                        sized(0.6f, 0.6f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
@@ -552,6 +563,55 @@ public final class Registration
                     accept(properties),
                 ItemReg.baseProps);
 
+        public static final DeferredBlock<HangingMossBlock> HANGING_MOSS = register("moss_hanging",
+                properties -> new HangingMossBlock(properties)
+                {
+                    @Override
+                    protected boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos)
+                    {
+                        return this.canStayAtPosition(level, pos);
+                    }
+
+                    @Override
+                    protected @NotNull BlockState updateShape(
+                            @NotNull BlockState state,
+                            @NotNull LevelReader level,
+                            @NotNull ScheduledTickAccess tickAccess,
+                            @NotNull BlockPos pos,
+                            @NotNull Direction dir,
+                            @NotNull BlockPos updateSource,
+                            @NotNull BlockState updateState,
+                            @NotNull RandomSource random
+                    ) {
+                        if (!this.canStayAtPosition(level, pos))
+                            tickAccess.scheduleTick(pos, this, 1);
+
+                        return state.setValue(TIP, !level.getBlockState(pos.below()).is(this));
+                    }
+
+                    @Override
+                    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+                    {
+                        if (!this.canStayAtPosition(level, pos))
+                            level.destroyBlock(pos, true);
+                    }
+
+                    private boolean canStayAtPosition(@NotNull BlockGetter level, @NotNull BlockPos pos)
+                    {
+                        BlockPos blockpos = pos.relative(Direction.UP);
+                        BlockState blockstate = level.getBlockState(blockpos);
+                        return MultifaceBlock.canAttachTo(level, Direction.UP, blockpos, blockstate) || blockstate.is(BlockReg.HANGING_MOSS);
+                    }
+                },
+                properties -> baseProps.
+                        andThen(props -> props.
+                        ignitedByLava().
+                        noOcclusion().
+                        noCollission().
+                        pushReaction(PushReaction.DESTROY)).
+                        accept(properties),
+                ItemReg.baseProps);
+
         public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_0 = register("norphed_dirt_0",
                 BioBaseBlock :: new,
                 properties -> baseProps.
@@ -608,9 +668,7 @@ public final class Registration
 
         public static final DeferredBlock<BioBaseBlock> ROOF_DIRT = register("roof_dirt",
                 BioBaseBlock :: new,
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> ROOF = register("roof",
@@ -646,11 +704,12 @@ public final class Registration
                     {
                         BlockPos targetPos = pos.above();
                         BlockState targetState = levelReader.getBlockState(targetPos);
-                        return LightEngine.getLightBlockInto(state, targetState, Direction.UP, targetState.getLightBlock()) < 15;
+                        boolean sturdy = targetState.isFaceSturdy(levelReader, pos, Direction.DOWN);
+                        return LightEngine.getLightBlockInto(state, targetState, Direction.UP, targetState.getLightBlock()) < 15 && !sturdy;
                     }
                 },
                 properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        andThen(BlockBehaviour.Properties :: randomTicks).
                         accept(properties),
                 ItemReg.baseProps);
 
@@ -678,6 +737,24 @@ public final class Registration
         public static final DeferredBlock<BioBaseEntityBlock<HiveDeco>> HIVE_DECO = register("hive_deco",
                 properties -> new BioBaseEntityBlock<>(HiveDeco :: new, properties)
                 {
+                    @Override
+                    public void animateTick(@NotNull BlockState state,
+                                            @NotNull Level level,
+                                            @NotNull BlockPos pos,
+                                            @NotNull RandomSource random)
+                    {
+                        if (random.nextInt(25) == 0)
+                            level.playLocalSound(
+                                    pos.getX() + 0.5d,
+                                    pos.getY() + 0.5d,
+                                    pos.getZ() + 0.5d,
+                                    SoundReg.BLOCK_HIVE.get(),
+                                    SoundSource.BLOCKS,
+                                    0.5f,
+                                    random.nextFloat() * 0.4F + 0.8F,
+                                    false);
+                    }
+
                     @Override
                     protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
                     {
@@ -1442,12 +1519,15 @@ public final class Registration
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_OPEN = variable("block_chest_open");
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_CLOSE = variable("block_chest_close");
 
+        public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_HIVE = variable("block_hive_deco");
+
         public static final EntitySoundEntry QUEEN = new EntitySoundEntry("queen");
         public static final EntitySoundEntry KSIGG = new EntitySoundEntry("ksigg");
         public static final EntitySoundEntry INFESTOR = new EntitySoundEntry("infestor");
         public static final EntitySoundEntry LARVA = new EntitySoundEntry("larva");
         public static final EntitySoundEntry SWARMLING = new EntitySoundEntry("swarmling");
         public static final EntitySoundEntry ZIRIS = new EntitySoundEntry("ziris");
+        public static final EntitySoundEntry GUARD = new EntitySoundEntry("guard");
 
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, null, null);
 
@@ -1503,6 +1583,23 @@ public final class Registration
         }
     }
 
+    public static class AIReg
+    {
+        public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULES = DeferredRegister.create(BuiltInRegistries.MEMORY_MODULE_TYPE, Database.MOD_ID);
+
+        public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<UUID>> QUEEN_GUARD_QUEEN_UUID = register("queen_uuid", UUIDUtil.CODEC);
+        public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> QUEEN_GUARD_PATROL_POS = register("patrol_pos", BlockPos.CODEC);
+
+        private static <T> @NotNull DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String name, Codec<T> codec)
+        {
+            return MEMORY_MODULES.register(name, () -> new MemoryModuleType<>(Optional.ofNullable(codec)));
+        }
+
+        private static void init (@NotNull final IEventBus bus)
+        {
+            MEMORY_MODULES.register(bus);
+        }
+    }
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
@@ -1514,6 +1611,7 @@ public final class Registration
         SoundReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
+        AIReg.init(bus);
         FluidReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);

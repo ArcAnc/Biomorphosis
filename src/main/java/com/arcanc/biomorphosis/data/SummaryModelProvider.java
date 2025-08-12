@@ -75,6 +75,7 @@ public class SummaryModelProvider extends ModelProvider
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_ZIRIS.getEggHolder().get(), MathHelper.ColorHelper.color(38, 29, 12), MathHelper.ColorHelper.color(76, 89, 34));
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_INFESTOR.getEggHolder().get(), MathHelper.ColorHelper.color(19, 54, 34), MathHelper.ColorHelper.color(64, 94, 14));
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_SWARMLING.getEggHolder().get(), MathHelper.ColorHelper.color(17, 91, 23), MathHelper.ColorHelper.color(42, 92, 77));
+        itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN_GUARD.getEggHolder().get(), MathHelper.ColorHelper.color(0, 40, 2), MathHelper.ColorHelper.color(43, 3, 99));
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
 
@@ -125,6 +126,7 @@ public class SummaryModelProvider extends ModelProvider
         blockModels.createTrivialCube(Registration.BlockReg.TRAMPLED_DIRT.get());
         createDecoHiveModel(blockModels);
         createChestModel(blockModels);
+        createHangingMoss(blockModels);
     }
 
     //------------------------------------------------------------------------------
@@ -147,6 +149,60 @@ public class SummaryModelProvider extends ModelProvider
     //------------------------------------------------------------------------------
     // BLOCK MODELS
     //------------------------------------------------------------------------------
+
+    private void createHangingMoss(@NotNull BlockModelGenerators blockModels)
+    {
+        DeferredBlock<HangingMossBlock> block = Registration.BlockReg.HANGING_MOSS;
+        ResourceLocation blockLoc = TextureMapping.getBlockTexture(block.get());
+
+        ExtendedModelTemplateBuilder template = BLOCK.extend().
+                renderType("cutout").
+                requiredTextureSlot(TextureSlot.ALL).
+                requiredTextureSlot(TextureSlot.PARTICLE).
+                element(elementBuilder -> elementBuilder.
+                        from(0.8f, 0, 8).
+                        to(15.2f, 16, 8).
+                        rotation(rotationBuilder -> rotationBuilder.
+                            origin(8, 8, 8).
+                            angle(45).
+                            axis(Direction.Axis.Y).
+                            rescale(true)).
+                        shade(false).
+                        allFacesExcept((direction, faceBuilder) -> faceBuilder.
+                                uvs(0, 0, 16, 16).
+                                texture(TextureSlot.ALL),
+                                EnumSet.of(Direction.UP, Direction.DOWN, Direction.EAST, Direction.WEST))).
+                element(elementBuilder -> elementBuilder.
+                        from(8, 0, 0.8f).
+                        to(8, 16, 15.2f).
+                        rotation(rotationBuilder -> rotationBuilder.
+                            origin(8, 8, 8).
+                            angle(45).
+                            axis(Direction.Axis.Y).
+                            rescale(true)).
+                        shade(false).
+                        allFacesExcept((direction, faceBuilder) -> faceBuilder.
+                                uvs(0, 0, 16, 16).
+                                texture(TextureSlot.ALL),
+                                EnumSet.of(Direction.UP, Direction.DOWN, Direction.NORTH,Direction.SOUTH)));
+
+        PropertyDispatch propertydispatch = PropertyDispatch.property(HangingMossBlock.TIP)
+                .generate(
+                        bool -> {
+                            String s = bool ? "_tip" : "";
+                            TextureMapping mapping = new TextureMapping().
+                                    put(TextureSlot.ALL, blockLoc.withSuffix(s)).
+                                    put(TextureSlot.PARTICLE, blockLoc.withSuffix(s));
+
+                            ResourceLocation resourcelocation = new TexturedModel(mapping, template.build()).
+                                    createWithSuffix(block.get(), s, blockModels.modelOutput);
+
+                            return Variant.variant().with(VariantProperties.MODEL, resourcelocation);
+                        }
+                );
+        blockModels.registerSimpleFlatItemModel(block.get());
+        blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block.get()).with(propertydispatch));
+    }
 
     private void createChestModel(@NotNull BlockModelGenerators blockModels)
     {
@@ -857,7 +913,7 @@ public class SummaryModelProvider extends ModelProvider
 
         blockModels.blockStateOutput.accept(MultiVariantGenerator.
                 multiVariant(block_1.get(),
-                Variant.variant().with(VariantProperties.MODEL, model0)));
+                Variant.variant().with(VariantProperties.MODEL, model1)));
         blockModels.itemModelOutput.accept(block_1.get().asItem(), ItemModelUtils.plainModel(model1));
 
 

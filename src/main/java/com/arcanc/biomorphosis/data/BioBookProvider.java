@@ -59,10 +59,31 @@ public class BioBookProvider extends BioRegistryData
         //-----------------------------------------------------------------------
         // TITLE CHAPTER
         //-----------------------------------------------------------------------
-        addPage(Database.GUI.GuideBook.Pages.PATCH_NOTES.location(), BookPageBuilder.newPage().
+        addPage(Database.GUI.GuideBook.Pages.V001.location(), BookPageBuilder.newPage().
                 setAuthor("ArcAnc").
-                setTitle(Database.GUI.GuideBook.Pages.PATCH_NOTES.titleLangKey()).
-                setText(Database.GUI.GuideBook.Pages.PATCH_NOTES.textLangKey()).
+                setTitle(Database.GUI.GuideBook.Pages.V001.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.V001.textLangKey()).
+                setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+                addTags("Patch Notes").
+                end());
+        addPage(Database.GUI.GuideBook.Pages.V002.location(), BookPageBuilder.newPage().
+                setAuthor("ArcAnc").
+                setTitle(Database.GUI.GuideBook.Pages.V002.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.V002.textLangKey()).
+                setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+                addTags("Patch Notes").
+                end());
+        addPage(Database.GUI.GuideBook.Pages.V003.location(), BookPageBuilder.newPage().
+                setAuthor("ArcAnc").
+                setTitle(Database.GUI.GuideBook.Pages.V003.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.V003.textLangKey()).
+                setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+                addTags("Patch Notes").
+                end());
+        addPage(Database.GUI.GuideBook.Pages.V004.location(), BookPageBuilder.newPage().
+                setAuthor("ArcAnc").
+                setTitle(Database.GUI.GuideBook.Pages.V004.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.V004.textLangKey()).
                 setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
                 addTags("Patch Notes").
                 end());

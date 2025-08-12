@@ -153,7 +153,10 @@ public class Database
 
             public static final class Pages
             {
-                public static final PageInfo PATCH_NOTES = new PageInfo(rl("patch_notes"));
+                public static final PageInfo V001 = new PageInfo(rl("v001"));
+                public static final PageInfo V002 = new PageInfo(rl("v002"));
+                public static final PageInfo V003 = new PageInfo(rl("v003"));
+                public static final PageInfo V004 = new PageInfo(rl("v004"));
                 public static final PageInfo TEST_BASIC_1 = new PageInfo(rl("test_1"));
                 public static final PageInfo TEST_BASIC_2 = new PageInfo(rl("test_next_lvl"));
                 public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
@@ -192,14 +195,15 @@ public class Database
             public static final String BLOCK_CHEST_OPEN = Database.rl("sound.subtitle.block.chest.open").toLanguageKey();
             public static final String BLOCK_CHEST_CLOSE = Database.rl("sound.subtitle.block.chest.close").toLanguageKey();
 
+            public static final String BLOCK_HIVE_DECO = Database.rl("sound.subtitle.block.hive_deco").toLanguageKey();
+
             public static final EntitySoundSubtitle QUEEN = new EntitySoundSubtitle("queen");
             public static final EntitySoundSubtitle KSIGG = new EntitySoundSubtitle("ksigg");
             public static final EntitySoundSubtitle LARVA = new EntitySoundSubtitle("larva");
             public static final EntitySoundSubtitle ZIRIS = new EntitySoundSubtitle("ziris");
             public static final EntitySoundSubtitle INFESTOR = new EntitySoundSubtitle("infestor");
             public static final EntitySoundSubtitle SWARMLING = new EntitySoundSubtitle("swarmling");
-
-
+            public static final EntitySoundSubtitle GUARD = new EntitySoundSubtitle("guard");
 
             public static class EntitySoundSubtitle
             {

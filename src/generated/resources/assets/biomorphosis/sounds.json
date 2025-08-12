@@ -18,6 +18,12 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.block.destroyed"
   },
+  "block_hive_deco": {
+    "sounds": [
+      "biomorphosis:block/hive_deco"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.block.hive_deco"
+  },
   "block_place": {
     "sounds": [
       "biomorphosis:block/place_0",
@@ -28,9 +34,7 @@
   "block_step": {
     "sounds": [
       "biomorphosis:block/step_0",
-      "biomorphosis:block/step_1",
-      "biomorphosis:block/step_2",
-      "biomorphosis:block/step_3"
+      "biomorphosis:block/step_1"
     ],
     "subtitle": "biomorphosis.sound.subtitle.block.step.normal"
   },
@@ -51,6 +55,24 @@
       "biomorphosis:block/step_trampled_3"
     ],
     "subtitle": "biomorphosis.sound.subtitle.block.step.trampled"
+  },
+  "guard_death": {
+    "sounds": [
+      "biomorphosis:guard/death"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.guard.death"
+  },
+  "guard_hurt": {
+    "sounds": [
+      "biomorphosis:guard/hurt"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.guard.hurt"
+  },
+  "guard_idle": {
+    "sounds": [
+      "biomorphosis:guard/idle"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.guard.idle"
   },
   "infestor_death": {
     "sounds": [

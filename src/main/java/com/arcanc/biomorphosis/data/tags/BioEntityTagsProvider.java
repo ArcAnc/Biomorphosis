@@ -35,6 +35,7 @@ public class BioEntityTagsProvider extends EntityTypeTagsProvider
                 add(Registration.EntityReg.MOB_LARVA.getEntityHolder().get()).
                 add(Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get()).
                 add(Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get()).
-                add(Registration.EntityReg.MOB_QUEEN.getEntityHolder().get());
+                add(Registration.EntityReg.MOB_QUEEN.getEntityHolder().get()).
+                add(Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get());
     }
 }

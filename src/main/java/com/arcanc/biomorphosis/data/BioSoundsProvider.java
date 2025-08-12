@@ -45,10 +45,6 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 						sound(Database.rl("block/step_0"), SoundDefinition.SoundType.SOUND)).
 				with(
 						sound(Database.rl("block/step_1"), SoundDefinition.SoundType.SOUND)).
-				with(
-						sound(Database.rl("block/step_2"), SoundDefinition.SoundType.SOUND)).
-				with(
-						sound(Database.rl("block/step_3"), SoundDefinition.SoundType.SOUND)).
 				subtitle(Database.GUI.Sounds.BLOCK_STEP_NORMAL));
 		add(Registration.SoundReg.BLOCK_STEP_TRAMPLED, SoundDefinition.definition().
 				with(
@@ -75,6 +71,10 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 				with(
 						sound(Database.rl("block/chest_open"), SoundDefinition.SoundType.SOUND)).
 				subtitle(Database.GUI.Sounds.BLOCK_CHEST_OPEN));
+		add(Registration.SoundReg.BLOCK_HIVE, SoundDefinition.definition().
+				with(
+						sound(Database.rl("block/hive_deco"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.BLOCK_HIVE_DECO));
 
 		add(Registration.SoundReg.BLOCK_CHEST_CLOSE, SoundDefinition.definition().
 				with(
@@ -87,6 +87,7 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		addEntitySound(Registration.SoundReg.ZIRIS, Database.GUI.Sounds.ZIRIS);
 		addEntitySound(Registration.SoundReg.INFESTOR, Database.GUI.Sounds.INFESTOR);
 		addEntitySound(Registration.SoundReg.SWARMLING, Database.GUI.Sounds.SWARMLING, 2, 1, 1);
+		addEntitySound(Registration.SoundReg.GUARD, Database.GUI.Sounds.GUARD);
 	}
 
 	private void addEntitySound(Registration.SoundReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle)

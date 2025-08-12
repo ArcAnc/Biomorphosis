@@ -54,6 +54,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.PROP_2, "Pile of Junk");
         this.addBlock(Registration.BlockReg.GLOW_MOSS, "Glow Moss");
         this.addBlock(Registration.BlockReg.MOSS, "Moss");
+        this.addBlock(Registration.BlockReg.HANGING_MOSS, "Hanging Moss");
         this.addBlock(Registration.BlockReg.NORPHED_DIRT_0, "Norphed Dirt");
         this.addBlock(Registration.BlockReg.NORPHED_DIRT_STAIR_0, "Norphed Dirt Stairs");
         this.addBlock(Registration.BlockReg.NORPHED_DIRT_SLAB_0, "Norphed Dirt Slab");
@@ -74,6 +75,7 @@ public class EnUsProvider extends LanguageProvider
         this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
 
         this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen", Database.GUI.Sounds.QUEEN, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_QUEEN_GUARD, "Queen Guard", Database.GUI.Sounds.GUARD, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg", Database.GUI.Sounds.KSIGG, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_LARVA, "Larva", Database.GUI.Sounds.LARVA, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_ZIRIS, "Ziris", Database.GUI.Sounds.ZIRIS, "stridulates");
@@ -103,6 +105,15 @@ public class EnUsProvider extends LanguageProvider
         //-----------------------------
         //BOOK
         this.add(Database.GUI.GuideBook.Chapters.TITLE.langKey(), "</item;minecraft:writable_book/>Patch Notes");
+        this.add(Database.GUI.GuideBook.Pages.V001.titleLangKey(), "Version: 0.0.1");
+        this.add(Database.GUI.GuideBook.Pages.V001.textLangKey(), "\u2022 Initial Demo release");
+        this.add(Database.GUI.GuideBook.Pages.V002.titleLangKey(), "Version: 0.0.2");
+        this.add(Database.GUI.GuideBook.Pages.V002.textLangKey(), "\u2022 Added some decorative blocks");
+        this.add(Database.GUI.GuideBook.Pages.V003.titleLangKey(), "Version: 0.0.3");
+        this.add(Database.GUI.GuideBook.Pages.V003.textLangKey(), "\u2022 Added 2 new decorative blocks\n\u2022 Fixed wrong model on Norphed Dirt\n\u2022 Adjusted Infestor Size");
+        this.add(Database.GUI.GuideBook.Pages.V004.titleLangKey(), "Version: 0.0.4");
+        this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard");
+
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
         this.add(Database.GUI.GuideBook.Pages.TEST_BASIC_1.textLangKey(), "Some text for testing </item;minecraft:bread/> Additional testing text </block;minecraft:dirt/> MORE testing text </tag;block;minecraft:planks/> Yet again testing TEXT </recipe;minecraft:crafting_shaped;minecraft:golden_leggings/> And another one testing text </entity;minecraft:creeper/> and </entity;minecraft:spider/> Last testing text");
@@ -144,6 +155,7 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.Sounds.BLOCK_STEP_LEAF, "Footsteps");
         this.add(Database.GUI.Sounds.BLOCK_CHEST_OPEN, "Swarm chest opened");
         this.add(Database.GUI.Sounds.BLOCK_CHEST_CLOSE, "Swarm chest closed");
+        this.add(Database.GUI.Sounds.BLOCK_HIVE_DECO, "Hive buzzes");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)

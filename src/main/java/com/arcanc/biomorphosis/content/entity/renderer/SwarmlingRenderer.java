@@ -12,7 +12,13 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Swarmling;
 import com.arcanc.biomorphosis.util.Database;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
@@ -21,5 +27,12 @@ public class SwarmlingRenderer extends GeoEntityRenderer<Swarmling>
 	public SwarmlingRenderer(EntityRendererProvider.Context ctx)
 	{
 		super(ctx, new DefaultedEntityGeoModel<>(Database.rl("swarmling"), true));
+	}
+
+	@Override
+	public void preRender(PoseStack poseStack, Swarmling animatable, @NotNull BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	{
+		model.getBone("all_2").ifPresent(geoBone -> geoBone.updateScale(1.5f, 1.5f, 1.5f));
+		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
 	}
 }
