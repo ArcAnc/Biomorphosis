@@ -88,6 +88,7 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		addEntitySound(Registration.SoundReg.INFESTOR, Database.GUI.Sounds.INFESTOR);
 		addEntitySound(Registration.SoundReg.SWARMLING, Database.GUI.Sounds.SWARMLING, 2, 1, 1);
 		addEntitySound(Registration.SoundReg.GUARD, Database.GUI.Sounds.GUARD);
+		addEntitySound(Registration.SoundReg.WORKER, Database.GUI.Sounds.WORKER);
 	}
 
 	private void addEntitySound(Registration.SoundReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle)

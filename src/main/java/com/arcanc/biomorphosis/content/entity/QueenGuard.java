@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.entity.ai.goals.FollowQueenGoal;
 import com.arcanc.biomorphosis.content.entity.ai.goals.RandomPatrolGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
+import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -53,7 +54,6 @@ public class QueenGuard extends Monster implements GeoEntity
     public QueenGuard(EntityType<? extends Monster> entityType, Level level)
     {
         super(entityType, level);
-        this.getNavigation().setCanFloat(true);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class QueenGuard extends Monster implements GeoEntity
         this.goalSelector.addGoal(4, new FollowQueenGoal(this, 1.25f));
         this.goalSelector.addGoal(4, new RandomPatrolGoal(this, 0.6f));
         this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(ZombifiedPiglin.class));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(
                 this,
@@ -166,6 +166,11 @@ public class QueenGuard extends Monster implements GeoEntity
     {
         super.readAdditionalSaveData(compound);
 
+        if (compound.hasUUID("queen"))
+            this.queen = compound.getUUID("queen");
+
+        this.patrolPos = TagHelper.readBlockPos(compound, "patrol_pos");
+
         /*if (compound.hasUUID("queen"))
             this.getBrain().setMemory(Registration.AIReg.QUEEN_GUARD_QUEEN_UUID.get(), compound.getUUID("queen"));
         else
@@ -178,6 +183,10 @@ public class QueenGuard extends Monster implements GeoEntity
     public void addAdditionalSaveData(@NotNull CompoundTag compound)
     {
         super.addAdditionalSaveData(compound);
+
+        if (this.queen != null)
+            compound.putUUID("queen", this.queen);
+        TagHelper.writeBlockPos(this.patrolPos, compound, "patrol_pos");
 
         /*this.getBrain().getMemory(Registration.AIReg.QUEEN_GUARD_QUEEN_UUID.get()).
             ifPresent(uuid -> compound.putUUID("queen", uuid));

@@ -167,6 +167,24 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.swarmling.idle"
   },
+  "worker_death": {
+    "sounds": [
+      "biomorphosis:worker/death"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.worker.death"
+  },
+  "worker_hurt": {
+    "sounds": [
+      "biomorphosis:worker/hurt"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.worker.hurt"
+  },
+  "worker_idle": {
+    "sounds": [
+      "biomorphosis:worker/idle"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.worker.idle"
+  },
   "ziris_death": {
     "sounds": [
       "biomorphosis:ziris/death"

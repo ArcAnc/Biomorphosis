@@ -16,7 +16,6 @@ import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.phys.Vec3;
-import org.apache.commons.lang3.EnumUtils;
 import org.jetbrains.annotations.Nullable;
 
 public class RandomPatrolGoal extends RandomStrollGoal

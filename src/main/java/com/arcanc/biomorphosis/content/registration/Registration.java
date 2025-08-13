@@ -211,6 +211,28 @@ public final class Registration
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
                         accept(itemProps));
 
+        public static final EntityEntry<Worker> MOB_WORKER = makeEntityType(
+                "worker",
+                Worker.class,
+                Worker::new,
+                MobCategory.MONSTER,
+                builder -> builder.
+                        canSpawnFarFromPlayer().
+                        clientTrackingRange(6).
+                        eyeHeight(1.6f).
+                        sized(0.8f, 1.65f).
+                        immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+                        updateInterval(5).
+                        attributeProvider(() -> LivingEntity.createLivingAttributes().
+                                add(Attributes.MAX_HEALTH, 20).
+                                add(Attributes.ATTACK_DAMAGE, 4).
+                                add(Attributes.FOLLOW_RANGE, 12).
+                                add(Attributes.MOVEMENT_SPEED, 0.2f)).
+                        rendererProvider(WorkerRenderer :: new),
+                itemProps -> ItemReg.baseProps.
+                        andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
+                        accept(itemProps));
+
         public static final EntityEntry<Ksigg> MOB_KSIGG = makeEntityType(
                 "ksigg",
                 Ksigg.class,
@@ -1528,6 +1550,7 @@ public final class Registration
         public static final EntitySoundEntry SWARMLING = new EntitySoundEntry("swarmling");
         public static final EntitySoundEntry ZIRIS = new EntitySoundEntry("ziris");
         public static final EntitySoundEntry GUARD = new EntitySoundEntry("guard");
+        public static final EntitySoundEntry WORKER = new EntitySoundEntry("worker");
 
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, null, null);
 
@@ -1611,7 +1634,7 @@ public final class Registration
         SoundReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
-        AIReg.init(bus);
+        //AIReg.init(bus);
         FluidReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);

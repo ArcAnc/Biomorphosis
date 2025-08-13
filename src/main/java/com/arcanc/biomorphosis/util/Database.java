@@ -204,6 +204,7 @@ public class Database
             public static final EntitySoundSubtitle INFESTOR = new EntitySoundSubtitle("infestor");
             public static final EntitySoundSubtitle SWARMLING = new EntitySoundSubtitle("swarmling");
             public static final EntitySoundSubtitle GUARD = new EntitySoundSubtitle("guard");
+            public static final EntitySoundSubtitle WORKER = new EntitySoundSubtitle("worker");
 
             public static class EntitySoundSubtitle
             {

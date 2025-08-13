@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-12T21:32:06.156814353	Loot Tables
+// 1.21.4	2025-08-13T21:32:00.61712686	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
@@ -40,4 +40,5 @@ c14c9d81c077fb9b0a9fcab3ffe885213508faa6 data/biomorphosis/loot_table/entities/g
 b78b089d66f5654581e8976d3e09d5cf487ada3d data/biomorphosis/loot_table/entities/larva.json
 d7f59c585db852852238b1653abc0a9eb5a387e1 data/biomorphosis/loot_table/entities/queen.json
 bdc241d63539c1d2e58beae6ffaef7d0c332f924 data/biomorphosis/loot_table/entities/swarmling.json
+019d4b1085f5cf2884918f241c0040b9c7ad1448 data/biomorphosis/loot_table/entities/worker.json
 6e99797553f93006f49a44f2eec1fff0749ac1ae data/biomorphosis/loot_table/entities/ziris.json

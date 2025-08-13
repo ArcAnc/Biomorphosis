@@ -107,7 +107,6 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	@Override
 	protected boolean canStillUse(ServerLevel level, QueenGuard entity, long gameTime)
 	{
-		Database.LOGGER.warn("Check");
 		if (this.path != null && this.lastTargetPos != null)
 		{
 			Optional<WalkTarget> optional = entity.getBrain().getMemory(MemoryModuleType.WALK_TARGET);
@@ -165,7 +164,6 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 
 	private boolean tryComputePath(@NotNull Mob mob, @NotNull WalkTarget target, long time)
 	{
-		Database.LOGGER.warn("TryComputePath!");
 		BlockPos blockpos = target.getTarget().currentBlockPosition();
 		this.path = mob.getNavigation().createPath(blockpos, 0);
 		Brain<?> brain = mob.getBrain();
@@ -187,7 +185,6 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 					8,
 					Vec3.atBottomCenterOf(brain.getMemory(Registration.AIReg.QUEEN_GUARD_PATROL_POS.get()).get()),
 					(float) (Math.PI / 2));
-			Database.LOGGER.warn("New Pos: {}", vec3);
 			if (vec3 != null)
 			{
 				this.path = mob.getNavigation().createPath(vec3.x, vec3.y, vec3.z, 0);
