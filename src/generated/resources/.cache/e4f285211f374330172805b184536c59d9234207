@@ -1,7 +1,8 @@
-// 1.21.4	2025-08-13T21:32:00.618520182	Biomorphosis: Models
+// 1.21.4	2025-08-15T21:40:18.532191731	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
+9b76ab16facbdae10808da6cb18167ba0b14c8ab assets/biomorphosis/blockstates/eggs.json
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 24bb989bcf2f72fe5550b04322ff96bf9b50d1ce assets/biomorphosis/blockstates/fluid_storage.json
 689cd40b4979419eb6b40ddbee165dd9f2a7ab3a assets/biomorphosis/blockstates/fluid_transmitter.json
@@ -42,6 +43,7 @@ aa06b2b7c50b3e46369a9a61f8b73de73c39ba90 assets/biomorphosis/items/catcher.json
 4620e85a30fd99456f42d403c0468db82e932d0f assets/biomorphosis/items/chest.json
 1fb6862792b8865b8ddf7f7694379a3887aad774 assets/biomorphosis/items/creative_tab_icon.json
 aab942a0d0363dfb75291dbb7d25e9ba01bc74dc assets/biomorphosis/items/crusher.json
+784b261004a3103f5669edfe10aaa4f7decbf871 assets/biomorphosis/items/eggs.json
 ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 8cc2526f42ef8874e5121514f57b57b8df448d94 assets/biomorphosis/items/flesh_piece.json
 9cda51b82986dc7023d336bf592b868207250a29 assets/biomorphosis/items/fluid_storage.json
@@ -92,6 +94,7 @@ a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
 6ab2c2cb6b548f5b7b17bd28c78401f0649939dc assets/biomorphosis/models/block/catcher.json
 d1549da761724555e9b150151398f7b0a26adda5 assets/biomorphosis/models/block/chest.json
 e1cabae948c3750372d968bf077fd293dbfc8689 assets/biomorphosis/models/block/crusher.json
+d6eb239ceefb394582bb085004364eaffc1ad978 assets/biomorphosis/models/block/eggs.json
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
 e6ad1f272bd9f538e16e05bb28a4c4c6d801ce2e assets/biomorphosis/models/block/fluid_storage.json
 7dc72f0313d09ac296cf0482af4d9dfb51d71e9e assets/biomorphosis/models/block/fluid_transmitter.json

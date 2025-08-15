@@ -68,6 +68,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.ROOF_DIRT, "Roof Dirt");
         this.addBlock(Registration.BlockReg.TRAMPLED_DIRT, "Trampled Dirt");
         this.addBlock(Registration.BlockReg.HIVE_DECO, "Hive");
+        this.addBlock(Registration.BlockReg.EGGS_DECO, "Eggs");
         this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
@@ -113,7 +114,7 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.V003.titleLangKey(), "Version: 0.0.3");
         this.add(Database.GUI.GuideBook.Pages.V003.textLangKey(), "\u2022 Added 2 new decorative blocks\n\u2022 Fixed wrong model on Norphed Dirt\n\u2022 Adjusted Infestor Size");
         this.add(Database.GUI.GuideBook.Pages.V004.titleLangKey(), "Version: 0.0.4");
-        this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard\n\u2022 Added Worker");
+        this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard\n\u2022 Added Worker\n\u2022 Added Eggs Block\n\u2022 Start Working under Swarm Village");
 
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");

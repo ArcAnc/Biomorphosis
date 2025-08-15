@@ -103,6 +103,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
@@ -112,6 +113,7 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.SoundActions;
@@ -795,6 +797,94 @@ public final class Registration
                         accept(properties),
                 ItemReg.baseProps);
 
+        public static final DeferredBlock<BioBaseEntityBlock<EggsDeco>> EGGS_DECO = register("eggs",
+                properties -> new BioBaseEntityBlock<>(EggsDeco :: new, properties)
+                {
+                    private static final VoxelShape SHAPE = Shapes.or(
+                            Shapes.box(0.375, 0.125, 0.75, 0.5625, 0.3125, 0.9375),
+                            Shapes.box(0.0625, 0.125, 0.625, 0.25, 0.3125, 0.8125),
+                            Shapes.box(0, 0, 0, 1, 0.0625, 1),
+                            Shapes.box(0.0625, 0.0625, 0.0625, 0.9375, 0.125, 0.9375),
+                            Shapes.box(0.25, 0.125, 0.5625, 0.4375, 0.3125, 0.75),
+                            Shapes.box(0.25, 0.125, 0.3125, 0.4375, 0.3125, 0.5),
+                            Shapes.box(0.0625, 0.125, 0.375, 0.25, 0.3125, 0.5625),
+                            Shapes.box(0.4375, 0.125, 0.5625, 0.625, 0.3125, 0.75),
+                            Shapes.box(0.625, 0.125, 0.375, 0.8125, 0.3125, 0.5625),
+                            Shapes.box(0.4375, 0.125, 0.25, 0.625, 0.3125, 0.4375),
+                            Shapes.box(0.4375, 0.125, 0.0625, 0.625, 0.3125, 0.25),
+                            Shapes.box(0.75, 0.125, 0.5625, 0.9375, 0.3125, 0.75),
+                            Shapes.box(0.625, 0.125, 0.75, 0.8125, 0.3125, 0.9375),
+                            Shapes.box(0.6875, 0.125, 0.1875, 0.875, 0.3125, 0.375),
+                            Shapes.box(0.125, 0.125, 0.125, 0.3125, 0.3125, 0.3125),
+                            Shapes.box(0.625, 0.3125, 0.625, 0.8125, 0.5, 0.8125),
+                            Shapes.box(0.4375, 0.3125, 0.6875, 0.625, 0.5, 0.875),
+                            Shapes.box(0.1875, 0.3125, 0.625, 0.375, 0.5, 0.8125),
+                            Shapes.box(0.125, 0.3125, 0.375, 0.3125, 0.5, 0.5625),
+                            Shapes.box(0.3125, 0.3125, 0.1875, 0.5, 0.5, 0.375),
+                            Shapes.box(0.625, 0.3125, 0.1875, 0.8125, 0.5, 0.375),
+                            Shapes.box(0.3125, 0.3125, 0.4375, 0.5, 0.5, 0.625),
+                            Shapes.box(0.5625, 0.3125, 0.4375, 0.75, 0.5, 0.625),
+                            Shapes.box(0.5, 0.5, 0.625, 0.6875, 0.6875, 0.8125),
+                            Shapes.box(0.25, 0.5, 0.5, 0.4375, 0.6875, 0.6875),
+                            Shapes.box(0.25, 0.5, 0.25, 0.4375, 0.6875, 0.4375),
+                            Shapes.box(0.4375, 0.5, 0.4375, 0.625, 0.6875, 0.625),
+                            Shapes.box(0.5625, 0.5, 0.25, 0.75, 0.6875, 0.4375),
+                            Shapes.box(0.5, 0.6875, 0.3125, 0.6875, 0.875, 0.5),
+                            Shapes.box(0.3125, 0.6875, 0.375, 0.5, 0.875, 0.5625),
+                            Shapes.box(0.4375, 0.6875, 0.5625, 0.625, 0.875, 0.75),
+                            Shapes.box(0.125, 0.1875, 0.6875, 0.1875, 0.25, 0.75),
+                            Shapes.box(0.125, 0.1875, 0.4375, 0.1875, 0.25, 0.5),
+                            Shapes.box(0.1875, 0.1875, 0.1875, 0.25, 0.25, 0.25),
+                            Shapes.box(0.5, 0.1875, 0.125, 0.5625, 0.25, 0.1875),
+                            Shapes.box(0.75, 0.1875, 0.25, 0.8125, 0.25, 0.3125),
+                            Shapes.box(0.6875, 0.1875, 0.4375, 0.75, 0.25, 0.5),
+                            Shapes.box(0.8125, 0.1875, 0.625, 0.875, 0.25, 0.6875),
+                            Shapes.box(0.6875, 0.1875, 0.8125, 0.75, 0.25, 0.875),
+                            Shapes.box(0.4375, 0.1875, 0.8125, 0.5, 0.25, 0.875),
+                            Shapes.box(0.25, 0.375, 0.6875, 0.3125, 0.4375, 0.75),
+                            Shapes.box(0.5, 0.375, 0.75, 0.5625, 0.4375, 0.8125),
+                            Shapes.box(0.6875, 0.375, 0.6875, 0.75, 0.4375, 0.75),
+                            Shapes.box(0.625, 0.375, 0.5, 0.6875, 0.4375, 0.5625),
+                            Shapes.box(0.6875, 0.375, 0.25, 0.75, 0.4375, 0.3125),
+                            Shapes.box(0.375, 0.375, 0.25, 0.4375, 0.4375, 0.3125),
+                            Shapes.box(0.1875, 0.375, 0.4375, 0.25, 0.4375, 0.5),
+                            Shapes.box(0.3125, 0.5625, 0.5625, 0.375, 0.625, 0.625),
+                            Shapes.box(0.3125, 0.5625, 0.3125, 0.375, 0.625, 0.375),
+                            Shapes.box(0.625, 0.5625, 0.3125, 0.6875, 0.625, 0.375),
+                            Shapes.box(0.5, 0.5625, 0.5, 0.5625, 0.625, 0.5625),
+                            Shapes.box(0.5625, 0.5625, 0.6875, 0.625, 0.625, 0.75),
+                            Shapes.box(0.5, 0.75, 0.625, 0.5625, 0.8125, 0.6875),
+                            Shapes.box(0.375, 0.75, 0.4375, 0.4375, 0.8125, 0.5),
+                            Shapes.box(0.5625, 0.75, 0.375, 0.625, 0.8125, 0.4375));
+
+
+
+                    @Override
+                    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+                    {
+                        return RenderShape.INVISIBLE;
+                    }
+
+                    @Override
+                    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
+                                                           @NotNull BlockGetter level,
+                                                           @NotNull BlockPos pos,
+                                                           @NotNull CollisionContext context)
+                    {
+                        return SHAPE;
+                    }
+
+                    @Override
+                    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+                    {
+                        builder.add(BlockStateProperties.WATERLOGGED);
+                    }
+                },
+                properties -> baseProps.
+                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        accept(properties),
+                ItemReg.baseProps);
+
         private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             return register(name, block, additionalProps, itemAddProps, true);
@@ -919,6 +1009,12 @@ public final class Registration
                 makeType(HiveDeco :: new,
                         HiveDecoRenderer :: new,
                         BlockReg.HIVE_DECO));
+
+        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EggsDeco>> BE_EGGS_DECO = BLOCK_ENTITIES.register(
+                "eggs_deco",
+                makeType(EggsDeco :: new,
+                        EggsDecoRenderer :: new,
+                        BlockReg.EGGS_DECO));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioChest>> BE_CHEST = BLOCK_ENTITIES.register(
                 "chest",
