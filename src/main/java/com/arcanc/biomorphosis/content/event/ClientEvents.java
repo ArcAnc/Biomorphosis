@@ -195,7 +195,7 @@ public final class ClientEvents
 
         BioRegistryData.register(new BioBookProvider());
         BioRegistryData.register(new BioMultiblockProvider());
-        //BioRegistryData.register(new BioWorldGenProvider());
+        BioRegistryData.register(new BioWorldGenProvider());
 
         gen.addProvider(true, new DatapackBuiltinEntriesProvider(
                 packOutput,

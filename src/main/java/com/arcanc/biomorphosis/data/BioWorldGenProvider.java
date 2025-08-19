@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.data;
 
 
-import com.arcanc.biomorphosis.content.worldgen.biome.BioBiomes;
+import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillage;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -26,6 +26,9 @@ public class BioWorldGenProvider extends BioRegistryData
 	@Override
 	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
 	{
-		registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
+		//registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
+		registrySetBuilder.add (Registries.TEMPLATE_POOL, SwarmVillage :: templatePools);
+		registrySetBuilder.add (Registries.STRUCTURE, SwarmVillage :: structures);
+		registrySetBuilder.add (Registries.STRUCTURE_SET, SwarmVillage :: structureSets);
 	}
 }
