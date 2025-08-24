@@ -37,18 +37,19 @@ import org.jetbrains.annotations.NotNull;
 public class SwarmVillage
 {
 	public static final KeysData VILLAGE = new KeysData("village");
-
+	
 	public static void structures(@NotNull BootstrapContext<Structure> context)
 	{
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 
-		context.register(VILLAGE.structure(), new JigsawStructure(
+		context.register(VILLAGE.structure(), new SwarmVillageStructure(
 				new Structure.StructureSettings.Builder(biomes.getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS)).
 					terrainAdapation(TerrainAdjustment.BEARD_THIN).build(),
 					pools.getOrThrow(VILLAGE.pools().start()),
-				6, ConstantHeight.of(VerticalAnchor.absolute(0)),
-				false,
+				6,
+				ConstantHeight.of(VerticalAnchor.absolute(-1)),
+				true,
 				Heightmap.Types.WORLD_SURFACE_WG));
 	}
 
@@ -77,20 +78,20 @@ public class SwarmVillage
 				new StructureTemplatePool(
 						empty,
 						ImmutableList.of(
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/left")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/right")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/t")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/x")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fl")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fr")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/straight")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_0")), 5),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_1")), 6),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_2")), 7),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_3")), 8),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_4")), 9),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_5")), 8),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_6")), 10))));
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/left")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/right")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/t")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/x")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fl")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fr")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/straight")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_0")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_1")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_2")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_3")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_4")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_5")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_6")), 1))));
 		
 		/*context.register(VILLAGE.pools().houses(),
 				new StructureTemplatePool(
@@ -105,7 +106,7 @@ public class SwarmVillage
 								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/6")), 7)),
 									StructureTemplatePool.Projection.RIGID));
 	*/}
-
+	
 	public record KeysData(ResourceKey<Structure> structure, ResourceKey<StructureSet> structureSet, SwarmVillagePools pools)
 	{
 		public KeysData(String name)

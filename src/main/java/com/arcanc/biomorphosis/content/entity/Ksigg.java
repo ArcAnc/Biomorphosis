@@ -23,7 +23,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
@@ -57,10 +59,8 @@ public class Ksigg extends Animal implements GeoEntity
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(BuiltInRegistries.ENTITY_TYPE.stream().
-                filter(entityType -> !entityType.is(BioEntityTags.SWARM)).
-                map(EntityType :: getBaseClass).
-                toArray(Class[] :: new)));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+        
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25, stack ->  stack.is(BioItemTags.KSIGG_FOOD), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25));

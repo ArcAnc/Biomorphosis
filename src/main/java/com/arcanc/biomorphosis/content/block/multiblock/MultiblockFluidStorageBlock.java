@@ -29,8 +29,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<MultiblockFluidStorage>
 {
-    private static final VoxelShape SHAPE = box(0.001f, 0.001f, 0.001f, 15.999f, 15.999f, 15.999f);
-
     public MultiblockFluidStorageBlock(Properties props)
     {
         super(Registration.BETypeReg.BE_MULTIBLOCK_FLUID_STORAGE, props);
@@ -40,15 +38,6 @@ public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<Mult
     protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
     {
         return RenderShape.INVISIBLE;
-    }
-
-    @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
-    {
-        return super.getShape(state, level, pos, context);
     }
 
     @Override

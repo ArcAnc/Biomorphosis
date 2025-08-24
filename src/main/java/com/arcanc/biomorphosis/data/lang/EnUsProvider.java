@@ -115,6 +115,8 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.V003.textLangKey(), "\u2022 Added 2 new decorative blocks\n\u2022 Fixed wrong model on Norphed Dirt\n\u2022 Adjusted Infestor Size");
         this.add(Database.GUI.GuideBook.Pages.V004.titleLangKey(), "Version: 0.0.4");
         this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard\n\u2022 Added Worker\n\u2022 Added Eggs Block\n\u2022 Start Working under Swarm Village");
+        this.add(Database.GUI.GuideBook.Pages.V005.titleLangKey(), "Version: 0.0.5");
+        this.add(Database.GUI.GuideBook.Pages.V005.textLangKey(), "\u2022 First version of village generation\n\u2022 A bit reworked multiblocks, now it's can have voxel shape of original block, but I still want more. Fully custom voxel shape will be top. And get rid from blockState to itemStack");
 
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");

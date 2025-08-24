@@ -20,10 +20,15 @@ import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
@@ -41,31 +46,55 @@ public class BioMultiblockProvider extends BioRegistryData
     @Override
     protected void addContent()
     {
-        /*addMultiblock(staticBuilder(Database.rl("static_test")).
-                addPart(new BlockPos(0, 0, 1), Blocks.BIRCH_STAIRS.defaultBlockState()).
-                addPart(new BlockPos(0, 1, 0), Blocks.DIAMOND_BLOCK.defaultBlockState()).
-                addPart(new BlockPos(1, 0, 0), Blocks.BIRCH_STAIRS.defaultBlockState().
-                        setValue(StairBlock.FACING, Direction.SOUTH)).
-                end());
-        */
-        Map<BlockPos, BlockState> chamberMap = new HashMap<>();
-        for (int x = -1; x < 2; x++)
-            for (int z = -1 ; z < 2; z++)
-                for (int y = 0; y < 5; y++)
-                {
-                    //if (x == 0 && y == 0 && z == 0)
-                        //continue;
-                    chamberMap.putIfAbsent(new BlockPos(x, y, z), Registration.BlockReg.MULTIBLOCK_CHAMBER.get().defaultBlockState().setValue(MultiblockChamberBlock.STATE, MultiblockState.FORMED));
-                }
-
         addMultiblock(staticBuilder(Database.rl("chamber")).
-                addParts(chamberMap).
+                addPart(new BlockPos(0, 0, 0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(1, 0, -1), Registration.BlockReg.NORPHED_DIRT_STAIR_0.get().defaultBlockState().
+                        setValue(StairBlock.FACING, Direction.NORTH).
+                        setValue(StairBlock.HALF, Half.TOP).
+                        setValue(StairBlock.SHAPE, StairsShape.OUTER_LEFT)).
+                addPart(new BlockPos(-1, 0, -1), Registration.BlockReg.NORPHED_DIRT_STAIR_0.get().defaultBlockState().
+                        setValue(StairBlock.FACING, Direction.NORTH).
+                        setValue(StairBlock.HALF, Half.TOP).
+                        setValue(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)).
+                addPart(new BlockPos(1, 0, 1), Registration.BlockReg.NORPHED_DIRT_STAIR_0.get().defaultBlockState().
+                        setValue(StairBlock.FACING, Direction.SOUTH).
+                        setValue(StairBlock.HALF, Half.TOP).
+                        setValue(StairBlock.SHAPE, StairsShape.OUTER_RIGHT)).
+                addPart(new BlockPos(-1, 0, 1), Registration.BlockReg.NORPHED_DIRT_STAIR_0.get().defaultBlockState().
+                        setValue(StairBlock.FACING, Direction.SOUTH).
+                        setValue(StairBlock.HALF, Half.TOP).
+                        setValue(StairBlock.SHAPE, StairsShape.OUTER_LEFT)).
+                addPart(new BlockPos(1, 1, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 1, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(1, 1, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 1, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(0, 1, 0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                
+                addPart(new BlockPos(1, 2, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 2, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(1, 2, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 2, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(0, 2, 0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                
+                addPart(new BlockPos(1, 3, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 3, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(1, 3, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 3, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(0, 3, 0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                
+                addPart(new BlockPos(1, 4, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 4, -1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(1, 4, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(-1, 4, 1), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                addPart(new BlockPos(0, 4, 0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+                
+                setPlacedBlock(Registration.BlockReg.MULTIBLOCK_CHAMBER.get().defaultBlockState()).
                 end());
 
         addMultiblock(dynamicBuilder(Database.rl("fluid_storage")).
                 setBehavior(DynamicMultiblockDefinition.ScanBehavior.BFS).
                 setMaxSize(2, 3, 2).
-                setAllowedBlockType(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get()).
+                setAllowedBlockType(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get().defaultBlockState()).
                 end());
     }
 

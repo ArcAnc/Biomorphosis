@@ -1,6 +1,11 @@
 {
   "type": "dynamic",
-  "allowed_block_type": "biomorphosis:multiblock_fluid_storage",
+  "allowed_block_type": {
+    "Name": "biomorphosis:multiblock_fluid_storage",
+    "Properties": {
+      "multiblock_state": "disassembled"
+    }
+  },
   "behavior": "bfs",
   "id": "biomorphosis:fluid_storage",
   "max_size": [

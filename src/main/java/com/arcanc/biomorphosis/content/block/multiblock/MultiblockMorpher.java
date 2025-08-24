@@ -59,7 +59,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 
 	private int morphProgress = 0;
 	private final AABB checkZone;
-	private List<Pair<BlockPos, BlockState>> morphSequence;
+	private MorphSequence morphSequence;
 	private float morphDelay;
 	private float accumulatedTicks;
 
@@ -106,7 +106,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 			disassembleMultiblock();
 			return;
 		}
-		if (this.morphProgress >= this.morphSequence.size())
+		if (this.morphProgress >= this.morphSequence.stateMap().size())
 		{
 			onMorphComplete(level);
 			return;
@@ -131,12 +131,12 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 	{
 		this.setRemoved();
 
-		this.morphSequence.stream().
+		this.morphSequence.stateMap().stream().
 				filter(pair -> !pair.getFirst().equals(BlockPos.ZERO)).
 				forEach(pair ->
 				{
 					BlockPos offsetPos = pair.getFirst().offset(getBlockPos());
-					BlockState placedState = pair.getSecond();
+					BlockState placedState = this.morphSequence.placedBlockState();
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
 					level.setBlockAndUpdate(offsetPos, placedState);
@@ -144,13 +144,13 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 						ifPresent(part -> part.markAsPartOfMultiblock(getBlockPos()));
 		});
 
-		this.morphSequence.stream().
+		this.morphSequence.stateMap().stream().
 				filter(pair -> pair.getFirst().equals(BlockPos.ZERO)).
 				findFirst().
 				ifPresent(pair ->
 				{
 					BlockPos toPlacePos = getBlockPos();
-					BlockState placedState = pair.getSecond();
+					BlockState placedState = this.morphSequence.placedBlockState();
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
 					level.setBlockAndUpdate(toPlacePos, placedState);
@@ -170,14 +170,14 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 
 	private void placeNextMorphBlock(Level level)
 	{
-		Pair<BlockPos, BlockState> pair = this.morphSequence.get(this.morphProgress);
+		Pair<BlockPos, BlockState> pair = this.morphSequence.stateMap().get(this.morphProgress);
 		if(pair.getFirst().equals(BlockPos.ZERO))
 		{
 			this.morphProgress++;
 			return;
 		}
 		BlockPos offsetPos = getBlockPos().offset(pair.getFirst());
-		BlockState placedState = pair.getSecond();
+		BlockState placedState = this.morphSequence.placedBlockState();
 		if (placedState.hasProperty(MultiblockPartBlock.STATE))
 			placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.MORPHING);
 		level.setBlockAndUpdate(offsetPos, placedState);
@@ -213,7 +213,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 
 		this.morphProgress = 0;
 		this.preparationTimer = 0;
-		this.morphSequence = map.getStates().
+		this.morphSequence = new MorphSequence(map.getStates().
 				entrySet().
 				stream().
 				map(entry ->
@@ -223,10 +223,10 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 					return Pair.of(rotatedPos, entry.getValue().rotate(DirectionHelper.rotationFromNorth(dir)));
 				}).
 				sorted((o1, o2) -> o1.getFirst().distManhattan(o2.getFirst())).
-				collect(Collectors.toList());
-		if (this.morphSequence.isEmpty())
+				collect(Collectors.toList()), map.getPlacedBlock());
+		if (this.morphSequence.stateMap().isEmpty())
 			throw new RuntimeException("Empty morph sequence, but not empty definition");
-		this.morphDelay = (float)MORPH_TIME_TICKS / this.morphSequence.size();
+		this.morphDelay = (float)MORPH_TIME_TICKS / this.morphSequence.stateMap().size();
 		this.accumulatedTicks = 0f;
 		consumeRequiredResources(entities, map.getStackedStructure());
 		startMorphing(getBlockPos());
@@ -370,7 +370,11 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 			morphSequence.add(new Pair<>(pos, state));
 		}
 
-		this.morphSequence = morphSequence;
+		BlockState placedBlock = BlockState.CODEC.parse(NbtOps.INSTANCE, tag.get("placed_state")).
+				resultOrPartial(s -> Database.LOGGER.warn("Can't read BlockState: {}", s)).
+				orElseThrow();
+		
+		this.morphSequence = new MorphSequence(morphSequence, placedBlock);
 
 		this.preparationTimer = tag.getFloat("preparation");
 	}
@@ -386,7 +390,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		tag.putFloat("morph_delay", this.morphDelay);
 		tag.putFloat("accumulated_ticks", this.accumulatedTicks);
 		ListTag list = new ListTag();
-		this.morphSequence.forEach(pair ->
+		this.morphSequence.stateMap().forEach(pair ->
 		{
 			CompoundTag pairTag = new CompoundTag();
 			TagHelper.writeBlockPos(pair.getFirst(), pairTag,"pos");
@@ -395,6 +399,9 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 			list.add(pairTag);
 		});
 		tag.put("morph_sequence", list);
+		
+		BlockState.CODEC.encodeStart(NbtOps.INSTANCE, this.morphSequence.placedBlockState()).resultOrPartial(s -> Database.LOGGER.warn("Can't write BlockState into nbt: {}", s)).
+				ifPresent(bsTag -> tag.put("placed_state", bsTag));
 
 		tag.putFloat("preparation", this.preparationTimer);
 	}
@@ -430,4 +437,6 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 	{
 		return this.cache;
 	}
+	
+	private record MorphSequence(List<Pair<BlockPos, BlockState>> stateMap, BlockState placedBlockState){}
 }

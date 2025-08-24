@@ -57,7 +57,12 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
     {
         return this.roleBehavior != null;
     }
-
+    
+    public Optional<IMultiblockRoleBehavior> getRoleBehavior()
+    {
+        return Optional.ofNullable(roleBehavior);
+    }
+    
     public boolean isMaster()
     {
         return isMultiblockPart() && this.roleBehavior.isMaster();

@@ -157,6 +157,7 @@ public class Database
                 public static final PageInfo V002 = new PageInfo(rl("v002"));
                 public static final PageInfo V003 = new PageInfo(rl("v003"));
                 public static final PageInfo V004 = new PageInfo(rl("v004"));
+                public static final PageInfo V005 = new PageInfo(rl("v005"));
                 public static final PageInfo TEST_BASIC_1 = new PageInfo(rl("test_1"));
                 public static final PageInfo TEST_BASIC_2 = new PageInfo(rl("test_next_lvl"));
                 public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));

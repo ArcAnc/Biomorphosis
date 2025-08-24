@@ -2,319 +2,112 @@
   "type": "static",
   "id": "biomorphosis:chamber",
   "structure": {
-    "-1, 0, -1": {
+    "placedBlock": {
       "Name": "biomorphosis:multiblock_chamber",
       "Properties": {
         "facing": "north",
-        "multiblock_state": "formed"
+        "multiblock_state": "disassembled"
       }
     },
-    "-1, 0, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 0, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 1, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 1, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 1, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 2, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 2, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 2, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 3, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 3, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 3, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 4, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 4, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "-1, 4, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 0, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 0, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 0, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 1, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 1, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 1, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 2, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 2, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 2, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 3, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 3, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 3, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 4, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 4, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "0, 4, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 0, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 0, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 0, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 1, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 1, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 1, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 2, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 2, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 2, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 3, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 3, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 3, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 4, -1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 4, 0": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
-      }
-    },
-    "1, 4, 1": {
-      "Name": "biomorphosis:multiblock_chamber",
-      "Properties": {
-        "facing": "north",
-        "multiblock_state": "formed"
+    "states": {
+      "-1, 0, -1": {
+        "Name": "biomorphosis:norphed_dirt_stair_0",
+        "Properties": {
+          "facing": "north",
+          "half": "top",
+          "shape": "outer_right",
+          "waterlogged": "false"
+        }
+      },
+      "-1, 0, 1": {
+        "Name": "biomorphosis:norphed_dirt_stair_0",
+        "Properties": {
+          "facing": "south",
+          "half": "top",
+          "shape": "outer_left",
+          "waterlogged": "false"
+        }
+      },
+      "-1, 1, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 1, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 2, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 2, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 3, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 3, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 4, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "-1, 4, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 0, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 1, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 2, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 3, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 4, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 0, -1": {
+        "Name": "biomorphosis:norphed_dirt_stair_0",
+        "Properties": {
+          "facing": "north",
+          "half": "top",
+          "shape": "outer_left",
+          "waterlogged": "false"
+        }
+      },
+      "1, 0, 1": {
+        "Name": "biomorphosis:norphed_dirt_stair_0",
+        "Properties": {
+          "facing": "south",
+          "half": "top",
+          "shape": "outer_right",
+          "waterlogged": "false"
+        }
+      },
+      "1, 1, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 1, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 2, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 2, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 3, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 3, 1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 4, -1": {
+        "Name": "biomorphosis:flesh"
+      },
+      "1, 4, 1": {
+        "Name": "biomorphosis:flesh"
       }
     }
   }

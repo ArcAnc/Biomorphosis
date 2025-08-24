@@ -12,7 +12,7 @@ package com.arcanc.biomorphosis.content.block.multiblock.definition;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.level.BlockGetter;
 
 public interface IMultiblockDefinition
 {
@@ -22,7 +22,7 @@ public interface IMultiblockDefinition
 
     MultiblockType type();
 
-    BlockStateMap getStructure(Level level, BlockPos origin);
+    BlockStateMap getStructure(BlockGetter level, BlockPos origin);
 
     BlockPos size();
 }

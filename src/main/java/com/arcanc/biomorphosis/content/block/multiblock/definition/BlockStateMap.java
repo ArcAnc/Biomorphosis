@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block.multiblock.definition;
 import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
@@ -24,15 +25,24 @@ import java.util.stream.Collectors;
 public class BlockStateMap
 {
 
-    public static final Codec<BlockStateMap> CODEC = Codec.unboundedMap(BioCodecs.BLOCK_POS_JSON_CODEC, BlockState.CODEC).
-            xmap(BlockStateMap::new, BlockStateMap::getStates);
+    public static final Codec<BlockStateMap> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.unboundedMap(BioCodecs.BLOCK_POS_JSON_CODEC, BlockState.CODEC).
+                fieldOf("states").
+                forGetter(BlockStateMap :: getStates),
+            BlockState.CODEC.
+                fieldOf("placedBlock").
+                forGetter(BlockStateMap :: getPlacedBlock)).
+            apply(instance, BlockStateMap :: new));
     private final Map<BlockPos, BlockState> stateMap;
+    private final BlockState placedBlock;
     private final BlockPos size;
     private final List<MultiblockStructurePart> structure;
-    public BlockStateMap(Map<BlockPos, BlockState> map)
+    
+    public BlockStateMap(Map<BlockPos, BlockState> map, BlockState placedBlock)
     {
         Preconditions.checkNotNull(map);
         this.stateMap = map;
+        this.placedBlock = placedBlock;
         this.size = calculateSize();
         this.structure = calculateStructure();
     }
@@ -41,7 +51,12 @@ public class BlockStateMap
     {
         return this.stateMap;
     }
-
+    
+    public BlockState getPlacedBlock()
+    {
+        return placedBlock;
+    }
+    
     public List<MultiblockStructurePart> getStructure()
     {
         return this.structure;

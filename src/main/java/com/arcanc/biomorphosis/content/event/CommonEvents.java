@@ -41,8 +41,21 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
         NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
         ChestMenu.registerEvents();
+        /*FIXME: придумать адекватный метод добавления биома, без терраблендера, ибо лютая какая-то хуйня получается
+        *  Ну или придумать способ, адекватной настройки. Как вариант можно выдрать из <a href="https://github.com/Glitchfiend/BiomesOPlenty/blob/1.21.8/common/src/main/java/biomesoplenty/init/ModBiomes.java">биомес о пленти</a>*/
+        //modEventBus.addListener(CommonEvents :: commonSetupEvent);
    }
-
+    
+    /*private static void commonSetupEvent(@NotNull FMLCommonSetupEvent event)
+    {
+        event.enqueueWork(() ->
+        {
+            Regions.register(new WastesRegion(Database.rl("wastes"), 6));
+            
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Database.MOD_ID, SurfaceRuleData.makeRules());
+        });
+    }*/
+    
     @SuppressWarnings("unchecked")
     private static void registerEntityAttributes(final @NotNull EntityAttributeCreationEvent event)
     {

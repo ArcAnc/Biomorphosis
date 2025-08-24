@@ -13,6 +13,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 
 public class StaticMultiblockDefinition implements IMultiblockDefinition
@@ -43,7 +44,7 @@ public class StaticMultiblockDefinition implements IMultiblockDefinition
     }
 
     @Override
-    public BlockStateMap getStructure(Level level, BlockPos origin)
+    public BlockStateMap getStructure(BlockGetter level, BlockPos origin)
     {
         return getStructure();
     }

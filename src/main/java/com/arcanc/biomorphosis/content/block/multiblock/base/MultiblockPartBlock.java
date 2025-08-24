@@ -10,10 +10,16 @@
 package com.arcanc.biomorphosis.content.block.multiblock.base;
 
 import com.arcanc.biomorphosis.content.block.BioNorphDependentBlock;
+import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRoleBehavior;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.DirectionHelper;
+import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -21,8 +27,12 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends BioNorphDependentBlock<T>
@@ -31,9 +41,9 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockHelper.BlockProperties.HORIZONTAL_FACING;
     private final MultiblockType type;
 
-    public MultiblockPartBlock(MultiblockType type, Supplier<BlockEntityType<T>> tileType, Properties props)
+    public MultiblockPartBlock(MultiblockType type, Supplier<BlockEntityType<T>> tileType, @NotNull Properties props)
     {
-        super(tileType, props);
+        super(tileType, props.dynamicShape());
         this.type = type;
     }
 
@@ -87,7 +97,41 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
     {
         return BlockHelper.nextHorizontalDirection(state);
     }
-
+    
+    @Override
+    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
+                                           @NotNull BlockGetter level,
+                                           @NotNull BlockPos pos,
+                                           @NotNull CollisionContext context)
+    {
+        BioMultiblockPart part = BlockHelper.castTileEntity(level, pos, BioMultiblockPart.class).orElse(null);
+        if (part == null)
+            return Shapes.block();
+        
+        IMultiblockRoleBehavior role = part.getRoleBehavior().orElse(null);
+        if (role == null)
+            return Shapes.block();
+        
+        BlockPos masterPos = role.getMasterPos().orElse(null);
+        if (masterPos == null)
+            return Shapes.block();
+        
+        BlockPos localPos = role.getLocalPos().orElse(null);
+        if (localPos == null)
+            return Shapes.block();
+        
+        BioMultiblockPart master = BlockHelper.castTileEntity(level, masterPos, BioMultiblockPart.class).orElse(null);
+        if (master == null || master.definition == null)
+            return Shapes.block();
+        
+        BlockState stateAtLocal = master.definition
+                .getStructure(level, masterPos)
+                .getStates()
+                .get(localPos);
+        
+        return stateAtLocal != null ? stateAtLocal.getShape(level, localPos) : Shapes.block();
+    }
+    
     @Override
     protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
     {

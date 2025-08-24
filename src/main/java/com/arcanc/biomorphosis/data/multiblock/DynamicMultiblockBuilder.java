@@ -15,13 +15,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class DynamicMultiblockBuilder
 {
     private final ResourceLocation location;
     private DynamicMultiblockDefinition.ScanBehavior behavior;
     private BlockPos maxSize;
-    private Block allowedBlockType;
+    private BlockState allowedBlockType;
 
     public DynamicMultiblockBuilder(ResourceLocation location)
     {
@@ -48,7 +49,7 @@ public class DynamicMultiblockBuilder
         return setMaxSize(new BlockPos(x, y, z));
     }
 
-    public DynamicMultiblockBuilder setAllowedBlockType(Block block)
+    public DynamicMultiblockBuilder setAllowedBlockType(BlockState block)
     {
         Preconditions.checkNotNull(block);
         this.allowedBlockType = block;
@@ -57,6 +58,6 @@ public class DynamicMultiblockBuilder
 
     public DynamicMultiblockDefinition end()
     {
-        return new DynamicMultiblockDefinition(this.location, this.behavior, this.maxSize, BuiltInRegistries.BLOCK.getKey(this.allowedBlockType));
+        return new DynamicMultiblockDefinition(this.location, this.behavior, this.maxSize, this.allowedBlockType);
     }
 }

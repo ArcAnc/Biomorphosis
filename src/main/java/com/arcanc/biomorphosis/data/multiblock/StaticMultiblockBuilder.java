@@ -23,6 +23,7 @@ public class StaticMultiblockBuilder
 {
     private final ResourceLocation location;
     private final Map<BlockPos, BlockState> stateMap = new HashMap<>();
+    private BlockState placedBlock;
 
     public StaticMultiblockBuilder(ResourceLocation location)
     {
@@ -46,9 +47,16 @@ public class StaticMultiblockBuilder
         stateMap.forEach(this :: addPart);
         return this;
     }
+    
+    public StaticMultiblockBuilder setPlacedBlock(BlockState state)
+    {
+        Preconditions.checkNotNull(state);
+        this.placedBlock = state;
+        return this;
+    }
 
     public StaticMultiblockDefinition end()
     {
-        return new StaticMultiblockDefinition(this.location, new BlockStateMap(this.stateMap));
+        return new StaticMultiblockDefinition(this.location, new BlockStateMap(this.stateMap, this.placedBlock));
     }
 }

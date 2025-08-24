@@ -176,6 +176,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             geckolib_version       : geckolib_version,
             jei_version            : jei_version,
             jade_version           : jade_version
+//            terrablender_version   : terrablender_version
     ]
     inputs.properties replaceProperties
     expand replaceProperties

@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.mojang.datafixers.util.Pair;
@@ -67,7 +68,11 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
             return true;
         if (!isMaster())
             return true;
-        List<Pair<BlockPos, BlockState>> structure = this.definition.getStructure(getLevel(), getBlockPos()).getStates().
+        BlockStateMap map = this.definition.getStructure(getLevel(), getBlockPos());
+        
+        BlockState placedState = map.getPlacedBlock();
+        
+        List<Pair<BlockPos, BlockState>> structure = map.getStates().
                 entrySet().
                 stream().
                 filter(entry -> !entry.getKey().equals(BlockPos.ZERO)).
@@ -88,7 +93,8 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
             if (!this.level.isLoaded(realPos))
                 return false;
             BlockState toCheck = this.level.getBlockState(realPos);
-            if (!BlockHelper.statesEquivalent(pair.getSecond(), toCheck))
+            if (!toCheck.is(placedState.getBlock()))
+            //if (!BlockHelper.statesEquivalent(placedState, toCheck))
                 return false;
         }
         return true;

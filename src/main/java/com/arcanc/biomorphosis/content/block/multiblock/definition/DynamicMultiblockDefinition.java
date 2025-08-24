@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -34,15 +35,15 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             ResourceLocation.CODEC.fieldOf("id").forGetter(DynamicMultiblockDefinition :: getId),
             ScanBehavior.CODEC.fieldOf("behavior").forGetter(DynamicMultiblockDefinition :: getBehavior),
             BlockPos.CODEC.fieldOf("max_size").forGetter(DynamicMultiblockDefinition :: size),
-            ResourceLocation.CODEC.fieldOf("allowed_block_type").forGetter(DynamicMultiblockDefinition :: getAllowedBlockType)).
+            BlockState.CODEC.fieldOf("allowed_block_type").forGetter(DynamicMultiblockDefinition :: getAllowedBlockType)).
             apply(instance, DynamicMultiblockDefinition::new));
 
     private final ResourceLocation id;
     private final ScanBehavior behavior;
     private final BlockPos maxSize;
-    private final ResourceLocation allowedBlockType;
+    private final BlockState allowedBlockType;
 
-    public DynamicMultiblockDefinition(ResourceLocation id, ScanBehavior behavior, BlockPos maxSize, ResourceLocation allowedBlockType)
+    public DynamicMultiblockDefinition(ResourceLocation id, ScanBehavior behavior, BlockPos maxSize, BlockState allowedBlockType)
     {
         this.id = id;
         this.behavior = behavior;
@@ -61,13 +62,13 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
         return this.behavior;
     }
 
-    public ResourceLocation getAllowedBlockType()
+    public BlockState getAllowedBlockType()
     {
         return this.allowedBlockType;
     }
 
     @Override
-    public BlockStateMap getStructure(Level level, BlockPos origin)
+    public BlockStateMap getStructure(BlockGetter level, BlockPos origin)
     {
         return this.behavior.getStructure(level, origin, this);
     }
@@ -100,7 +101,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             this.executor = executor;
         }
 
-        private static @NotNull Map<BlockPos, BlockState> dfs(Level level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static @NotNull Map<BlockPos, BlockState> dfs(BlockGetter level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             if (visited.containsKey(startPos))
                 return visited;
@@ -117,7 +118,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             return visited;
         }
 
-        private static @NotNull Map<BlockPos, BlockState> bfs(Level level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static @NotNull Map<BlockPos, BlockState> bfs(BlockGetter level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             Queue<BlockPos> queue = new ArrayDeque<>();
             queue.add(startPos);
@@ -146,10 +147,10 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             return visited;
         }
 
-        private static boolean isValidBlock(BlockPos pos, @NotNull Level level, ResourceLocation allowedBlockType)
+        private static boolean isValidBlock(BlockPos pos, @NotNull BlockGetter level, @NotNull BlockState allowedBlockType)
         {
             BlockState state = level.getBlockState(pos);
-            Block block = BuiltInRegistries.BLOCK.getValue(allowedBlockType);
+            Block block = allowedBlockType.getBlock();
             return state.is(block);
         }
 
@@ -160,14 +161,15 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
                     && Math.abs(pos.getZ() - origin.getZ()) <= maxSize.getZ();
         }
 
-        public @NotNull BlockStateMap getStructure(Level level, BlockPos startPos, DynamicMultiblockDefinition definition)
+        public @NotNull BlockStateMap getStructure(BlockGetter level, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             Map<BlockPos, BlockState> globalMap = this.executor.findStructure(level, new HashMap<>(), startPos, definition);
 
             return new BlockStateMap(globalMap.entrySet().stream().
                     collect(Collectors.toMap(
                             entry -> entry.getKey().subtract(startPos),
-                            Map.Entry :: getValue)));
+                            Map.Entry :: getValue)),
+                            definition.getAllowedBlockType());
         }
 
         @Override
@@ -180,6 +182,6 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
     @FunctionalInterface
     private interface BehaviorExecutor
     {
-        Map<BlockPos, BlockState> findStructure(Level level, Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition);
+        Map<BlockPos, BlockState> findStructure(BlockGetter level, Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition);
     }
 }

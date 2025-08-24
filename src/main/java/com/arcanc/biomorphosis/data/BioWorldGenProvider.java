@@ -26,6 +26,7 @@ public class BioWorldGenProvider extends BioRegistryData
 	@Override
 	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
 	{
+		//FIXME: придумать адекватный метод впилить биом
 		//registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
 		registrySetBuilder.add (Registries.TEMPLATE_POOL, SwarmVillage :: templatePools);
 		registrySetBuilder.add (Registries.STRUCTURE, SwarmVillage :: structures);

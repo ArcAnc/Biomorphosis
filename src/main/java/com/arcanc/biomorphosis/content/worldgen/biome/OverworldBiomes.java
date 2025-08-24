@@ -40,7 +40,7 @@ public class OverworldBiomes
 		BiomeDefaultFeatures.desertSpawns(builder);
 		BiomeGenerationSettings.Builder settingsBuilder = new BiomeGenerationSettings.Builder(placedFeatureGetter, carverGetter);
 		BiomeDefaultFeatures.addFossilDecoration(settingsBuilder);
-
+		
 		BiomeDefaultFeatures.addDefaultCarversAndLakes(settingsBuilder);
 		BiomeDefaultFeatures.addDefaultCrystalFormations(settingsBuilder);
 		BiomeDefaultFeatures.addDefaultMonsterRoom(settingsBuilder);

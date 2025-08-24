@@ -32,6 +32,7 @@ import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
 import com.arcanc.biomorphosis.content.item.*;
+import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
@@ -107,6 +108,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -226,8 +228,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(5).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 20).
-                                add(Attributes.ATTACK_DAMAGE, 4).
+                                add(Attributes.MAX_HEALTH, 40).
+                                add(Attributes.ATTACK_DAMAGE, 6).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.MOVEMENT_SPEED, 0.2f)).
                         rendererProvider(WorkerRenderer :: new),
@@ -248,8 +250,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 10).
-                                add(Attributes.ATTACK_DAMAGE, 2).
+                                add(Attributes.MAX_HEALTH, 30).
+                                add(Attributes.ATTACK_DAMAGE, 8).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.MOVEMENT_SPEED, 0.15f).
                                 add(Attributes.TEMPT_RANGE, 10.0f)).
@@ -269,8 +271,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 2).
-                                add(Attributes.ATTACK_DAMAGE, 1).
+                                add(Attributes.MAX_HEALTH, 6).
+                                add(Attributes.ATTACK_DAMAGE, 2).
                                 add(Attributes.MOVEMENT_SPEED, 0.1f).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.ARMOR, 20).
@@ -291,8 +293,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 20).
-                                add(Attributes.ATTACK_DAMAGE, 4).
+                                add(Attributes.MAX_HEALTH, 40).
+                                add(Attributes.ATTACK_DAMAGE, 8).
                                 add(Attributes.FLYING_SPEED, 0.4f).
                                 add(Attributes.MOVEMENT_SPEED, 0.4f).
                                 add(Attributes.FOLLOW_RANGE, 16f)).
@@ -312,8 +314,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                        add(Attributes.MAX_HEALTH, 15).
-                        add(Attributes.ATTACK_DAMAGE, 4).
+                        add(Attributes.MAX_HEALTH, 30).
+                        add(Attributes.ATTACK_DAMAGE, 8).
                         add(Attributes.MOVEMENT_SPEED, 0.1f).
                         add(Attributes.FOLLOW_RANGE, 16).
                         add(Attributes.ARMOR, 2)).
@@ -333,8 +335,8 @@ public final class Registration
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                        add(Attributes.MAX_HEALTH, 15).
-                        add(Attributes.ATTACK_DAMAGE, 4).
+                        add(Attributes.MAX_HEALTH, 30).
+                        add(Attributes.ATTACK_DAMAGE, 8).
                         add(Attributes.MOVEMENT_SPEED, 0.1f).
                         add(Attributes.FOLLOW_RANGE, 16).
                         add(Attributes.ARMOR, 2)).
@@ -638,9 +640,7 @@ public final class Registration
 
         public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_0 = register("norphed_dirt_0",
                 BioBaseBlock :: new,
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         public static final DeferredBlock<StairBlock> NORPHED_DIRT_STAIR_0 = register("norphed_dirt_stair_0",
@@ -660,9 +660,7 @@ public final class Registration
 
         public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_1 = register("norphed_dirt_1",
                 BioBaseBlock :: new,
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         public static final DeferredBlock<StairBlock> NORPHED_DIRT_STAIR_1 = register("norphed_dirt_stair_1",
@@ -683,9 +681,7 @@ public final class Registration
         /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
         public static final DeferredBlock<BioBaseBlock> INNER = register("inner",
                 BioBaseBlock :: new,
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         /*FIXME: нужно сменить название для блока. Сейчас это выглядит тупо...*/
@@ -753,9 +749,7 @@ public final class Registration
 
         public static final DeferredBlock<BioBaseBlock> TRAMPLED_DIRT = register("trampled_dirt",
                 BioBaseBlock :: new,
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseEntityBlock<HiveDeco>> HIVE_DECO = register("hive_deco",
@@ -785,9 +779,7 @@ public final class Registration
                         return RenderShape.INVISIBLE;
                     }
                 },
-                properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
-                        accept(properties),
+                baseProps,
                 ItemReg.baseProps);
 
         public static final DeferredBlock<BioChestBlock> CHEST = register("chest",
@@ -1719,6 +1711,19 @@ public final class Registration
             MEMORY_MODULES.register(bus);
         }
     }
+    
+    public static class StructureTypeReg
+    {
+        public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Database.MOD_ID);
+        
+        public static final DeferredHolder<StructureType<?>, StructureType<SwarmVillageStructure>> SWARM_VILLAGE_TYPE = STRUCTURE_TYPES.register("swarm_village",
+                () -> () -> SwarmVillageStructure.CODEC);
+        
+        private static void init (@NotNull final IEventBus bus)
+        {
+            STRUCTURE_TYPES.register(bus);
+        }
+    }
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
@@ -1736,6 +1741,7 @@ public final class Registration
         EntityReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
+        StructureTypeReg.init(bus);
     }
 
     private static <T> void makeRegistry(@NotNull RegistryBuilder<T> registryBuilder, @NotNull ResourceKey<? extends Registry<T>> key)
