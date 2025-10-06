@@ -212,4 +212,10 @@ public class QueenGuard extends Monster implements GeoEntity
     {
         return this.cache;
     }
+    
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer)
+    {
+        return false;
+    }
 }

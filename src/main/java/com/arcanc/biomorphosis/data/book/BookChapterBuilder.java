@@ -42,7 +42,7 @@ public class BookChapterBuilder
     {
         Preconditions.checkNotNull(author);
         author = author.trim();
-        if (author.isEmpty() || author.isBlank())
+        if (author.isBlank())
             author = "";
         this.author = author;
         return this;

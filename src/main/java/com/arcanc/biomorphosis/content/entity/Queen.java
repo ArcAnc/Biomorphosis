@@ -259,4 +259,10 @@ public class Queen extends Monster implements GeoEntity
     {
         UNDER_GROUND, UNBURROWING, ON_GROUND, BURROWING;
     }
+    
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer)
+    {
+        return false;
+    }
 }

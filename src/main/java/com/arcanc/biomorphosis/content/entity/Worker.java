@@ -145,4 +145,10 @@ public class Worker extends Monster implements GeoEntity
 	{
 		return Registration.SoundReg.WORKER.getIdleSound().get();
 	}
+	
+	@Override
+	public boolean removeWhenFarAway(double distanceToClosestPlayer)
+	{
+		return false;
+	}
 }

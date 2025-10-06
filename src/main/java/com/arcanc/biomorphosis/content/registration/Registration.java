@@ -32,6 +32,10 @@ import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
 import com.arcanc.biomorphosis.content.item.*;
+import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
+import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
+import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
+import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
@@ -109,6 +113,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -201,7 +206,7 @@ public final class Registration
                         eyeHeight(2.1f).
                         sized(1.3f, 2.2f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
-                        updateInterval(5).
+                        updateInterval(3).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 150).
                                 add(Attributes.ATTACK_DAMAGE, 20).
@@ -1724,6 +1729,42 @@ public final class Registration
             STRUCTURE_TYPES.register(bus);
         }
     }
+    
+	public static class GenomeReg
+	{
+		public static final ResourceKey<Registry<IGeneEffectType<?>>> EFFECT_TYPE_KEY = ResourceKey.createRegistryKey(Database.rl("genome_effect_type"));
+		public static final ResourceKey<Registry<GeneDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("genome"));
+		
+		public static final DeferredRegister<IGeneEffectType<?>> EFFECT_TYPES = DeferredRegister.create(EFFECT_TYPE_KEY, Database.MOD_ID);
+		public static Registry<IGeneEffectType<?>> EFFECT_TYPE_REGISTRY;
+		
+		public static final DeferredHolder<IGeneEffectType<?>, HealthEffectType> HEALTH = EFFECT_TYPES.register("health", HealthEffectType :: new);
+		
+		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+		{
+			event.dataPackRegistry(DEFINITION_KEY, GeneDefinition.CODEC, GeneDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
+		}
+		
+		public static void init(@NotNull final IEventBus modEventBus)
+		{
+			EFFECT_TYPE_REGISTRY = EFFECT_TYPES.makeRegistry(builder -> makeRegistry(builder, EFFECT_TYPE_KEY));
+			EFFECT_TYPES.register(modEventBus);
+			modEventBus.addListener(GenomeReg :: registerDataPackRegister);
+		}
+	}
+	
+    public static class StructureProcessorTypeReg
+    {
+        public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSOR_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PROCESSOR, Database.MOD_ID);
+        
+        public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SwarmVillageFloorProcessor>> VILLAGE_FLOOR_REPLACE = STRUCTURE_PROCESSOR_TYPES.register("void_replacer",
+                () -> () -> SwarmVillageFloorProcessor.CODEC);
+        
+        private static void init (@NotNull final IEventBus bus)
+        {
+            STRUCTURE_PROCESSOR_TYPES.register(bus);
+        }
+    }
     public static void init(@NotNull final IEventBus bus)
     {
         DataComponentsReg.init(bus);
@@ -1737,11 +1778,13 @@ public final class Registration
         ItemReg.init(bus);
         //AIReg.init(bus);
         FluidReg.init(bus);
+	    GenomeReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
         StructureTypeReg.init(bus);
+        //StructureProcessorTypeReg.init(bus);
     }
 
     private static <T> void makeRegistry(@NotNull RegistryBuilder<T> registryBuilder, @NotNull ResourceKey<? extends Registry<T>> key)

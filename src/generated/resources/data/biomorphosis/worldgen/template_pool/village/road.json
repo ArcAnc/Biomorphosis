@@ -80,73 +80,73 @@
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_0",
+        "location": "biomorphosis:village/house/0",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 5
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_1",
+        "location": "biomorphosis:village/house/1",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 5
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_2",
+        "location": "biomorphosis:village/house/2",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 4
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_3",
+        "location": "biomorphosis:village/house/3",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 4
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_4",
+        "location": "biomorphosis:village/house/4",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 3
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_5",
+        "location": "biomorphosis:village/house/5",
         "processors": {
           "processors": []
         },
         "projection": "rigid"
       },
-      "weight": 1
+      "weight": 2
     },
     {
       "element": {
         "element_type": "minecraft:legacy_single_pool_element",
-        "location": "biomorphosis:village/road/house_6",
+        "location": "biomorphosis:village/house/6",
         "processors": {
           "processors": []
         },

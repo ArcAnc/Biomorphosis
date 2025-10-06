@@ -23,11 +23,11 @@ import java.util.Optional;
 
 public class SwarmLegacySinglePoolElement extends LegacySinglePoolElement
 {
-	private static final Holder<StructureProcessorList> EMPTY = Holder.direct(new StructureProcessorList(List.of()));
+	private static final Holder<StructureProcessorList> PROCESSORS = Holder.direct(new StructureProcessorList(List.of()));
 	
 	public SwarmLegacySinglePoolElement(ResourceLocation id, StructureTemplatePool.Projection projection)
 	{
-		super(Either.left(id), EMPTY, projection, Optional.empty());
+		super(Either.left(id), PROCESSORS, projection, Optional.empty());
 	}
 	
 	public static @NotNull SwarmLegacySinglePoolElement terrainMatching(ResourceLocation id)

@@ -11,8 +11,6 @@ package com.arcanc.biomorphosis.content.worldgen.swarm_village;
 
 
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
@@ -202,6 +200,8 @@ public class SwarmVillageStructure extends Structure
 			}
 		}
 	}
+	
+	
 	
 	@Override
 	public @NotNull StructureType<?> type()

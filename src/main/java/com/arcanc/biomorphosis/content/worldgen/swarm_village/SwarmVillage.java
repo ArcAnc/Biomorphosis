@@ -15,6 +15,7 @@ import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
@@ -31,8 +32,10 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.EnumMap;
+import java.util.Map;
 
 public class SwarmVillage
 {
@@ -46,7 +49,7 @@ public class SwarmVillage
 		context.register(VILLAGE.structure(), new SwarmVillageStructure(
 				new Structure.StructureSettings.Builder(biomes.getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS)).
 					terrainAdapation(TerrainAdjustment.BEARD_THIN).build(),
-					pools.getOrThrow(VILLAGE.pools().start()),
+					pools.getOrThrow(VILLAGE.pools().getPoolKey(CellType.CENTER)),
 				6,
 				ConstantHeight.of(VerticalAnchor.absolute(-1)),
 				true,
@@ -67,14 +70,14 @@ public class SwarmVillage
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 		Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
 		
-		context.register (VILLAGE.pools().start(),
+		context.register (VILLAGE.pools().getPoolKey(CellType.CENTER),
 				new StructureTemplatePool (
 				empty,
 				ImmutableList.of (
 					Pair.of(StructurePoolElement.legacy (Database.rlStr ("village/center/start")), 1)),
 						StructureTemplatePool.Projection.RIGID));
 		
-		context.register (VILLAGE.pools().roads(),
+		context.register (VILLAGE.pools().getPoolKey(CellType.ROAD),
 				new StructureTemplatePool(
 						empty,
 						ImmutableList.of(
@@ -85,27 +88,51 @@ public class SwarmVillage
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fl")), 2),
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fr")), 2),
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/straight")), 2),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_0")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_1")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_2")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_3")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_4")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_5")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/road/house_6")), 1))));
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/0")), 5),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/1")), 5),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/2")), 4),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/3")), 4),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/4")), 3),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/5")), 2),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/6")), 1)
+								/*Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/to_spire")), 1)*/)));
 		
-		/*context.register(VILLAGE.pools().houses(),
+		context.register(VILLAGE.pools().getPoolKey(CellType.SPIRE),
 				new StructureTemplatePool(
 						empty,
 						ImmutableList.of(
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/0")), 1),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/1")), 2),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/2")), 3),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/3")), 4),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/4")), 5),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/5")), 6),
-								Pair.of(StructurePoolElement.legacy(Database.rlStr("village/house/6")), 7)),
-									StructureTemplatePool.Projection.RIGID));
-	*/}
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/0")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/1")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/2")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/3")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/4")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/5")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/6")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/7")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/8")), 1),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/9")), 1))));
+		
+		context.register(VILLAGE.pools().getPoolKey(CellType.WORKER), new StructureTemplatePool(
+						empty,
+						ImmutableList.of(
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/mobs/worker")), 1))));
+		
+		context.register(VILLAGE.pools().getPoolKey(CellType.GUARD), new StructureTemplatePool(
+				empty,
+				ImmutableList.of(
+						Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/mobs/guard")), 1))));
+		
+		/*context.register(VILLAGE.pools().floor(), new StructureTemplatePool(
+						empty,
+						ImmutableList.of(
+								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/floor/size_15")), 1)
+						)));*/
+		/*context.register(VILLAGE.pools().getPoolKey(CellType.HOUSE),
+				new StructureTemplatePool(
+						empty,
+						ImmutableList.of(),
+									StructureTemplatePool.Projection.RIGID));*/
+	}
 	
 	public record KeysData(ResourceKey<Structure> structure, ResourceKey<StructureSet> structureSet, SwarmVillagePools pools)
 	{
@@ -118,15 +145,41 @@ public class SwarmVillage
 		}
 	}
 
-	public record SwarmVillagePools(ResourceKey<StructureTemplatePool> start, ResourceKey<StructureTemplatePool> roads, ResourceKey<StructureTemplatePool> houses)
+	public static class SwarmVillagePools
 	{
+		private final Map<CellType, ResourceKey<StructureTemplatePool>> poolsData = new EnumMap<>(CellType.class);
+		private static final ResourceKey<StructureTemplatePool> EMPTY_POOL = ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl("empty"));
+		
 		public SwarmVillagePools(String name)
 		{
-			this (
-					ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/start")),
-					ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/road")),
-					ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/house")));
+			this.poolsData.put(CellType.CENTER, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/start")));
+			this.poolsData.put(CellType.ROAD, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/road")));
+			this.poolsData.put(CellType.SPIRE, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/spire")));
+			this.poolsData.put(CellType.WORKER, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/worker")));
+			this.poolsData.put(CellType.GUARD, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/guard")));
+			this.poolsData.put(CellType.HOUSE, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/house")));
 		}
+		
+		public ResourceKey<StructureTemplatePool> getPoolKey(CellType type)
+		{
+			return this.poolsData.getOrDefault(type, EMPTY_POOL);
+		}
+		
+		public StructureTemplatePool getPool(@NotNull Registry<StructureTemplatePool> registry, CellType type)
+		{
+			return registry.getOptional(this.getPoolKey(type)).orElse(null);
+		}
+	}
+	
+	public enum CellType
+	{
+		EMPTY,
+		CENTER,
+		HOUSE,
+		ROAD,
+		SPIRE,
+		WORKER,
+		GUARD;
 	}
 
 }

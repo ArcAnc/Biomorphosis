@@ -134,6 +134,25 @@ public class Database
             }
         }
 
+		public static final class GenomeData
+		{
+			public static final GeneInfo ACCURACY = new GeneInfo(Database.rl("accuracy"));
+			public static final GeneInfo BALANCE = new GeneInfo(Database.rl("balance"));
+			public static final GeneInfo DAMAGE = new GeneInfo(Database.rl("damage"));
+			public static final GeneInfo FOOD = new GeneInfo(Database.rl("food"));
+			public static final GeneInfo HEALTH = new GeneInfo(Database.rl("health"));
+			public static final GeneInfo PROTECTION = new GeneInfo(Database.rl("protection"));
+			public static final GeneInfo SPEED = new GeneInfo(Database.rl("speed"));
+			
+			public record GeneInfo(ResourceLocation id, ResourceLocation image)
+			{
+				public GeneInfo (ResourceLocation id)
+				{
+					this(id, id.withPrefix("textures/genome/"));
+				}
+			}
+		}
+		
         public static final class GuideBook
         {
             public static final class Chapters

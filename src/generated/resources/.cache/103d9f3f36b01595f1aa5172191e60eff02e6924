@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-25T02:07:05.711152478	Registries
+// 1.21.4	2025-10-06T18:36:17.819708764	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -10,9 +10,14 @@ b0f18c63f158d1407ba9ec8f3202b894b083add9 data/biomorphosis/book/page/test_next_l
 61cae5286b5ae354e73a4b00a0c066bb236cca56 data/biomorphosis/book/page/v003.json
 e1187b630e6e47e484f4966557a958b76585861e data/biomorphosis/book/page/v004.json
 2993dd6152f999104a2eb6120c029a0aae229c36 data/biomorphosis/book/page/v005.json
+b6da51fe44f9595161feade22439ab5e892e9cd9 data/biomorphosis/genome/balance.json
+e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/health.json
 138f8ff24d61ec3dce4cf1701c92863e643857e2 data/biomorphosis/multiblock/chamber.json
 0f88ae4d78e0e815448f062204596a36eeb743a8 data/biomorphosis/multiblock/fluid_storage.json
 941fefd636dafabe8a11a987ebe0add2db579b15 data/biomorphosis/worldgen/structure/village.json
 8e1ba36819042cf1e364ef310e2960a0ba402449 data/biomorphosis/worldgen/structure_set/village.json
-25c78cf3276f9d968d70ce4e79c482d7e25e9828 data/biomorphosis/worldgen/template_pool/village/road.json
+dd4c5acf07cc77dbbfd6f3f63e0c4839039e511c data/biomorphosis/worldgen/template_pool/village/guard.json
+dd7baf253d08d8b6b6f076870bbf3be44849fe65 data/biomorphosis/worldgen/template_pool/village/road.json
+d48a40ee83b9972ec0b8c08f2a6135f83968625f data/biomorphosis/worldgen/template_pool/village/spire.json
 b78ab6da36479601003be5ef36a38012696fbc6c data/biomorphosis/worldgen/template_pool/village/start.json
+747bb8a89dc40e4aa138a03209d9db16452cc494 data/biomorphosis/worldgen/template_pool/village/worker.json

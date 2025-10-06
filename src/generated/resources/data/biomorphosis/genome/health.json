@@ -1,0 +1,34 @@
+{
+  "id": "biomorphosis:health",
+  "image": "biomorphosis:textures/genome/health",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:health",
+          "params": {
+            "amount": 4
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:protection"
+      ]
+    },
+    "slyth": {
+      "destabilization_amount": 1,
+      "effects": [
+        {
+          "type": "biomorphosis:health",
+          "params": {
+            "amount": 2
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:protection"
+      ]
+    }
+  }
+}
