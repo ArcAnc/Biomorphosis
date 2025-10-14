@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.mutations;
 
 
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
-import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;

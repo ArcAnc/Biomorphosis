@@ -37,6 +37,7 @@ import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
+import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
 import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
@@ -123,9 +124,11 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.neoforge.attachment.AttachmentType;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
@@ -166,6 +169,29 @@ public final class Registration
         }
     }
 
+	public static class DataAttachmentsReg
+	{
+		public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Database.MOD_ID);
+		
+		private static void init (@NotNull final IEventBus bus)
+		{
+			TYPES.register(bus);
+		}
+	}
+	
+	public static class GlobalLootModifiersReg
+	{
+		public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> MODIFIERS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, Database.MOD_ID);
+		
+		public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<FleshLootModifier>> FLESH_MODIFIER = MODIFIERS.register(
+				"flesh_modifier", () -> FleshLootModifier.CODEC);
+		
+		private static void init (@NotNull final IEventBus bus)
+		{
+			MODIFIERS.register(bus);
+		}
+	}
+	
     public static class EntityReg
     {
 
@@ -1767,8 +1793,10 @@ public final class Registration
     }
     public static void init(@NotNull final IEventBus bus)
     {
+	    GlobalLootModifiersReg.init(bus);
+	    DataAttachmentsReg.init(bus);
         DataComponentsReg.init(bus);
-        SlotDisplayReg.init(bus);
+		SlotDisplayReg.init(bus);
         IngredientReg.init(bus);
         MultiblockReg.init(bus);
         BookDataReg.init(bus);

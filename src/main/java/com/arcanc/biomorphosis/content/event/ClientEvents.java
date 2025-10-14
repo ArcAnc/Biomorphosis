@@ -20,6 +20,7 @@ import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
+import com.arcanc.biomorphosis.data.loot.BioGlobalLootModifier;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
@@ -207,6 +208,8 @@ public final class ClientEvents
         BioRegistryData.clear();
 
         gen.addProvider(true, new BioSoundsProvider(packOutput));
+		
+		event.createProvider(BioGlobalLootModifier ::new);
     }
 
     private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)

@@ -87,6 +87,15 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge:: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER.get(), MultiblockChamber :: getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CHEST.get(), BioChest :: getItemHandler);
+		
+		
+		/*FIXME: нужно найти более правильный способ, чем фильтровать по типу. Мне не нравится,
+		   но моджанги сделали хуйню с переписыванием возвращаемого типа у EntityType*/
+	    /*BuiltInRegistries.ENTITY_TYPE.stream().
+			    filter(type -> type.getCategory() != MobCategory.MISC).
+	            forEach(type ->
+			    event.registerEntity(BioCapabilities.GENOME, type,
+					    (object, context) -> new GenomeHandler((LivingEntity) object)));*/
     }
 
     private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)
