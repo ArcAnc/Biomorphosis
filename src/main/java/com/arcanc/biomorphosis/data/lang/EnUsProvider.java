@@ -164,7 +164,7 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "I’ve already mentioned lymph, but you still don’t know how to get it. Well, it’s pretty easy — you just need to grow a Fluid Extractor and lure someone into it... The process will be painful, but don’t worry — you, and a few other entities, can’t be captured. So you’re safe </recipe;biomorphosis:chamber;biomorphosis:chamber/catcher_from_chamber/>");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
-	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Now you’ve found something really cool — a way to distribute all nearby fluids without any manual work. For this, you’ll need a Fluid Transmitter. Just place it, connect your storage to the required machine, and the \"magic\" will happen </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>");
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good.\n\nNow you will learn how to let our essence flow — how to spread fluids through the veins of the Hive without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>");
 		
 	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
         this.add(Database.GUI.GuideBook.Pages.Components.SHAPELESS, "Shapeless");
