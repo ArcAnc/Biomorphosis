@@ -171,6 +171,9 @@ public class RecipeRenderHandler
                     map(ingredient -> ingredient.orElse(null)).
                     map(ingredient -> ingredient != null ? new IngredientWithSize(ingredient, 1) : null).
                     collect(Collectors.toList());
+			if (ingr.size() < 8)
+				for (int lastPart = ingr.size(); lastPart < 9; lastPart++)
+					ingr.add(lastPart, null);
             Minecraft mc = RenderHelper.mc();
             ItemStack result = recipe.assemble(CraftingInput.EMPTY, mc.level.registryAccess());
             ingr.add(9, new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
@@ -294,7 +297,7 @@ public class RecipeRenderHandler
     {
         private int progress;
         private int maxTime;
-        private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(48, -53, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
+        private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(48, -68, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
 
         @Override
         public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
@@ -338,11 +341,11 @@ public class RecipeRenderHandler
                 drawn += squaresInRow;
             }
 
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 35, 74, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 35, 74, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 50, 74, 18, 18);
+            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 50, 74, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
-            guiGraphics.renderItem(result, 36, 75);
-            if (mouseX >= xPos + 35 && mouseY >= yPos + 74 && mouseX <= xPos + 35 + 16 && mouseY <= yPos + 74 + 16)
+            guiGraphics.renderItem(result, 51, 75);
+            if (mouseX >= xPos + 50 && mouseY >= yPos + 74 && mouseX <= xPos + 50 + 16 && mouseY <= yPos + 74 + 16)
                 highlighted = result;
 
             this.maxTime = chamberRecipe.getResources().time();
@@ -353,8 +356,8 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 55, 0, 0, 8, 8, 16, 16,16, 16);
-            guiGraphics.drawString(mc.font, Component.literal(Integer.toString(chamberRecipe.getResources().time())), 5, 55, 0, false);
+            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.TIME, 10, 55, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.drawString(mc.font, Component.literal(Integer.toString(chamberRecipe.getResources().time())), 20, 55, 0, false);
             guiGraphics.pose().popPose();
 
             if (!highlighted.isEmpty())

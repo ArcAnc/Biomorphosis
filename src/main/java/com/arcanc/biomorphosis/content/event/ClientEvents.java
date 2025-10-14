@@ -177,7 +177,6 @@ public final class ClientEvents
         PackOutput packOutput = gen.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        gen.addProvider(true, new EnUsProvider(packOutput));
         gen.addProvider(true, new SummaryModelProvider(packOutput));
         BlockTagsProvider btp = new BioBlockTagsProvider(packOutput, lookupProvider);
         gen.addProvider(true, btp);
@@ -199,13 +198,17 @@ public final class ClientEvents
         BioRegistryData.register(new BioWorldGenProvider());
 		BioRegistryData.register(new BioGenomeProvider());
 
-        gen.addProvider(true, new DatapackBuiltinEntriesProvider(
-                packOutput,
-                lookupProvider,
-                BioRegistryData.getBuilder(),
-                Set.of(Database.MOD_ID)));
-
-        BioRegistryData.clear();
+		DatapackBuiltinEntriesProvider entries = new DatapackBuiltinEntriesProvider(
+				packOutput,
+				lookupProvider,
+				BioRegistryData.getBuilder(),
+				Set.of(Database.MOD_ID));
+		
+        gen.addProvider(true, entries);
+	    
+	    gen.addProvider(true, new EnUsProvider(packOutput, entries.getRegistryProvider()));
+	    
+	    BioRegistryData.clear();
 
         gen.addProvider(true, new BioSoundsProvider(packOutput));
 		

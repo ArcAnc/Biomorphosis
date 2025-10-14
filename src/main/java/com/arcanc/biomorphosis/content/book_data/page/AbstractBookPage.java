@@ -25,6 +25,7 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -103,17 +104,24 @@ public abstract class AbstractBookPage extends AbstractWidget
         int subPage = 0;
         Rect2i zone = AbstractBookChapter.getPageZones().get(subPage);
         int currentY = zone.getY();
-
-        ListIterator<AbstractPageComponent> iterator = components.listIterator();
-        while (iterator.hasNext())
+		
+        for (int q = 0; q < components.size(); q++)
         {
-            AbstractPageComponent component = iterator.next();
+            AbstractPageComponent component = components.get(q);
             component.reCalcShiftX(subPage % 2);
             component.setOwningSubpage(subPage);
-
-            if (component instanceof TextPageComponent textComponent)
-                splitTextComponentIfNeeded(textComponent, iterator, subPage, currentY);
-
+				
+			LayoutState state = new LayoutState(component, q, subPage, currentY);
+			
+            if (component instanceof TextPageComponent)
+                state = splitTextComponentIfNeeded(state);
+			
+			component = state.lastComponent();
+			currentY = state.currentY();
+			subPage = state.subPage();
+	        zone = AbstractBookChapter.getPageZones().get(subPage % 2);
+			q = state.currentIndex();
+			
             int componentHeight = component.getHeight();
             if (currentY + componentHeight > zone.getY() + zone.getHeight())
             {
@@ -133,16 +141,22 @@ public abstract class AbstractBookPage extends AbstractWidget
         for (AbstractPageComponent component : components)
             dividedComponents.computeIfAbsent(component.getOwningSubpage(), k -> new ArrayList<>()).add(component);
     }
-
-    private void splitTextComponentIfNeeded(@NotNull TextPageComponent component, ListIterator<AbstractPageComponent> iterator, int subPage, int currentY)
+	
+    private @NotNull LayoutState splitTextComponentIfNeeded(@NotNull LayoutState state)
     {
-        Minecraft mc = RenderHelper.mc();
+        if (!(state.lastComponent() instanceof TextPageComponent component))
+			return state;
+		Minecraft mc = RenderHelper.mc();
         Font font = mc.font;
-        Rect2i zone = AbstractBookChapter.getPageZones().get(subPage % 2);
+        int subPage = state.subPage;
+	    Rect2i zone = AbstractBookChapter.getPageZones().get(subPage % 2);
+		int currentY = state.currentY;
+		int currentIndex = state.currentIndex;
 
         int availableHeight = zone.getY() + zone.getHeight() - currentY;
         List<FormattedText> lines = font.getSplitter().splitLines(component.getMessage(), component.getWidth(), Style.EMPTY);
         int lineHeight = font.lineHeight;
+		
         int maxLines = availableHeight / lineHeight;
         if (lines.size() > maxLines)
         {
@@ -152,15 +166,16 @@ public abstract class AbstractBookPage extends AbstractWidget
             MutableComponent currentText = Component.empty();
             for (FormattedText text : currentLines)
                 currentText = currentText.append(text.getString()).append("\n");
-            component.setMessage(currentText);
+            
+			component.setMessage(currentText);
             component.setHeight(currentLines.size() * lineHeight);
-
-            MutableComponent remainingText = Component.empty();
+			component.setPosition(zone.getX(), currentY);
+			MutableComponent remainingText = Component.empty();
             for (FormattedText text : remainingLines)
                 remainingText = remainingText.append(text.getString()).append("\n");
             TextPageComponent nextComponent = new TextPageComponent(remainingText);
             int nextComponentHeight = remainingLines.size() * lineHeight;
-            int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());
+			int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());
             if (nextComponentHeight > remainingHeight)
             {
                 subPage++;
@@ -171,13 +186,14 @@ public abstract class AbstractBookPage extends AbstractWidget
             nextComponent.setOwningSubpage(subPage);
             nextComponent.reCalcShiftX(subPage % 2);
             nextComponent.setHeight(nextComponentHeight);
-            nextComponent.setPosition(zone.getX(), zone.getY());
+			nextComponent.setPosition(zone.getX(), zone.getY());
 
-            iterator.add(nextComponent);
-            splitTextComponentIfNeeded(nextComponent, iterator, subPage, currentY);
+            components.add(currentIndex + 1, nextComponent);
+            return splitTextComponentIfNeeded(new LayoutState(nextComponent, currentIndex + 1, subPage, currentY));
         }
         else
             component.setHeight(lines.size() * lineHeight);
+		return state;
     }
 
     @Override
@@ -221,5 +237,6 @@ public abstract class AbstractBookPage extends AbstractWidget
 
     protected abstract void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
     protected abstract void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
-
+	
+	private record LayoutState(AbstractPageComponent lastComponent, int currentIndex, int subPage, int currentY){}
 }

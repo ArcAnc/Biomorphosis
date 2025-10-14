@@ -94,33 +94,88 @@ public class BioBookProvider extends BioRegistryData
                 setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
                 addTags("Patch Notes").
                 end());
+	    addPage(Database.GUI.GuideBook.Pages.V006.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.V006.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.V006.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+			    addTags("Patch Notes").
+			    end());
         //-----------------------------------------------------------------------
         // BASIC CHAPTER
         //-----------------------------------------------------------------------
-        addPage(Database.GUI.GuideBook.Pages.TEST_BASIC_1.location(), BookPageBuilder.newPage().
+        addPage(Database.GUI.GuideBook.Pages.FLESH.location(), BookPageBuilder.newPage().
                 setAuthor("ArcAnc").
-                setTitle(Database.GUI.GuideBook.Pages.TEST_BASIC_1.titleLangKey()).
-                setText(Database.GUI.GuideBook.Pages.TEST_BASIC_1.textLangKey()).
+                setTitle(Database.GUI.GuideBook.Pages.FLESH.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.FLESH.textLangKey()).
                 setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
-                addTags("Test", "ForTest", "AnotherTest").
+                addTags("flesh").
                 end());
-        addPage(Database.GUI.GuideBook.Pages.TEST_BASIC_2.location(), BookPageBuilder.newPage().
+        addPage(Database.GUI.GuideBook.Pages.NORPH_SOURCE.location(), BookPageBuilder.newPage().
                 setAuthor("ArcAnc").
-                setTitle(Database.GUI.GuideBook.Pages.TEST_BASIC_2.titleLangKey()).
-                setText(Database.GUI.GuideBook.Pages.TEST_BASIC_2.textLangKey()).
+                setTitle(Database.GUI.GuideBook.Pages.NORPH_SOURCE.titleLangKey()).
+                setText(Database.GUI.GuideBook.Pages.NORPH_SOURCE.textLangKey()).
                 setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
-                addTags("Boo", "Foo", "Moo").
+                addTags("norph", "source").
                 end());
+	    addPage(Database.GUI.GuideBook.Pages.CHAMBER.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.CHAMBER.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("chamber", "morpher", "morph").
+			    end());
+	    addPage(Database.GUI.GuideBook.Pages.STORAGES.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.STORAGES.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.STORAGES.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("chest", "item", "fluids", "barrel").
+			    end());
+	    
+	    addPage(Database.GUI.GuideBook.Pages.CRUSHER.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.CRUSHER.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("crusher").
+			    end());
+	    
+	    addPage(Database.GUI.GuideBook.Pages.FORGE.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.FORGE.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.FORGE.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("forge").
+			    end());
+	    
+	    addPage(Database.GUI.GuideBook.Pages.STOMACH.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.STOMACH.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("stomach", "organic", "reprocessor").
+			    end());
+	    
+	    addPage(Database.GUI.GuideBook.Pages.CATCHER.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.CATCHER.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.CATCHER.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("catcher", "mob", "entity").
+			    end());
+		
         //-----------------------------------------------------------------------
         // ADVANCED CHAPTER
         //-----------------------------------------------------------------------
-        addPage(Database.GUI.GuideBook.Pages.TEST_PAGE_3.location(), BookPageBuilder.newPage().
-                setAuthor("ArcAnc").
-                setTitle(Database.GUI.GuideBook.Pages.TEST_PAGE_3.titleLangKey()).
-                setText(Database.GUI.GuideBook.Pages.TEST_PAGE_3.textLangKey()).
-                setChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
-                addTags("More", "Another", "WOW").
-                end());
+	    
+	    addPage(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
+			    addTags("transmitter", "fluid", "transport").
+			    end());
     }
 
     private void addChapter(ResourceLocation location, BookChapterData data)

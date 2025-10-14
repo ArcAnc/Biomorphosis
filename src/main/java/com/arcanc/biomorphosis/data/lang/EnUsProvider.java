@@ -9,20 +9,30 @@
 
 package com.arcanc.biomorphosis.data.lang;
 
+import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 public class EnUsProvider extends LanguageProvider
 {
-    public EnUsProvider(PackOutput output)
+	private final CompletableFuture<HolderLookup.Provider> lookupProvider;
+	
+    public EnUsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
     {
         super(output, Database.MOD_ID, "en_us");
+		this.lookupProvider = lookupProvider;
     }
 
     @Override
@@ -117,16 +127,46 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard\n\u2022 Added Worker\n\u2022 Added Eggs Block\n\u2022 Start Working under Swarm Village");
         this.add(Database.GUI.GuideBook.Pages.V005.titleLangKey(), "Version: 0.0.5");
         this.add(Database.GUI.GuideBook.Pages.V005.textLangKey(), "\u2022 First version of village generation\n\u2022 A bit reworked multiblocks, now it's can have voxel shape of original block, but I still want more. Fully custom voxel shape will be top. And get rid from blockState to itemStack");
+		this.add(Database.GUI.GuideBook.Pages.V006.titleLangKey(), "Version: 0.0.6");
+		this.add(Database.GUI.GuideBook.Pages.V006.textLangKey(), "\u2022 Small internal changes and filled up book");
 
-        this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Chapter");
+        this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
-        this.add(Database.GUI.GuideBook.Pages.TEST_BASIC_1.textLangKey(), "Some text for testing </item;minecraft:bread/> Additional testing text </block;minecraft:dirt/> MORE testing text </tag;block;minecraft:planks/> Yet again testing TEXT </recipe;minecraft:crafting_shaped;minecraft:golden_leggings/> And another one testing text </entity;minecraft:creeper/> and </entity;minecraft:spider/> Last testing text");
-        this.add(Database.GUI.GuideBook.Pages.TEST_BASIC_2.textLangKey(), recipeForBook(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get(), Database.rl("stomach/biomass_from_meat")));
-
-        this.add(Database.GUI.GuideBook.Pages.TEST_BASIC_1.titleLangKey(), "</item;minecraft:apple/>First Page Title");
-        this.add(Database.GUI.GuideBook.Pages.TEST_BASIC_2.titleLangKey(), "</item;minecraft:iron_ingot/>Second Page Title");
-
-        this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
+	    //"Some text for testing </item;minecraft:bread/> Additional testing text </block;minecraft:dirt/>
+	    // MORE testing text </tag;block;minecraft:planks/> Yet again testing TEXT
+	    // </recipe;minecraft:crafting_shaped;minecraft:golden_leggings/>
+	    // And another one testing text </entity;minecraft:creeper/> and
+	    // </entity;minecraft:spider/> Last testing text");
+		// recipeForBook(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get(), Database.rl("stomach/biomass_from_meat"))
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
+		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "First thing you need to know - it's how to obtain flesh. And this pretty easy. Just kill. Zombies, Villagers, Horses, anyone may drop </item;biomorphosis:flesh_piece/>You even may stack pieces into whole block, just use this method: </recipe;minecraft:crafting_shaped;minecraft:flesh/>" );
+	    
+	    this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.titleLangKey(), "</block;biomorphosis:norph_source/>Norph Source");
+        this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.textLangKey(), "Second thing is you have to know - it's about norph. Norph is like layer between us and other world. We get resources from it and some other useful thing which you will know later. But main thing you must know - all our building may be placed only on norph. And you must know, what norph can be create only by sources. It's pretty easy to create: </recipe;minecraft:crafting_shaped;biomorphosis:norph_source/>Just place source anywhere and norph will start to expand automatically");
+		
+		this.add(Database.GUI.GuideBook.Pages.CHAMBER.titleLangKey(), "</block;biomorphosis:chamber/>Chamber");
+		this.add(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey(), "Next important thing you have to know, it's about Chamber. You can't just make it and you can't make anything without. What you asking? We stuck? No, master, you must understand, we don't built anything, but we grow all required stuff. Next thing for your ascendance is to have chamber. To grow it you must use </recipe;minecraft:crafting_shaped;biomorphosis:multiblock_morpher/>But... It will be last thing you can get in the usual way. If you want anything else - use chamber. To get it - just drop on morpher required required stuff and will grow. Try to not interrupt the process. You know, it's painfully... What you asking? What needed? Good question? Well, seems you need: " + multiblockParts(Database.rl("chamber")));
+		
+		this.add(Database.GUI.GuideBook.Pages.STORAGES.titleLangKey(), "</block;biomorphosis:chest/>Storages");
+		this.add(Database.GUI.GuideBook.Pages.STORAGES.textLangKey(), "To grow something in chamber - you need to get some resources. And this resources must be stored somewhere. We can offer to use this things: </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_storage_from_chamber/>and</recipe;biomorphosis:chamber;biomorphosis:chamber/chest_from_chamber/>");
+		
+		this.add(Database.GUI.GuideBook.Pages.CRUSHER.titleLangKey(), "</block;biomorphosis:crusher/>Crusher");
+		this.add(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey(), "As you may understand from it's name - crusher is crushing! It's one of our simple machine for grinding things, which allow us to get dusts from ore and grind some other things </recipe;biomorphosis:chamber;biomorphosis:chamber/crusher_from_chamber/>");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.titleLangKey(), "</block;biomorphosis:forge/>BioForge");
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Everyone wants to smelt. Make ingots, cook food a lot of other things. And of course we need it too, so we have it too: </recipe;biomorphosis:chamber;biomorphosis:chamber/forge_from_chamber/>So, our forge works like your typical furnace, but make all things faster and don't required fuel. Well, in normal way at least. As fuel it requires biomass. Using lymph and adrenaline make process more efficient and faster. And one important thing. You can upgrade forge. Just it on this thing: </item;biomorphosis:forge_upgrade/>Idk how to get it, but maybe you find the way");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey(), "</block;biomorphosis:stomach/>Organic Reprocessor");
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "So, this thing will allow you to get some biomass. A lot of biomass. Just feed it meat. And if you feed it with lymph and adrenaline... Well process will be more efficient and faster </recipe;biomorphosis:chamber;biomorphosis:chamber/stomach_from_chamber/>");
+		
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.titleLangKey(), "</block;biomorphosis:catcher/>Biofluid Extractor");
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "I'm already said about lymph, but you still don't know how to get it. Well, it's pretty easy. You just need grow fluid extractor and lure someone into it... Process... Will be painful, but you and some other entities can't be captured, so no worries, you are good </recipe;biomorphosis:chamber;biomorphosis:chamber/catcher_from_chamber/>");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Now, you are find something really cool. How to distribute all fluids nearby without any hand work. For this you need fluid transmitter. Just place it, and connect storage with required machine and \"magic\" will happen </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>");
+		
+	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
         this.add(Database.GUI.GuideBook.Pages.Components.SHAPELESS, "Shapeless");
         this.add(Database.GUI.GuideBook.Pages.Components.TICKS, "Ticks: %s");
         this.add(Database.GUI.GuideBook.Pages.Components.EXP, "Experience: %s");
@@ -182,6 +222,27 @@ public class EnUsProvider extends LanguageProvider
         this.add(subtitle.getDeath(), description + " dies");
     }
 
+	private @NotNull String multiblockParts(ResourceLocation multiblockLocation)
+	{
+		Preconditions.checkNotNull(multiblockLocation);
+		
+		HolderLookup.Provider provider = lookupProvider.join();
+				
+		IMultiblockDefinition definition = provider.lookupOrThrow(Registration.MultiblockReg.DEFINITION_KEY).
+				get(ResourceKey.create(Registration.MultiblockReg.DEFINITION_KEY, multiblockLocation)).
+				orElseThrow().
+				value();
+		List<ItemStack> data = definition.getStructure(null, null).getStackedStructure();
+		
+		StringBuilder returned = new StringBuilder();
+		for (ItemStack stack : data)
+		{
+			returned.append("</item;").append(stack.getItemHolder().getRegisteredName()).append("/>").append(" x ").append(stack.getCount());
+		}
+		
+		return returned.toString();
+	}
+	
     private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
     {
         Preconditions.checkNotNull(recipeType);

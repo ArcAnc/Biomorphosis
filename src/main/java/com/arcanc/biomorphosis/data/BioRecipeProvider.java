@@ -118,6 +118,17 @@ public class BioRecipeProvider extends RecipeProvider
         unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
         unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
         save(this.output, Database.rl("fluid_storage_from_chamber").toString());
+	    
+	    ChamberRecipeBuilder.newBuilder(400).
+			    addInput(new IngredientWithSize(tag(Tags.Items.CHESTS))).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
+		setResult(new ItemStack(Registration.BlockReg.CHEST)).
+		unlockedBy(getHasName(Items.CHEST), has(Tags.Items.CHESTS)).
+		unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+		unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
+		save(this.output, Database.rl("chest_from_chamber").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).

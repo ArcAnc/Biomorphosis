@@ -1,15 +1,22 @@
-// 1.21.4	2025-10-06T18:36:17.819708764	Registries
+// 1.21.4	2025-10-14T16:31:24.923488349	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
-a1bb869e3d4050262ce0c65bd078501a8997be4c data/biomorphosis/book/page/even_not_test.json
-0801981fb278989a3e9a6a00339e7b822f147dfe data/biomorphosis/book/page/test_1.json
-b0f18c63f158d1407ba9ec8f3202b894b083add9 data/biomorphosis/book/page/test_next_lvl.json
+12834d13e46bba77a1593f2ab99e7a0d635c0ab4 data/biomorphosis/book/page/catcher.json
+5c50a6bc03e0141cb3c9edb59521c86b50e090f4 data/biomorphosis/book/page/chamber.json
+47f98407c01c66dd709a1dbd7aa4729d4221d255 data/biomorphosis/book/page/crusher.json
+a94d0260f21c3bba7e4554d572653204aaea0db1 data/biomorphosis/book/page/flesh.json
+66451f5c472554f4a24ab52c54fbdade25e93275 data/biomorphosis/book/page/fluid_transmitter.json
+039c2ed456a2b8d6c944205519bac33d4dd386df data/biomorphosis/book/page/forge.json
+a18fce323a545f276bee95a32883860afac41e6a data/biomorphosis/book/page/norph_source.json
+e5dd6de04d0eeb82f44de346dbac1ab2dc4c3264 data/biomorphosis/book/page/stomach.json
+84dfb307f947ffc00a8793b81c99e27f8060700b data/biomorphosis/book/page/storages.json
 6e0508dbf842c78efcf86063c0cbff92c0da8f12 data/biomorphosis/book/page/v001.json
 43d21a4c7b65469c1a5554750af123e0bff83c97 data/biomorphosis/book/page/v002.json
 61cae5286b5ae354e73a4b00a0c066bb236cca56 data/biomorphosis/book/page/v003.json
 e1187b630e6e47e484f4966557a958b76585861e data/biomorphosis/book/page/v004.json
 2993dd6152f999104a2eb6120c029a0aae229c36 data/biomorphosis/book/page/v005.json
+77bb5ff4c36cdfe45713a45788de2f2679d7223f data/biomorphosis/book/page/v006.json
 b6da51fe44f9595161feade22439ab5e892e9cd9 data/biomorphosis/genome/balance.json
 e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/health.json
 138f8ff24d61ec3dce4cf1701c92863e643857e2 data/biomorphosis/multiblock/chamber.json

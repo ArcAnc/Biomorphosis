@@ -177,9 +177,16 @@ public class Database
                 public static final PageInfo V003 = new PageInfo(rl("v003"));
                 public static final PageInfo V004 = new PageInfo(rl("v004"));
                 public static final PageInfo V005 = new PageInfo(rl("v005"));
-                public static final PageInfo TEST_BASIC_1 = new PageInfo(rl("test_1"));
-                public static final PageInfo TEST_BASIC_2 = new PageInfo(rl("test_next_lvl"));
-                public static final PageInfo TEST_PAGE_3 = new PageInfo(rl("even_not_test"));
+				public static final PageInfo V006 = new PageInfo(rl("v006"));
+                public static final PageInfo FLESH = new PageInfo(rl("flesh"));
+                public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
+                public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
+				public static final PageInfo STORAGES = new PageInfo(rl("storages"));
+				public static final PageInfo CRUSHER = new PageInfo(rl("crusher"));
+				public static final PageInfo FORGE = new PageInfo(rl("forge"));
+				public static final PageInfo STOMACH = new PageInfo(rl("stomach"));
+				public static final PageInfo CATCHER = new PageInfo(rl("catcher"));
+				public static final PageInfo FLUID_TRANSMITTER = new PageInfo(rl("fluid_transmitter"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
                 {
