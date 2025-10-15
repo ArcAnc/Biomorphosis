@@ -44,7 +44,7 @@ public class NorphStairs extends StairBlock
     {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (!level.isClientSide())
-            level.setBlockAndUpdate(pos, Blocks.STONE_STAIRS.withPropertiesOf(state));
+            level.setBlockAndUpdate(pos, Registration.BlockReg.NORPHED_DIRT_STAIR_1.get().withPropertiesOf(state));
     }
 
     @Override

@@ -47,7 +47,7 @@ public class NorphBlock extends BioBaseBlock
     {
         super.onRemove(state, level, pos, newState, movedByPiston);
         if (!level.isClientSide())
-            level.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState());
+            level.setBlockAndUpdate(pos, Registration.BlockReg.NORPHED_DIRT_1.get().defaultBlockState());
     }
 
     @Override
