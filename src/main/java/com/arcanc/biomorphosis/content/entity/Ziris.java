@@ -44,8 +44,6 @@ import java.util.List;
 
 public class Ziris extends FlyingMob implements GeoEntity, Enemy
 {
-    /*FIXME: ЗВУКИ!!!*/
-    /*FIXME: поворот головы*/
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
 
     private Ziris.AttackPhase attackPhase = Ziris.AttackPhase.CIRCLE;
@@ -69,7 +67,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
 
     //Копипаста из ванилы
 
-    boolean canAttack(ServerLevel level, LivingEntity entity, @NotNull TargetingConditions targetingConditions)
+    private boolean canAttack(ServerLevel level, LivingEntity entity, @NotNull TargetingConditions targetingConditions)
     {
         return targetingConditions.test(level, this, entity);
     }
@@ -449,19 +447,19 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     @Override
     protected @Nullable SoundEvent getDeathSound()
     {
-        return Registration.SoundReg.ZIRIS.getDeathSound().get();
+        return Registration.EntityReg.MOB_ZIRIS.getSounds().getDeathSound().get();
     }
 
     @Override
     protected @Nullable SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return Registration.SoundReg.ZIRIS.getHurtSound().get();
+        return Registration.EntityReg.MOB_ZIRIS.getSounds().getHurtSound().get();
     }
 
     @Override
     protected @Nullable SoundEvent getAmbientSound()
     {
-        return Registration.SoundReg.ZIRIS.getIdleSound().get();
+        return Registration.EntityReg.MOB_ZIRIS.getSounds().getIdleSound().get();
     }
 
     @Override

@@ -140,19 +140,19 @@ public class QueenGuard extends Monster implements GeoEntity
     @Override
     protected @NotNull SoundEvent getDeathSound()
     {
-        return Registration.SoundReg.GUARD.getDeathSound().get();
+        return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getDeathSound().get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return Registration.SoundReg.GUARD.getHurtSound().get();
+        return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getHurtSound().get();
     }
 
     @Override
     protected @NotNull SoundEvent getAmbientSound()
     {
-        return Registration.SoundReg.GUARD.getIdleSound().get();
+        return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getIdleSound().get();
     }
 
     @Override

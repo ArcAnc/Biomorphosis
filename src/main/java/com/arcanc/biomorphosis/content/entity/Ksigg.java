@@ -99,21 +99,21 @@ public class Ksigg extends Animal implements GeoEntity
     @Override
     protected SoundEvent getAmbientSound()
     {
-        return Registration.SoundReg.KSIGG.getIdleSound().get();
+        return Registration.EntityReg.MOB_KSIGG.getSounds().getIdleSound().get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return Registration.SoundReg.KSIGG.getHurtSound().get();
+        return Registration.EntityReg.MOB_KSIGG.getSounds().getHurtSound().get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound()
     {
-        return Registration.SoundReg.KSIGG.getDeathSound().get();
+        return Registration.EntityReg.MOB_KSIGG.getSounds().getDeathSound().get();
     }
 
     @Nullable

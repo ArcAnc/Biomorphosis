@@ -20,6 +20,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -234,19 +235,19 @@ public class Queen extends Monster implements GeoEntity
     @Override
     protected @Nullable SoundEvent getAmbientSound()
     {
-        return Registration.SoundReg.QUEEN.getIdleSound().get();
+        return Registration.EntityReg.MOB_QUEEN.getSounds().getIdleSound().get();
     }
 
     @Override
     protected @NotNull SoundEvent getDeathSound()
     {
-        return Registration.SoundReg.QUEEN.getDeathSound().get();
+        return Registration.EntityReg.MOB_QUEEN.getSounds().getDeathSound().get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return Registration.SoundReg.QUEEN.getHurtSound().get();
+        return Registration.EntityReg.MOB_QUEEN.getSounds().getHurtSound().get();
     }
 
     @Override

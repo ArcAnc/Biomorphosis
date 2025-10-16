@@ -81,22 +81,22 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 						sound(Database.rl("block/chest_close"), SoundDefinition.SoundType.SOUND)).
 				subtitle(Database.GUI.Sounds.BLOCK_CHEST_CLOSE));
 
-		addEntitySound(Registration.SoundReg.QUEEN, Database.GUI.Sounds.QUEEN);
-		addEntitySound(Registration.SoundReg.KSIGG, Database.GUI.Sounds.KSIGG);
-		addEntitySound(Registration.SoundReg.LARVA, Database.GUI.Sounds.LARVA, 3, 1, 1);
-		addEntitySound(Registration.SoundReg.ZIRIS, Database.GUI.Sounds.ZIRIS);
-		addEntitySound(Registration.SoundReg.INFESTOR, Database.GUI.Sounds.INFESTOR);
-		addEntitySound(Registration.SoundReg.SWARMLING, Database.GUI.Sounds.SWARMLING, 2, 1, 1);
-		addEntitySound(Registration.SoundReg.GUARD, Database.GUI.Sounds.GUARD);
-		addEntitySound(Registration.SoundReg.WORKER, Database.GUI.Sounds.WORKER);
+		addEntitySound(Registration.EntityReg.MOB_QUEEN.getSounds(), Database.GUI.Sounds.QUEEN);
+		addEntitySound(Registration.EntityReg.MOB_KSIGG.getSounds(), Database.GUI.Sounds.KSIGG);
+		addEntitySound(Registration.EntityReg.MOB_LARVA.getSounds(), Database.GUI.Sounds.LARVA, 3, 1, 1);
+		addEntitySound(Registration.EntityReg.MOB_ZIRIS.getSounds(), Database.GUI.Sounds.ZIRIS);
+		addEntitySound(Registration.EntityReg.MOB_INFESTOR.getSounds(), Database.GUI.Sounds.INFESTOR);
+		addEntitySound(Registration.EntityReg.MOB_SWARMLING.getSounds(), Database.GUI.Sounds.SWARMLING, 2, 1, 1);
+		addEntitySound(Registration.EntityReg.MOB_QUEEN_GUARD.getSounds(), Database.GUI.Sounds.GUARD);
+		addEntitySound(Registration.EntityReg.MOB_WORKER.getSounds(), Database.GUI.Sounds.WORKER);
 	}
 
-	private void addEntitySound(Registration.SoundReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle)
+	private void addEntitySound(Registration.EntityReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle)
 	{
 		this.addEntitySound(entry, subtitle, 1,1,1);
 	}
 
-	private void addEntitySound(Registration.SoundReg.@NotNull EntitySoundEntry entry, Database.GUI.Sounds.@NotNull EntitySoundSubtitle subtitle, int idleCount, int deathCount, int hurtCount)
+	private void addEntitySound(Registration.EntityReg.@NotNull EntitySoundEntry entry, Database.GUI.Sounds.@NotNull EntitySoundSubtitle subtitle, int idleCount, int deathCount, int hurtCount)
 	{
 		SoundDefinition definition = SoundDefinition.definition().subtitle(subtitle.getIdle());
 		if (idleCount == 1)

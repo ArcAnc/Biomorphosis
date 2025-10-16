@@ -23,6 +23,7 @@ public class BioItemTags
     public static final TagKey<Item> WRENCH = create("wrench");
 
     public static final TagKey<Item> KSIGG_FOOD = create("ksigg_food");
+	public static final TagKey<Item> SWARMLING_FOOD = create("swarmling_food");
 
     private static @NotNull TagKey<Item> create(String name)
     {

@@ -30,9 +30,10 @@ public class SwarmlingRenderer extends GeoEntityRenderer<Swarmling>
 	}
 
 	@Override
-	public void preRender(PoseStack poseStack, Swarmling animatable, @NotNull BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	public void preRender(PoseStack poseStack, @NotNull Swarmling animatable, @NotNull BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
 	{
-		model.getBone("all_2").ifPresent(geoBone -> geoBone.updateScale(1.5f, 1.5f, 1.5f));
+		if (!animatable.isBaby())
+			model.getBone("all_2").ifPresent(geoBone -> geoBone.updateScale(1.9f, 1.9f, 1.9f));
 		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
 	}
 }

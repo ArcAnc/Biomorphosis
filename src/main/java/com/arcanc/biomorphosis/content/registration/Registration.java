@@ -239,8 +239,8 @@ public final class Registration
                                 add(Attributes.KNOCKBACK_RESISTANCE, 1.0f).
                                 add(Attributes.FOLLOW_RANGE, 16).
                                 add(Attributes.MOVEMENT_SPEED, 0.3f).
-                                add(Attributes.ARMOR, 20).
-                                add(Attributes.ARMOR_TOUGHNESS, 10)).
+                                add(Attributes.ARMOR, 10).
+                                add(Attributes.ARMOR_TOUGHNESS, 5)).
                         rendererProvider(QueenGuardRenderer :: new),
                 itemProps -> ItemReg.baseProps.
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
@@ -347,7 +347,7 @@ public final class Registration
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                         add(Attributes.MAX_HEALTH, 30).
                         add(Attributes.ATTACK_DAMAGE, 8).
-                        add(Attributes.MOVEMENT_SPEED, 0.1f).
+                        add(Attributes.MOVEMENT_SPEED, 0.2f).
                         add(Attributes.FOLLOW_RANGE, 16).
                         add(Attributes.ARMOR, 2)).
                         rendererProvider(InfestorRenderer :: new),
@@ -368,7 +368,7 @@ public final class Registration
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                         add(Attributes.MAX_HEALTH, 30).
                         add(Attributes.ATTACK_DAMAGE, 8).
-                        add(Attributes.MOVEMENT_SPEED, 0.1f).
+                        add(Attributes.MOVEMENT_SPEED, 0.3f).
                         add(Attributes.FOLLOW_RANGE, 16).
                         add(Attributes.ARMOR, 2)).
                         rendererProvider(SwarmlingRenderer :: new),
@@ -388,6 +388,7 @@ public final class Registration
         {
             private final DeferredHolder<EntityType<?>, EntityType<T>> entityHolder;
             private final DeferredHolder<Item, SpawnEggItem> eggHolder;
+			private final EntitySoundEntry sounds;
 
             @SuppressWarnings("unchecked")
             public EntityEntry(String name,
@@ -401,20 +402,62 @@ public final class Registration
                 this.eggHolder = Mob.class.isAssignableFrom(entityClass) ?
                         Registration.ItemReg.register("spawning_egg_" + name, properties -> new BioSpawnEgg((EntityType<? extends Mob>) entityHolder.get(), properties), additionalProperties) :
                         null;
+				this.sounds = new EntitySoundEntry(name);
             }
 
             public DeferredHolder<EntityType<?>, EntityType<T>> getEntityHolder()
             {
-                return entityHolder;
+                return this.entityHolder;
             }
 
             @Nullable
             public DeferredHolder<Item, SpawnEggItem> getEggHolder()
             {
-                return eggHolder;
+                return this.eggHolder;
             }
+	        
+	        public @NotNull EntitySoundEntry getSounds()
+	        {
+		        return this.sounds;
+	        }
         }
-
+	    
+	    public static class EntitySoundEntry
+	    {
+		    private final DeferredHolder<SoundEvent, SoundEvent> DEATH;
+		    private final DeferredHolder<SoundEvent, SoundEvent> IDLE;
+		    private final DeferredHolder<SoundEvent, SoundEvent> HURT;
+		    private final String name;
+		    
+		    public EntitySoundEntry(String name)
+		    {
+			    this.DEATH = SoundReg.variable(name + "_death");
+			    this.IDLE = SoundReg.variable(name + "_idle");
+			    this.HURT = SoundReg.variable(name + "_hurt");
+			    this.name = name;
+		    }
+		    
+		    public DeferredHolder<SoundEvent, SoundEvent> getDeathSound()
+		    {
+			    return this.DEATH;
+		    }
+		    
+		    public DeferredHolder<SoundEvent, SoundEvent> getHurtSound()
+		    {
+			    return this.HURT;
+		    }
+		    
+		    public DeferredHolder<SoundEvent, SoundEvent> getIdleSound()
+		    {
+			    return this.IDLE;
+		    }
+		    
+		    public String getName()
+		    {
+			    return this.name;
+		    }
+	    }
+		
         public static void init(IEventBus bus)
         {
             ENTITY_TYPES.register(bus);
@@ -1646,9 +1689,6 @@ public final class Registration
 
     public static class SoundReg
     {
-
-        /*FIXME: впихнуть звуки прям в тип моба*/
-
         public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(Registries.SOUND_EVENT, Database.MOD_ID);
 
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_DESTROY = variable("block_destroy");
@@ -1661,17 +1701,8 @@ public final class Registration
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_CLOSE = variable("block_chest_close");
 
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_HIVE = variable("block_hive_deco");
-
-        public static final EntitySoundEntry QUEEN = new EntitySoundEntry("queen");
-        public static final EntitySoundEntry KSIGG = new EntitySoundEntry("ksigg");
-        public static final EntitySoundEntry INFESTOR = new EntitySoundEntry("infestor");
-        public static final EntitySoundEntry LARVA = new EntitySoundEntry("larva");
-        public static final EntitySoundEntry SWARMLING = new EntitySoundEntry("swarmling");
-        public static final EntitySoundEntry ZIRIS = new EntitySoundEntry("ziris");
-        public static final EntitySoundEntry GUARD = new EntitySoundEntry("guard");
-        public static final EntitySoundEntry WORKER = new EntitySoundEntry("worker");
-
-        public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, null, null);
+		
+        public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
         private static @NotNull DeferredHolder<SoundEvent, SoundEvent> variable(String name)
         {
@@ -1682,43 +1713,7 @@ public final class Registration
         {
             return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(Database.rl(name), range));
         }
-
-        public static class EntitySoundEntry
-        {
-            private final DeferredHolder<SoundEvent, SoundEvent> DEATH;
-            private final DeferredHolder<SoundEvent, SoundEvent> IDLE;
-            private final DeferredHolder<SoundEvent, SoundEvent> HURT;
-            private final String name;
-
-            public EntitySoundEntry(String name)
-            {
-                this.DEATH = variable(name + "_death");
-                this.IDLE = variable(name + "_idle");
-                this.HURT = variable(name + "_hurt");
-                this.name = name;
-            }
-
-            public DeferredHolder<SoundEvent, SoundEvent> getDeathSound()
-            {
-                return this.DEATH;
-            }
-
-            public DeferredHolder<SoundEvent, SoundEvent> getHurtSound()
-            {
-                return this.HURT;
-            }
-
-            public DeferredHolder<SoundEvent, SoundEvent> getIdleSound()
-            {
-                return this.IDLE;
-            }
-
-            public String getName()
-            {
-                return this.name;
-            }
-        }
-
+			
         private static void init (@NotNull final IEventBus bus)
         {
             SOUNDS.register(bus);

@@ -17,10 +17,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.FloatGoal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
@@ -49,7 +47,9 @@ public class Larva extends Monster implements GeoEntity
     protected void registerGoals()
     {
         this.goalSelector.addGoal(0, new FloatGoal(this));
+	    this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.1f, false));
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+	    this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
                 this,
                 Mob.class,
@@ -80,19 +80,19 @@ public class Larva extends Monster implements GeoEntity
     @Override
     protected @NotNull SoundEvent getDeathSound()
     {
-        return Registration.SoundReg.LARVA.getDeathSound().get();
+        return Registration.EntityReg.MOB_LARVA.getSounds().getDeathSound().get();
     }
 
     @Override
     protected @Nullable SoundEvent getAmbientSound()
     {
-        return Registration.SoundReg.LARVA.getIdleSound().get();
+        return Registration.EntityReg.MOB_LARVA.getSounds().getIdleSound().get();
     }
 
     @Override
     protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
     {
-        return Registration.SoundReg.LARVA.getHurtSound().get();
+        return Registration.EntityReg.MOB_LARVA.getSounds().getHurtSound().get();
     }
 
     @Override
