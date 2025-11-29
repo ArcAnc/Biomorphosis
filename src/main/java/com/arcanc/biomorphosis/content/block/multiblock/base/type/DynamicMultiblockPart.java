@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;
 import net.minecraft.core.BlockPos;
@@ -53,14 +54,14 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
                     if (definition.type() == MultiblockType.STATIC)
                         return false;
                     DynamicMultiblockDefinition dynDef = (DynamicMultiblockDefinition) definition;
-                    return dynDef.getAllowedBlockType().equals(BlockHelper.getRegistryName(this.getBlockState().getBlock()));
+                    return dynDef.getAllowedBlockType().getBlock().equals(this.getBlockState().getBlock());
                 }).
                 listElements().
                 findFirst().
                 map(Holder.Reference::value)).
                 orElse(null);
-
-        if (!(this.definition instanceof DynamicMultiblockDefinition dynDefinition))
+  
+		if (!(this.definition instanceof DynamicMultiblockDefinition dynDefinition))
             return;
 
         BlockStateMap map = dynDefinition.getStructure(level, pos);

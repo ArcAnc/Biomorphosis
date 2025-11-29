@@ -77,7 +77,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         this.fluidHandler = new FluidSidedStorage().
                 addHolder(FluidStackHolder.newBuilder().
                                 setCallback(hold -> this.markDirty()).
-                                setValidator(stack -> stack.is(Registration.FluidReg.LYMPH.type().get())).
+                                setValidator(stack -> stack.is(Registration.FluidReg.ADRENALINE.type().get())).
                                 setCapacity(200).
                                 build(),
                         BasicSidedStorage.FaceMode.OUTPUT);
@@ -149,7 +149,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         if (this.level.getGameTime() % TICK_PERIOD != 0)
             return;
         this.entity.hurtServer((ServerLevel) this.level, this.level.damageSources().stalagmite(), 1.0f);
-        this.fluidHandler.fill(new FluidStack(Registration.FluidReg.LYMPH.still(), 2), IFluidHandler.FluidAction.EXECUTE);
+        this.fluidHandler.fill(new FluidStack(Registration.FluidReg.ADRENALINE.still(), 5), IFluidHandler.FluidAction.EXECUTE);
         markDirty();
     }
 

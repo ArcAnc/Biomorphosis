@@ -73,7 +73,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
         builder.addSlot(RecipeIngredientRole.OUTPUT, 10, 80).add(recipe.result());
 
 
-        int biomassAmount = recipe.getResources().time() * recipe.getResources().biomass().perSecond();
+        int biomassAmount = (int) (recipe.getResources().time() * recipe.getResources().biomass().perSecond());
         builder.addSlot(RecipeIngredientRole.INPUT, 10, 10).
                 setFluidRenderer(biomassAmount,false,20,10).
                 add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassAmount)).
@@ -82,24 +82,24 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
 
         recipe.getResources().adrenaline().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 40, 10).
                     setFluidRenderer(amount, false, 20, 10).
                     add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ADRENALINE.still(), amount)).
                     addRichTooltipCallback((recipeSlotView, tooltip) ->
-                            tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
+                            tooltip.add(Component.literal("Required: " + info.required())));
         });
 
-        recipe.getResources().lymph().ifPresent(info ->
+        recipe.getResources().acid().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 70, 10).
                     setFluidRenderer(amount, false, 20, 10).
-                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.LYMPH.still(), amount)).
+                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount)).
                     addRichTooltipCallback((recipeSlotView, tooltip) ->
-                            tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
+                            tooltip.add(Component.literal("Required: " + info.required())));
         });
 
         if (recipe.secondaryResults().isEmpty())
@@ -160,7 +160,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
                         80, 55, 0, false);
             });
 
-            recipe.getResources().lymph().ifPresent(info ->
+            recipe.getResources().acid().ifPresent(info ->
             {
                 guiGraphics.drawString(font, info.required() ?
                                 Component.translatable(Database.Integration.JeiInfo.REQUIRED) :

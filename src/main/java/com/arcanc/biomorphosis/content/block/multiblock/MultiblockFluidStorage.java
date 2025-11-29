@@ -55,7 +55,7 @@ public class MultiblockFluidStorage extends DynamicMultiblockPart implements Blo
 
     public static @Nullable FluidSidedStorage getHandler(@NotNull MultiblockFluidStorage be, Direction ctx)
     {
-        return be.isMaster() ? be.handler : be.getMasterPos().
+		return be.isMaster() ? be.handler : be.getMasterPos().
                 flatMap(pos -> BlockHelper.
                         castTileEntity(be.getLevel(), pos, MultiblockFluidStorage.class).
                         map(master -> master.handler)).

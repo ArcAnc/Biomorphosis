@@ -92,7 +92,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
                         BasicSidedStorage.FaceMode.INPUT).
                 addHolder(FluidStackHolder.newBuilder().
                                 setCallback(hold -> this.markDirty()).
-                                setValidator(stack -> stack.is(Registration.FluidReg.LYMPH.type().get())).
+                                setValidator(stack -> stack.is(Registration.FluidReg.ACID.type().get())).
                                 setCapacity(2000).
                                 build(),
                         BasicSidedStorage.FaceMode.INPUT).
@@ -162,23 +162,53 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
 
     private void consumeResources(int slot, @NotNull ForgeRecipe recipe)
     {
-        FluidStack extractedBiomass = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.BIOMASS.still(), recipe.getResources().biomass().perSecond()), true);
-        if (extractedBiomass.getAmount() == recipe.getResources().biomass().perSecond())
-            this.consumedFluidsData[slot].biomass += this.fluidHandler.extract(null, extractedBiomass, false).getAmount();
-        recipe.getResources().lymph().ifPresent(lymph ->
+        float biomassPerTick = recipe.getResources().biomass().perSecond();
+		this.consumedFluidsData[slot].biomassReminder += biomassPerTick;
+		int biomassWhole = (int)this.consumedFluidsData[slot].biomassReminder;
+		
+		if (biomassWhole > 0)
+		{
+			FluidStack extractedBiomass = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassWhole), true);
+			if (extractedBiomass.getAmount() == biomassWhole)
+			{
+				int extracted = this.fluidHandler.extract(null, extractedBiomass, false).getAmount();
+				this.consumedFluidsData[slot].biomass += extracted;
+				this.consumedFluidsData[slot].biomassReminder -= biomassWhole;
+			}
+		}
+
+        recipe.getResources().acid().ifPresent(acid ->
         {
-            FluidStack extracted = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.LYMPH.still(), lymph.perSecond()), true);
-            if (extracted.getAmount() == lymph.perSecond())
-                this.consumedFluidsData[slot].lymph += this.fluidHandler.extract(null, extracted, false).getAmount();
+            this.consumedFluidsData[slot].acidRemainder += acid.perSecond();
+			int wholeAcid = (int) this.consumedFluidsData[slot].acidRemainder;
+			
+			if (wholeAcid > 0)
+			{
+				FluidStack extractedAcid = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.ACID.still(), wholeAcid), true);
+				if (extractedAcid.getAmount() == wholeAcid)
+				{
+					int extracted = this.fluidHandler.extract(null, extractedAcid, false).getAmount();
+					this.consumedFluidsData[slot].acid += extracted;
+					this.consumedFluidsData[slot].acidRemainder -= wholeAcid;
+				}
+			}
         });
         recipe.getResources().adrenaline().ifPresent(adrenaline ->
         {
-            FluidStack extracted = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.ADRENALINE.still(), adrenaline.perSecond()), true);
-            if (extracted.getAmount() == adrenaline.perSecond())
-            {
-                this.consumedFluidsData[slot].adrenaline += this.fluidHandler.extract(null, extracted, false).getAmount();
-                this.adrenalineUsedThisTick[slot] = true;
-            }
+            this.consumedFluidsData[slot].adrenalineReminder += adrenaline.perSecond();
+			int wholeAdrenaline = (int) this.consumedFluidsData[slot].adrenalineReminder;
+			
+			if (wholeAdrenaline > 0)
+			{
+				FluidStack extractedAdrenaline = this.fluidHandler.extract(null, new FluidStack(Registration.FluidReg.ADRENALINE.still(), wholeAdrenaline), true);
+				if (extractedAdrenaline.getAmount() == wholeAdrenaline)
+				{
+					int extracted = this.fluidHandler.extract(null, extractedAdrenaline, false).getAmount();;
+					this.consumedFluidsData[slot].adrenaline += extracted;
+					this.consumedFluidsData[slot].adrenalineReminder -= wholeAdrenaline;
+					this.adrenalineUsedThisTick[slot] = true;
+				}
+			}
         });
     }
 
@@ -195,7 +225,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
         {
             ItemStack[] result = new ItemStack[]{ recipe.result().copy()};
             BioBaseRecipe.BiomassInfo biomass = recipe.getResources().biomass();
-            int totalBiomassAmount = biomass.perSecond() * timeToCheck;
+            int totalBiomassAmount = (int) (biomass.perSecond() * timeToCheck);
 
             if (biomass.required())
             {
@@ -206,17 +236,17 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
             if (this.consumedFluidsData[slot].biomass >= totalBiomassAmount)
                 result[0] = recipe.result().copy();
 
-            result[0] = recipe.getResources().lymph().map(lymph ->
+            result[0] = recipe.getResources().acid().map(lymph ->
             {
                 ItemStack returnedStack = result[0].copy();
-                int totalLymphAmount = lymph.perSecond() * timeToCheck;
+                int totalLymphAmount = (int) (lymph.perSecond() * timeToCheck);
                 if (lymph.required())
                 {
-                    if (this.consumedFluidsData[slot].lymph < totalLymphAmount)
+                    if (this.consumedFluidsData[slot].acid < totalLymphAmount)
                         returnedStack = ItemStack.EMPTY;
                 }
                 else
-                if (this.consumedFluidsData[slot].lymph >= totalLymphAmount)
+                if (this.consumedFluidsData[slot].acid >= totalLymphAmount)
                     returnedStack.setCount(Mth.ceil(returnedStack.getCount() * lymph.modifier()));
                 return returnedStack;
             }).orElse(result[0]);
@@ -224,7 +254,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
             result[0] = recipe.getResources().adrenaline().map(adrenaline ->
             {
                 ItemStack returnedStack = result[0];
-                int totalAdrenalineAmount = adrenaline.perSecond() * timeToCheck;
+                int totalAdrenalineAmount = (int) (adrenaline.perSecond() * timeToCheck);
                 if (adrenaline.required())
                     if (this.consumedFluidsData[slot].adrenaline < totalAdrenalineAmount)
                         returnedStack = ItemStack.EMPTY;

@@ -15,6 +15,7 @@ import com.arcanc.biomorphosis.content.book_data.page.component.*;
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -105,16 +106,16 @@ public abstract class AbstractBookPage extends AbstractWidget
         Rect2i zone = AbstractBookChapter.getPageZones().get(subPage);
         int currentY = zone.getY();
 		
-        for (int q = 0; q < components.size(); q++)
+        for (int q = 0; q < this.components.size(); q++)
         {
-            AbstractPageComponent component = components.get(q);
+            AbstractPageComponent component = this.components.get(q);
             component.reCalcShiftX(subPage % 2);
             component.setOwningSubpage(subPage);
 				
 			LayoutState state = new LayoutState(component, q, subPage, currentY);
 			
             if (component instanceof TextPageComponent)
-                state = splitTextComponentIfNeeded(state);
+	            state = splitTextComponentIfNeeded(state);
 			
 			component = state.lastComponent();
 			currentY = state.currentY();
@@ -137,9 +138,9 @@ public abstract class AbstractBookPage extends AbstractWidget
             currentY += componentHeight;
         }
 
-        dividedComponents.clear();
-        for (AbstractPageComponent component : components)
-            dividedComponents.computeIfAbsent(component.getOwningSubpage(), k -> new ArrayList<>()).add(component);
+        this.dividedComponents.clear();
+        for (AbstractPageComponent component : this.components)
+            this.dividedComponents.computeIfAbsent(component.getOwningSubpage(), k -> new ArrayList<>()).add(component);
     }
 	
     private @NotNull LayoutState splitTextComponentIfNeeded(@NotNull LayoutState state)
@@ -157,7 +158,7 @@ public abstract class AbstractBookPage extends AbstractWidget
         List<FormattedText> lines = font.getSplitter().splitLines(component.getMessage(), component.getWidth(), Style.EMPTY);
         int lineHeight = font.lineHeight;
 		
-        int maxLines = availableHeight / lineHeight;
+		int maxLines = availableHeight / lineHeight;
         if (lines.size() > maxLines)
         {
             List<FormattedText> currentLines = lines.subList(0, maxLines);
@@ -165,14 +166,18 @@ public abstract class AbstractBookPage extends AbstractWidget
 
             MutableComponent currentText = Component.empty();
             for (FormattedText text : currentLines)
-                currentText = currentText.append(text.getString()).append("\n");
-            
+                currentText = currentText.append(text.getString()).append(" ");
+			
+			currentText = Component.literal(currentText.getString().trim());
+			
 			component.setMessage(currentText);
             component.setHeight(currentLines.size() * lineHeight);
 			component.setPosition(zone.getX(), currentY);
 			MutableComponent remainingText = Component.empty();
             for (FormattedText text : remainingLines)
-                remainingText = remainingText.append(text.getString()).append("\n");
+                remainingText = remainingText.append(text.getString()).append(" ");
+			
+			remainingText = Component.literal(remainingText.getString().trim());
             TextPageComponent nextComponent = new TextPageComponent(remainingText);
             int nextComponentHeight = remainingLines.size() * lineHeight;
 			int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());

@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.client.color.item.Dye;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderSet;
@@ -34,16 +35,19 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
+import javax.xml.parsers.SAXParser;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -86,25 +90,14 @@ public class BioRecipeProvider extends RecipeProvider
                 unlockedBy(getHasName(Items.STONE), has(Tags.Items.STONES)).
                 save(this.output);
 
-        CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
-                new BioBaseRecipe.BiomassInfo(true,10),
-                Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 2.0f)),
-                Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
-                200)).
-                setInput(new IngredientWithSize(Ingredient.of(Blocks.COBBLESTONE))).
-                setResult(new ItemStack(Blocks.GRAVEL)).
-                addSecondaryOutput(new StackWithChance(new ItemStack(Blocks.SAND), 0.15f)).
-        unlockedBy(getHasName(Blocks.COBBLESTONE), has(Blocks.COBBLESTONE)).
-        save(this.output, Database.rl("gravel_from_cobblestone").toString());
-
         StomachRecipeBuilder.newBuilder(
                 new BioBaseRecipe.ResourcesInfo(
-                    new BioBaseRecipe.BiomassInfo(false, 2),
-                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 1.5f)),
-                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
+                    new BioBaseRecipe.BiomassInfo(false, 0.5f),
+                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 1.5f)),
+                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
                     100)).
                 setInput(new IngredientWithSize(tag(ItemTags.MEAT))).
-                setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
+                setResult(new FluidStack(Registration.FluidReg.ACID.still(), 700)).
         unlockedBy("has_meat", has(ItemTags.MEAT)).
         save(this.output, Database.rl("biomass_from_meat").toString());
 
@@ -219,10 +212,161 @@ public class BioRecipeProvider extends RecipeProvider
                 unlockedBy(getHasName(Registration.BlockReg.FLUID_STORAGE), has(Registration.BlockReg.FLUID_STORAGE)).
                 save(this.output, Database.rl("multiblock_fluid_storage_from_chamber").toString());
 
+		generateCrusherRecipes();
+		
         generateBioForgeVanillaEnhancedRecipes();
     }
+	
+	private void generateCrusherRecipes()
+	{
+		//---- BLOCKS
+		crusherRecipe(Tags.Items.STONES, 1, new ItemStack(Blocks.COBBLESTONE), "cobblestone_from_stone");
+		crusherRecipe(Tags.Items.COBBLESTONES, 1,
+				new ItemStack(Blocks.GRAVEL),
+				"gravel_from_cobblestone",
+				new StackWithChance(new ItemStack(Blocks.SAND), 0.15f));
+		crusherRecipe(Tags.Items.NETHERRACKS, 1, new ItemStack(Blocks.GRAVEL), "gravel_from_netherrack");
+		crusherRecipe(Tags.Items.GRAVELS, 1,
+				new ItemStack(Blocks.SAND),
+				"sand_from_gravel",
+				new StackWithChance(new ItemStack(Items.FLINT), 0.15f));
+		crusherRecipe(Tags.Items.SANDSTONE_UNCOLORED_BLOCKS, 1,
+				new ItemStack(Blocks.SAND, 2),
+				"sand_from_sandstone");
+		crusherRecipe(Tags.Items.SANDSTONE_RED_BLOCKS, 1,
+				new ItemStack(Blocks.RED_SAND, 2),
+				"red_sand_from_red_sandstone");
 
-    private void generateBioForgeVanillaEnhancedRecipes()
+		//---- ITEMS
+		crusherRecipe(Tags.Items.BONES, 1,
+				new ItemStack(Items.BONE_MEAL, 6),
+				"bone_meal_from_bones");
+		crusherRecipe(new ItemStack(Blocks.GLOWSTONE),
+				new ItemStack(Items.GLOWSTONE_DUST, 4),
+				"glowstone_dust_from_glowstone");
+		crusherRecipe(new ItemStack(Blocks.MAGMA_BLOCK),
+				new ItemStack(Items.MAGMA_CREAM, 4),
+				"magma_cream_from_magma");
+		crusherRecipe(new ItemStack(Items.PRISMARINE_SHARD),
+				new ItemStack(Items.PRISMARINE_CRYSTALS, 2),
+				"prismarine_crystals_from_prismarine_shard");
+		crusherRecipe(Tags.Items.RODS_BLAZE, 1,
+				new ItemStack(Items.BLAZE_POWDER, 4),
+				"blaze_powder_from_blaze_rod");
+
+		//---- ORES
+		crusherRecipe(Tags.Items.ORES_COAL, 1,
+				new ItemStack(Items.COAL, 3),
+				"coal_from_coal_ore",
+				new StackWithChance(new ItemStack(Items.COAL), 0.25f));
+		crusherRecipe(Tags.Items.ORES_LAPIS, 1,
+				new ItemStack(Items.LAPIS_LAZULI, 10),
+				"lapis_lazuli_from_lapis_lazuli_ore");
+		crusherRecipe(Tags.Items.ORES_REDSTONE,1,
+				new ItemStack(Items.REDSTONE, 6),
+				"redstone_from_redstone_ore");
+		crusherRecipe(Tags.Items.ORES_DIAMOND, 1,
+				new ItemStack(Items.DIAMOND, 2),
+				"diamond_from_diamond_ore");
+		crusherRecipe(Tags.Items.ORES_NETHERITE_SCRAP, 1,
+				new ItemStack(Items.NETHERITE_SCRAP, 2),
+				"netherite_scrap_from_ancient_debris_ore");
+		crusherRecipe(Tags.Items.ORES_EMERALD, 1,
+				new ItemStack(Items.EMERALD, 2),
+				"emerald_from_emerald_ore");
+		crusherRecipe(Tags.Items.ORES_QUARTZ, 1,
+				new ItemStack(Items.QUARTZ, 3),
+				"quartz_from_quartz_ore");
+		//---- FLOWERS
+		crusherRecipe(new ItemStack(Blocks.DANDELION), new ItemStack(Items.YELLOW_DYE, 4), "yellow_dye_from_dandelion");
+		crusherRecipe(new ItemStack(Blocks.SUNFLOWER), new ItemStack(Items.YELLOW_DYE, 4), "yellow_dye_from_sunflower");
+		crusherRecipe(new ItemStack(Blocks.ROSE_BUSH), new ItemStack(Items.YELLOW_DYE, 4), "yellow_dye_from_rose");
+		crusherRecipe(new ItemStack(Blocks.POPPY), new ItemStack(Items.RED_DYE, 4), "red_dye_from_poppy");
+		crusherRecipe(new ItemStack(Blocks.RED_TULIP), new ItemStack(Items.RED_DYE, 4), "red_dye_from_tulip");
+		crusherRecipe(new ItemStack(Blocks.BLUE_ORCHID), new ItemStack(Items.LIGHT_GRAY_DYE, 4), "light_blue_dye_from_blue_orchid");
+		crusherRecipe(new ItemStack(Blocks.ALLIUM), new ItemStack(Items.MAGENTA_DYE, 4), "magenta_dye_from_allium");
+		crusherRecipe(new ItemStack(Blocks.LILAC), new ItemStack(Items.MAGENTA_DYE, 4), "magenta_dye_from_lilac");
+		crusherRecipe(new ItemStack(Blocks.AZURE_BLUET), new ItemStack(Items.LIGHT_GRAY_DYE, 4), "light_gray_dye_from_azure_bluet");
+		crusherRecipe(new ItemStack(Blocks.WHITE_TULIP), new ItemStack(Items.LIGHT_GRAY_DYE, 4), "light_gray_dye_from_tulip");
+		crusherRecipe(new ItemStack(Blocks.OXEYE_DAISY), new ItemStack(Items.LIGHT_GRAY_DYE, 4), "light_gray_dye_from_daisy");
+		crusherRecipe(new ItemStack(Blocks.ORANGE_TULIP), new ItemStack(Items.ORANGE_DYE, 4), "orange_dye_from_tulip");
+		crusherRecipe(new ItemStack(Blocks.PINK_TULIP), new ItemStack(Items.PINK_DYE, 4), "pink_dye_from_tulip");
+		crusherRecipe(new ItemStack(Blocks.PEONY), new ItemStack(Items.PINK_DYE, 4), "pink_dye_from_peony");
+		
+		//---- RECYCLING
+		
+		for (DyeColor color : DyeColor.values())
+		{
+			crusherRecipe(new ItemStack(BuiltInRegistries.ITEM.getValue(Database.mineRl(color.getName() + "_wool"))),
+					new ItemStack(Items.STRING, 4),
+					"string_from_" + color.getName() + "_wool",
+					new StackWithChance(new ItemStack(BuiltInRegistries.ITEM.getValue(Database.mineRl(color.getName() + "_dye"))),
+							0.15f));
+			crusherRecipe(new ItemStack(BuiltInRegistries.ITEM.getValue(Database.mineRl(color.getName() +"_concrete"))),
+					new ItemStack(BuiltInRegistries.ITEM.getValue(Database.mineRl(color.getName() + "_concrete_powder"))),
+					color.getName() + "_concrete_powder_from_" + color.getName() + "_concrete");
+			crusherRecipe(new ItemStack(BuiltInRegistries.ITEM.getValue(Database.mineRl(color.getName() + "_stained_glass"))),
+					new ItemStack(Items.SAND),
+					"sand_from_" + color.getName() + "_stained_glass");
+		}
+		
+		crusherRecipe(ItemTags.TERRACOTTA, 1,
+				new ItemStack(Items.CLAY_BALL, 4),
+				"clay_from_terracotta");
+		crusherRecipe(new ItemStack(Items.CLAY),
+					new ItemStack(Items.CLAY_BALL, 4),
+					"clay_from_clay_block");
+		crusherRecipe(new ItemStack(Items.GLASS),
+					new ItemStack(Items.SAND),
+					"sand_from_glass");
+		crusherRecipe(new ItemStack(Blocks.NETHER_BRICKS),
+					new ItemStack(Items.NETHER_BRICK, 4),
+					"nether_brick_from_nether_bricks");
+		crusherRecipe(new ItemStack(Blocks.NETHER_BRICK_SLAB),
+				new ItemStack(Items.NETHER_BRICK, 2),
+				"nether_brick_from_nether_brick_slab");
+		crusherRecipe(new ItemStack(Blocks.NETHER_BRICK_STAIRS),
+				new ItemStack(Items.NETHER_BRICK, 3),
+				"nether_brick_from_nether_brick_stairs");
+		crusherRecipe(new ItemStack(Blocks.QUARTZ_PILLAR),
+				new ItemStack(Items.QUARTZ, 4),
+				"nether_quartz_from_quartz_pillar");
+		crusherRecipe(new ItemStack(Blocks.CHISELED_QUARTZ_BLOCK),
+				new ItemStack(Items.QUARTZ, 4),
+				"nether_quartz_from_chiseled_quartz_pillar");
+		crusherRecipe(new ItemStack(Blocks.QUARTZ_BRICKS),
+				new ItemStack(Items.QUARTZ, 4),
+				"nether_quartz_from_quartz_bricks");
+		crusherRecipe(new ItemStack(Blocks.SMOOTH_QUARTZ),
+				new ItemStack(Items.QUARTZ, 4),
+				"nether_quartz_from_smooth_quartz");
+		crusherRecipe(new ItemStack(Blocks.QUARTZ_SLAB),
+				new ItemStack(Items.QUARTZ, 2),
+				"nether_quartz_from_quartz_slab");
+		crusherRecipe(new ItemStack(Blocks.SMOOTH_QUARTZ_SLAB),
+				new ItemStack(Items.QUARTZ, 2),
+				"nether_quartz_from_smooth_quartz_slab");
+		crusherRecipe(new ItemStack(Blocks.QUARTZ_STAIRS),
+				new ItemStack(Items.QUARTZ, 3),
+				"nether_quartz_from_quartz_stairs");
+		crusherRecipe(new ItemStack(Blocks.SMOOTH_QUARTZ_STAIRS),
+				new ItemStack(Items.QUARTZ, 3),
+				"nether_quartz_from_smooth_quartz_stairs");
+		crusherRecipe(Tags.Items.SANDSTONE_UNCOLORED_SLABS, 1,
+				new ItemStack(Blocks.SAND),
+				"sand_from_sandstone_slab");
+		crusherRecipe(Tags.Items.SANDSTONE_UNCOLORED_STAIRS, 1,
+				new ItemStack(Blocks.SAND, 2),
+				"sand_from_sandstone_stairs");
+		crusherRecipe(Tags.Items.SANDSTONE_RED_SLABS, 1,
+				new ItemStack(Blocks.RED_SAND),
+				"red_sand_from_red_sandstone_slab");
+		crusherRecipe(Tags.Items.SANDSTONE_RED_STAIRS, 1,
+				new ItemStack(Blocks.RED_SAND, 2),
+				"red_sand_from_red_sandstone_stairs");
+	}
+	
+	private void generateBioForgeVanillaEnhancedRecipes()
     {
         Path path = FMLPaths.GAMEDIR.get().resolve("vanilla_recipes");
 
@@ -253,9 +397,9 @@ public class BioRecipeProvider extends RecipeProvider
 
                             ForgeRecipeBuilder.newBuilder(
                                             new BioBaseRecipe.ResourcesInfo(
-                                                    new BioBaseRecipe.BiomassInfo(true, 2),
+                                                    new BioBaseRecipe.BiomassInfo(true, 0.5f),
                                                     Optional.empty(),
-                                                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 1, 0.5f)),
+                                                    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
                                                     cookingTime)).
                                     setInput(new IngredientWithSize(input)).
                                     setResult(result).
@@ -293,6 +437,35 @@ public class BioRecipeProvider extends RecipeProvider
         {
             return Database.MOD_NAME + ": Recipes";
         }
-
     }
+	
+	private void crusherRecipe(@NotNull ItemStack input, ItemStack output, String name, StackWithChance @NotNull ... additionalOutput)
+	{
+		CrusherRecipeBuilder builder = CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
+				new BioBaseRecipe.BiomassInfo(true, 0.5f),
+				Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 2.0f)),
+				Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
+				200)).
+				setInput(new IngredientWithSize(Ingredient.of(input.getItem()), input.getCount())).
+				setResult(output).
+				unlockedBy(getHasName(input.getItem()), has(input.getItem()));
+		for (StackWithChance stackWithChance : additionalOutput)
+			builder.addSecondaryOutput(stackWithChance);
+		builder.save(this.output, Database.rl(name).toString());
+	}
+	
+	private void crusherRecipe(@NotNull TagKey<Item> input, int inputAmount, ItemStack output, String name, StackWithChance @NotNull ... additionalOutput)
+	{
+		CrusherRecipeBuilder builder = CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
+				new BioBaseRecipe.BiomassInfo(true, 0.5f),
+				Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 2.0f)),
+				Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
+				200)).
+				setInput(new IngredientWithSize(tag(input), inputAmount)).
+				setResult(output).
+				unlockedBy("has_" + input.location().getPath(), has(input));
+		for (StackWithChance stackWithChance : additionalOutput)
+			builder.addSecondaryOutput(stackWithChance);
+		builder.save(this.output, Database.rl(name).toString());
+	}
 }

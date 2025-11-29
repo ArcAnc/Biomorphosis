@@ -426,18 +426,18 @@ public class RecipeRenderHandler
                     highlighted = stack.copy();
             }
 
-            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(),crusherRecipe.getResources().biomass().perSecond() * crusherRecipe.getResources().time()));
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), (int) (crusherRecipe.getResources().biomass().perSecond() * crusherRecipe.getResources().time())));
             biomass.render(guiGraphics, 7, 10, 20, 10);
 
             crusherRecipe.getResources().adrenaline().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * crusherRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),(int) (info.perSecond() * crusherRecipe.getResources().time())));
                 icon.render(guiGraphics, 40, 10, 20, 10);
             });
 
-            crusherRecipe.getResources().lymph().ifPresent(info ->
+            crusherRecipe.getResources().acid().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * crusherRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ACID.still(), (int) (info.perSecond() * crusherRecipe.getResources().time())));
                 icon.render(guiGraphics, 70, 10, 20, 10);
             });
 
@@ -471,7 +471,7 @@ public class RecipeRenderHandler
                             80, 55, 0, false);
                 });
 
-                crusherRecipe.getResources().lymph().ifPresent(info ->
+                crusherRecipe.getResources().acid().ifPresent(info ->
                 {
                     guiGraphics.drawString(font, info.required() ?
                                     Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
@@ -547,18 +547,18 @@ public class RecipeRenderHandler
             if (mouseX >= xPos + 42 && mouseY >= yPos + 80 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 80 + 16)
                 highlighted = stack.copy();
 
-            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), forgeRecipe.getResources().biomass().perSecond() * forgeRecipe.getResources().time()));
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), (int) (forgeRecipe.getResources().biomass().perSecond() * forgeRecipe.getResources().time())));
             biomass.render(guiGraphics, 7, 10, 20, 10);
 
             forgeRecipe.getResources().adrenaline().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * forgeRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(), (int) (info.perSecond() * forgeRecipe.getResources().time())));
                 icon.render(guiGraphics, 40, 10, 20, 10);
             });
 
-            forgeRecipe.getResources().lymph().ifPresent(info ->
+            forgeRecipe.getResources().acid().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * forgeRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ACID.still(), (int) (info.perSecond() * forgeRecipe.getResources().time())));
                 icon.render(guiGraphics, 70, 10, 20, 10);
             });
 
@@ -592,7 +592,7 @@ public class RecipeRenderHandler
                             80, 55, 0, false);
                 });
 
-                forgeRecipe.getResources().lymph().ifPresent(info ->
+                forgeRecipe.getResources().acid().ifPresent(info ->
                 {
                     guiGraphics.drawString(font, info.required() ?
                                     Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
@@ -664,18 +664,18 @@ public class RecipeRenderHandler
             if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
                 highlighted = stack;
 
-            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), stomachRecipe.getResources().biomass().perSecond() * stomachRecipe.getResources().time()));
+            FluidIcon biomass = new FluidIcon(new FluidStack(Registration.FluidReg.BIOMASS.still(), (int) (stomachRecipe.getResources().biomass().perSecond() * stomachRecipe.getResources().time())));
             biomass.render(guiGraphics, 7, 10, 20, 10);
 
             stomachRecipe.getResources().adrenaline().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(),info.perSecond() * stomachRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(), (int) (info.perSecond() * stomachRecipe.getResources().time())));
                 icon.render(guiGraphics, 40, 10, 20, 10);
             });
 
-            stomachRecipe.getResources().lymph().ifPresent(info ->
+            stomachRecipe.getResources().acid().ifPresent(info ->
             {
-                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.LYMPH.still(),info.perSecond() * stomachRecipe.getResources().time()));
+                FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ACID.still(), (int) (info.perSecond() * stomachRecipe.getResources().time())));
                 icon.render(guiGraphics, 70, 10, 20, 10);
             });
 
@@ -709,7 +709,7 @@ public class RecipeRenderHandler
                             80, 55, 0, false);
                 });
 
-                stomachRecipe.getResources().lymph().ifPresent(info ->
+                stomachRecipe.getResources().acid().ifPresent(info ->
                 {
                     guiGraphics.drawString(font, info.required() ?
                                     Component.translatable(Database.Integration.JeiInfo.REQUIRED) :

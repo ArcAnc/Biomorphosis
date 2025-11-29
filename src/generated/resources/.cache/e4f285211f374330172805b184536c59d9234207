@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-15T21:40:18.532191731	Biomorphosis: Models
+// 1.21.4	2025-11-29T23:02:19.326012836	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
@@ -6,9 +6,9 @@ ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher
 0aaed84e189451fab9c88ab1a005c666e6d858da assets/biomorphosis/blockstates/flesh.json
 24bb989bcf2f72fe5550b04322ff96bf9b50d1ce assets/biomorphosis/blockstates/fluid_storage.json
 689cd40b4979419eb6b40ddbee165dd9f2a7ab3a assets/biomorphosis/blockstates/fluid_transmitter.json
+2647f6dfb057ab247a7d313b422cbcee940cd4ee assets/biomorphosis/blockstates/fluids/acid/block.json
 52365930b4a549eafc6134c9947716413cf6be27 assets/biomorphosis/blockstates/fluids/adrenaline/block.json
 3ddd817db3cc0a0d86bed5390f309ec156a35ad8 assets/biomorphosis/blockstates/fluids/biomass/block.json
-8e4d97572fd05885fc68f7b639b395b9dc968e08 assets/biomorphosis/blockstates/fluids/lymph/block.json
 8eae77a76b11ce6935685b19b0b93c4c57997e83 assets/biomorphosis/blockstates/forge.json
 103544ae88040394872dce38105e9d979a89f70b assets/biomorphosis/blockstates/glow_moss.json
 f3cc81c0bca10ce751c8c2c7aaa77c32d1b76e3b assets/biomorphosis/blockstates/hive_deco.json
@@ -48,9 +48,9 @@ ed343e4004597156e57d96339cd54f21f98c9e0b assets/biomorphosis/items/flesh.json
 8cc2526f42ef8874e5121514f57b57b8df448d94 assets/biomorphosis/items/flesh_piece.json
 9cda51b82986dc7023d336bf592b868207250a29 assets/biomorphosis/items/fluid_storage.json
 b3b8a23b020ef617055610fc578af5046e9a5c33 assets/biomorphosis/items/fluid_transmitter.json
+5c5f0b8043d0d7d7ee0ab312cc80ab7f5c32c36a assets/biomorphosis/items/fluids/acid/bucket.json
 3b45ef45d79ca2a118e38ba2a3d1bfc5f2552653 assets/biomorphosis/items/fluids/adrenaline/bucket.json
 dd50913161638f687d28bc9bf71799476d46eaf8 assets/biomorphosis/items/fluids/biomass/bucket.json
-4ed16507954049d96455440d81a2df4d958a9911 assets/biomorphosis/items/fluids/lymph/bucket.json
 1b7c4c2dcbb9ba52ebff460b92cac7dc45ff82ad assets/biomorphosis/items/forge.json
 e8c8b092a8d46933d996ff8480c6431e83f724c7 assets/biomorphosis/items/forge_upgrade.json
 d5f2de86c51bf023ebe6a1fca6c1228ad44daf75 assets/biomorphosis/items/glow_moss.json
@@ -98,9 +98,9 @@ d6eb239ceefb394582bb085004364eaffc1ad978 assets/biomorphosis/models/block/eggs.j
 827a5f4253a81d75c582959158c565d7828e0111 assets/biomorphosis/models/block/flesh.json
 e6ad1f272bd9f538e16e05bb28a4c4c6d801ce2e assets/biomorphosis/models/block/fluid_storage.json
 7dc72f0313d09ac296cf0482af4d9dfb51d71e9e assets/biomorphosis/models/block/fluid_transmitter.json
+56199dbb378212d05fa20aa304fb293b5a48e519 assets/biomorphosis/models/block/fluids/acid/block.json
 1c7ef36668520d3be81afcd854f8af37d5acbd65 assets/biomorphosis/models/block/fluids/adrenaline/block.json
 ebf8f15acfed3aa55da4a750d67756f20b8b65a4 assets/biomorphosis/models/block/fluids/biomass/block.json
-daa2cab05bc4b412465048154150fb0d00ed3168 assets/biomorphosis/models/block/fluids/lymph/block.json
 11ae3686f86db7c5db516614743f5d2f3bab8e17 assets/biomorphosis/models/block/forge.json
 d0709b793dba37c6050bd9daa736b75ba97678b2 assets/biomorphosis/models/block/forge_double.json
 4aa11917b283fb7e19edd35b695da73adb669514 assets/biomorphosis/models/block/glow_moss.json

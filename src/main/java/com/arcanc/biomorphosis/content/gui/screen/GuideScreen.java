@@ -25,7 +25,7 @@ import java.util.List;
 public class GuideScreen extends Screen
 {
     public static final ResourceLocation TEXT = Database.GUI.getTexturePath("gui/book/book");
-
+	public static final ResourceLocation BIOFONT = Database.rl("default");
     private int xSize = 292;
     private int ySize = 180;
     public int guiLeft;

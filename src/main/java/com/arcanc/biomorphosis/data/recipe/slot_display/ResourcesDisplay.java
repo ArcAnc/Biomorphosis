@@ -39,9 +39,9 @@ public record ResourcesDisplay(BioBaseRecipe.ResourcesInfo resourcesInfo) implem
     public <T> @NotNull Stream<T> resolve(@NotNull ContextMap context, @NotNull DisplayContentsFactory<T> output)
     {
         return output instanceof ForFluidStacks<T> fluids ? Stream.of(
-                fluids.forStack(new FluidStack(Registration.FluidReg.BIOMASS.still().get(), resourcesInfo.biomass().perSecond())),
-                fluids.forStack(new FluidStack(Registration.FluidReg.LYMPH.still().get(), resourcesInfo.lymph().map(BioBaseRecipe.AdditionalResourceInfo :: perSecond).orElse(0))),
-                fluids.forStack(new FluidStack(Registration.FluidReg.ADRENALINE.still().get(), resourcesInfo.adrenaline().map(BioBaseRecipe.AdditionalResourceInfo :: perSecond).orElse(0)))) :
+                fluids.forStack(new FluidStack(Registration.FluidReg.BIOMASS.still().get(), (resourcesInfo.biomass().perSecond() < 1) ? 1 : (int)resourcesInfo.biomass().perSecond())),
+                fluids.forStack(new FluidStack(Registration.FluidReg.ACID.still().get(), resourcesInfo.acid().map(info -> info.perSecond() < 1 ? 1 : (int)info.perSecond()).orElse(0))),
+                fluids.forStack(new FluidStack(Registration.FluidReg.ADRENALINE.still().get(), resourcesInfo.adrenaline().map(info -> info.perSecond() < 1 ? 1 : (int)info.perSecond()).orElse(0)))) :
                 Stream.of();
     }
 

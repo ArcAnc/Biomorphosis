@@ -21,6 +21,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +92,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public FluidStack extract(FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
+    public FluidStack extract(@Nullable FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
     {
         if (mode == FaceMode.INPUT || mode == FaceMode.BLOCKED)
             return FluidStack.EMPTY;

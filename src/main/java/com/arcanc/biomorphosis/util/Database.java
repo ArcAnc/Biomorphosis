@@ -53,7 +53,7 @@ public class Database
             public static final String OPTIONAL = rl("jei.optional.title").toLanguageKey();
             public static final String PER_TICK = rl("jei.per_tick.title").toLanguageKey();
             public static final String WITH_ADRENALINE = rl("jei.with_boost.adrenaline.title").toLanguageKey();
-            public static final String WITH_LYMPH = rl("jei.with_boost.lymph.title").toLanguageKey();
+            public static final String WITH_LYMPH = rl("jei.with_boost.acid.title").toLanguageKey();
         }
     }
 
@@ -178,6 +178,7 @@ public class Database
                 public static final PageInfo V004 = new PageInfo(rl("v004"));
                 public static final PageInfo V005 = new PageInfo(rl("v005"));
 				public static final PageInfo V006 = new PageInfo(rl("v006"));
+	            public static final PageInfo V007 = new PageInfo(rl("v007"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));

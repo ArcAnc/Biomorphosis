@@ -12,9 +12,7 @@ package com.arcanc.biomorphosis.integration.jei;
 import com.arcanc.biomorphosis.content.gui.BioSlot;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
 import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
-import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -87,27 +85,27 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).add(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).add(recipe.result());
 
-        int biomassAmount = recipe.getResources().time() * recipe.getResources().biomass().perSecond();
+        int biomassAmount = (int) (recipe.getResources().time() * recipe.getResources().biomass().perSecond());
         builder.addSlot(RecipeIngredientRole.INPUT, 10, 10).
                 setFluidRenderer(biomassAmount,false,20,10).
                 add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassAmount));
 
         recipe.getResources().adrenaline().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 40, 10).
                     setFluidRenderer(amount, false, 20, 10).
                     add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ADRENALINE.still(), amount));
         });
 
-        recipe.getResources().lymph().ifPresent(info ->
+        recipe.getResources().acid().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 70, 10).
                     setFluidRenderer(amount, false, 20, 10).
-                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.LYMPH.still(), amount));
+                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount));
         });
     }
 
@@ -158,7 +156,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
                         80, 55, 0, false);
             });
 
-            recipe.getResources().lymph().ifPresent(info ->
+            recipe.getResources().acid().ifPresent(info ->
             {
                 guiGraphics.drawString(font, info.required() ?
                                 Component.translatable(Database.Integration.JeiInfo.REQUIRED) :

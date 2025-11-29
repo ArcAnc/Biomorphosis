@@ -11,8 +11,10 @@ package com.arcanc.biomorphosis.content.block.multiblock.base;
 
 import com.arcanc.biomorphosis.content.block.BioNorphDependentBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRoleBehavior;
+import com.arcanc.biomorphosis.content.block.multiblock.base.type.DynamicMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
@@ -104,10 +106,13 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
                                            @NotNull BlockPos pos,
                                            @NotNull CollisionContext context)
     {
-        BioMultiblockPart part = BlockHelper.castTileEntity(level, pos, BioMultiblockPart.class).orElse(null);
+		BioMultiblockPart part = BlockHelper.castTileEntity(level, pos, BioMultiblockPart.class).orElse(null);
         if (part == null)
             return Shapes.block();
-        
+        //FIXME: Это временная заплатка, для динамики нужно придумать другую форму. Если она вообще имеет смысл
+		if (part instanceof DynamicMultiblockPart)
+			return Shapes.block();
+		
         IMultiblockRoleBehavior role = part.getRoleBehavior().orElse(null);
         if (role == null)
             return Shapes.block();

@@ -63,7 +63,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
             return true;
         }).orElse(true);
 
-        boolean lymphCheck = this.resources.lymph().map(lymph ->
+        boolean lymphCheck = this.resources.acid().map(lymph ->
         {
             if (!lymph.required())
                 return true;
@@ -90,47 +90,47 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
         return id != null ? id.getPath() : "";
     }
 
-    public record BiomassInfo(boolean required, int perSecond)
+    public record BiomassInfo(boolean required, float perSecond)
     {
         public static final Codec<BiomassInfo> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codec.BOOL.fieldOf("required").forGetter(BiomassInfo :: required),
-                        Codec.INT.fieldOf("per_second").forGetter(BiomassInfo :: perSecond)).
+                        Codec.floatRange(0, Float.MAX_VALUE).fieldOf("per_second").forGetter(BiomassInfo :: perSecond)).
                 apply(instance, BiomassInfo :: new));
 
         public static final StreamCodec<ByteBuf, BiomassInfo> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.BOOL,
                 BiomassInfo::required,
-                ByteBufCodecs.INT,
+                ByteBufCodecs.FLOAT,
                 BiomassInfo :: perSecond,
                 BiomassInfo :: new);
     }
 
-    public record AdditionalResourceInfo(boolean required, int perSecond, float modifier)
+    public record AdditionalResourceInfo(boolean required, float perSecond, float modifier)
     {
         public static final Codec<AdditionalResourceInfo> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         Codec.BOOL.fieldOf("required").forGetter(AdditionalResourceInfo :: required),
-                        Codec.INT.fieldOf("per_second").forGetter(AdditionalResourceInfo ::perSecond),
+                        Codec.floatRange(0, Float.MAX_VALUE).fieldOf("per_second").forGetter(AdditionalResourceInfo ::perSecond),
                         Codec.floatRange(0f, 1000f).fieldOf("modifier").forGetter(AdditionalResourceInfo :: modifier)).
                 apply(instance, AdditionalResourceInfo :: new));
 
         public static final StreamCodec<ByteBuf, AdditionalResourceInfo> STREAM_CODEC = StreamCodec.composite(
                 ByteBufCodecs.BOOL,
                 AdditionalResourceInfo :: required,
-                ByteBufCodecs.INT,
+                ByteBufCodecs.FLOAT,
                 AdditionalResourceInfo ::perSecond,
                 ByteBufCodecs.FLOAT,
                 AdditionalResourceInfo :: modifier,
                 AdditionalResourceInfo :: new);
     }
 
-    public record ResourcesInfo(BiomassInfo biomass, Optional<AdditionalResourceInfo> lymph, Optional<AdditionalResourceInfo> adrenaline, int time)
+    public record ResourcesInfo(BiomassInfo biomass, Optional<AdditionalResourceInfo> acid, Optional<AdditionalResourceInfo> adrenaline, int time)
     {
         public static final Codec<ResourcesInfo> CODEC = RecordCodecBuilder.create(instance ->
                 instance.group(
                         BiomassInfo.CODEC.fieldOf("biomass").forGetter(ResourcesInfo :: biomass),
-                        AdditionalResourceInfo.CODEC.optionalFieldOf("lymph").forGetter(ResourcesInfo :: lymph),
+                        AdditionalResourceInfo.CODEC.optionalFieldOf("acid").forGetter(ResourcesInfo :: acid),
                         AdditionalResourceInfo.CODEC.optionalFieldOf("adrenaline").forGetter(ResourcesInfo :: adrenaline),
                         Codec.intRange(0, Integer.MAX_VALUE).fieldOf("time").forGetter(ResourcesInfo :: time)).
                 apply(instance, ResourcesInfo :: new));
@@ -139,7 +139,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
                 BiomassInfo.STREAM_CODEC,
                 ResourcesInfo :: biomass,
                 ByteBufCodecs.optional(AdditionalResourceInfo.STREAM_CODEC),
-                ResourcesInfo :: lymph,
+                ResourcesInfo :: acid,
                 ByteBufCodecs.optional(AdditionalResourceInfo.STREAM_CODEC),
                 ResourcesInfo :: adrenaline,
                 ByteBufCodecs.INT,

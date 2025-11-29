@@ -27,7 +27,7 @@ public class TextPageComponent extends AbstractPageComponent
     @Override
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-        Component comp = getMessage();
+		Component comp = getMessage().copy();//.withStyle(style -> style.withFont(GuideScreen.BIOFONT));
         if (!comp.getString().isBlank())
             guiGraphics.drawWordWrap(RenderHelper.mc().font, comp, getX(), getY(), getWidth(), Color.black.getRGB(), false);
     }

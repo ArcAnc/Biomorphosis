@@ -25,7 +25,6 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.ModelProvider;
 import net.minecraft.client.data.models.blockstates.*;
 import net.minecraft.client.data.models.model.*;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.item.SpecialModelWrapper;
 import net.minecraft.client.resources.model.UnbakedModel;
 import net.minecraft.core.Direction;
@@ -68,7 +67,7 @@ public class SummaryModelProvider extends ModelProvider
         itemModels.generateFlatItem(Registration.ItemReg.BOOK.get(), ModelTemplates.FLAT_ITEM);
 
         createBucketModel(Registration.FluidReg.BIOMASS, itemModels);
-        createBucketModel(Registration.FluidReg.LYMPH, itemModels);
+        createBucketModel(Registration.FluidReg.ACID, itemModels);
         createBucketModel(Registration.FluidReg.ADRENALINE, itemModels);
 
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN.getEggHolder().get(), 12654873, 7475473);
@@ -103,7 +102,7 @@ public class SummaryModelProvider extends ModelProvider
         createMultifaceModel(Registration.BlockReg.NORPH_OVERLAY.get(), blockModels);
 
         createFluidModel(Registration.FluidReg.BIOMASS, blockModels);
-        createFluidModel(Registration.FluidReg.LYMPH, blockModels);
+        createFluidModel(Registration.FluidReg.ACID, blockModels);
         createFluidModel(Registration.FluidReg.ADRENALINE, blockModels);
 
         createFluidStorage(blockModels);

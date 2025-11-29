@@ -24,7 +24,7 @@
   ],
   "resources": {
     "biomass": {
-      "per_second": 0,
+      "per_second": 0.0,
       "required": false
     },
     "time": 150

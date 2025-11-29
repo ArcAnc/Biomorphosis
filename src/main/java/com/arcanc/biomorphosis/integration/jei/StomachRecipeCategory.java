@@ -69,8 +69,9 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
                 setFluidRenderer(recipe.result().getAmount(), false, 16, 16).
                 add(NeoForgeTypes.FLUID_STACK, recipe.result());
 
-        int biomassAmount = recipe.getResources().time() * recipe.getResources().biomass().perSecond();
-        builder.addSlot(RecipeIngredientRole.INPUT, 10, 10).
+        int biomassAmount =  (int) (recipe.getResources().time() * recipe.getResources().biomass().perSecond());
+		if (biomassAmount > 0)
+            builder.addSlot(RecipeIngredientRole.INPUT, 10, 10).
                 setFluidRenderer(biomassAmount,false,20,10).
                 add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassAmount)).
                 addRichTooltipCallback((recipeSlotView, tooltip) ->
@@ -78,7 +79,7 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
 
         recipe.getResources().adrenaline().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 40, 10).
                     setFluidRenderer(amount, false, 20, 10).
@@ -87,13 +88,13 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
                             tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
         });
 
-        recipe.getResources().lymph().ifPresent(info ->
+        recipe.getResources().acid().ifPresent(info ->
         {
-            int amount = info.perSecond() * recipe.getResources().time();
+            int amount = (int) (info.perSecond() * recipe.getResources().time());
 
             builder.addSlot(RecipeIngredientRole.INPUT, 70, 10).
                     setFluidRenderer(amount, false, 20, 10).
-                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.LYMPH.still(), amount)).
+                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount)).
                     addRichTooltipCallback((recipeSlotView, tooltip) ->
                             tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
         });
@@ -143,7 +144,7 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
                         80, 55, 0, false);
             });
 
-            recipe.getResources().lymph().ifPresent(info ->
+            recipe.getResources().acid().ifPresent(info ->
             {
                 guiGraphics.drawString(font, info.required() ?
                                 Component.translatable(Database.Integration.JeiInfo.REQUIRED) :

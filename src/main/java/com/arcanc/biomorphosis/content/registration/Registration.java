@@ -1251,7 +1251,7 @@ public final class Registration
                         canHydrate(true).
                         fallDistanceModifier(0f));
 
-        public static final FluidEntry LYMPH = FluidEntry.make("lymph",
+        public static final FluidEntry ACID = FluidEntry.make("acid",
                 BioFluidType.ColorParams.constantColor(new Vector4f(230, 255, 200, 255)),
                 (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
                         MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),

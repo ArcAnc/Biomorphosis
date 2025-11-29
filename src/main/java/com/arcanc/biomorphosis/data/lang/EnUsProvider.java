@@ -82,7 +82,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
-        this.addFluidDescription(Registration.FluidReg.LYMPH, "Lymph");
+        this.addFluidDescription(Registration.FluidReg.ACID, "Acid");
         this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
 
         this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen", Database.GUI.Sounds.QUEEN, "stridulates");
@@ -129,6 +129,8 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.GuideBook.Pages.V005.textLangKey(), "\u2022 First version of village generation\n\u2022 A bit reworked multiblocks, now it's can have voxel shape of original block, but I still want more. Fully custom voxel shape will be top. And get rid from blockState to itemStack");
 		this.add(Database.GUI.GuideBook.Pages.V006.titleLangKey(), "Version: 0.0.6");
 		this.add(Database.GUI.GuideBook.Pages.V006.textLangKey(), "\u2022 Small internal changes and filled up book\n\u2022 Fixed entities not attacked and crash by missing sound.\n\u2022 A bit changed descriptions in book\n\u2022 A bit nerfed Queen Guard. He was have too much armor");
+	    this.add(Database.GUI.GuideBook.Pages.V007.titleLangKey(), "Version: 0.0.7");
+	    this.add(Database.GUI.GuideBook.Pages.V007.textLangKey(), "\u2022 Renamed lymph into acid \n\u2022 Changed recipes to work with float values of fluids");
 
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
@@ -155,13 +157,13 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey(), "You’ve learned to feed. Now, learn to break. The Crusher — it grinds, tears, reduces. From cold ore, it makes dust. From hard matter, it makes food for the Hive </recipe;biomorphosis:chamber;biomorphosis:chamber/crusher_from_chamber/>Simple, but vital. Every scream of stone becomes a whisper of progress");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FORGE.titleLangKey(), "</block;biomorphosis:forge/>BioForge");
-	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Even the Hive needs heat. Our Forge burns without fire, consumes without flame. It melts ores, cooks flesh, and does so faster than your crude furnaces</recipe;biomorphosis:chamber;biomorphosis:chamber/forge_from_chamber/>It needs no fuel — only biomass. Add lymph or adrenaline, and the process quickens, pulsing like a heart in rage. And should you desire more — evolution awaits. Feed it this: </item;biomorphosis:forge_upgrade/>How to find it? Heh... The Hive rewards those who dig deep enough");
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Even the Hive needs heat. Our Forge burns without fire, consumes without flame. It melts ores, cooks flesh, and does so faster than your crude furnaces</recipe;biomorphosis:chamber;biomorphosis:chamber/forge_from_chamber/>It needs no fuel — only biomass. Add acid or adrenaline, and the process quickens, pulsing like a heart in rage. And should you desire more — evolution awaits. Feed it this: </item;biomorphosis:forge_upgrade/>How to find it? Heh... The Hive rewards those who dig deep enough");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey(), "</block;biomorphosis:stomach/>Organic Reprocessor");
-	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "To feed the Hive, you must grow a Organic Reprocessor. It consumes meat, breaks it down, and births biomass — pure life matter. Feed it flesh, and it will pulse. Feed it lymph and adrenaline, and it will roar, devouring faster, stronger</recipe;biomorphosis:chamber;biomorphosis:chamber/stomach_from_chamber/>Everything that enters becomes part of us");
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "To feed the Hive, you must grow a Organic Reprocessor. It consumes meat, breaks it down, and births biomass — pure life matter. Feed it flesh, and it will pulse. Feed it acid and adrenaline, and it will roar, devouring faster, stronger</recipe;biomorphosis:chamber;biomorphosis:chamber/stomach_from_chamber/>Everything that enters becomes part of us");
 		
 		this.add(Database.GUI.GuideBook.Pages.CATCHER.titleLangKey(), "</block;biomorphosis:catcher/>Biofluid Extractor");
-		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "You’ve heard of lymph, haven’t you? Now you shall take it. Grow a Fluid Extractor, and lure the living close. When it bites, it drinks — drawing life from their veins. The process is... Exquisite. Painful for them, perhaps. But necessary. Be warned: some creatures are too strong to be captured by our devices. Those beasts resist the pull — you will not take them easily</recipe;biomorphosis:chamber;biomorphosis:chamber/catcher_from_chamber/>");
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "You’ve heard of acid, haven’t you? Now you shall take it. Grow a Fluid Extractor, and lure the living close. When it bites, it drinks — drawing life from their veins. The process is... Exquisite. Painful for them, perhaps. But necessary. Be warned: some creatures are too strong to be captured by our devices. Those beasts resist the pull — you will not take them easily</recipe;biomorphosis:chamber;biomorphosis:chamber/catcher_from_chamber/>");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good. Now you will learn how to let our essence flow — how to spread fluids through the veins of the Hive without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>");

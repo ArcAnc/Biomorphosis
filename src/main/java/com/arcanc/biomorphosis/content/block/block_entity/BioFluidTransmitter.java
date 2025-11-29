@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -143,8 +144,14 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             if (start.equals(Vec3.ZERO) || end.equals(Vec3.ZERO))
                 return InteractionResult.TRY_WITH_EMPTY_HAND;
             List<BlockPos> path = PathFinder.findPath(BlockPos.containing(start), getBlockPos(), BlockPos.containing(end), level);
+	        Database.LOGGER.warn("PATH:");
+			path.forEach(blockPos -> Database.LOGGER.warn("Pos: {}", blockPos.toShortString()));
             List<Vec3> edgePath = EdgePathFinder.findEdgePath(path, level);
+			Database.LOGGER.warn("Edges:");
+			edgePath.forEach(vec3 -> Database.LOGGER.warn("Edge: {}", vec3.toString()));
             List<Vec3> interpolatedPath = PathInterpolator.interpolatePath(edgePath);
+			Database.LOGGER.warn("Interpolations:");
+			interpolatedPath.forEach(vec3 -> Database.LOGGER.warn("Interpolated: {}", vec3));
             stack.remove(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA);
             this.pathData.add(new PathData(BlockPos.containing(start), BlockPos.containing(end), path, interpolatedPath));
             this.markDirty();
@@ -317,6 +324,10 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             List<Vec3> path = new ArrayList<>();
             path.add(bestStart);
             Vec3 current = bestStart;
+			
+			Set<Vec3> visited = new HashSet<>();
+			visited.add(current);
+			
             if (canReach)
             {
                 while (!current.equals(bestNext))
@@ -324,25 +335,37 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                     List<Vec3> connected = getConnectedEdges(current, start, level);
                     if (connected.isEmpty())
                         return null;
+					
+					connected.removeIf(visited :: contains);
+					if (connected.isEmpty())
+						return null;
+					
                     Vec3 finalBestNext = bestNext;
                     connected.sort(Comparator.comparingDouble(vec3 -> vec3.distanceToSqr(finalBestNext)));
                     Vec3 closest = connected.getFirst();
                     path.add(closest);
+					visited.add(closest);
                     current = closest;
                 }
             }
             else
             {
                 Vec3 finish = startEdgesSorted.getFirst();
-
+				
                 while (!current.equals(finish))
                 {
                     List<Vec3> connected = getConnectedEdges(current, start, level);
                     if (connected.isEmpty())
                         return null;
+					
+					connected.removeIf(visited :: contains);
+					if (connected.isEmpty())
+						return null;
+					
                     connected.sort(Comparator.comparingDouble(vec3 -> heuristic(vec3, nextEdges)));
                     Vec3 closest = connected.getFirst();
                     path.add(closest);
+					visited.add(closest);
                     current = closest;
                 }
 

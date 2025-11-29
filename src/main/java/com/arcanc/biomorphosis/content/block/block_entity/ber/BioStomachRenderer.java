@@ -75,8 +75,8 @@ public class BioStomachRenderer extends GeoBlockRenderer<BioStomach>
         pose.pushPose();
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
         RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder builder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         RenderSystem.enableDepthTest();
 
         PoseStack.Pose matrix = pose.last();

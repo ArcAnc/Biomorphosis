@@ -41,7 +41,7 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
         BasicSidedStorage.RelativeFace face = DirectionHelper.getRelativeDirection(getBlockState(), dir);
         this.config.nextMode(face);
         this.markDirty();
-        if (level != null && level.isClientSide())
+        if (this.level != null && this.level.isClientSide())
             requestModelDataUpdate();
     }
 
@@ -94,28 +94,40 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
     protected static final class ConsumedFluidsData
     {
         public int biomass = 0;
-        public int lymph = 0;
+        public int acid = 0;
         public int adrenaline = 0;
 
+		public float biomassReminder = 0.0f;
+		public float acidRemainder = 0.0f;
+		public float adrenalineReminder = 0.0f;
+		
         public void clearData()
         {
             this.biomass = 0;
-            this.lymph = 0;
+            this.acid = 0;
             this.adrenaline = 0;
         }
 
         public void writeData(@NotNull CompoundTag tag)
         {
             tag.putInt("biomass", this.biomass);
-            tag.putInt("lymph", this.lymph);
+            tag.putInt("acid", this.acid);
             tag.putInt("adrenaline", this.adrenaline);
+			
+			tag.putFloat("biomass_remainder", this.biomassReminder);
+			tag.putFloat("acid_remainder", this.acidRemainder);
+			tag.putFloat("adrenaline_remainder", this.adrenalineReminder);
         }
 
         public void readData(@NotNull CompoundTag tag)
         {
             this.biomass = tag.getInt("biomass");
-            this.lymph = tag.getInt("lymph");
+            this.acid = tag.getInt("acid");
             this.adrenaline = tag.getInt("adrenaline");
+			
+			this.biomassReminder = tag.getFloat("biomass_remainder");
+			this.acidRemainder = tag.getFloat("acid_remainder");
+			this.adrenalineReminder = tag.getFloat("adrenaline_remainder");
         }
     }
 }
