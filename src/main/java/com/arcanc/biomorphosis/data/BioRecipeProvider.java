@@ -96,7 +96,7 @@ public class BioRecipeProvider extends RecipeProvider
                     Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 1.5f)),
                     Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
                     100)).
-                setInput(new IngredientWithSize(tag(ItemTags.MEAT))).
+                setInput(new IngredientWithSize(tag(Tags.Items.FOODS))).
                 setResult(new FluidStack(Registration.FluidReg.ACID.still(), 700)).
         unlockedBy("has_meat", has(ItemTags.MEAT)).
         save(this.output, Database.rl("biomass_from_meat").toString());

@@ -2,7 +2,7 @@
   "type": "biomorphosis:stomach",
   "input": {
     "amount": 1,
-    "ingredient": "#minecraft:meat"
+    "ingredient": "#c:foods"
   },
   "resources": {
     "acid": {

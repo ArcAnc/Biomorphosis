@@ -1,4 +1,4 @@
-// 1.21.4	2025-11-29T23:54:32.344802805	Biomorphosis: Recipes
+// 1.21.4	2025-11-30T00:16:22.660955185	Biomorphosis: Recipes
 7d25e1036bf98012c7665c6fb15b598b4537acd9 data/biomorphosis/advancement/recipes/chamber/catcher_from_chamber.json
 320fe725b599fa17abc98eb018c1ec19bb415206 data/biomorphosis/advancement/recipes/chamber/chest_from_chamber.json
 b7854b4561c7ccddf83c707ae9705eec2d76ffc2 data/biomorphosis/advancement/recipes/chamber/crusher_from_chamber.json
@@ -352,7 +352,7 @@ b1fca24dcb7ef5d0811f8a4308d35758484e36f4 data/biomorphosis/recipe/forge/smooth_s
 cf958c9a02c67debca2fcc995a865cadfdaa5b25 data/biomorphosis/recipe/forge/yellow_glazed_terracotta.json
 1ad272a590fd842c64bc632897f8ae9086562441 data/biomorphosis/recipe/multiblock_morpher.json
 d5306dbb48755c49df4a7ebcb79a36297d47dc6e data/biomorphosis/recipe/norph_source.json
-8dbc4223c03d8a30ec233f03b0c48ec7562151b8 data/biomorphosis/recipe/stomach/biomass_from_meat.json
+b025826641edf647a726d40ab6d4058421542dfd data/biomorphosis/recipe/stomach/biomass_from_meat.json
 71adc7a523c1d3e0c7972f42459cde543915eda2 data/minecraft/advancement/recipes/misc/flesh.json
 ef52845315a60dcbe0c2ceea695d9d090e5df202 data/minecraft/advancement/recipes/misc/flesh_piece.json
 a425d4c11e5ca54d90b27aa340e95c47b1adf06c data/minecraft/recipe/flesh.json
