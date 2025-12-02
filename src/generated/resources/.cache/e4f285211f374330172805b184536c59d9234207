@@ -1,4 +1,4 @@
-// 1.21.4	2025-11-29T23:02:19.326012836	Biomorphosis: Models
+// 1.21.4	2025-12-02T06:50:06.38070933	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
@@ -36,6 +36,7 @@ c4adf471770703d34e2091a32822500eb9138a89 assets/biomorphosis/blockstates/prop_2.
 c2f9945bb3bc7b48c66941ff485d2d708d05f93b assets/biomorphosis/blockstates/roof_dirt.json
 2454865c1f6a224430fffe7474e43eb35d476549 assets/biomorphosis/blockstates/roof_slab.json
 3a177c844bb3fcc5353ab6154f579a40a3d0749d assets/biomorphosis/blockstates/roof_stairs.json
+18a37a55b52e4d636f6619fa9229fc2bfa6d29e0 assets/biomorphosis/blockstates/squeezer.json
 a9eef4bbfbe949e3cb98580a3b86cbcc941c8e4d assets/biomorphosis/blockstates/stomach.json
 ed18736ddc17c85fdb468f2837da0892393ca016 assets/biomorphosis/blockstates/trampled_dirt.json
 fa958b9b103f7e47d72bf2d20a0fbfb789fb1b4e assets/biomorphosis/items/book.json
@@ -88,6 +89,7 @@ ede2aac154bb05c4b9d66e804c719c731153a9d5 assets/biomorphosis/items/spawning_egg_
 da74ceb0bdff9030aeea269c47e184088dafccf3 assets/biomorphosis/items/spawning_egg_swarmling.json
 b90a2094b5d998dd64442999d6cdd00087a45e13 assets/biomorphosis/items/spawning_egg_worker.json
 ac0646b25136484f07c886acc04f9673629da272 assets/biomorphosis/items/spawning_egg_ziris.json
+529ae53441bb260cd4135282dd4b4e95f0e5576e assets/biomorphosis/items/squeezer.json
 40bce3a42e47be4e788ae4add381515809868474 assets/biomorphosis/items/stomach.json
 14a1c919785bd3419cfb5f81cfdef9ce69de3479 assets/biomorphosis/items/trampled_dirt.json
 a4847fb15f4727616405b1d7b8713335bd0e4a62 assets/biomorphosis/items/wrench.json
@@ -141,6 +143,7 @@ de66fb8f6c4277b9fa48f408400c9e326e02f3a6 assets/biomorphosis/models/block/roof.j
 6113cdb655bf8b8b8651dcde6f73f237560c5d71 assets/biomorphosis/models/block/roof_stairs.json
 05865f33e18e65a800f85d335563c2dfc3148198 assets/biomorphosis/models/block/roof_stairs_inner.json
 97f063c88335df46297aadb3ec8fed4516e3582a assets/biomorphosis/models/block/roof_stairs_outer.json
+05351e6f964e2798812f3ea4a6de7615281c6ae2 assets/biomorphosis/models/block/squeezer.json
 711d7d5404a3b1e8a17dbfa94c532dc386197846 assets/biomorphosis/models/block/stomach.json
 9b28babd3925f7a2cc3d01d6acae85b84f36e9ca assets/biomorphosis/models/block/trampled_dirt.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json

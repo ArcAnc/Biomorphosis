@@ -11,15 +11,19 @@
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:grindstone"
+      "ingredient": "minecraft:shears"
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:stone"
+      "ingredient": "#c:barrels/wooden"
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:stone"
+      "ingredient": "minecraft:leather"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:leather"
     },
     {
       "amount": 1,
@@ -35,6 +39,6 @@
   },
   "result": {
     "count": 1,
-    "id": "biomorphosis:crusher"
+    "id": "biomorphosis:squeezer"
   }
 }

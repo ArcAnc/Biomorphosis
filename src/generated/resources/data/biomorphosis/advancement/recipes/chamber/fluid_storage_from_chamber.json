@@ -1,11 +1,21 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_barrel": {
+    "has_barrels/wooden": {
       "conditions": {
         "items": [
           {
             "items": "#c:barrels/wooden"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_bucket": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:bucket"
           }
         ]
       },
@@ -41,8 +51,9 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_barrel",
+      "has_barrels/wooden",
       "has_flesh",
+      "has_bucket",
       "has_norph"
     ]
   ],

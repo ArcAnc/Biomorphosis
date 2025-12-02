@@ -156,6 +156,14 @@ public class BioBookProvider extends BioRegistryData
 			    addTags("forge").
 			    end());
 	    
+	    addPage(Database.GUI.GuideBook.Pages.SQUEEZER.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.SQUEEZER.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.SQUEEZER.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("squeezer").
+			    end());
+		
 	    addPage(Database.GUI.GuideBook.Pages.STOMACH.location(), BookPageBuilder.newPage().
 			    setAuthor("ArcAnc").
 			    setTitle(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey()).

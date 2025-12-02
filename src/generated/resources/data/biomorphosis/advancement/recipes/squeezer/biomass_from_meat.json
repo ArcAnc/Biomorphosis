@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_meat": {
+    "has_food": {
       "conditions": {
         "items": [
           {
-            "items": "#minecraft:meat"
+            "items": "#c:foods"
           }
         ]
       },
@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomorphosis:stomach/biomass_from_meat"
+        "recipe": "biomorphosis:squeezer/biomass_from_meat"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -21,12 +21,12 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_meat"
+      "has_food"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomorphosis:stomach/biomass_from_meat"
+      "biomorphosis:squeezer/biomass_from_meat"
     ]
   }
 }

@@ -11,10 +11,8 @@ package com.arcanc.biomorphosis.data;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
-import com.arcanc.biomorphosis.data.recipe.builders.ChamberRecipeBuilder;
-import com.arcanc.biomorphosis.data.recipe.builders.CrusherRecipeBuilder;
-import com.arcanc.biomorphosis.data.recipe.builders.ForgeRecipeBuilder;
-import com.arcanc.biomorphosis.data.recipe.builders.StomachRecipeBuilder;
+import com.arcanc.biomorphosis.data.recipe.SqueezerRecipe;
+import com.arcanc.biomorphosis.data.recipe.builders.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
@@ -22,10 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.mojang.serialization.JsonOps;
-import net.minecraft.client.color.item.Dye;
-import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
@@ -40,14 +35,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.InfestedBlock;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.parsers.SAXParser;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -98,17 +92,30 @@ public class BioRecipeProvider extends RecipeProvider
                     100)).
                 setInput(new IngredientWithSize(tag(Tags.Items.FOODS))).
                 setResult(new FluidStack(Registration.FluidReg.ACID.still(), 700)).
-        unlockedBy("has_meat", has(ItemTags.MEAT)).
-        save(this.output, Database.rl("biomass_from_meat").toString());
+        unlockedBy("has_food", has(Tags.Items.FOODS)).
+        save(this.output, Database.rl("acid_from_foods").toString());
+	    
+	    SqueezerRecipeBuilder.newBuilder(
+			    new BioBaseRecipe.ResourcesInfo(
+					    new BioBaseRecipe.BiomassInfo(false, 0.0f),
+					    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(true, 0.25f, 1f)),
+					    Optional.of(new BioBaseRecipe.AdditionalResourceInfo(false, 0.25f, 0.5f)),
+					    100)).
+			    setInput(new IngredientWithSize(tag(Tags.Items.FOODS))).
+			    setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
+			    unlockedBy("has_food", has(Tags.Items.FOODS)).
+			    save(this.output, Database.rl("biomass_from_foods").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
+		        addInput(new IngredientWithSize(Ingredient.of(Items.BUCKET))).
                 addInput(new IngredientWithSize(tag(Tags.Items.BARRELS_WOODEN))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
                 setResult(new ItemStack(Registration.BlockReg.FLUID_STORAGE)).
-        unlockedBy(getHasName(Items.BARREL), has(Tags.Items.BARRELS_WOODEN)).
+        unlockedBy("has_" + Tags.Items.BARRELS_WOODEN.location().getPath(), has(Tags.Items.BARRELS_WOODEN)).
         unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+		unlockedBy(getHasName(Items.BUCKET), has(Items.BUCKET)).
         unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
         save(this.output, Database.rl("fluid_storage_from_chamber").toString());
 	    
@@ -152,15 +159,31 @@ public class BioRecipeProvider extends RecipeProvider
         ChamberRecipeBuilder.newBuilder(400).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
-                addInput(new IngredientWithSize(Ingredient.of(Items.SHEARS))).
+                addInput(new IngredientWithSize(Ingredient.of(Items.GRINDSTONE))).
                 addInput(new IngredientWithSize(Ingredient.of(Items.STONE))).
                 addInput(new IngredientWithSize(Ingredient.of(Items.STONE))).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
                 setResult(new ItemStack(Registration.BlockReg.CRUSHER)).
-        unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS)).
+        unlockedBy(getHasName(Items.GRINDSTONE), has(Items.GRINDSTONE)).
         unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
         unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
         save(this.output, Database.rl("crusher_from_chamber").toString());
+	    
+	    ChamberRecipeBuilder.newBuilder(400).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.NORPH))).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+			    addInput(new IngredientWithSize(Ingredient.of(Items.SHEARS))).
+			    addInput(new IngredientWithSize(tag(Tags.Items.BARRELS_WOODEN))).
+			    addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER))).
+			    addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER))).
+			    addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+			    setResult(new ItemStack(Registration.BlockReg.SQUEEZER)).
+		unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS)).
+		unlockedBy(getHasName(Registration.BlockReg.NORPH), has(Registration.BlockReg.NORPH)).
+		unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+		unlockedBy("has_" + Tags.Items.BARRELS_WOODEN.location().getPath(), has(Tags.Items.BARRELS_WOODEN)).
+		unlockedBy(getHasName(Items.LEATHER), has(Items.LEATHER)).
+		save(this.output, Database.rl("squeezer_from_chamber").toString());
 
         ChamberRecipeBuilder.newBuilder(400).
                 addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).

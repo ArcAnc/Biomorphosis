@@ -300,7 +300,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     {
         controllers.add(new AnimationController<>(this, "work_controller", 10, state ->
         {
-            if (this.isWorking)
+			if (this.isWorking)
                 return state.setAndContinue(WORK);
             return PlayState.STOP;
         }));

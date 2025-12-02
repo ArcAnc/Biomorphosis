@@ -45,6 +45,7 @@ public class Database
             public static final ResourceLocation ID = rl("plugin");
             public static final String CHAMBER_RECIPE_NAME = rl("jei.chamber.recipe_category.title").toLanguageKey();
             public static final String CRUSHER_RECIPE_NAME = rl("jei.crusher.recipe_category.title").toLanguageKey();
+	        public static final String SQUEEZER_RECIPE_NAME = rl("jei.squeezer.recipe_category.title").toLanguageKey();
             public static final String STOMACH_RECIPE_NAME = rl("jei.stomach.recipe_category.title").toLanguageKey();
             public static final String FORGE_RECIPE_NAME = rl("jei.forge.recipe_category.title").toLanguageKey();
 
@@ -184,6 +185,7 @@ public class Database
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
 				public static final PageInfo STORAGES = new PageInfo(rl("storages"));
 				public static final PageInfo CRUSHER = new PageInfo(rl("crusher"));
+				public static final PageInfo SQUEEZER = new PageInfo(rl("squeezer"));
 				public static final PageInfo FORGE = new PageInfo(rl("forge"));
 				public static final PageInfo STOMACH = new PageInfo(rl("stomach"));
 				public static final PageInfo CATCHER = new PageInfo(rl("catcher"));

@@ -17,10 +17,7 @@ import com.arcanc.biomorphosis.content.gui.component.icon.FluidIcon;
 import com.arcanc.biomorphosis.content.gui.component.info.ProgressInfoArea;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
-import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
-import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
-import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
+import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
@@ -71,6 +68,7 @@ public class RecipeRenderHandler
         event.addRenderer(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get(), new CrusherRecipeRenderer());
         event.addRenderer(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get(), new ForgeRecipeRenderer());
         event.addRenderer(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get(), new StomachRecipeRenderer());
+		event.addRenderer(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get(), new SqueezerRecipeRenderer());
     }
 
     private static class CraftingRecipeRenderer implements RecipeRenderer
@@ -755,4 +753,115 @@ public class RecipeRenderHandler
             return 100;
         }
     }
+	
+	private static class SqueezerRecipeRenderer implements RecipeRenderer
+	{
+		private int progress;
+		private int maxTime;
+		private final ProgressInfoArea progressArrow = new ProgressInfoArea(new Rect2i(55, -61, 20, 20), new ProgressInfoArea.ProgressInfo(() -> this.progress, () -> this.maxTime));
+		
+		@Override
+		public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+		{
+			if (!(recipe instanceof SqueezerRecipe squeezerRecipe))
+				return;
+			Minecraft mc = RenderHelper.mc();
+			Font font = mc.font;
+			ItemStack highlighted = ItemStack.EMPTY;
+			boolean shift = GuideScreen.hasShiftDown();
+			
+			IngredientWithSize input = squeezerRecipe.input();
+			ItemStack stack = RenderHelper.getStackAtCurrentTime(input);
+			
+			guiGraphics.pose().pushPose();
+			guiGraphics.pose().translate(xPos, yPos, 0);
+			guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+			guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+			
+			guiGraphics.renderItem(stack, 42, 35);
+			if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
+				highlighted = stack;
+			
+			squeezerRecipe.getResources().adrenaline().ifPresent(info ->
+			{
+				FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ADRENALINE.still(), (int) (info.perSecond() * squeezerRecipe.getResources().time())));
+				icon.render(guiGraphics, 40, 10, 20, 10);
+			});
+			
+			squeezerRecipe.getResources().acid().ifPresent(info ->
+			{
+				FluidIcon icon = new FluidIcon(new FluidStack(Registration.FluidReg.ACID.still(), (int) (info.perSecond() * squeezerRecipe.getResources().time())));
+				icon.render(guiGraphics, 70, 10, 20, 10);
+			});
+			
+			if (!shift)
+			{
+				guiGraphics.pose().pushPose();
+				guiGraphics.pose().scale(0.6f, 0.6f, 0.6f);
+				guiGraphics.drawString(font, Component.translatable(Database.GUI.HOLD_SHIFT), 5, 1, 0, false);
+				guiGraphics.pose().popPose();
+			}
+			else
+			{
+				guiGraphics.pose().pushPose();
+				guiGraphics.pose().scale(0.5f, 0.5f, 0.5f);
+				
+				squeezerRecipe.getResources().adrenaline().ifPresent(info ->
+				{
+					guiGraphics.drawString(font, info.required() ?
+									Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+									Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+							80, 5, 0, false);
+					guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_ADRENALINE, info.modifier()),
+							80, 45, 0, false);
+					guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+							80, 55, 0, false);
+				});
+				
+				squeezerRecipe.getResources().acid().ifPresent(info ->
+				{
+					guiGraphics.drawString(font, info.required() ?
+									Component.translatable(Database.Integration.JeiInfo.REQUIRED) :
+									Component.translatable(Database.Integration.JeiInfo.OPTIONAL),
+							140, 5, 0, false);
+					guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.WITH_LYMPH, info.modifier()),
+							140, 45, 0, false);
+					guiGraphics.drawString(font, Component.translatable(Database.Integration.JeiInfo.PER_TICK, info.perSecond()),
+							140, 55, 0, false);
+				});
+				guiGraphics.pose().popPose();
+			}
+			
+			FluidIcon result = new FluidIcon(squeezerRecipe.result());
+			result.render(guiGraphics, 42, 80, 16, 16);
+			
+			this.maxTime = squeezerRecipe.getResources().time();
+			this.progress = (int)(System.currentTimeMillis() / 10 % maxTime);
+			
+			guiGraphics.pose().pushPose();
+			guiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(90));
+			this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
+			guiGraphics.pose().popPose();
+			
+			guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+			guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(squeezerRecipe.getResources().time())), 5, 65, 0, false);
+			
+			guiGraphics.pose().popPose();
+			
+			if (!highlighted.isEmpty())
+				guiGraphics.renderTooltip(mc.font, Screen.getTooltipFromItem(mc, highlighted), highlighted.getTooltipImage(), mouseX, mouseY);
+		}
+		
+		@Override
+		public int getHeight()
+		{
+			return 100;
+		}
+		
+		@Override
+		public int getWidth()
+		{
+			return 100;
+		}
+	}
 }

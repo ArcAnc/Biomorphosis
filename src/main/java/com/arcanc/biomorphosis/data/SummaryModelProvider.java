@@ -111,6 +111,7 @@ public class SummaryModelProvider extends ModelProvider
         createStomachModel(blockModels);
         createCatcherModel(blockModels);
         createForgeModel(blockModels);
+		createSqueezerModel(blockModels);
 
         createMultiblockFluidStorage(blockModels);
         createMultiblockChamberModel(blockModels);
@@ -131,8 +132,8 @@ public class SummaryModelProvider extends ModelProvider
         createHangingMoss(blockModels);
         createEggsModel(blockModels);
     }
-
-    //------------------------------------------------------------------------------
+	
+	//------------------------------------------------------------------------------
     // ITEM MODELS
     //------------------------------------------------------------------------------
     private void createBucketModel(@NotNull Registration.FluidReg.FluidEntry fluidEntry, @NotNull ItemModelGenerators itemModels)
@@ -152,7 +153,483 @@ public class SummaryModelProvider extends ModelProvider
     //------------------------------------------------------------------------------
     // BLOCK MODELS
     //------------------------------------------------------------------------------
-
+	
+	private void createSqueezerModel(@NotNull BlockModelGenerators blockModels)
+	{
+		DeferredBlock<BioSqueezerBlock> block = Registration.BlockReg.SQUEEZER;
+		
+		ResourceLocation blockLoc = TextureMapping.getBlockTexture(block.get());
+		
+		TextureMapping mapping = new TextureMapping().
+				put(TextureSlot.ALL, blockLoc).
+				put(TextureSlot.PARTICLE, blockLoc);
+		
+		ExtendedModelTemplateBuilder template = BLOCK.extend().
+				renderType("solid").
+				requiredTextureSlot(TextureSlot.ALL).
+				requiredTextureSlot(TextureSlot.PARTICLE).
+				guiLight(UnbakedModel.GuiLight.SIDE).
+				element(elementBuilder -> elementBuilder.
+						from(0, 0, 0).
+						to(16, 1, 16).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(2, 2, 4, 2.125f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(0, 2, 2, 2.125f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6, 2, 8, 2.125f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(4, 2, 6, 2.125f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(4, 2, 2, 0)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6, 0, 4, 2)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(2, 1, 2).
+						to(14, 6, 14).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(-45).
+								axis(Direction.Axis.Y).
+								origin(8, 1, 8)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(1.5f, 3.625f, 3, 4.25f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(0, 3.625f, 1.5f, 4.25f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(4.5f, 3.625f, 6, 4.25f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(3, 3.625f, 4.5f, 4.25f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(3, 3.625f, 1.5f, 2.125f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(4.5f, 2.125f, 3, 3.625f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1, 1, 1).
+						to(3, 5, 3).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(2, 1, 2)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.25f, 3.5f, 6.5f, 4)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6, 3.5f, 6.25f, 4)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 3.5f, 7, 4)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.5f, 3.5f, 6.75f, 4)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.5f, 3.5f, 6.25f, 3.25f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.75f, 3.25f, 6.5f, 3.5f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.5f, 4, 1.5f).
+						to(2.5f, 11, 2.5f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(5.125f, 6.25f, 5.25f, 7.125f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(5, 6.25f, 5.125f, 7.125f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(5.375f, 6.25f, 5.5f, 7.125f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(5.25f, 6.25f, 5.375f, 7.125f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(5.25f, 6.25f, 5.125f, 6.125f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(5.375f, 6.125f, 5.25f, 6.25f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.05619f, 10.14395f, 1.03723f).
+						to(3.05619f, 12.14395f, 3.03723f).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(2.05619f, 11.14395f, 2.03723f)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(5.75f, 6.375f, 6, 6.625f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(5.5f, 6.375f, 5.75f, 6.625f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.25f, 6.375f, 6.5f, 6.625f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6, 6.375f, 6.25f, 6.625f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6, 6.375f, 5.75f, 6.125f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.25f, 6.125f, 6, 6.375f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.55619f, 12.14395f, 1.53723f).
+						to(2.55619f, 16.14395f, 2.53723f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(2.125f, 6.875f, 2.25f, 7.375f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(2, 6.875f, 2.125f, 7.375f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(2.375f, 6.875f, 2.5f, 7.375f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(2.25f, 6.875f, 2.375f, 7.375f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(2.25f, 6.875f, 2.125f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(2.375f, 6.75f, 2.25f, 6.875f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12.75762f, 0.93372f, 12.76052f).
+						to(14.75762f, 4.93372f, 14.76052f).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(13.75762f, 0.93372f, 13.76052f)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.25f, 4.25f, 6.5f, 4.75f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6, 4.25f, 6.25f, 4.75f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 4.25f, 7, 4.75f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.5f, 4.25f, 6.75f, 4.75f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.5f, 4.25f, 6.25f, 4)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.75f, 4, 6.5f, 4.25f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(13.25762f, 3.93372f, 13.26052f).
+						to(14.25762f, 10.93372f, 14.26052f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.625f, 5.625f, 6.75f, 6.5f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6.5f, 5.625f, 6.625f, 6.5f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.875f, 5.625f, 7, 6.5f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.75f, 5.625f, 6.875f, 6.5f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.75f, 5.625f, 6.625f, 5.5f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.875f, 5.5f, 6.75f, 5.625f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12.81381f, 10.07767f, 12.79775f).
+						to(14.81381f, 12.07767f, 14.79775f).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(13.81381f, 10.07767f, 13.79775f)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 6.75f, 7, 7)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6.5f, 6.75f, 6.75f, 7)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(7.25f, 6.75f, 7.5f, 7)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(7, 6.75f, 7.25f, 7)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(7, 6.75f, 6.5f, 6.5f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(7.25f, 6.5f, 7, 6.75f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(13.31381f, 12.07767f, 13.29775f).
+						to(14.31381f, 16.07767f, 14.29775f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(2.625f, 6.875f, 2.75f, 7.375f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(2.5f, 6.875f, 2.625f, 7.375f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(2.875f, 6.875f, 3, 7.375f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(2.75f, 6.875f, 2.875f, 7.375f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(2.75f, 6.875f, 2.625f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(2.875f, 6.75f, 2.75f, 6.875f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1, 1, 12).
+						to(3, 5, 14).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(2, 1, 13)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.25f, 5, 6.5f, 5.5f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6, 5, 6.25f, 5.5f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 5, 7, 5.5f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.5f, 5, 6.75f, 5.5f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.5f, 5, 6.25f, 4.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.75f, 4.75f, 6.5f, 5)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.5f, 4, 12.5f).
+						to(2.5f, 11, 13.5f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(5.625f, 6.75f, 5.75f, 7.625f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(5.5f, 6.75f, 5.625f, 7.625f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(5.875f, 6.75f, 6, 7.625f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(5.75f, 6.75f, 5.875f, 7.625f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(5.75f, 6.75f, 5.625f, 6.625f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(5.875f, 6.625f, 5.75f, 6.75f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.05619f, 10.14395f, 12.03723f).
+						to(3.05619f, 12.14395f, 14.03723f).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(2.05619f, 10.14395f, 13.03723f)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(0.25f, 7, 0.5f, 7.25f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(0, 7, 0.25f, 7.25f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(0.75f, 7, 1, 7.25f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(0.5f, 7, 0.75f, 7.25f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(0.5f, 7, 0.25f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(0.75f, 6.75f, 0.5f, 7)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(1.55619f, 12.14395f, 12.53723f).
+						to(2.55619f, 16.14395f, 13.53723f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(3.125f, 6.875f, 3.25f, 7.375f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(3, 6.875f, 3.125f, 7.375f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(3.375f, 6.875f, 3.5f, 7.375f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(3.25f, 6.875f, 3.375f, 7.375f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(3.25f, 6.875f, 3.125f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(3.375f, 6.75f, 3.25f, 6.875f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12, 1, 1).
+						to(14, 5, 3).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(13, 1, 2)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(4.25f, 6.375f, 4.5f, 6.875f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(4, 6.375f, 4.25f, 6.875f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(4.75f, 6.375f, 5, 6.875f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(4.5f, 6.375f, 4.75f, 6.875f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(4.5f, 6.375f, 4.25f, 6.125f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(4.75f, 6.125f, 4.5f, 6.375f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12.5f, 4, 1.5f).
+						to(13.5f, 11, 2.5f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.125f, 6.75f, 6.25f, 7.625f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6, 6.75f, 6.125f, 7.625f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.375f, 6.75f, 6.5f, 7.625f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.25f, 6.75f, 6.375f, 7.625f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.25f, 6.75f, 6.125f, 6.625f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.375f, 6.625f, 6.25f, 6.75f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12.05619f, 10.14395f, 1.03723f).
+						to(14.05619f, 12.14395f, 3.03723f).
+						rotation(rotationBuilder -> rotationBuilder.
+								angle(45).
+								axis(Direction.Axis.Y).
+								origin(13.05619f, 10.14395f, 2.03723f)).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(1.25f, 7, 1.5f, 7.25f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(1, 7, 1.25f, 7.25f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(1.75f, 7, 2, 7.25f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(1.5f, 7, 1.75f, 7.25f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(1.5f, 7, 1.25f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(1.75f, 6.75f, 1.5f, 7)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(12.55619f, 12.14395f, 1.53723f).
+						to(13.55619f, 16.14395f, 2.53723f).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(3.625f, 6.875f, 3.75f, 7.375f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(3.5f, 6.875f, 3.625f, 7.375f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(3.875f, 6.875f, 4, 7.375f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(3.75f, 6.875f, 3.875f, 7.375f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(3.75f, 6.875f, 3.625f, 6.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(3.875f, 6.75f, 3.75f, 6.875f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(3, 7, 3).
+						to(13, 9, 5).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(0, 5.5f, 1.25f, 5.75f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(2.75f, 5.5f, 3, 5.75f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(1.5f, 5.5f, 2.75f, 5.75f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(1.25f, 5.5f, 1.5f, 5.75f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(1.5f, 5.5f, 1.25f, 4.25f).rotation(FaceRotation.COUNTERCLOCKWISE_90)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(1.75f, 4.25f, 1.5f, 5.5f).rotation(FaceRotation.CLOCKWISE_90)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(3, 7, 5).
+						to(5, 9, 11).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(0.75f, 6.5f, 1, 6.75f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(0, 6.5f, 0.75f, 6.75f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(1.75f, 6.5f, 2, 6.75f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(1, 6.5f, 1.75f, 6.75f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(1, 6.5f, 0.75f, 5.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(1.25f, 5.75f, 1, 6.5f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(11, 7, 5).
+						to(13, 9, 11).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(2.75f, 6.5f, 3, 6.75f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(2, 6.5f, 2.75f, 6.75f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(3.75f, 6.5f, 4, 6.75f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(3, 6.5f, 3.75f, 6.75f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(3, 6.5f, 2.75f, 5.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(3.25f, 5.75f, 3, 6.5f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(3, 7, 11).
+						to(13, 9, 13).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(3, 5.5f, 4.25f, 5.75f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(5.75f, 5.5f, 6, 5.75f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(4.5f, 5.5f, 5.75f, 5.75f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(4.25f, 5.5f, 4.5f, 5.75f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(4.5f, 5.5f, 4.25f, 4.25f).rotation(FaceRotation.COUNTERCLOCKWISE_90)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(4.75f, 4.25f, 4.5f, 5.5f).rotation(FaceRotation.CLOCKWISE_90)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(4, 6, 10).
+						to(12, 7, 12).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(4.25f, 6, 5.25f, 6.125f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(4, 6, 4.25f, 6.125f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(5.5f, 6, 6.5f, 6.125f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(5.25f, 6, 5.5f, 6.125f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(5.25f, 6, 4.25f, 5.75f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(6.25f, 5.75f, 5.25f, 6)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(4, 6, 4).
+						to(12, 7, 6).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6.25f, 2.375f, 7.25f, 2.5f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(6, 2.375f, 6.25f, 2.5f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(7.5f, 2.375f, 8.5f, 2.5f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(7.25f, 2.375f, 7.5f, 2.5f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(7.25f, 2.375f, 6.25f, 2.125f)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(8.25f, 2.125f, 7.25f, 2.375f)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(10, 6, 6).
+						to(12, 7, 10).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6, 2.75f, 6.25f, 2.875f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(7, 2.75f, 7.5f, 2.875f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 2.75f, 7, 2.875f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.25f, 2.75f, 6.75f, 2.875f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.75f, 2.75f, 6.25f, 2.5f).
+								rotation(FaceRotation.COUNTERCLOCKWISE_90)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(7.25f, 2.5f, 6.75f, 2.75f).
+								rotation(FaceRotation.CLOCKWISE_90)).
+						texture(TextureSlot.ALL)).
+				element(elementBuilder -> elementBuilder.
+						from(4, 6, 6).
+						to(6, 7, 10).
+						face(Direction.NORTH, faceBuilder -> faceBuilder.
+								uvs(6, 3.125f, 6.25f, 3.25f)).
+						face(Direction.EAST, faceBuilder -> faceBuilder.
+								uvs(7, 3.125f, 7.5f, 3.25f)).
+						face(Direction.SOUTH, faceBuilder -> faceBuilder.
+								uvs(6.75f, 3.125f, 7, 3.25f)).
+						face(Direction.WEST, faceBuilder -> faceBuilder.
+								uvs(6.25f, 3.125f, 6.75f, 3.25f)).
+						face(Direction.UP, faceBuilder -> faceBuilder.
+								uvs(6.75f, 3.125f, 6.25f, 2.875f).
+								rotation(FaceRotation.COUNTERCLOCKWISE_90)).
+						face(Direction.DOWN, faceBuilder -> faceBuilder.
+								uvs(7.25f, 2.875f, 6.75f, 3.125f).
+								rotation(FaceRotation.CLOCKWISE_90)).
+						texture(TextureSlot.ALL));
+		
+		ResourceLocation model = new TexturedModel(mapping, template.build()).create(block.get(), blockModels.modelOutput);
+		blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block.get(), Variant.variant().with(VariantProperties.MODEL, model)));
+	}
+	
     private void createEggsModel(@NotNull BlockModelGenerators blockModels)
     {
         DeferredBlock<BioBaseEntityBlock<EggsDeco>> block = Registration.BlockReg.EGGS_DECO;

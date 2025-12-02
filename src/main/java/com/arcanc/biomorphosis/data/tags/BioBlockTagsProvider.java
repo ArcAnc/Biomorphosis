@@ -38,6 +38,7 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.FLUID_STORAGE.get()).
                 add(Registration.BlockReg.FLUID_TRANSMITTER.get()).
                 add(Registration.BlockReg.CRUSHER.get()).
+		        add(Registration.BlockReg.SQUEEZER.get()).
                 add(Registration.BlockReg.STOMACH.get()).
                 add(Registration.BlockReg.CATCHER.get()).
                 add(Registration.BlockReg.FORGE.get()).

@@ -3,6 +3,10 @@
   "input": [
     {
       "amount": 1,
+      "ingredient": "minecraft:bucket"
+    },
+    {
+      "amount": 1,
       "ingredient": "#c:barrels/wooden"
     },
     {

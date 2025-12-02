@@ -22,10 +22,7 @@ import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioGlobalLootModifier;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
-import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
-import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
-import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
-import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
+import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioEntityTagsProvider;
@@ -91,7 +88,13 @@ public final class ClientEvents
                 stream().
                 map(RecipeHolder :: value).
                 toList());
-
+	    
+	    SqueezerRecipe.RECIPES.clear();
+	    SqueezerRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get()).
+			    stream().
+			    map(RecipeHolder :: value).
+			    toList());
+		
         StomachRecipe.RECIPES.clear();
         StomachRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get()).
                 stream().

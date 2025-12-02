@@ -1,6 +1,16 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
+    "has_barrels/wooden": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:barrels/wooden"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_flesh": {
       "conditions": {
         "items": [
@@ -11,11 +21,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_grindstone": {
+    "has_leather": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:grindstone"
+            "items": "minecraft:leather"
           }
         ]
       },
@@ -31,9 +41,19 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_shears": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:shears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomorphosis:chamber/crusher_from_chamber"
+        "recipe": "biomorphosis:chamber/squeezer_from_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,14 +61,16 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_grindstone",
+      "has_shears",
       "has_norph",
-      "has_flesh"
+      "has_flesh",
+      "has_barrels/wooden",
+      "has_leather"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomorphosis:chamber/crusher_from_chamber"
+      "biomorphosis:chamber/squeezer_from_chamber"
     ]
   }
 }

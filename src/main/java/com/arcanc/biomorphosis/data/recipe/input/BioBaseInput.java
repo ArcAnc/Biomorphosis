@@ -54,9 +54,9 @@ public class BioBaseInput implements RecipeInput
             throw new IllegalArgumentException("No fluid for index " + index);
         return switch (index)
         {
-            case 0 -> biomass;
-            case 1 -> lymph;
-            default -> adrenaline;
+            case 0 -> this.biomass;
+            case 1 -> this.lymph;
+            default -> this.adrenaline;
         };
     }
 

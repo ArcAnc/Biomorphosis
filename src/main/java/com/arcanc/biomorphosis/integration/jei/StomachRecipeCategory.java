@@ -85,7 +85,7 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
                     setFluidRenderer(amount, false, 20, 10).
                     add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ADRENALINE.still(), amount)).
                     addRichTooltipCallback((recipeSlotView, tooltip) ->
-                            tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
+                            tooltip.add(Component.literal("Required: " + info.required())));
         });
 
         recipe.getResources().acid().ifPresent(info ->
@@ -96,7 +96,7 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
                     setFluidRenderer(amount, false, 20, 10).
                     add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount)).
                     addRichTooltipCallback((recipeSlotView, tooltip) ->
-                            tooltip.add(Component.literal("Required: " + recipe.getResources().biomass().required())));
+                            tooltip.add(Component.literal("Required: " + info.required())));
         });
     }
 

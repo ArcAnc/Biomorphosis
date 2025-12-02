@@ -265,8 +265,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
 			}
         });
     }
-
-
+	
     private void clearData()
     {
         this.consumedFluidsData.clearData();
@@ -278,7 +277,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
     {
         controllers.add(new AnimationController<>(this, "work_controller", 0, state ->
         {
-            if (isWorking)
+            if (this.isWorking)
                 return state.setAndContinue(WORK);
             return state.setAndContinue(IDLE);
         }));

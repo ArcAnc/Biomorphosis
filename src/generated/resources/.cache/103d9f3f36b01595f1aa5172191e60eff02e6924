@@ -1,4 +1,4 @@
-// 1.21.4	2025-11-29T23:02:19.325093514	Registries
+// 1.21.4	2025-12-02T06:53:32.239212749	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -9,6 +9,7 @@ a94d0260f21c3bba7e4554d572653204aaea0db1 data/biomorphosis/book/page/flesh.json
 66451f5c472554f4a24ab52c54fbdade25e93275 data/biomorphosis/book/page/fluid_transmitter.json
 039c2ed456a2b8d6c944205519bac33d4dd386df data/biomorphosis/book/page/forge.json
 a18fce323a545f276bee95a32883860afac41e6a data/biomorphosis/book/page/norph_source.json
+5c6cea9c766c85ef9f6774087420af501f4e240d data/biomorphosis/book/page/squeezer.json
 e5dd6de04d0eeb82f44de346dbac1ab2dc4c3264 data/biomorphosis/book/page/stomach.json
 84dfb307f947ffc00a8793b81c99e27f8060700b data/biomorphosis/book/page/storages.json
 6e0508dbf842c78efcf86063c0cbff92c0da8f12 data/biomorphosis/book/page/v001.json

@@ -43,7 +43,8 @@ public class GuideScreen extends Screen
     @Override
     protected void init()
     {
-        guiLeft = (this.width - this.xSize) / 2;
+        Database.LOGGER.warn("Width: {}, Height: {}", this.width, this.height);
+		guiLeft = (this.width - this.xSize) / 2;
         guiTop = (this.height - this.ySize) / 2;
 
         BookData.getInstance().setScreen(this);

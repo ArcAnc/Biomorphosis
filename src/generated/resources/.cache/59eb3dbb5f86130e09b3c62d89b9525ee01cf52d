@@ -1,4 +1,4 @@
-// 1.21.4	2025-08-15T21:40:18.530942529	Loot Tables
+// 1.21.4	2025-12-02T06:50:06.379772725	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
@@ -33,6 +33,7 @@ e3b41654316c418ac325a12105267829a5359332 data/biomorphosis/loot_table/blocks/pro
 cd145af450bbda3bece3d59d1ed543867a16133d data/biomorphosis/loot_table/blocks/roof_dirt.json
 94a69e1b8bba896345e77fdcc14d1009e6b18385 data/biomorphosis/loot_table/blocks/roof_slab.json
 daf6e0941052d3b0a59f4ccfee98fee6657d4d3c data/biomorphosis/loot_table/blocks/roof_stairs.json
+fce76063e831641624218304330b88768395ef85 data/biomorphosis/loot_table/blocks/squeezer.json
 d907b1d9635d5e959ff2a7d3e4be3d5c0af2d8d2 data/biomorphosis/loot_table/blocks/stomach.json
 720dbc8d066f86e66f99898f50d1ce5b17d2eb21 data/biomorphosis/loot_table/blocks/trampled_dirt.json
 c14c9d81c077fb9b0a9fcab3ffe885213508faa6 data/biomorphosis/loot_table/entities/guard.json

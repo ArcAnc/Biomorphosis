@@ -38,19 +38,10 @@ import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
-import com.arcanc.biomorphosis.data.recipe.ChamberRecipe;
-import com.arcanc.biomorphosis.data.recipe.CrusherRecipe;
-import com.arcanc.biomorphosis.data.recipe.ForgeRecipe;
-import com.arcanc.biomorphosis.data.recipe.StomachRecipe;
-import com.arcanc.biomorphosis.data.recipe.display.ChamberRecipeDisplay;
-import com.arcanc.biomorphosis.data.recipe.display.CrusherRecipeDisplay;
-import com.arcanc.biomorphosis.data.recipe.display.ForgeRecipeDisplay;
-import com.arcanc.biomorphosis.data.recipe.display.StomachRecipeDisplay;
+import com.arcanc.biomorphosis.data.recipe.*;
+import com.arcanc.biomorphosis.data.recipe.display.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
-import com.arcanc.biomorphosis.data.recipe.input.ChamberRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.input.CrusherRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.input.ForgeRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
+import com.arcanc.biomorphosis.data.recipe.input.*;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ItemStackWithChanceDisplay;
 import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
@@ -546,6 +537,12 @@ public final class Registration
                         andThen(BlockBehaviour.Properties :: noOcclusion).
                         accept(properties),
                 ItemReg.baseProps);
+	    
+	    public static final DeferredBlock<BioSqueezerBlock> SQUEEZER = register("squeezer", BioSqueezerBlock :: new,
+			    properties -> baseProps.
+					    andThen(BlockBehaviour.Properties :: noOcclusion).
+					    accept(properties),
+			    ItemReg.baseProps);
 
         public static final DeferredBlock<BioStomachBlock> STOMACH = register("stomach", BioStomachBlock :: new,
                 properties -> baseProps.
@@ -1031,6 +1028,12 @@ public final class Registration
                 makeType(BioCrusher :: new,
                         BioCrusherRenderer :: new,
                         BlockReg.CRUSHER));
+	    
+	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioSqueezer>> BE_SQUEEZER = BLOCK_ENTITIES.register(
+			    "squeezer",
+			    makeType(BioSqueezer :: new,
+					    BioSqueezerRenderer :: new,
+					    BlockReg.SQUEEZER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioStomach>> BE_STOMACH = BLOCK_ENTITIES.register(
                 "stomach",
@@ -1542,6 +1545,7 @@ public final class Registration
         public static final RecipeEntry<StomachRecipe, StomachRecipeInput, StomachRecipeDisplay> STOMACH_RECIPE = new RecipeEntry<>("stomach", RecipeBookCategory :: new, StomachRecipeDisplay.CODEC, StomachRecipeDisplay.STREAM_CODEC, StomachRecipe.StomachRecipeSerializer :: new);
         public static final RecipeEntry<ForgeRecipe, ForgeRecipeInput, ForgeRecipeDisplay> FORGE_RECIPE = new RecipeEntry<>("forge", RecipeBookCategory :: new, ForgeRecipeDisplay.CODEC, ForgeRecipeDisplay.STREAM_CODEC, ForgeRecipe.ForgeRecipeSerializer :: new);
         public static final RecipeEntry<ChamberRecipe, ChamberRecipeInput, ChamberRecipeDisplay> CHAMBER_RECIPE = new RecipeEntry<>("chamber", RecipeBookCategory :: new, ChamberRecipeDisplay.CODEC, ChamberRecipeDisplay.STREAM_CODEC, ChamberRecipe.ChamberRecipeSerializer :: new);
+	    public static final RecipeEntry<SqueezerRecipe, SqueezerRecipeInput, SqueezerRecipeDisplay> SQUEEZER_RECIPE = new RecipeEntry<>("squeezer", RecipeBookCategory :: new, SqueezerRecipeDisplay.CODEC, SqueezerRecipeDisplay.STREAM_CODEC, SqueezerRecipe.SqueezerRecipeSerializer :: new);
 
         public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
         {
