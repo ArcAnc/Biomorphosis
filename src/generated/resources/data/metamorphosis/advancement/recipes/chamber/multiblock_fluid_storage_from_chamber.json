@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_fluid_storage": {
+      "conditions": {
+        "items": [
+          {
+            "items": "metamorphosis:fluid_storage"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_slime_ball": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:slime_balls"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "metamorphosis:chamber/multiblock_fluid_storage_from_chamber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_slime_ball",
+      "has_fluid_storage"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "metamorphosis:chamber/multiblock_fluid_storage_from_chamber"
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ores/netherite_scrap": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:ores/netherite_scrap"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "metamorphosis:crusher/netherite_scrap_from_ancient_debris_ore"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_ores/netherite_scrap"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "metamorphosis:crusher/netherite_scrap_from_ancient_debris_ore"
+    ]
+  }
+}

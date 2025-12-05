@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "metamorphosis:block/norphed_dirt_1",
+    "side": "metamorphosis:block/norphed_dirt_1",
+    "top": "metamorphosis:block/norphed_dirt_1"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "metamorphosis:flesh",
+    "H": "minecraft:creaking_heart",
+    "R": "#c:bricks/resin",
+    "S": "#c:stones"
+  },
+  "pattern": [
+    " R ",
+    "FHF",
+    "FSF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "metamorphosis:norph_source"
+  }
+}

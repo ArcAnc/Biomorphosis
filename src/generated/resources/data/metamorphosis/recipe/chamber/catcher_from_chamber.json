@@ -1,0 +1,48 @@
+{
+  "type": "metamorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:norph"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:iron_bars"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:comparator"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 400
+  },
+  "result": {
+    "count": 1,
+    "id": "metamorphosis:catcher"
+  }
+}

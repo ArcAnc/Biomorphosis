@@ -1,0 +1,7 @@
+{
+  "gui_light": "side",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "particle": "metamorphosis:fluids/adrenaline/still"
+  }
+}

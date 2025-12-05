@@ -1,0 +1,206 @@
+{
+  "block_chest_close": {
+    "sounds": [
+      "metamorphosis:block/chest_close"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.chest.close"
+  },
+  "block_chest_open": {
+    "sounds": [
+      "metamorphosis:block/chest_open"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.chest.open"
+  },
+  "block_destroy": {
+    "sounds": [
+      "metamorphosis:block/destroy_0",
+      "metamorphosis:block/destroy_1"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.destroyed"
+  },
+  "block_hive_deco": {
+    "sounds": [
+      "metamorphosis:block/hive_deco"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.hive_deco"
+  },
+  "block_place": {
+    "sounds": [
+      "metamorphosis:block/place_0",
+      "metamorphosis:block/place_1"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.placed"
+  },
+  "block_step": {
+    "sounds": [
+      "metamorphosis:block/step_0",
+      "metamorphosis:block/step_1"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.step.normal"
+  },
+  "block_step_leaf": {
+    "sounds": [
+      "metamorphosis:block/step_leaf_0",
+      "metamorphosis:block/step_leaf_1",
+      "metamorphosis:block/step_leaf_2",
+      "metamorphosis:block/step_leaf_3"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.step.leaf"
+  },
+  "block_step_trampled": {
+    "sounds": [
+      "metamorphosis:block/step_trampled_0",
+      "metamorphosis:block/step_trampled_1",
+      "metamorphosis:block/step_trampled_2",
+      "metamorphosis:block/step_trampled_3"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.block.step.trampled"
+  },
+  "guard_death": {
+    "sounds": [
+      "metamorphosis:guard/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.guard.death"
+  },
+  "guard_hurt": {
+    "sounds": [
+      "metamorphosis:guard/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.guard.hurt"
+  },
+  "guard_idle": {
+    "sounds": [
+      "metamorphosis:guard/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.guard.idle"
+  },
+  "infestor_death": {
+    "sounds": [
+      "metamorphosis:infestor/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.infestor.death"
+  },
+  "infestor_hurt": {
+    "sounds": [
+      "metamorphosis:infestor/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.infestor.hurt"
+  },
+  "infestor_idle": {
+    "sounds": [
+      "metamorphosis:infestor/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.infestor.idle"
+  },
+  "ksigg_death": {
+    "sounds": [
+      "metamorphosis:ksigg/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ksigg.death"
+  },
+  "ksigg_hurt": {
+    "sounds": [
+      "metamorphosis:ksigg/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ksigg.hurt"
+  },
+  "ksigg_idle": {
+    "sounds": [
+      "metamorphosis:ksigg/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ksigg.idle"
+  },
+  "larva_death": {
+    "sounds": [
+      "metamorphosis:larva/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.larva.death"
+  },
+  "larva_hurt": {
+    "sounds": [
+      "metamorphosis:larva/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.larva.hurt"
+  },
+  "larva_idle": {
+    "sounds": [
+      "metamorphosis:larva/idle_0",
+      "metamorphosis:larva/idle_1",
+      "metamorphosis:larva/idle_2"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.larva.idle"
+  },
+  "queen_death": {
+    "sounds": [
+      "metamorphosis:queen/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.queen.death"
+  },
+  "queen_hurt": {
+    "sounds": [
+      "metamorphosis:queen/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.queen.hurt"
+  },
+  "queen_idle": {
+    "sounds": [
+      "metamorphosis:queen/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.queen.idle"
+  },
+  "swarmling_death": {
+    "sounds": [
+      "metamorphosis:swarmling/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.swarmling.death"
+  },
+  "swarmling_hurt": {
+    "sounds": [
+      "metamorphosis:swarmling/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.swarmling.hurt"
+  },
+  "swarmling_idle": {
+    "sounds": [
+      "metamorphosis:swarmling/idle_0",
+      "metamorphosis:swarmling/idle_1"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.swarmling.idle"
+  },
+  "worker_death": {
+    "sounds": [
+      "metamorphosis:worker/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.worker.death"
+  },
+  "worker_hurt": {
+    "sounds": [
+      "metamorphosis:worker/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.worker.hurt"
+  },
+  "worker_idle": {
+    "sounds": [
+      "metamorphosis:worker/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.worker.idle"
+  },
+  "ziris_death": {
+    "sounds": [
+      "metamorphosis:ziris/death"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ziris.death"
+  },
+  "ziris_hurt": {
+    "sounds": [
+      "metamorphosis:ziris/hurt"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ziris.hurt"
+  },
+  "ziris_idle": {
+    "sounds": [
+      "metamorphosis:ziris/idle"
+    ],
+    "subtitle": "metamorphosis.sound.subtitle.ziris.idle"
+  }
+}

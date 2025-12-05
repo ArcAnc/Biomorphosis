@@ -3,32 +3,32 @@
   [
     {
       "enum": "net/minecraft/world/item/Rarity",
-      "name": "BIOMORPHOSIS_COMMON",
+      "name": "METAMORPHOSIS_COMMON",
       "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
       "parameters":
       {
-        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
-        "field": "BIO_COMMON"
+        "class": "com/arcanc/metamorphosis/util/enumextensions/RarityExtension",
+        "field": "META_COMMON"
       }
     },
     {
       "enum": "net/minecraft/world/item/Rarity",
-      "name": "BIOMORPHOSIS_RARE",
+      "name": "METAMORPHOSIS_RARE",
       "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
       "parameters":
       {
-        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
-        "field": "BIO_RARE"
+        "class": "com/arcanc/metamorphosis/util/enumextensions/RarityExtension",
+        "field": "META_RARE"
       }
     },
     {
       "enum": "net/minecraft/world/item/Rarity",
-      "name": "BIOMORPHOSIS_ULTRA_RARE",
+      "name": "METAMORPHOSIS_ULTRA_RARE",
       "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
       "parameters":
       {
-        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
-        "field": "BIO_ULTRA_RARE"
+        "class": "com/arcanc/metamorphosis/util/enumextensions/RarityExtension",
+        "field": "META_ULTRA_RARE"
       }
     }
   ]

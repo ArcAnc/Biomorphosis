@@ -1,0 +1,6 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "metamorphosis:block/fluid_transmitter"
+  }
+}

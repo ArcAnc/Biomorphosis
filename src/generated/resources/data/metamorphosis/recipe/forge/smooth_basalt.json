@@ -1,0 +1,23 @@
+{
+  "type": "metamorphosis:forge",
+  "input": {
+    "amount": 1,
+    "ingredient": "minecraft:basalt"
+  },
+  "resources": {
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.5,
+      "required": true
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:smooth_basalt"
+  }
+}

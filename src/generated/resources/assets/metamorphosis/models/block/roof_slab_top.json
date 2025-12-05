@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "metamorphosis:block/roof_bot",
+    "side": "metamorphosis:block/roof_middle",
+    "top": "metamorphosis:block/roof_top"
+  }
+}

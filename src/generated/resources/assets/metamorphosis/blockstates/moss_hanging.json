@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "tip=false": {
+      "model": "metamorphosis:block/moss_hanging"
+    },
+    "tip=true": {
+      "model": "metamorphosis:block/moss_hanging_tip"
+    }
+  }
+}

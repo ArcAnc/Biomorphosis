@@ -1,0 +1,32 @@
+{
+  "type": "metamorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "#c:chests"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:norph"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 400
+  },
+  "result": {
+    "count": 1,
+    "id": "metamorphosis:chest"
+  }
+}

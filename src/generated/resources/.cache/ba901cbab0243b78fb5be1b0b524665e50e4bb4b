@@ -1,0 +1,5 @@
+// 1.21.4	2025-12-03T06:29:44.702467936	Tags for minecraft:block mod id metamorphosis
+c2aaefd801483e7c222ba6c7cff9154391cbef01 data/metamorphosis/tags/block/norph.json
+e2fc9527fe25cdd14ad8b784c88a175f7a0a2ff1 data/metamorphosis/tags/block/norph_avoid.json
+9e8de88e5060031e71e781c110757adfcb8d1226 data/metamorphosis/tags/block/norph_source.json
+9ba80a700688c13d250a0f895bfe7f21c6970b91 data/minecraft/tags/block/climbable.json

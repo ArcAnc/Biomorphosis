@@ -1,0 +1,65 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_chest": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:chest"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_flesh": {
+      "conditions": {
+        "items": [
+          {
+            "items": "metamorphosis:flesh"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_norph": {
+      "conditions": {
+        "items": [
+          {
+            "items": "metamorphosis:norph"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stone": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:stone"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "metamorphosis:chamber/stomach_from_chamber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flesh",
+      "has_norph",
+      "has_stone",
+      "has_chest"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "metamorphosis:chamber/stomach_from_chamber"
+    ]
+  }
+}

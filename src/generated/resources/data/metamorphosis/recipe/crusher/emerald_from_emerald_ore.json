@@ -1,0 +1,29 @@
+{
+  "type": "metamorphosis:crusher",
+  "input": {
+    "amount": 1,
+    "ingredient": "#c:ores/emerald"
+  },
+  "resources": {
+    "acid": {
+      "modifier": 2.0,
+      "per_second": 0.25,
+      "required": false
+    },
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.5,
+      "required": true
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 2,
+    "id": "minecraft:emerald"
+  },
+  "secondary_results": []
+}

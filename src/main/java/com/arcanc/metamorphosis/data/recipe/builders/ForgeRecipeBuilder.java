@@ -1,0 +1,58 @@
+/**
+ * @author ArcAnc
+ * Created at: 04.05.2025
+ * Copyright (c) 2025
+ * <p>
+ * This code is licensed under "Arc's License of Common Sense"
+ * Details can be found in the license file in the root folder of this project
+ */
+
+package com.arcanc.metamorphosis.data.recipe.builders;
+
+import com.arcanc.metamorphosis.data.recipe.MetaBaseRecipe;
+import com.arcanc.metamorphosis.data.recipe.ForgeRecipe;
+import com.arcanc.metamorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.metamorphosis.data.recipe.input.ForgeRecipeInput;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
+
+public class ForgeRecipeBuilder extends MetaBaseRecipeBuilder<ForgeRecipeBuilder, ForgeRecipe, ForgeRecipeInput>
+{
+    private IngredientWithSize input;
+    private ItemStack result;
+
+    public static @NotNull ForgeRecipeBuilder newBuilder(@NotNull MetaBaseRecipe.ResourcesInfo info)
+    {
+        return new ForgeRecipeBuilder(info);
+    }
+
+    private ForgeRecipeBuilder(MetaBaseRecipe.ResourcesInfo info)
+    {
+        super(info);
+    }
+
+    @Override
+    protected ForgeRecipe getRecipe()
+    {
+        return new ForgeRecipe(this.input, this.info, this.result);
+    }
+
+    public ForgeRecipeBuilder setInput(@NotNull IngredientWithSize input)
+    {
+        this.input = input;
+        return this;
+    }
+
+    public ForgeRecipeBuilder setResult(@NotNull ItemStack result)
+    {
+        this.result = result;
+        return this;
+    }
+
+    @Override
+    public @NotNull Item getResult()
+    {
+        return this.result.getItem();
+    }
+}

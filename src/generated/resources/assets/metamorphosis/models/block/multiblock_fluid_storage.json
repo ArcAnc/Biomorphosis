@@ -1,0 +1,46 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#down"
+        },
+        "east": {
+          "texture": "#side"
+        },
+        "north": {
+          "texture": "#side"
+        },
+        "south": {
+          "texture": "#side"
+        },
+        "up": {
+          "texture": "#up"
+        },
+        "west": {
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "gui_light": "side",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "content": "metamorphosis:block/multiblock_fluid_storage/side",
+    "down": "metamorphosis:block/multiblock_fluid_storage/top",
+    "particle": "metamorphosis:block/multiblock_fluid_storage/side_transparent",
+    "side": "metamorphosis:block/multiblock_fluid_storage/side_transparent",
+    "up": "metamorphosis:block/multiblock_fluid_storage/top"
+  }
+}

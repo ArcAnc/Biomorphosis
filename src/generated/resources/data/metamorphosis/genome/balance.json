@@ -1,0 +1,11 @@
+{
+  "id": "metamorphosis:balance",
+  "image": "metamorphosis:textures/genome/balance",
+  "rarity_data": {
+    "slyth": {
+      "destabilization_amount": -10,
+      "effects": [],
+      "incompatibilities": []
+    }
+  }
+}

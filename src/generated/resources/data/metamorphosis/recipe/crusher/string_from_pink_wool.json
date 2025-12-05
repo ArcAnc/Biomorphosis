@@ -1,0 +1,37 @@
+{
+  "type": "metamorphosis:crusher",
+  "input": {
+    "amount": 1,
+    "ingredient": "minecraft:pink_wool"
+  },
+  "resources": {
+    "acid": {
+      "modifier": 2.0,
+      "per_second": 0.25,
+      "required": false
+    },
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.5,
+      "required": true
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 4,
+    "id": "minecraft:string"
+  },
+  "secondary_results": [
+    {
+      "chance": 0.15,
+      "item": {
+        "count": 1,
+        "id": "minecraft:pink_dye"
+      }
+    }
+  ]
+}
