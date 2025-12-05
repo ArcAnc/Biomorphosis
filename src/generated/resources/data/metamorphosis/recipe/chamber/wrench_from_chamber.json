@@ -1,0 +1,48 @@
+{
+  "type": "metamorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh_piece"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh_piece"
+    },
+    {
+      "amount": 1,
+      "ingredient": "metamorphosis:flesh_piece"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "count": 1,
+    "id": "metamorphosis:wrench"
+  }
+}
