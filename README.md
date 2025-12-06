@@ -1,5 +1,5 @@
 [![Discord](https://img.shields.io/discord/483238590214701057.svg?style=for-the-badge&logo=discord)](https://discord.gg/VQdDDFD) [![Static Badge](https://img.shields.io/badge/crowdin-_?style=for-the-badge&logo=crowdin&color=21252B)
-](https://crowdin.com/project/biomorphosis) [![Static Badge](https://img.shields.io/badge/support_me_on_ko--fi-_?style=for-the-badge&logo=ko-fi&color=pink)](https://ko-fi.com/arcanc)
+](https://crowdin.com/project/biomorphosis) [![Static Badge](https://img.shields.io/badge/support_me_on_ko--fi-_?style=for-the-badge&logo=ko-fi&color=F16061)](https://ko-fi.com/arcanc)
 
 
 
