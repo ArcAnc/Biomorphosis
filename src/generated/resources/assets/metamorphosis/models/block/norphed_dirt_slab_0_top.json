@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "metamorphosis:block/norphed_dirt_0",
-    "side": "metamorphosis:block/norphed_dirt_0",
-    "top": "metamorphosis:block/norphed_dirt_0"
-  }
-}

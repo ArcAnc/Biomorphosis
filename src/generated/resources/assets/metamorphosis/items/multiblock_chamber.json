@@ -1,9 +1,0 @@
-{
-  "model": {
-    "type": "minecraft:special",
-    "base": "metamorphosis:item/multiblock_chamber",
-    "model": {
-      "type": "geckolib:geckolib"
-    }
-  }
-}

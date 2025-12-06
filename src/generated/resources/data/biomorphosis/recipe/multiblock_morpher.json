@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "N": "biomorphosis:norph",
+    "S": "#c:stones",
+    "W": "#c:buckets/water"
+  },
+  "pattern": [
+    "SWS",
+    "NSN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:multiblock_morpher"
+  }
+}

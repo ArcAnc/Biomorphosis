@@ -1,0 +1,22 @@
+{
+  "values": [
+    "biomorphosis:norph",
+    "biomorphosis:norph_overlay",
+    "biomorphosis:norph_stairs",
+    "biomorphosis:fluid_storage",
+    "biomorphosis:fluid_transmitter",
+    "biomorphosis:crusher",
+    "biomorphosis:squeezer",
+    "biomorphosis:stomach",
+    "biomorphosis:catcher",
+    "biomorphosis:forge",
+    "biomorphosis:multiblock_fluid_storage",
+    "biomorphosis:multiblock_chamber",
+    "biomorphosis:multiblock_morpher",
+    "biomorphosis:prop_0",
+    "biomorphosis:prop_1",
+    "biomorphosis:prop_2",
+    "biomorphosis:hive_deco",
+    "biomorphosis:chest"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "type": "biomorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "minecraft:bucket"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:barrels/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:norph"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 400
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:fluid_storage"
+  }
+}

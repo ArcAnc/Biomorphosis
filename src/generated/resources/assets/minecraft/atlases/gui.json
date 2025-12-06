@@ -2,23 +2,23 @@
   "sources": [
     {
       "type": "minecraft:single",
-      "resource": "metamorphosis:gui/tooltip/special_background",
-      "sprite": "metamorphosis:tooltip/special_background"
+      "resource": "biomorphosis:gui/tooltip/special_background",
+      "sprite": "biomorphosis:tooltip/special_background"
     },
     {
       "type": "minecraft:single",
-      "resource": "metamorphosis:gui/tooltip/special_frame",
-      "sprite": "metamorphosis:tooltip/special_frame"
+      "resource": "biomorphosis:gui/tooltip/special_frame",
+      "sprite": "biomorphosis:tooltip/special_frame"
     },
     {
       "type": "minecraft:single",
-      "resource": "metamorphosis:gui/slots/frame",
-      "sprite": "metamorphosis:slot/frame"
+      "resource": "biomorphosis:gui/slots/frame",
+      "sprite": "biomorphosis:slot/frame"
     },
     {
       "type": "minecraft:single",
-      "resource": "metamorphosis:gui/slots/mask",
-      "sprite": "metamorphosis:slot/mask"
+      "resource": "biomorphosis:gui/slots/mask",
+      "sprite": "biomorphosis:slot/mask"
     }
   ]
 }

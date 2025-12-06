@@ -1,9 +1,0 @@
-{
-  "model": {
-    "type": "minecraft:special",
-    "base": "metamorphosis:item/multiblock_morpher",
-    "model": {
-      "type": "metamorphosis:multiblock_morpher_item"
-    }
-  }
-}

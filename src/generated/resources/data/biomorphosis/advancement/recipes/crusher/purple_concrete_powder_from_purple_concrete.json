@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_purple_concrete": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:purple_concrete"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomorphosis:crusher/purple_concrete_powder_from_purple_concrete"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_purple_concrete"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomorphosis:crusher/purple_concrete_powder_from_purple_concrete"
+    ]
+  }
+}

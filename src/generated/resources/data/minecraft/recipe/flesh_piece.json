@@ -2,10 +2,10 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "metamorphosis:flesh"
+    "biomorphosis:flesh"
   ],
   "result": {
     "count": 9,
-    "id": "metamorphosis:flesh_piece"
+    "id": "biomorphosis:flesh_piece"
   }
 }

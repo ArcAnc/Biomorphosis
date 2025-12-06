@@ -1,0 +1,48 @@
+{
+  "type": "biomorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "#c:rods/wooden"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh_piece"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh_piece"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh_piece"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:wrench"
+  }
+}

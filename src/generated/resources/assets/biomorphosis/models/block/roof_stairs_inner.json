@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "biomorphosis:block/roof_bot",
+    "side": "biomorphosis:block/roof_middle",
+    "top": "biomorphosis:block/roof_top"
+  }
+}

@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/stairs",
-  "textures": {
-    "bottom": "metamorphosis:block/norph",
-    "side": "metamorphosis:block/norph",
-    "top": "metamorphosis:block/norph"
-  }
-}
