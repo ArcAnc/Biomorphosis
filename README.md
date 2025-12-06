@@ -1,4 +1,4 @@
-[![Discord](https://img.shields.io/discord/483238590214701057.svg?style=for-the-badge&logo=discord)](https://discord.gg/VQdDDFD) ![Static Badge](https://img.shields.io/badge/crowdin-_?style=for-the-badge&logo=crowdin&color=black&link=https%3A%2F%2Fcrowdin.com%2Fproject%2Fbiomorphosis%2Finvite%3Fh%3D0b3de95d7e04eb8898c84f3d83a0d9702632568)
+[![Discord](https://img.shields.io/discord/483238590214701057.svg?style=for-the-badge&logo=discord)](https://discord.gg/VQdDDFD) [![Static Badge](https://img.shields.io/badge/crowdin-_?style=for-the-badge&logo=crowdin&color=black)](https://crowdin.com/project/biomorphosis/invite?h=4db9f08796fd8e65303d1438e850a1872632570)
 
 
 
