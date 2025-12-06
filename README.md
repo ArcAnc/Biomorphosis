@@ -28,7 +28,7 @@ All code and artwork is licensed under the [Arc's License of Common Sence](/LICE
 - open the repository with IntelliJ IDEA
 - wait for gradle project import to finish, you might have to cancel it if it gets stuck and reload the gradle project
 
-> [!info] The repository will not contain most resource and data pack assets.
+> The repository will not contain most resource and data pack assets.
 > These need to be generated on demand and requires you to run
 > the `clientData` **configuration** to generate the missing recipes, tags and other things.
 > You can checkout the `main/java/com/arcanc/biomorphosis/data` to see which assets are generated.
