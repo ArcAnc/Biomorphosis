@@ -6,7 +6,7 @@
 # Biomorphosis
 [Biomorphsis](https://www.curseforge.com/minecraft/mc-mods/biomorphosis) A mod about mutations and evolution, where you control an organic ecosystem, creating structures and creatures from living matter. Harness biomass to develop your colony, but be prepared for the dangers your experiments may bring
 - [Download](https://www.curseforge.com/minecraft/mc-mods/biomorphosis)
-- [Discord](https://discord.gg/VQdDDFD)
+- [Discord](https://discord.gg/cwydhvYb2M)
 
 ## TechStack
 - [NeoForge](https://github.com/neoforged/NeoForge) (modding API for Minecraft)
