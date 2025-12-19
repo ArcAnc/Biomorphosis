@@ -40,13 +40,13 @@ Atm there is no dedicated maven, you can use [cursemaven](https://www.cursemaven
 
 Pull Request are welcome.
 
-For new features or major changes related to the **gameplay** or **art style** please [join our Discord](https://discord.gg/VQdDDFD) and
+For new features or major changes related to the **gameplay** or **art style** please [join our Discord](https://discord.gg/cwydhvYb2M) and
 request to join the dev team.<br>
 This will give you access to the private mod development channels and resources such as the biomorphosis design document and
 concept board.
 
 ## Support
-If you need help feel free to [join our Discord](https://discord.gg/VQdDDFD)
+If you need help feel free to [join our Discord](https://discord.gg/cwydhvYb2M)
 
 ### Recipes
 To conveniently look up recipes ingame I recommend the use of the [JEI](https://www.curseforge.com/minecraft/mc-mods/jei) mod.
