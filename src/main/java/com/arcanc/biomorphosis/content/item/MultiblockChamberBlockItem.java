@@ -59,7 +59,8 @@ public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoI
     @Override
     public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
     {
-        controllers.add(new AnimationController<>(this, "controller", 0, state -> state.setAndContinue(DefaultAnimations.IDLE)));
+        controllers.add(new AnimationController<>(this, "controller", 0, state -> state.
+		        setAndContinue(DefaultAnimations.IDLE)));
     }
 
     @Override
@@ -70,7 +71,6 @@ public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoI
 
     public static class Renderer extends GeoItemRenderer<MultiblockChamberBlockItem>
     {
-
         public Renderer()
         {
             super(new DefaultedBlockGeoModel<>(Database.rl("chamber")));
@@ -81,22 +81,5 @@ public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoI
         {
             return RenderType.entityTranslucent(texture);
         }
-
-        /*        @Override
-        public void render(@Nullable GeckolibSpecialRenderer.RenderData renderData,
-                           @NotNull ItemDisplayContext displayContext,
-                           @NotNull PoseStack poseStack,
-                           @NotNull MultiBufferSource bufferSource,
-                           int packedLight,
-                           int packedOverlay,
-                           boolean hasFoilType)
-        {
-            if (renderData == null)
-                return;
-            GeoItemRenderer<?> renderer = GeoRenderProvider.of(renderData.item()).getGeoItemRenderer();
-            if (renderer == null)
-                return;
-            renderer.render(renderData, displayContext, poseStack, bufferSource, packedLight, packedOverlay, hasFoilType);
-        }*/
     }
 }

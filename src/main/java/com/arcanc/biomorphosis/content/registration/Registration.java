@@ -28,9 +28,11 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
+import com.arcanc.biomorphosis.content.gui.container_menu.TurretMenu;
 import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
+import com.arcanc.biomorphosis.content.gui.screen.container.TurretScreen;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
@@ -79,6 +81,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
@@ -362,6 +365,20 @@ public final class Registration
                         add(Attributes.ARMOR, 2)).
                         rendererProvider(SwarmlingRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+		
+		public static final EntityEntry<TurretProjectile> PROJECTILE_TURRET = makeEntityType(
+				"projectile_turret",
+				TurretProjectile.class,
+				TurretProjectile::new,
+				MobCategory.MISC,
+				builder -> builder.
+						noLootTable().
+						sized(0.5f, 0.5f).
+						eyeHeight(0.13f).
+						clientTrackingRange(4).
+						updateInterval(20).
+						rendererProvider(TurretProjectileRenderer :: new),
+				null);
 
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
@@ -387,11 +404,13 @@ public final class Registration
                                UnaryOperator<BioEntityType.BioTypeBuilder<T>> typeBuilder,
                                Consumer<Item.Properties> additionalProperties)
             {
-                this.entityHolder = ENTITY_TYPES.register(name, key -> typeBuilder.apply(BioEntityType.BioTypeBuilder.of(factory, category)).build(ResourceKey.create(Registries.ENTITY_TYPE, key)));
+                this.entityHolder = ENTITY_TYPES.register(name, key -> typeBuilder.apply(BioEntityType.BioTypeBuilder.of(entityClass, factory, category)).build(ResourceKey.create(Registries.ENTITY_TYPE, key)));
                 this.eggHolder = Mob.class.isAssignableFrom(entityClass) ?
                         Registration.ItemReg.register("spawning_egg_" + name, properties -> new BioSpawnEgg((EntityType<? extends Mob>) entityHolder.get(), properties), additionalProperties) :
                         null;
-				this.sounds = new EntitySoundEntry(name);
+				this.sounds = Mob.class.isAssignableFrom(entityClass) ?
+						new EntitySoundEntry(name) :
+						null;
             }
 
             public DeferredHolder<EntityType<?>, EntityType<T>> getEntityHolder()
@@ -575,6 +594,15 @@ public final class Registration
                 ItemReg.baseProps.andThen(props -> props.
                         rarity(RarityExtension.BIO_RARE.getValue())),
                 false);
+	    
+		public static final DeferredBlock<MultiblockTurretBlock> MULTIBLOCK_TURRET = register("multiblock_turret", MultiblockTurretBlock :: new,
+			    properties -> baseProps.
+					    andThen(BlockBehaviour.Properties :: noOcclusion).
+					    accept(properties),
+			    MultiblockTurretBlockItem :: new,
+			    ItemReg.baseProps.andThen(props -> props.
+					    rarity(RarityExtension.BIO_RARE.getValue())),
+			    false);
 
         public static final DeferredBlock<MultiblockMorpherBlock> MULTIBLOCK_MORPHER = register("multiblock_morpher", MultiblockMorpherBlock :: new,
                 properties -> baseProps.
@@ -1070,6 +1098,14 @@ public final class Registration
                         MenuTypeReg.CHAMBER,
                         ChamberScreen :: new,
                         BlockReg.MULTIBLOCK_CHAMBER));
+	    
+	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockTurret>> BE_MULTIBLOCK_TURRET = BLOCK_ENTITIES.register(
+			    "multiblock_turret",
+			    makeType(MultiblockTurret :: new,
+					    MultiblockTurretRenderer :: new,
+					    MenuTypeReg.TURRET,
+					    TurretScreen :: new,
+					    BlockReg.MULTIBLOCK_TURRET));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HiveDeco>> BE_HIVE_DECO = BLOCK_ENTITIES.register(
                 "hive_deco",
@@ -1444,6 +1480,11 @@ public final class Registration
                 "chamber",
                 ChamberMenu :: makeServer,
                 ChamberMenu :: makeClient);
+	    
+	    public static final ArgContainer<MultiblockTurret, TurretMenu> TURRET = registerArg(
+			    "turret",
+			    TurretMenu :: makeServer,
+			    TurretMenu :: makeClient);
 
         public static final ArgContainer<BioChest, ChestMenu> CHEST = registerArg(
                 "chest",
@@ -1531,6 +1572,11 @@ public final class Registration
         }
     }
 
+	public static class DamageTypeReg
+	{
+		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
+	}
+	
     public static class RecipeReg
     {
         public static final DeferredRegister<RecipeBookCategory> CATEGORIES = DeferredRegister.create(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Database.MOD_ID);

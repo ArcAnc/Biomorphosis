@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "biomorphosis:item/multiblock_turret",
+    "model": {
+      "type": "geckolib:geckolib"
+    }
+  }
+}

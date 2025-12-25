@@ -222,7 +222,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         {
             this.entityLoader = bioCatcher ->
             {
-                Entity ent =  bioCatcher.level.getEntities().get(tag.getUUID("entity_id"));
+                Entity ent = bioCatcher.level.getEntities().get(tag.getUUID("entity_id"));
                 if (ent instanceof LivingEntity living)
                 {
                     this.entity = living;

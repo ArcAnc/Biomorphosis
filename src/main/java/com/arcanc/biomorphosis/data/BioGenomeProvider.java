@@ -77,8 +77,8 @@ public class BioGenomeProvider extends BioRegistryData
 	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
 	{
 		registrySetBuilder.add(Registration.GenomeReg.DEFINITION_KEY, context ->
-				this.geneDataMap.forEach((location, bookChapterData) ->
-						context.register(getDefinitionKey(location), bookChapterData)));
+				this.geneDataMap.forEach((location, geneDefinition) ->
+						context.register(getDefinitionKey(location), geneDefinition)));
 	}
 	
 	private @NotNull ResourceKey<GeneDefinition> getDefinitionKey(ResourceLocation location)

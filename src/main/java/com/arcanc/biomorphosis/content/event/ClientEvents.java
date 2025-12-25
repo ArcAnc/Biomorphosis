@@ -25,6 +25,7 @@ import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
+import com.arcanc.biomorphosis.data.tags.BioDamageTypeTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioEntityTagsProvider;
 import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
 import com.arcanc.biomorphosis.util.Database;
@@ -197,6 +198,7 @@ public final class ClientEvents
                 packOutput,
                 lookupProvider));
 
+		BioRegistryData.register(new BioDamageTypesProvider());
         BioRegistryData.register(new BioBookProvider());
         BioRegistryData.register(new BioMultiblockProvider());
         BioRegistryData.register(new BioWorldGenProvider());
@@ -211,6 +213,8 @@ public final class ClientEvents
         gen.addProvider(true, entries);
 	    
 	    gen.addProvider(true, new EnUsProvider(packOutput, entries.getRegistryProvider()));
+	    
+		gen.addProvider(true, new BioDamageTypeTagsProvider(packOutput, entries.getRegistryProvider()));
 	    
 	    BioRegistryData.clear();
 

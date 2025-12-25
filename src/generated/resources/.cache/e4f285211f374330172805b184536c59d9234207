@@ -1,4 +1,4 @@
-// 1.21.4	2025-12-06T18:15:32.684037965	Biomorphosis: Models
+// 1.21.4	2025-12-21T06:37:51.813801546	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
@@ -19,6 +19,7 @@ d7700da8fb8738cc580741fc4be8678d65dbc404 assets/biomorphosis/blockstates/lure_ca
 409acdc015f7b003b96d56be35a9616fae9055fb assets/biomorphosis/blockstates/multiblock_chamber.json
 5c646acdcc847323321cc27f52adcbf38933ba59 assets/biomorphosis/blockstates/multiblock_fluid_storage.json
 020b6e6c7328574fdc561bdeb27c247caf8e23d4 assets/biomorphosis/blockstates/multiblock_morpher.json
+193ef3e20c1987cfa42c3fb802b79bbd80f8750e assets/biomorphosis/blockstates/multiblock_turret.json
 691647dc2cf5ed770dc987a2ab8229c95110d1c6 assets/biomorphosis/blockstates/norph.json
 69693f5a42a318a089de94f58827d024301c5645 assets/biomorphosis/blockstates/norph_overlay.json
 16b4fefbddbbade25a2e348afb4df79741b0e564 assets/biomorphosis/blockstates/norph_source.json
@@ -63,6 +64,7 @@ cbd7b9baaa51d4f33e1a4607ed3bbdf5a9408a6f assets/biomorphosis/items/inner.json
 391f61b8d53eb863a7b2ffac89a7aec48e3705e7 assets/biomorphosis/items/multiblock_chamber.json
 04aecc60ff35b94208c17cae7835c412ea7fcc58 assets/biomorphosis/items/multiblock_fluid_storage.json
 c0662f7d817ea6bf9cb62da4b604f9146b0986cb assets/biomorphosis/items/multiblock_morpher.json
+d8ea93017ead7d944553345610df5bf494c26b96 assets/biomorphosis/items/multiblock_turret.json
 fca23f39b5d3db17eaa1ebec55c40009c9672fbd assets/biomorphosis/items/norph.json
 74b119b80a366333584a8c1d608636d08726a0e5 assets/biomorphosis/items/norph_overlay.json
 f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.json
@@ -115,6 +117,7 @@ c8b45db4a70f00e607a11ebe2fdaffa9491e86f1 assets/biomorphosis/models/block/hive_d
 d826db2ea76a1547aafa1e99757396b6ff7868a9 assets/biomorphosis/models/block/multiblock_chamber.json
 519ed667687f3c2f952895c4427977b1cd3a34cf assets/biomorphosis/models/block/multiblock_fluid_storage.json
 97a1308e4db1583bb2087485c386d8d0b5bc06bd assets/biomorphosis/models/block/multiblock_morpher.json
+2c82fdbdf6d212895adf1db6c0939475a7f923f1 assets/biomorphosis/models/block/multiblock_turret.json
 0800524c81ad609fbae4a72c134689f9108accbc assets/biomorphosis/models/block/norph.json
 414dc84583336546e1ce634ef83ca071b3c6f31c assets/biomorphosis/models/block/norph_overlay.json
 0d5fa9c1ca5488049bd250722277d5d671880e4a assets/biomorphosis/models/block/norph_source.json

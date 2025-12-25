@@ -236,7 +236,7 @@ public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInte
     public static final class NorphSpreadConfig extends MultifaceSpreader.DefaultSpreaderConfig
     {
         public static final int HORIZONTAL_RADIUS = 10;
-        public static final int VERTICAL_RADIUS = 3;
+        public static final int VERTICAL_RADIUS = 6;
 
         private NorphSpreadConfig(NorphOverlay block)
         {

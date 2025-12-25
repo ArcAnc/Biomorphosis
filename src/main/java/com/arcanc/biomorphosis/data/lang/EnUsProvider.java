@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.data.lang;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
@@ -81,6 +82,7 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.HIVE_DECO, "Hive");
         this.addBlock(Registration.BlockReg.EGGS_DECO, "Eggs");
         this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
+		this.addBlock(Registration.BlockReg.MULTIBLOCK_TURRET, "Turret");
 
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.ACID, "Acid");
@@ -94,6 +96,7 @@ public class EnUsProvider extends LanguageProvider
         this.addEntity(Registration.EntityReg.MOB_INFESTOR, "Infestor", Database.GUI.Sounds.INFESTOR, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_SWARMLING, "Swarmling", Database.GUI.Sounds.SWARMLING, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_WORKER,"Worker", Database.GUI.Sounds.WORKER, "stridulates");
+		this.addEntityType(Registration.EntityReg.PROJECTILE_TURRET.getEntityHolder(), "Turret Projectile");
 
         //-----------------------------
         // JADE
@@ -135,6 +138,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V007.textLangKey(), "\u2022 Renamed lymph into acid \n\u2022 Changed recipes to work with float values of fluids\n\u2022 Added Squeezer");
 	    this.add(Database.GUI.GuideBook.Pages.V0071.titleLangKey(), "Version: 0.0.7.1");
 	    this.add(Database.GUI.GuideBook.Pages.V0071.textLangKey(), "\u2022 Added an overlay to the Manipulator to explain how it works");
+	    this.add(Database.GUI.GuideBook.Pages.V008.titleLangKey(), "Version: 0.0.8");
+	    this.add(Database.GUI.GuideBook.Pages.V008.textLangKey(), "\u2022 Added turret for base defence");
 
         this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
         this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
@@ -171,7 +176,11 @@ public class EnUsProvider extends LanguageProvider
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good. Now you will learn how to let our essence flow — how to spread fluids through the veins of the Swarm without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>To link two different blocks, use the Manipulator while sneaking. First select the block from which you want to transfer fluids, then select the block to which the fluid should be transferred. After that, stop sneaking and use the Manipulator on the transmitter");
-		
+	    
+	    this.add(Database.GUI.GuideBook.Pages.TURRET.titleLangKey(), "</block;biomorphosis:multiblock_turret/>Turret");
+	    this.add(Database.GUI.GuideBook.Pages.TURRET.textLangKey(), "Before you stands a sentry outgrowth of the Swarm. A Turret. It is far from perfect... but it is vicious enough to drive unwanted guests away. It roots itself in the Norph, senses approaching intruders, and responds without hesitation. Not for hunting — for protection. Not for glory — for survival. Like many of our creations, it is not built — it is grown. Use the Morpher and provide the required tissues and substances. Without them, it will not take shape. Remember this: the Turret lives only as long as it is fed. Without a steady flow of the fluids it requires, its muscles stiffen and its vision fades. Feed it — and it will kill for you. To grow it you will need: " + multiblockParts(Database.rl("turret")));
+	    
+	    
 	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
         this.add(Database.GUI.GuideBook.Pages.Components.SHAPELESS, "Shapeless");
         this.add(Database.GUI.GuideBook.Pages.Components.TICKS, "Ticks: %s");
@@ -195,7 +204,17 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.ChamberButton.START, "Start Process");
         this.add(Database.GUI.ChamberButton.PROCESS, "Processing...");
 		
-		//-----------------------------
+		for (MultiblockTurret.TurretEffect effect : MultiblockTurret.TurretEffect.values())
+			this.add(Database.GUI.TurretButton.effectTooltip.apply(effect).getString(), "Current Effect: " + effect.getName().substring(0, 1).toUpperCase() + effect.getName().substring(1));
+	
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.PLAYERS).getString(), "Current Target Mode: attacking ONLY Players");
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.AGGRESSIVE_MOBS).getString(), "Current Target Mode: attacking ONLY Aggressive Mobs");
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.EVERYONE).getString(), "Current Target Mode: attacking EVERYONE (even you)!");
+	    
+		this.add(Database.GUI.TurretButton.onOffTooltip.apply(true).getString(), "Turret is Enabled");
+		this.add(Database.GUI.TurretButton.onOffTooltip.apply(false).getString(), "Turret is Disabled");
+		
+	    //-----------------------------
 	    //OVERLAY
 	    this.add(Database.GUI.Overlays.Tooltip.START_FLUID_HANDLER, "Using %s on %s will allow you to begin linking two fluid containers");
 		this.add(Database.GUI.Overlays.Tooltip.WRONG_FLUID_HANDLER, "ANOTHER ONE!");

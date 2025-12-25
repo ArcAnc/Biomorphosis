@@ -43,8 +43,8 @@ public class GuideScreen extends Screen
     @Override
     protected void init()
     {
-		guiLeft = (this.width - this.xSize) / 2;
-        guiTop = (this.height - this.ySize) / 2;
+		this.guiLeft = (this.width - this.xSize) / 2;
+        this.guiTop = (this.height - this.ySize) / 2;
 
         BookData.getInstance().setScreen(this);
         BookData.getInstance().reCalcPositions();
@@ -75,17 +75,17 @@ public class GuideScreen extends Screen
 
     public AbstractBookChapter getCurrentChapter()
     {
-        return currentChapter;
+        return this.currentChapter;
     }
 
     public int getCurrentPage()
     {
-        return currentPage;
+        return this.currentPage;
     }
 
     public int getCurrentSubPage()
     {
-        return currentSubPage;
+        return this.currentSubPage;
     }
 
     public void jumpToFirstChapter()
@@ -191,11 +191,11 @@ public class GuideScreen extends Screen
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, guiLeft + xSize / 2, guiTop - 8, 16, 1, 153, 188, 256, 256);
+        guiGraphics.blit(RenderType :: guiTextured, TEXT, this.guiLeft + this.xSize / 2, this.guiTop - 8, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
 
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, -guiLeft - xSize / 2, - guiTop - ySize, 16, 1, 153, 188, 256, 256);
+        guiGraphics.blit(RenderType :: guiTextured, TEXT, -this.guiLeft - this.xSize / 2, -this.guiTop - this.ySize, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
         guiGraphics.pose().popPose();
@@ -203,12 +203,12 @@ public class GuideScreen extends Screen
 
     public int getGuiLeft()
     {
-        return guiLeft;
+        return this.guiLeft;
     }
 
     public int getGuiTop()
     {
-        return guiTop;
+        return this.guiTop;
     }
 
     @Override

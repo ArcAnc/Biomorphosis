@@ -99,6 +99,8 @@ public class BioEntityLoot extends EntityLootSubProvider
     {
         return Registration.EntityReg.ENTITY_TYPES.getEntries().
                 stream().
-                map(DeferredHolder :: get);
+                map(DeferredHolder :: get).
+		        filter(entityType -> entityType.getDefaultLootTable().isPresent()).
+		        map(entityType -> (EntityType<?>) entityType);
     }
 }

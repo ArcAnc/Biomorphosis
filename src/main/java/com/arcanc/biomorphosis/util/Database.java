@@ -9,7 +9,10 @@
 
 package com.arcanc.biomorphosis.util;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
+import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -98,6 +101,13 @@ public class Database
             public static final String PROCESS = rl(GUI + ".tooltip.chamber_button.work").toLanguageKey();
         }
 
+		public static final class TurretButton
+		{
+			public static final Function<MultiblockTurret.TurretEffect, Component> effectTooltip = effect -> Component.translatable(rl(GUI + ".tooltip.turret_button.effect." + effect.getName()).toLanguageKey());
+			public static final Function<MultiblockTurret.TargetMode, Component> targetModeTooltip = mode -> Component.translatable(rl(GUI + ".tooltip.turret_button.target_mode." + mode.name().toLowerCase()).toLanguageKey());
+			public static final Function<Boolean, Component> onOffTooltip = bool -> Component.translatable(rl(GUI + ".tooltip.turret_button.onoff." + (bool ? "enabled" : "disabled")).toLanguageKey());
+		}
+		
         public static final class InfoArea
         {
             public static final class ProgressBar
@@ -181,6 +191,7 @@ public class Database
 				public static final PageInfo V006 = new PageInfo(rl("v006"));
 	            public static final PageInfo V007 = new PageInfo(rl("v007"));
 	            public static final PageInfo V0071 = new PageInfo(rl("v0071"));
+				public static final PageInfo V008 = new PageInfo(rl("v008"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
@@ -192,6 +203,7 @@ public class Database
 				public static final PageInfo CATCHER = new PageInfo(rl("catcher"));
 				public static final PageInfo MANIPULATOR = new PageInfo(rl("manipulator"));
 				public static final PageInfo FLUID_TRANSMITTER = new PageInfo(rl("fluid_transmitter"));
+				public static final PageInfo TURRET = new PageInfo(rl("turret"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
                 {

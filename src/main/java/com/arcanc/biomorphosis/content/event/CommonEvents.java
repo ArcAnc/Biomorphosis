@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.event;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
@@ -61,7 +62,7 @@ public class CommonEvents
     {
         Registration.EntityReg.ENTITY_TYPES.getEntries().stream().
                 map(DeferredHolder::get).
-                filter(entityType -> entityType.getBaseClass().isAssignableFrom(LivingEntity.class)).
+                filter(entityType -> LivingEntity.class.isAssignableFrom(entityType.getBaseClass())).
                 map(entityType -> (BioEntityType<LivingEntity>)entityType).
                 forEach(bioEntityType ->
                         event.put(bioEntityType,
@@ -89,6 +90,7 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FORGE.get(), BioForge :: getFluidHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER.get(), MultiblockChamber :: getItemHandler);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CHEST.get(), BioChest :: getItemHandler);
+		event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_TURRET.get(), MultiblockTurret :: getFluidHandler);
 		
 		
 		/*FIXME: нужно найти более правильный способ, чем фильтровать по типу. Мне не нравится,

@@ -22,10 +22,5 @@ public class MultiblockChamberBlock extends StaticMultiblockPartBlock<Multiblock
     {
         super(Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER, props);
     }
-
-    @Override
-    protected @NotNull RenderShape getRenderShape(BlockState state)
-    {
-        return RenderShape.INVISIBLE;
-    }
+	
 }

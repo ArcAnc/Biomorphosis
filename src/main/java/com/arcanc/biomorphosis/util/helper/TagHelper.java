@@ -82,7 +82,7 @@ public class TagHelper
 
     public static @NotNull BlockPos readBlockPos(@NotNull CompoundTag compound, @NotNull String address)
     {
-        BlockPos pos = new BlockPos(0,0,0);
+        BlockPos pos = BlockPos.ZERO;
 
         if (compound.contains(address))
         {

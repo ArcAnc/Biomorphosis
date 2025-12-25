@@ -1,4 +1,4 @@
-// 1.21.4	2025-12-06T18:15:32.68326083	Registries
+// 1.21.4	2025-12-25T20:16:25.522014624	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -13,6 +13,7 @@ a18fce323a545f276bee95a32883860afac41e6a data/biomorphosis/book/page/norph_sourc
 5c6cea9c766c85ef9f6774087420af501f4e240d data/biomorphosis/book/page/squeezer.json
 e5dd6de04d0eeb82f44de346dbac1ab2dc4c3264 data/biomorphosis/book/page/stomach.json
 84dfb307f947ffc00a8793b81c99e27f8060700b data/biomorphosis/book/page/storages.json
+2e4c4abc6f50acd1b911dab03adb767f4c80f781 data/biomorphosis/book/page/turret.json
 6e0508dbf842c78efcf86063c0cbff92c0da8f12 data/biomorphosis/book/page/v001.json
 43d21a4c7b65469c1a5554750af123e0bff83c97 data/biomorphosis/book/page/v002.json
 61cae5286b5ae354e73a4b00a0c066bb236cca56 data/biomorphosis/book/page/v003.json
@@ -21,10 +22,13 @@ e1187b630e6e47e484f4966557a958b76585861e data/biomorphosis/book/page/v004.json
 77bb5ff4c36cdfe45713a45788de2f2679d7223f data/biomorphosis/book/page/v006.json
 2e7a2736e9f2b7e497a50b0575bf6a14a60c1c26 data/biomorphosis/book/page/v007.json
 208a943c42fa5f57a78474e6c343027bd7e64a9c data/biomorphosis/book/page/v0071.json
+d50fc8762a7407ac66f3778c8106a92234d1be46 data/biomorphosis/book/page/v008.json
+32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
 b6da51fe44f9595161feade22439ab5e892e9cd9 data/biomorphosis/genome/balance.json
 e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/health.json
 138f8ff24d61ec3dce4cf1701c92863e643857e2 data/biomorphosis/multiblock/chamber.json
 0f88ae4d78e0e815448f062204596a36eeb743a8 data/biomorphosis/multiblock/fluid_storage.json
+b604fbd354957606b3c2b847f861507a334bc657 data/biomorphosis/multiblock/turret.json
 941fefd636dafabe8a11a987ebe0add2db579b15 data/biomorphosis/worldgen/structure/village.json
 8e1ba36819042cf1e364ef310e2960a0ba402449 data/biomorphosis/worldgen/structure_set/village.json
 dd4c5acf07cc77dbbfd6f3f63e0c4839039e511c data/biomorphosis/worldgen/template_pool/village/guard.json

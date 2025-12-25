@@ -88,6 +88,10 @@ public class SummaryModelProvider extends ModelProvider
         itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem(),
                 new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_morpher"),
                         new MultiblockMorpherSpecialRenderer.Unbaked()));
+	    
+		itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_TURRET.asItem(),
+			    new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_turret"),
+					    new GeckolibSpecialRenderer.Unbaked()));
     }
 
     private void registerBlockModels(@NotNull BlockModelGenerators blockModels)
@@ -115,6 +119,7 @@ public class SummaryModelProvider extends ModelProvider
 
         createMultiblockFluidStorage(blockModels);
         createMultiblockChamberModel(blockModels);
+	    createMultiblockTurretModel(blockModels);
 
         blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
 
@@ -3234,7 +3239,12 @@ public class SummaryModelProvider extends ModelProvider
         ResourceLocation model2Loc = new TexturedModel(mapping, template2.build()).create(prop_2.get(), blockModels.modelOutput);
         blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(prop_2.get(), model2Loc));
     }
-
+	
+	private void createMultiblockTurretModel(@NotNull BlockModelGenerators blockModels)
+	{
+		blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_TURRET.get());
+	}
+	
     private void createMultiblockChamberModel(@NotNull BlockModelGenerators blockModels)
     {
         blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_CHAMBER.get());

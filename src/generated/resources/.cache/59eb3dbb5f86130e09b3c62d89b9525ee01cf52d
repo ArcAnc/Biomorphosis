@@ -1,4 +1,4 @@
-// 1.21.4	2025-12-06T18:15:32.682557412	Loot Tables
+// 1.21.4	2025-12-21T06:37:51.812545555	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
@@ -16,6 +16,7 @@ bf37d5bf5f1ba5d26c54127efc8d570d0637a170 data/biomorphosis/loot_table/blocks/mos
 2c2753da7a4c011e6fa94926688b6cecf69cd095 data/biomorphosis/loot_table/blocks/multiblock_chamber.json
 b84d6076bc8beabb5af9088c141de8f2a42c55dc data/biomorphosis/loot_table/blocks/multiblock_fluid_storage.json
 102fbffe1c504292a79548015933492db5b26061 data/biomorphosis/loot_table/blocks/multiblock_morpher.json
+652870e7731169e7c85ed830f3a26878b202f382 data/biomorphosis/loot_table/blocks/multiblock_turret.json
 490c1ef415b9f2dacaa49ba1fd8de0842596d2d7 data/biomorphosis/loot_table/blocks/norph.json
 b3b0f233a54515880b90b3d391504eb422f6f253 data/biomorphosis/loot_table/blocks/norph_overlay.json
 753a70eba63f69653f0141043fae78423855a541 data/biomorphosis/loot_table/blocks/norph_source.json

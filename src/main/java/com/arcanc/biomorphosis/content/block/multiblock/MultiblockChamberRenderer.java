@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block.multiblock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockGeoModel;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
@@ -43,7 +44,7 @@ public class MultiblockChamberRenderer extends GeoBlockRenderer<MultiblockChambe
 
     public MultiblockChamberRenderer(BlockEntityRendererProvider.Context ctx)
     {
-        super(new ChamberModel(Database.rl("chamber"), Database.rl("chamber"), Database.rl("chamber")));
+        super(new MultiblockGeoModel<>(Database.rl("chamber"), Database.rl("chamber"), Database.rl("chamber")));
     }
 
     @Override
@@ -105,54 +106,4 @@ public class MultiblockChamberRenderer extends GeoBlockRenderer<MultiblockChambe
     {
         return blockEntity.isMaster() && blockEntity.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED && super.shouldRender(blockEntity, cameraPos);
     }
-
-    private static class ChamberModel extends DefaultedBlockGeoModel<MultiblockChamber>
-    {
-        private final Info morphed;
-        private final Info morphing;
-        private final Info disassembled;
-
-        public ChamberModel(ResourceLocation morphed, ResourceLocation morphing, ResourceLocation disassembled)
-        {
-            super(morphed);
-            this.morphed = new Info(buildFormattedModelPath(morphed), buildFormattedTexturePath(morphed), buildFormattedAnimationPath(morphed));
-            this.morphing = new Info(buildFormattedModelPath(morphing), buildFormattedTexturePath(morphing), buildFormattedAnimationPath(morphing));
-            this.disassembled = new Info(buildFormattedModelPath(disassembled), buildFormattedTexturePath(disassembled), buildFormattedAnimationPath(disassembled));
-        }
-
-        @Override
-        public ResourceLocation getModelResource(@NotNull MultiblockChamber animatable, GeoRenderer<MultiblockChamber> renderer)
-        {
-            MultiblockState state = animatable.getBlockState().getValue(MultiblockPartBlock.STATE);
-            return state == MultiblockState.FORMED ? morphed.model() : state == MultiblockState.MORPHING ? morphing.model() : disassembled.model();
-        }
-
-        @Override
-        public ResourceLocation getTextureResource(@NotNull MultiblockChamber animatable, GeoRenderer<MultiblockChamber> renderer)
-        {
-            MultiblockState state = animatable.getBlockState().getValue(MultiblockPartBlock.STATE);
-            return state == MultiblockState.FORMED ? morphed.texture() : state == MultiblockState.MORPHING ? morphing.texture() : disassembled.texture();
-        }
-
-        @Override
-        public ResourceLocation getAnimationResource(@NotNull MultiblockChamber animatable)
-        {
-            MultiblockState state = animatable.getBlockState().getValue(MultiblockPartBlock.STATE);
-            return state == MultiblockState.FORMED ? morphed.animation() : state == MultiblockState.MORPHING ? morphing.animation() : disassembled.animation();
-        }
-
-        @Override
-        public ResourceLocation[] getAnimationResourceFallbacks(MultiblockChamber animatable, GeoRenderer<MultiblockChamber> renderer) {
-            return super.getAnimationResourceFallbacks(animatable, renderer);
-        }
-
-        @Override
-        public @Nullable RenderType getRenderType(MultiblockChamber animatable, ResourceLocation texture)
-        {
-            return RenderType.entityTranslucent(texture, false);
-        }
-    }
-
-    private record Info(ResourceLocation model, ResourceLocation texture, ResourceLocation animation)
-    {}
 }

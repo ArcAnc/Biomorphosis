@@ -22,6 +22,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
@@ -86,6 +87,12 @@ public class BioMultiblockProvider extends BioRegistryData
                 
                 setPlacedBlock(Registration.BlockReg.MULTIBLOCK_CHAMBER.get().defaultBlockState()).
                 end());
+		
+		addMultiblock(staticBuilder(Database.rl("turret")).
+				addPart(new BlockPos(0,0,0), Registration.BlockReg.FLESH.get().defaultBlockState()).
+				addPart(new BlockPos(0, 1, 0), Blocks.ACACIA_FENCE.defaultBlockState()).
+				setPlacedBlock(Registration.BlockReg.MULTIBLOCK_TURRET.get().defaultBlockState()).
+				end());
 
         addMultiblock(dynamicBuilder(Database.rl("fluid_storage")).
                 setBehavior(DynamicMultiblockDefinition.ScanBehavior.BFS).

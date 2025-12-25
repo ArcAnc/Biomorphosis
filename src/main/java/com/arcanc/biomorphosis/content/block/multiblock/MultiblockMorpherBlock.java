@@ -57,10 +57,5 @@ public class MultiblockMorpherBlock extends StaticMultiblockPartBlock<Multiblock
 	{
 		return state.getValue(STATE) == MultiblockState.FORMED ? super.getShape(state, level, pos, context) : BASIC_SHAPE;
 	}
-
-	@Override
-	protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
-	{
-		return RenderShape.INVISIBLE;
-	}
+	
 }

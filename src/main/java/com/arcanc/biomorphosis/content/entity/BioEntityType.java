@@ -30,8 +30,10 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
 {
     private final EntityAttributeProvider entityAttributeProvider;
     private final EntityRendererProvider<T> rendererProvider;
-
-    public BioEntityType(EntityFactory<T> factory,
+	private final Class<T> clazz;
+	
+    public BioEntityType(Class<T> clazz,
+						 EntityFactory<T> factory,
                          MobCategory category,
                          boolean serialize,
                          boolean summon,
@@ -53,11 +55,18 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
                          EntityRendererProvider<T> rendererProvider)
     {
         super(factory, category, serialize, summon, fireImmune, canSpawnFarFromPlayer, immuneTo, dimensions, spawnDimensionsScale, clientTrackingRange, updateInterval, descriptionId, lootTable, requiredFeatures, trackDeltasSupplier, trackingRangeSupplier, updateIntervalSupplier, onlyOpCanSetNbt);
+		this.clazz = clazz;
         this.entityAttributeProvider = attributeProvider;
         this.rendererProvider = rendererProvider;
     }
-
-    public EntityAttributeProvider getEntityAttributeProvider()
+	
+	@Override
+	public @NotNull Class<T> getBaseClass()
+	{
+		return this.clazz;
+	}
+	
+	public EntityAttributeProvider getEntityAttributeProvider()
     {
         return entityAttributeProvider;
     }
@@ -70,17 +79,19 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
     public static class BioTypeBuilder<T extends Entity> extends Builder<T>
     {
 
+		private final Class<T> clazz;
         private EntityAttributeProvider attributeProvider;
         private EntityRendererProvider<T> rendererProvider;
 
-        protected BioTypeBuilder(EntityFactory<T> factory, MobCategory category)
+        protected BioTypeBuilder(Class<T> entityClass, EntityFactory<T> factory, MobCategory category)
         {
             super(factory, category);
+			this.clazz = entityClass;
         }
 
-        public static @NotNull <T extends Entity> BioEntityType.BioTypeBuilder<T> of(EntityType.@NotNull EntityFactory<T> factory, @NotNull MobCategory category)
+        public static @NotNull <T extends Entity> BioEntityType.BioTypeBuilder<T> of(Class<T> entityClass, EntityType.@NotNull EntityFactory<T> factory, @NotNull MobCategory category)
         {
-            return new BioTypeBuilder<>(factory, category);
+            return new BioTypeBuilder<>(entityClass, factory, category);
         }
 
         @Override
@@ -265,6 +276,7 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
             this.descriptionId = resourceKey -> resourceKey.location().getNamespace() + "." + "entity" + "." +  resourceKey.location().getPath().replace('/', '.');
 
             return new BioEntityType<>(
+					this.clazz,
                     this.factory,
                     this.category,
                     this.serialize,

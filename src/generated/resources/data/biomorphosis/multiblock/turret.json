@@ -1,0 +1,28 @@
+{
+  "type": "static",
+  "id": "biomorphosis:turret",
+  "structure": {
+    "placedBlock": {
+      "Name": "biomorphosis:multiblock_turret",
+      "Properties": {
+        "facing": "north",
+        "multiblock_state": "disassembled"
+      }
+    },
+    "states": {
+      "0, 0, 0": {
+        "Name": "biomorphosis:flesh"
+      },
+      "0, 1, 0": {
+        "Name": "minecraft:acacia_fence",
+        "Properties": {
+          "east": "false",
+          "north": "false",
+          "south": "false",
+          "waterlogged": "false",
+          "west": "false"
+        }
+      }
+    }
+  }
+}
