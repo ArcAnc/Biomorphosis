@@ -60,9 +60,14 @@ public class SummaryModelProvider extends ModelProvider
 
     private void registerItemModels(@NotNull ItemModelGenerators itemModels)
     {
+	    itemModels.generateFlatItem(Registration.ItemReg.CREATIVE_TAB_ICON.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.FLESH_PIECE.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.QUEENS_BRAIN.get(), ModelTemplates.FLAT_ITEM);
-        itemModels.generateFlatItem(Registration.ItemReg.CREATIVE_TAB_ICON.get(), ModelTemplates.FLAT_ITEM);
+	    itemModels.generateFlatItem(Registration.ItemReg.ANTENNAS.get(), ModelTemplates.FLAT_ITEM);
+	    itemModels.generateFlatItem(Registration.ItemReg.GUARD_ARMOR_PIECE.get(), ModelTemplates.FLAT_ITEM);
+	    itemModels.generateFlatItem(Registration.ItemReg.INFESTOR_STING.get(), ModelTemplates.FLAT_ITEM);
+	    itemModels.generateFlatItem(Registration.ItemReg.SWARMLING_HEAD.get(), ModelTemplates.FLAT_ITEM);
+        itemModels.generateFlatItem(Registration.ItemReg.ZIRIS_WING.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.WRENCH.get(), ModelTemplates.FLAT_ITEM);
         itemModels.generateFlatItem(Registration.ItemReg.BOOK.get(), ModelTemplates.FLAT_ITEM);
 

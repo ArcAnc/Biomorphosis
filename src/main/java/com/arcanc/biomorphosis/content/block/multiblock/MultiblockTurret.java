@@ -149,7 +149,6 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 		projectile.shoot(dir.x(), dir.y(), dir.z(), 1.5f, 0);
 		
 		this.level.addFreshEntity(projectile);
-		Database.LOGGER.warn("Shoot Effect: {}", this.targetMode.name());
 		this.fluidHandler.getHolderAt(null, this.shootEffect.ordinal()).
 				ifPresent(fluidStackHolder -> fluidStackHolder.drain(RESOURCE_PER_SHOOT, IFluidHandler.FluidAction.EXECUTE));
 		this.markDirty();

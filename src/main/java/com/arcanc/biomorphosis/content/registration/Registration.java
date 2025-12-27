@@ -1209,7 +1209,12 @@ public final class Registration
 
         public static final DeferredItem<BioIconItem> CREATIVE_TAB_ICON = registerIcon("creative_tab_icon");
         public static final DeferredItem<BioBaseItem> QUEENS_BRAIN = register("queens_brain", BioBaseItem :: new, properties -> properties.rarity(RarityExtension.BIO_RARE.getValue()));
-        public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+        public static final DeferredItem<BioBaseItem> ANTENNAS = register("antennas", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+	    public static final DeferredItem<BioBaseItem> GUARD_ARMOR_PIECE = register("guard_armor_piece", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+	    public static final DeferredItem<BioBaseItem> INFESTOR_STING = register("infestor_sting", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+	    public static final DeferredItem<BioBaseItem> SWARMLING_HEAD = register("swarmling_head", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+	    public static final DeferredItem<BioBaseItem> ZIRIS_WING = register("ziris_wing", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+		public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem ::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", BioBaseItem :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));

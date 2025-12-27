@@ -43,7 +43,13 @@ public class BioEntityLoot extends EntityLootSubProvider
                         add(
                                 LootItem.lootTableItem(Registration.ItemReg.QUEENS_BRAIN).
                                         apply(SetItemCountFunction.setCount(ConstantValue.exactly(1.0f)))).
-                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(
+								LootItem.lootTableItem(Registration.ItemReg.ANTENNAS).
+										apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
         this.add(Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
@@ -64,34 +70,65 @@ public class BioEntityLoot extends EntityLootSubProvider
                         add(
                                 LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
                                     apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
-                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(
+								LootItem.lootTableItem(Registration.ItemReg.ZIRIS_WING).
+										apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
         this.add(Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
                         setRolls(ConstantValue.exactly(1.0f)).
                         add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
                             apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
-                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(LootItem.lootTableItem(Registration.ItemReg.INFESTOR_STING).
+		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
         this.add(Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
                         setRolls(ConstantValue.exactly(1.0f)).
                         add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
                             apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
-                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(LootItem.lootTableItem(Registration.ItemReg.SWARMLING_HEAD).
+		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 1)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
         this.add(Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
                         setRolls(ConstantValue.exactly(1.0f)).
                         add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
                             apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
-                        when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(LootItem.lootTableItem(Registration.ItemReg.GUARD_ARMOR_PIECE).
+		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 4)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(LootItem.lootTableItem(Registration.ItemReg.ANTENNAS).
+		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
 
         this.add(Registration.EntityReg.MOB_WORKER.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
-                setRolls(ConstantValue.exactly(1.0f)).
-                add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
-                apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
-                when(LootItemKilledByPlayerCondition.killedByPlayer())));
+                        setRolls(ConstantValue.exactly(1.0f)).
+                        add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+                            apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 4)))).
+                        when(LootItemKilledByPlayerCondition.killedByPlayer())).
+		        withPool(LootPool.lootPool().
+		                setRolls(ConstantValue.exactly(1.0f)).
+		                add(LootItem.lootTableItem(Registration.ItemReg.ANTENNAS).
+		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
+		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
     }
 
     @Override

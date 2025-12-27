@@ -1,4 +1,4 @@
-// 1.21.4	2025-12-21T06:37:51.812545555	Loot Tables
+// 1.21.4	2025-12-27T15:13:50.799154686	Loot Tables
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
 6fbf4cfb237fe4b68c0f7eb47ab1d81b34c7d37f data/biomorphosis/loot_table/blocks/crusher.json
@@ -37,11 +37,11 @@ daf6e0941052d3b0a59f4ccfee98fee6657d4d3c data/biomorphosis/loot_table/blocks/roo
 fce76063e831641624218304330b88768395ef85 data/biomorphosis/loot_table/blocks/squeezer.json
 d907b1d9635d5e959ff2a7d3e4be3d5c0af2d8d2 data/biomorphosis/loot_table/blocks/stomach.json
 720dbc8d066f86e66f99898f50d1ce5b17d2eb21 data/biomorphosis/loot_table/blocks/trampled_dirt.json
-c14c9d81c077fb9b0a9fcab3ffe885213508faa6 data/biomorphosis/loot_table/entities/guard.json
-681eb4e5f1b70ff0a2229f532e13b6a8015d92b2 data/biomorphosis/loot_table/entities/infestor.json
+9b5d8470a54e963fb446b47d46b0c3270deff0da data/biomorphosis/loot_table/entities/guard.json
+54e10216284eeed185ae1badd16f80c681c6e366 data/biomorphosis/loot_table/entities/infestor.json
 4f39cc6af3bac5cf384aad32b3449fb99a009ff2 data/biomorphosis/loot_table/entities/ksigg.json
 b78b089d66f5654581e8976d3e09d5cf487ada3d data/biomorphosis/loot_table/entities/larva.json
-d7f59c585db852852238b1653abc0a9eb5a387e1 data/biomorphosis/loot_table/entities/queen.json
-bdc241d63539c1d2e58beae6ffaef7d0c332f924 data/biomorphosis/loot_table/entities/swarmling.json
-019d4b1085f5cf2884918f241c0040b9c7ad1448 data/biomorphosis/loot_table/entities/worker.json
-6e99797553f93006f49a44f2eec1fff0749ac1ae data/biomorphosis/loot_table/entities/ziris.json
+a549b9c569169fb0610d35816b6245e003ae6ad1 data/biomorphosis/loot_table/entities/queen.json
+15ac9b923fd9cc20f7185c2ed9e86821eacb3640 data/biomorphosis/loot_table/entities/swarmling.json
+27aea40a63e6521bbe5518d5da4b3c91be7c8e78 data/biomorphosis/loot_table/entities/worker.json
+6ff39bdf17f9d754400ded3d7a58837c92f29345 data/biomorphosis/loot_table/entities/ziris.json

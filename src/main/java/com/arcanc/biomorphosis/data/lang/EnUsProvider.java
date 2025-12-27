@@ -43,7 +43,12 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
         this.addItem(Registration.ItemReg.BOOK, "Guide");
         this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
-        this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
+	    this.addItem(Registration.ItemReg.ANTENNAS, "Antennas");
+	    this.addItem(Registration.ItemReg.GUARD_ARMOR_PIECE, "Guard Armor Piece");
+	    this.addItem(Registration.ItemReg.INFESTOR_STING, "Infestor Sting");
+	    this.addItem(Registration.ItemReg.SWARMLING_HEAD, "Swarmling Head");
+	    this.addItem(Registration.ItemReg.ZIRIS_WING, "Ziris Wing");
+	    this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
         this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
 
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
