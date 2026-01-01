@@ -10,12 +10,14 @@
 package com.arcanc.biomorphosis.content.worldgen.swarm_village;
 
 
+import com.arcanc.biomorphosis.data.BioWorldGenProvider;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
+import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
@@ -33,6 +35,7 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -60,7 +63,7 @@ public class SwarmVillage
 	{
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 		
-		context.register (VILLAGE.structureSet (),
+		context.register (VILLAGE.structureSet(),
 				new StructureSet (structures.getOrThrow (VILLAGE.structure()),
 						new RandomSpreadStructurePlacement (34, 8, RandomSpreadType.LINEAR, 65295359)));
 	}
@@ -148,7 +151,6 @@ public class SwarmVillage
 	public static class SwarmVillagePools
 	{
 		private final Map<CellType, ResourceKey<StructureTemplatePool>> poolsData = new EnumMap<>(CellType.class);
-		private static final ResourceKey<StructureTemplatePool> EMPTY_POOL = ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl("empty"));
 		
 		public SwarmVillagePools(String name)
 		{
@@ -162,10 +164,10 @@ public class SwarmVillage
 		
 		public ResourceKey<StructureTemplatePool> getPoolKey(CellType type)
 		{
-			return this.poolsData.getOrDefault(type, EMPTY_POOL);
+			return this.poolsData.getOrDefault(type, BioWorldGenProvider.EMPTY_POOL);
 		}
 		
-		public StructureTemplatePool getPool(@NotNull Registry<StructureTemplatePool> registry, CellType type)
+		public @Nullable StructureTemplatePool getPool(@NotNull Registry<StructureTemplatePool> registry, CellType type)
 		{
 			return registry.getOptional(this.getPoolKey(type)).orElse(null);
 		}

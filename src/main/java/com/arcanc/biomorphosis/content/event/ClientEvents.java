@@ -201,6 +201,7 @@ public final class ClientEvents
 		BioRegistryData.register(new BioDamageTypesProvider());
         BioRegistryData.register(new BioBookProvider());
         BioRegistryData.register(new BioMultiblockProvider());
+		BioRegistryData.register(new BioPalladinOrdersProvider());
         BioRegistryData.register(new BioWorldGenProvider());
 		BioRegistryData.register(new BioGenomeProvider());
 
@@ -220,7 +221,7 @@ public final class ClientEvents
 
         gen.addProvider(true, new BioSoundsProvider(packOutput));
 		
-		event.createProvider(BioGlobalLootModifier ::new);
+		event.createProvider(BioGlobalLootModifier :: new);
     }
 
     private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)

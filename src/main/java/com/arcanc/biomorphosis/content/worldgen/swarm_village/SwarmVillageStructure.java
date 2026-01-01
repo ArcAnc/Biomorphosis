@@ -88,7 +88,7 @@ public class SwarmVillageStructure extends Structure
 			case NONE -> 0;
 			case BURY, BEARD_THIN, BEARD_BOX, ENCAPSULATE -> 12;
 		};
-		return structure.maxDistanceFromCenter + i > 128
+		return structure.maxDistanceFromCenter + i > MAX_TOTAL_STRUCTURE_RANGE
 					   ? DataResult.error(() -> "Structure size including terrain adaptation must not exceed 128")
 					   : DataResult.success(structure);
 	}

@@ -37,6 +37,8 @@ import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
+import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
+import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
@@ -379,7 +381,7 @@ public final class Registration
 						updateInterval(20).
 						rendererProvider(TurretProjectileRenderer :: new),
 				null);
-
+				
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
                                                                       EntityType.EntityFactory<T> factory,
@@ -1790,19 +1792,6 @@ public final class Registration
         }
     }
     
-    public static class StructureTypeReg
-    {
-        public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Database.MOD_ID);
-        
-        public static final DeferredHolder<StructureType<?>, StructureType<SwarmVillageStructure>> SWARM_VILLAGE_TYPE = STRUCTURE_TYPES.register("swarm_village",
-                () -> () -> SwarmVillageStructure.CODEC);
-        
-        private static void init (@NotNull final IEventBus bus)
-        {
-            STRUCTURE_TYPES.register(bus);
-        }
-    }
-    
 	public static class GenomeReg
 	{
 		public static final ResourceKey<Registry<IGeneEffectType<?>>> EFFECT_TYPE_KEY = ResourceKey.createRegistryKey(Database.rl("genome_effect_type"));
@@ -1826,6 +1815,22 @@ public final class Registration
 		}
 	}
 	
+	public static class StructureTypeReg
+	{
+		public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Database.MOD_ID);
+		
+		public static final DeferredHolder<StructureType<?>, StructureType<SwarmVillageStructure>> SWARM_VILLAGE_TYPE = STRUCTURE_TYPES.register("swarm_village",
+				() -> () -> SwarmVillageStructure.CODEC);
+		
+		public static final DeferredHolder<StructureType<?>, StructureType<SRFHeadquarters>> SRF_HEADQUARTERS = STRUCTURE_TYPES.register("srf_headquarters",
+				() -> () -> SRFHeadquarters.CODEC);
+		
+		private static void init (@NotNull final IEventBus bus)
+		{
+			STRUCTURE_TYPES.register(bus);
+		}
+	}
+
     public static class StructureProcessorTypeReg
     {
         public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSOR_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PROCESSOR, Database.MOD_ID);
@@ -1838,6 +1843,22 @@ public final class Registration
             STRUCTURE_PROCESSOR_TYPES.register(bus);
         }
     }
+	
+	public static class PalladinOrderReg
+	{
+		public static final ResourceKey<Registry<PalladinOrder>> ORDER_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("palladin_order"));
+		
+		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+		{
+			event.dataPackRegistry(ORDER_KEY, PalladinOrder.CODEC, PalladinOrder.CODEC, regBuilder -> makeRegistry(regBuilder, ORDER_KEY));
+		}
+		
+		public static void init(@NotNull final IEventBus modEventBus)
+		{
+			modEventBus.addListener(PalladinOrderReg :: registerDataPackRegister);
+		}
+		
+	}
 	
     public static void init(@NotNull final IEventBus bus)
     {
@@ -1860,6 +1881,7 @@ public final class Registration
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
         StructureTypeReg.init(bus);
+	    PalladinOrderReg.init(bus);
         //StructureProcessorTypeReg.init(bus);
     }
 

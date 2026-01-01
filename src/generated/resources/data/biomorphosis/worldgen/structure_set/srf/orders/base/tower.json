@@ -1,0 +1,15 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "frequency": 0.75,
+    "salt": 914362805,
+    "separation": 8,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "biomorphosis:srf/orders/base/tower",
+      "weight": 1
+    }
+  ]
+}

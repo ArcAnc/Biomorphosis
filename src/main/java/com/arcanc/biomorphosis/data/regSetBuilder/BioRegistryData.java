@@ -16,11 +16,13 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class BioRegistryData
 {
-    private static final List<BioRegistryData> DATA = new ArrayList<>();
+    private static final Set<BioRegistryData> DATA = new HashSet<>();
 
     protected BioRegistryData()
     {

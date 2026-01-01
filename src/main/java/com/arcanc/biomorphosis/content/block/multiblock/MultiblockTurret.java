@@ -191,7 +191,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	
 	private boolean haveResource()
 	{
-		return this.fluidHandler.getFluidInTank(this.targetMode.ordinal()).getAmount() >= RESOURCE_PER_SHOOT;
+		return this.fluidHandler.getFluidInTank(this.shootEffect.ordinal()).getAmount() >= RESOURCE_PER_SHOOT;
 	}
 	
 	

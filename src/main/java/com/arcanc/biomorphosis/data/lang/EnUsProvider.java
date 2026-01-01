@@ -127,6 +127,9 @@ public class EnUsProvider extends LanguageProvider
         //-----------------------------
         //BOOK
         this.add(Database.GUI.GuideBook.Chapters.TITLE.langKey(), "</item;minecraft:writable_book/>Patch Notes");
+	    this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
+	    this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
+
         this.add(Database.GUI.GuideBook.Pages.V001.titleLangKey(), "Version: 0.0.1");
         this.add(Database.GUI.GuideBook.Pages.V001.textLangKey(), "\u2022 Initial Demo release");
         this.add(Database.GUI.GuideBook.Pages.V002.titleLangKey(), "Version: 0.0.2");
@@ -145,9 +148,6 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V0071.textLangKey(), "\u2022 Added an overlay to the Manipulator to explain how it works");
 	    this.add(Database.GUI.GuideBook.Pages.V008.titleLangKey(), "Version: 0.0.8");
 	    this.add(Database.GUI.GuideBook.Pages.V008.textLangKey(), "\u2022 Added turret for base defence");
-
-        this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
-        this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
 		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: </recipe;minecraft:crafting_shaped;minecraft:flesh/>The Swarm is built from flesh. Remember that" );
