@@ -23,6 +23,14 @@ import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.entity.*;
 import com.arcanc.biomorphosis.content.entity.renderer.*;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.BlacksmithRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.CaptainRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.SergeantRenderer;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.SoldierRenderer;
+import com.arcanc.biomorphosis.content.entity.srf.Blacksmith;
+import com.arcanc.biomorphosis.content.entity.srf.Captain;
+import com.arcanc.biomorphosis.content.entity.srf.Sergeant;
+import com.arcanc.biomorphosis.content.entity.srf.Soldier;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
@@ -381,6 +389,78 @@ public final class Registration
 						updateInterval(20).
 						rendererProvider(TurretProjectileRenderer :: new),
 				null);
+		
+		public static final EntityEntry<Soldier> MOB_BASE_SOLDIER = makeEntityType(
+				"soldier",
+				Soldier.class,
+				Soldier :: new,
+				MobCategory.CREATURE,
+				builder -> builder.
+						canSpawnFarFromPlayer().
+						clientTrackingRange(4).
+						eyeHeight(1.62f).
+						sized(0.6f, 1.95f).
+						attributeProvider(() -> PathfinderMob.createMobAttributes().
+								add(Attributes.MAX_HEALTH, 30).
+								add(Attributes.ATTACK_DAMAGE, 8).
+								add(Attributes.MOVEMENT_SPEED, 0.27f).
+								add(Attributes.ARMOR, 4)).
+						rendererProvider(SoldierRenderer :: new),
+				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+	    
+	    public static final EntityEntry<Sergeant> MOB_BASE_SERGEANT = makeEntityType(
+			    "sergeant",
+			    Sergeant.class,
+			    Sergeant :: new,
+			    MobCategory.CREATURE,
+			    builder -> builder.
+					    canSpawnFarFromPlayer().
+					    clientTrackingRange(4).
+					    eyeHeight(1.62f).
+					    sized(0.6f, 1.95f).
+					    attributeProvider(() -> PathfinderMob.createMobAttributes().
+					            add(Attributes.MAX_HEALTH, 40).
+					            add(Attributes.ATTACK_DAMAGE, 10).
+					            add(Attributes.MOVEMENT_SPEED, 0.27f).
+					            add(Attributes.ARMOR, 6)).
+					    rendererProvider(SergeantRenderer :: new),
+			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+	    
+	    public static final EntityEntry<Captain> MOB_BASE_CAPTAIN = makeEntityType(
+			    "captain",
+			    Captain.class,
+			    Captain :: new,
+			    MobCategory.CREATURE,
+			    builder -> builder.
+					    canSpawnFarFromPlayer().
+					    clientTrackingRange(4).
+					    eyeHeight(1.62f).
+					    sized(0.6f, 1.95f).
+					    attributeProvider(() -> PathfinderMob.createMobAttributes().
+					            add(Attributes.MAX_HEALTH, 50).
+					            add(Attributes.ATTACK_DAMAGE, 12).
+					            add(Attributes.MOVEMENT_SPEED, 0.27f).
+					            add(Attributes.ARMOR, 8)).
+					    rendererProvider(CaptainRenderer :: new),
+			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+	    
+	    public static final EntityEntry<Blacksmith> MOB_BASE_BLACKSMITH = makeEntityType(
+			    "blacksmith",
+			    Blacksmith.class,
+			    Blacksmith :: new,
+			    MobCategory.CREATURE,
+			    builder -> builder.
+					    canSpawnFarFromPlayer().
+					    clientTrackingRange(4).
+					    eyeHeight(1.62f).
+					    sized(0.6f, 1.95f).
+					    attributeProvider(() -> PathfinderMob.createMobAttributes().
+					            add(Attributes.MAX_HEALTH, 30).
+					            add(Attributes.ATTACK_DAMAGE, 8).
+					            add(Attributes.MOVEMENT_SPEED, 0.27f).
+					            add(Attributes.ARMOR, 4)).
+					    rendererProvider(BlacksmithRenderer :: new),
+			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 				
         private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
@@ -1157,23 +1237,23 @@ public final class Registration
                 Collection<? extends Supplier<? extends Block>> valid
         )
         {
-            return () -> new MetaBlockEntityType<>(
+            return () -> new BioBlockEntityType<>(
                     create, rendererProvider, menuProvider, screenConstructor, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
         }
 
-        public static class MetaBlockEntityType<T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> extends BlockEntityType<T>
+        public static class BioBlockEntityType<T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> extends BlockEntityType<T>
         {
 
             private final BlockEntityRendererProvider<T> renderer;
             private final MenuTypeReg.ArgContainer<T, C> menuProvider;
             private final MenuScreens.ScreenConstructor<C, S> screenConstructor;
 
-            public MetaBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
             {
                 this(factory, provider, menuProvider, screenConstructor, validBlocks, false);
             }
 
-            public MetaBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
             {
                 super(factory, validBlocks, onlyOpsNbtAccess);
                 this.renderer = provider;

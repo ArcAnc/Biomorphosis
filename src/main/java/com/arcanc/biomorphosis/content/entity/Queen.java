@@ -76,17 +76,17 @@ public class Queen extends Monster implements GeoEntity
 
     public boolean isFindLure()
     {
-        return findLure;
+        return this.findLure;
     }
 
     public BlockPos getLurePos()
     {
-        return lurePos;
+        return this.lurePos;
     }
 
     public BlockPos getSpawnPos()
     {
-        return spawnPos;
+        return this.spawnPos;
     }
 
     public void setLurePos(BlockPos pos)

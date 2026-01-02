@@ -249,6 +249,10 @@ public class Database
             public static final EntitySoundSubtitle SWARMLING = new EntitySoundSubtitle("swarmling");
             public static final EntitySoundSubtitle GUARD = new EntitySoundSubtitle("guard");
             public static final EntitySoundSubtitle WORKER = new EntitySoundSubtitle("worker");
+			public static final EntitySoundSubtitle SOLDIER = new EntitySoundSubtitle("soldier");
+	        public static final EntitySoundSubtitle SERGEANT = new EntitySoundSubtitle("sergeant");
+	        public static final EntitySoundSubtitle CAPTAIN = new EntitySoundSubtitle("captain");
+	        public static final EntitySoundSubtitle BLACKSMITH = new EntitySoundSubtitle("blacksmith");
 
             public static class EntitySoundSubtitle
             {

@@ -129,6 +129,11 @@ public class BioEntityLoot extends EntityLootSubProvider
 		                add(LootItem.lootTableItem(Registration.ItemReg.ANTENNAS).
 		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
 		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
+		
+		this.add(Registration.EntityReg.MOB_BASE_SOLDIER.getEntityHolder().get(), LootTable.lootTable());
+	    this.add(Registration.EntityReg.MOB_BASE_SERGEANT.getEntityHolder().get(), LootTable.lootTable());
+	    this.add(Registration.EntityReg.MOB_BASE_CAPTAIN.getEntityHolder().get(), LootTable.lootTable());
+	    this.add(Registration.EntityReg.MOB_BASE_BLACKSMITH.getEntityHolder().get(), LootTable.lootTable());
     }
 
     @Override

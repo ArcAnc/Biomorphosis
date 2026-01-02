@@ -101,6 +101,10 @@ public class EnUsProvider extends LanguageProvider
         this.addEntity(Registration.EntityReg.MOB_INFESTOR, "Infestor", Database.GUI.Sounds.INFESTOR, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_SWARMLING, "Swarmling", Database.GUI.Sounds.SWARMLING, "stridulates");
         this.addEntity(Registration.EntityReg.MOB_WORKER,"Worker", Database.GUI.Sounds.WORKER, "stridulates");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_SOLDIER,"Soldier", Database.GUI.Sounds.SOLDIER, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_SERGEANT,"Sergeant", Database.GUI.Sounds.SERGEANT, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_CAPTAIN,"Captain", Database.GUI.Sounds.CAPTAIN, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_BLACKSMITH,"Blacksmith", Database.GUI.Sounds.BLACKSMITH, "yawns");
 		this.addEntityType(Registration.EntityReg.PROJECTILE_TURRET.getEntityHolder(), "Turret Projectile");
 
         //-----------------------------

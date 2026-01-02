@@ -1,4 +1,4 @@
-// 1.21.4	2025-12-27T15:13:50.800237685	Biomorphosis: Models
+// 1.21.4	2026-01-02T19:44:15.256866858	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
@@ -86,11 +86,15 @@ cd872a03acb8517e99da7301faa27eae8054b68d assets/biomorphosis/items/prop_1.json
 5d1c94839f9cfba815dd5db63dfd5706086dd946 assets/biomorphosis/items/roof_dirt.json
 efa426a9eada5088e03fdde774bf5a90e615a1e2 assets/biomorphosis/items/roof_slab.json
 480674666e0f5642554423807cbb8528268cc3cf assets/biomorphosis/items/roof_stairs.json
+b3242bdc5ae90b189f132676f3210af8b0367e0b assets/biomorphosis/items/spawning_egg_blacksmith.json
+8a2027088ff60492f49c3ef791433c517bfc3b35 assets/biomorphosis/items/spawning_egg_captain.json
 3a9dd07323652b100a67387a623efa97e9ac5b50 assets/biomorphosis/items/spawning_egg_guard.json
 b2e113302a2755c9dde2add26db466d565742a2f assets/biomorphosis/items/spawning_egg_infestor.json
 ede2aac154bb05c4b9d66e804c719c731153a9d5 assets/biomorphosis/items/spawning_egg_ksigg.json
 2c0addc661da50ee80f06d7f0590a133e72bf278 assets/biomorphosis/items/spawning_egg_larva.json
 90e82158411c9d235f05bc36e4447cb3c645a9ec assets/biomorphosis/items/spawning_egg_queen.json
+942abd51e2e678749f20ee1ee921de24336b6844 assets/biomorphosis/items/spawning_egg_sergeant.json
+92f24b9f9ef489e48ce9e392a00348644ea00db8 assets/biomorphosis/items/spawning_egg_soldier.json
 da74ceb0bdff9030aeea269c47e184088dafccf3 assets/biomorphosis/items/spawning_egg_swarmling.json
 b90a2094b5d998dd64442999d6cdd00087a45e13 assets/biomorphosis/items/spawning_egg_worker.json
 ac0646b25136484f07c886acc04f9673629da272 assets/biomorphosis/items/spawning_egg_ziris.json

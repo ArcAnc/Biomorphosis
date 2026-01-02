@@ -11,6 +11,10 @@ package com.arcanc.biomorphosis.content.event;
 
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.RecipeRenderHandler;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.model.BlacksmithModel;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.model.CaptainModel;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SergeantModel;
+import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SoldierModel;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
@@ -144,8 +148,8 @@ public final class ClientEvents
     {
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().
                 map(DeferredHolder :: get).
-                filter(type -> type instanceof Registration.BETypeReg.MetaBlockEntityType).
-                map(type -> (Registration.BETypeReg.MetaBlockEntityType<? extends BlockEntity, ?, ?>)type).
+                filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType).
+                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).
                 filter(type -> type.getRenderer() != null).
                 forEach(type -> event.registerBlockEntityRenderer(type, type.getRenderer()));
 
@@ -159,8 +163,8 @@ public final class ClientEvents
     private static void registerMenuScreens(final RegisterMenuScreensEvent event)
     {
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().map(DeferredHolder :: get).
-                filter(type -> type instanceof Registration.BETypeReg.MetaBlockEntityType<? extends BlockEntity, ?, ?>).
-                map(type -> (Registration.BETypeReg.MetaBlockEntityType<? extends BlockEntity, ?, ?>)type).
+                filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>).
+                map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).
                 filter(type -> type.getScreenConstructor() != null).
                 forEach(type -> event.register(type.getMenuProvider().getType(), type.getScreenConstructor()));
     }
@@ -171,9 +175,12 @@ public final class ClientEvents
                 MultiblockMorpherSpecialRenderer.Unbaked.MAP_CODEC);
     }
 
-    private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)
+    private static void registerLayerDefinitions(final EntityRenderersEvent.@NotNull RegisterLayerDefinitions event)
     {
-
+		event.registerLayerDefinition(SoldierModel.LAYER_LOCATION, SoldierModel :: createMesh);
+		event.registerLayerDefinition(SergeantModel.LAYER_LOCATION, SergeantModel :: createMesh);
+		event.registerLayerDefinition(CaptainModel.LAYER_LOCATION, CaptainModel :: createMesh);
+		event.registerLayerDefinition(BlacksmithModel.LAYER_LOCATION, BlacksmithModel :: createMesh);
     }
 
     private static void gatherData(final @NotNull GatherDataEvent.Client event)

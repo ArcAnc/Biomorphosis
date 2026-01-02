@@ -84,6 +84,11 @@ public class SummaryModelProvider extends ModelProvider
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_QUEEN_GUARD.getEggHolder().get(), MathHelper.ColorHelper.color(0, 40, 2), MathHelper.ColorHelper.color(43, 3, 99));
         itemModels.generateSpawnEgg(Registration.EntityReg.MOB_WORKER.getEggHolder().get(), MathHelper.ColorHelper.color(34, 97, 13), MathHelper.ColorHelper.color(33, 26, 93));
 
+	    itemModels.generateSpawnEgg(Registration.EntityReg.MOB_BASE_SOLDIER.getEggHolder().get(), MathHelper.ColorHelper.color(193, 163, 134), MathHelper.ColorHelper.color(119, 119, 119));
+	    itemModels.generateSpawnEgg(Registration.EntityReg.MOB_BASE_SERGEANT.getEggHolder().get(), MathHelper.ColorHelper.color(193, 163, 134), MathHelper.ColorHelper.color(249, 179, 5));
+	    itemModels.generateSpawnEgg(Registration.EntityReg.MOB_BASE_CAPTAIN.getEggHolder().get(), MathHelper.ColorHelper.color(193, 163, 134), MathHelper.ColorHelper.color(68, 219, 224));
+	    itemModels.generateSpawnEgg(Registration.EntityReg.MOB_BASE_BLACKSMITH.getEggHolder().get(), MathHelper.ColorHelper.color(193, 163, 134), MathHelper.ColorHelper.color(108, 47, 25));
+
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
 
         itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem(),
