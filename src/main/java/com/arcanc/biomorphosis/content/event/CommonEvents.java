@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
+import com.arcanc.biomorphosis.content.entity.trades.Trades;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
@@ -42,7 +43,9 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
         NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
         ChestMenu.registerEvents();
-        /*FIXME: придумать адекватный метод добавления биома, без терраблендера, ибо лютая какая-то хуйня получается
+	    Trades.register(modEventBus);
+		
+		/*FIXME: придумать адекватный метод добавления биома, без терраблендера, ибо лютая какая-то хуйня получается
         *  Ну или придумать способ, адекватной настройки. Как вариант можно выдрать из <a href="https://github.com/Glitchfiend/BiomesOPlenty/blob/1.21.8/common/src/main/java/biomesoplenty/init/ModBiomes.java">биомес о пленти</a>*/
         //modEventBus.addListener(CommonEvents :: commonSetupEvent);
    }

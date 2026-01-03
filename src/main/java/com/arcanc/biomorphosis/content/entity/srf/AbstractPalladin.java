@@ -11,15 +11,21 @@ package com.arcanc.biomorphosis.content.entity.srf;
 
 
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
 
 public class AbstractPalladin extends PathfinderMob
 {
@@ -63,6 +69,30 @@ public class AbstractPalladin extends PathfinderMob
 	public boolean isNotOnGuardPos()
 	{
 		return this.distanceToSqr(Vec3.atBottomCenterOf(getGuardPos())) > 2;
+	}
+	
+	protected void addOffersFromItemListings(MerchantOffers givenMerchantOffers, VillagerTrades.ItemListing[] newTrades, int maxNumbers)
+	{
+		ArrayList<VillagerTrades.ItemListing> arraylist = Lists.newArrayList(newTrades);
+		int i = 0;
+		
+		while (i < maxNumbers && !arraylist.isEmpty())
+		{
+			MerchantOffer merchantoffer = arraylist.remove(this.random.nextInt(arraylist.size())).getOffer(this, this.random);
+			if (merchantoffer != null)
+			{
+				givenMerchantOffers.add(merchantoffer);
+				i++;
+			}
+		}
+	}
+	
+	protected void rewardTradeXp(@NotNull MerchantOffer offer)
+	{
+		if (!offer.shouldRewardExp())
+			return;
+		int i = 3 + this.random.nextInt(4);
+		this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY() + 0.5, this.getZ(), i));
 	}
 	
 	@Override
