@@ -82,7 +82,7 @@ public class SwarmResistanceForces
 									*/									build(),
 							pools.getOrThrow(orderData.pools.getStartPool(StructureType.TOWER)),
 							3,
-							ConstantHeight.of(VerticalAnchor.absolute(-1)),
+							ConstantHeight.of(VerticalAnchor.absolute(0)),
 							true,
 							Heightmap.Types.WORLD_SURFACE_WG));
 		});
