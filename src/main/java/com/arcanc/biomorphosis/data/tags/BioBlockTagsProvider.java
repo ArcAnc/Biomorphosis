@@ -55,7 +55,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
         this.tag(BioBlockTags.NORPH_AVOID).
                 add(Blocks.LAVA).
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
-                add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get());
+                add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get()).
+                add(Registration.BlockReg.MULTIBLOCK_TURRET.get());
         this.tag(BlockTags.CLIMBABLE).
                 add(Registration.BlockReg.GLOW_MOSS.get()).
                 add(Registration.BlockReg.MOSS.get());

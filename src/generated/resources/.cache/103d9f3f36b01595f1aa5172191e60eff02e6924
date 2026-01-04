@@ -1,4 +1,4 @@
-// 1.21.4	2026-01-01T17:43:23.291912637	Registries
+// 1.21.4	2026-01-04T17:42:27.914762115	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -31,7 +31,7 @@ e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/health.json
 b604fbd354957606b3c2b847f861507a334bc657 data/biomorphosis/multiblock/turret.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
 41285997a3899c5a42c70c35b663dc8c3db9ff7a data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
-a5a89c791e9d784afb08f63e073d7e3f45c1182f data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
+ee6b438697c038c934efe09507a57871e2e00fbc data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
 941fefd636dafabe8a11a987ebe0add2db579b15 data/biomorphosis/worldgen/structure/village.json
 68aec96ec0618a496e1d0afe39665afaa2d5a8e6 data/biomorphosis/worldgen/structure_set/srf/orders/base/headquarters.json
 6d7945ad0de398f99fa3ce6ba701ea1e81663c88 data/biomorphosis/worldgen/structure_set/srf/orders/base/tower.json
