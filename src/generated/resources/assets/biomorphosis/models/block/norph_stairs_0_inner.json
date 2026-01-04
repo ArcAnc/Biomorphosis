@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "biomorphosis:block/norph_0",
+    "side": "biomorphosis:block/norph_0",
+    "top": "biomorphosis:block/norph_0"
+  }
+}

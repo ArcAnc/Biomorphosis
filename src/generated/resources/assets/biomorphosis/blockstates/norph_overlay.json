@@ -1,17 +1,63 @@
 {
   "multipart": [
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay"
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7"
+        }
+      ],
       "when": {
         "north": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay"
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6"
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7"
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",
@@ -22,21 +68,95 @@
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 90
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 90
+        }
+      ],
       "when": {
         "east": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 90
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 90
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",
@@ -47,21 +167,95 @@
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 180
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 180
+        }
+      ],
       "when": {
         "south": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 180
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 180
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 180
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",
@@ -72,21 +266,95 @@
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 270
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 270
+        }
+      ],
       "when": {
         "west": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "y": 270
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "y": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "y": 270
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",
@@ -97,21 +365,95 @@
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "x": 270
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "x": 270
+        }
+      ],
       "when": {
         "up": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "x": 270
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "x": 270
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "x": 270
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",
@@ -122,21 +464,95 @@
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "x": 90
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "x": 90
+        }
+      ],
       "when": {
         "down": "true"
       }
     },
     {
-      "apply": {
-        "model": "biomorphosis:block/norph_overlay",
-        "uvlock": true,
-        "x": 90
-      },
+      "apply": [
+        {
+          "model": "biomorphosis:block/norph_overlay_0",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_1",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_2",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_3",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_4",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_5",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_6",
+          "uvlock": true,
+          "x": 90
+        },
+        {
+          "model": "biomorphosis:block/norph_overlay_7",
+          "uvlock": true,
+          "x": 90
+        }
+      ],
       "when": {
         "down": "false",
         "east": "false",

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/outer_stairs",
+  "textures": {
+    "bottom": "biomorphosis:block/norph_7",
+    "side": "biomorphosis:block/norph_7",
+    "top": "biomorphosis:block/norph_7"
+  }
+}

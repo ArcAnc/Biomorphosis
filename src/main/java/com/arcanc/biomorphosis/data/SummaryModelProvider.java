@@ -13,6 +13,9 @@ import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.EggsDeco;
 import com.arcanc.biomorphosis.content.block.block_entity.HiveDeco;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorageBlock;
+import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
+import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
+import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -34,7 +37,10 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Half;
+import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.template.ExtendedModelTemplateBuilder;
 import net.neoforged.neoforge.client.model.generators.template.FaceRotation;
 import net.neoforged.neoforge.client.model.item.DynamicFluidContainerModel;
@@ -43,8 +49,8 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.renderer.GeckolibSpecialRenderer;
 
-import java.util.EnumSet;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -52,7 +58,485 @@ public class SummaryModelProvider extends ModelProvider
 {
     private static final ModelTemplate BLOCK = ModelTemplates.create("block", TextureSlot.PARTICLE);
     private static final TextureSlot PORT = TextureSlot.create("port");
-
+	private static final List<Pair<Direction, BiFunction<ResourceLocation, Integer, Variant[]>>> MULTIFACE_MULTIMODEL_GENERATOR = List.of(
+			Pair.of(Direction.NORTH, (location, index) ->
+			{
+				Variant[] variants = new Variant[index];
+				for (int q = 0; q < index; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, location.withSuffix("_" + q));
+				return variants;
+			}),
+			Pair.of(
+					Direction.EAST,
+					(location, index) ->
+					{
+						Variant[] variants = new Variant[index];
+						for (int q = 0; q < index; q++)
+							variants[q] = Variant.variant().
+											with(VariantProperties.MODEL, location.withSuffix("_" + q)).
+											with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+											with(VariantProperties.UV_LOCK, true);
+						return variants;
+					}
+			),
+			Pair.of(
+					Direction.SOUTH,
+					(location, index) ->
+					{
+						Variant[] variants = new Variant[index];
+						for (int q = 0; q < index; q++)
+							 variants[q] = Variant.variant().
+											 with(VariantProperties.MODEL, location.withSuffix("_" + q)).
+											 with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									         with(VariantProperties.UV_LOCK, true);
+						return variants;
+					}
+			),
+			Pair.of(
+					Direction.WEST,
+					(location, index) ->
+					{
+						Variant[] variants = new Variant[index];
+						for (int q = 0; q < index; q++)
+							variants[q] = Variant.variant().
+											with(VariantProperties.MODEL, location.withSuffix("_" + q)).
+											with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+											with(VariantProperties.UV_LOCK, true);
+						return variants;
+					}
+			),
+			Pair.of(
+					Direction.UP,
+					(location, index) ->
+					{
+						Variant[] variants = new Variant[index];
+						for (int q = 0; q < index; q++)
+							variants[q] = Variant.variant().
+											with(VariantProperties.MODEL, location.withSuffix("_" + q)).
+											with(VariantProperties.X_ROT, VariantProperties.Rotation.R270).
+											with(VariantProperties.UV_LOCK, true);
+						return variants;
+					}
+			),
+			Pair.of(
+					Direction.DOWN,
+					(location, index) ->
+					{
+						Variant[] variants = new Variant[index];
+						for (int q = 0; q < index; q++)
+							variants[q] = Variant.variant().
+											with(VariantProperties.MODEL, location.withSuffix("_" + q)).
+											with(VariantProperties.X_ROT, VariantProperties.Rotation.R90).
+											with(VariantProperties.UV_LOCK, true);
+						return variants;
+					}
+			)
+	);
+	
+	private static final Set<Pair<StairVariant, PropertyDispatch.TriFunction<ResourceLocation[], ResourceLocation[], ResourceLocation[], Variant[]>>> STAIR_MULTIMODEL_GENERATOR = Set.of(
+			Pair.of(new StairVariant(Direction.EAST, Half.BOTTOM, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q = 0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, straightLocations[q]);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.BOTTOM, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q =0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.BOTTOM, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q =0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.BOTTOM, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q =0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.BOTTOM, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, outerLocations[q]);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.BOTTOM, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.BOTTOM, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.BOTTOM, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.BOTTOM, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.BOTTOM, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, outerLocations[q]);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.BOTTOM, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.BOTTOM, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, innerLocations[q]);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.BOTTOM, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.BOTTOM, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.BOTTOM, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.BOTTOM, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.BOTTOM, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.BOTTOM, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().with(VariantProperties.MODEL, innerLocations[q]);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.BOTTOM, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.TOP, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q = 0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.TOP, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q = 0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.TOP, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q = 0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.TOP, StairsShape.STRAIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[straightLocations.length];
+				for (int q = 0; q < straightLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, straightLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.TOP, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.TOP, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.TOP, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.TOP, StairsShape.OUTER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.TOP, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.TOP, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.TOP, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.TOP, StairsShape.OUTER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[outerLocations.length];
+				for (int q = 0; q < outerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, outerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.TOP, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.TOP, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.TOP, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.TOP, StairsShape.INNER_RIGHT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.EAST, Half.TOP, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.WEST, Half.TOP, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.SOUTH, Half.TOP,	StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R90).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			}),
+			Pair.of(new StairVariant(Direction.NORTH, Half.TOP, StairsShape.INNER_LEFT), (straightLocations, outerLocations, innerLocations) ->
+			{
+				Variant[] variants = new Variant[innerLocations.length];
+				for (int q = 0; q < innerLocations.length; q++)
+					variants[q] = Variant.variant().
+									with(VariantProperties.MODEL, innerLocations[q]).
+									with(VariantProperties.X_ROT, VariantProperties.Rotation.R180).
+									with(VariantProperties.Y_ROT, VariantProperties.Rotation.R270).
+									with(VariantProperties.UV_LOCK, true);
+				return variants;
+			})
+	);
+	
+	
     public SummaryModelProvider(PackOutput output)
     {
         super(output, Database.MOD_ID);
@@ -110,10 +594,11 @@ public class SummaryModelProvider extends ModelProvider
         createLureCampfireModel(blockModels);
 
         createNorphSource(blockModels);
-        createStairs(Registration.BlockReg.NORPH_STAIRS.get(), blockModels);
-        blockModels.createTrivialCube(Registration.BlockReg.NORPH.get());
-
-        createMultifaceModel(Registration.BlockReg.NORPH_OVERLAY.get(), blockModels);
+       //createStairs(Registration.BlockReg.NORPH_STAIRS.get(), blockModels);
+		
+		createNorphBlock(blockModels);
+		createNorphOverlay(blockModels);
+		createNorphStairs(blockModels);
 
         createFluidModel(Registration.FluidReg.BIOMASS, blockModels);
         createFluidModel(Registration.FluidReg.ACID, blockModels);
@@ -5255,53 +5740,134 @@ public class SummaryModelProvider extends ModelProvider
         ResourceLocation resourcelocation = ModelTemplates.STAIRS_INNER.create(block, mapping, blockModels.modelOutput);
         ResourceLocation resourcelocation1 = ModelTemplates.STAIRS_STRAIGHT.create(block, mapping, blockModels.modelOutput);
         ResourceLocation resourcelocation2 = ModelTemplates.STAIRS_OUTER.create(block, mapping, blockModels.modelOutput);
-        blockModels.blockStateOutput.accept(BlockModelGenerators.createStairs(block, resourcelocation, resourcelocation1, resourcelocation2));
+        
+		blockModels.blockStateOutput.accept(BlockModelGenerators.createStairs(block, resourcelocation, resourcelocation1, resourcelocation2));
         blockModels.registerSimpleItemModel(block, resourcelocation1);
     }
-
-    private void createMultifaceModel(@NotNull MultifaceBlock block, @NotNull BlockModelGenerators blockModels)
+	
+	private void createNorphStairs(@NotNull BlockModelGenerators blockModels)
+	{
+		DeferredBlock<NorphStairs> block = Registration.BlockReg.NORPH_STAIRS;
+		
+		ResourceLocation[] innerLocations = new ResourceLocation[8];
+		ResourceLocation[] straightLocations = new ResourceLocation[8];
+		ResourceLocation[] outerLocations = new ResourceLocation[8];
+		
+		ResourceLocation texture = TextureMapping.getBlockTexture(block.get().base);
+		for (int q = 0; q < 8; q++)
+		{
+			TextureMapping mapping = new TextureMapping().
+					put(TextureSlot.BOTTOM, texture.withSuffix("_" + q)).
+					put(TextureSlot.TOP, texture.withSuffix("_"+ q)).
+					put(TextureSlot.SIDE, texture.withSuffix("_" + q));
+			
+			innerLocations[q] = ModelTemplates.STAIRS_INNER.createWithSuffix(block.get(), "_" + q, mapping, blockModels.modelOutput);
+			straightLocations[q] = ModelTemplates.STAIRS_STRAIGHT.createWithSuffix(block.get(), "_" + q, mapping, blockModels.modelOutput);
+			outerLocations[q] = ModelTemplates.STAIRS_OUTER.createWithSuffix(block.get(), "_" + q, mapping, blockModels.modelOutput);
+		}
+		
+		PropertyDispatch.C3<Direction, Half, StairsShape> props = PropertyDispatch.properties(BlockStateProperties.HORIZONTAL_FACING, BlockStateProperties.HALF, BlockStateProperties.STAIRS_SHAPE);
+		
+		for (Pair<StairVariant, PropertyDispatch.TriFunction<ResourceLocation[], ResourceLocation[], ResourceLocation[], Variant[]>> pair : STAIR_MULTIMODEL_GENERATOR)
+		{
+			StairVariant variant = pair.getFirst();
+			PropertyDispatch.TriFunction<ResourceLocation[], ResourceLocation[], ResourceLocation[], Variant[]> variantGetter = pair.getSecond();
+			props.select(variant.dir(), variant.half(), variant.shape(), Arrays.asList(variantGetter.apply(straightLocations, outerLocations, innerLocations)));
+		}
+		
+		blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block.get()).with(props));
+		
+		blockModels.registerSimpleItemModel(block.get(), straightLocations[0]);
+	}
+	
+	private void createNorphBlock(@NotNull BlockModelGenerators blockModels)
+	{
+		DeferredBlock<NorphBlock> block = Registration.BlockReg.NORPH;
+		
+		Variant[] variants = new Variant[8];
+		
+		ResourceLocation texture = TextureMapping.getBlockTexture(block.get());
+		for (int q = 0; q < 8; q++)
+		{
+			TextureMapping mapping = new TextureMapping().put(TextureSlot.ALL, texture.withSuffix("_" + q)).
+					put(TextureSlot.PARTICLE, texture.withSuffix("_" + q));
+			
+			ExtendedModelTemplateBuilder template = ModelTemplates.CUBE_ALL.extend().
+					parent(Database.mineRl(blockPrefix("block"))).
+					requiredTextureSlot(TextureSlot.ALL).
+					requiredTextureSlot(TextureSlot.PARTICLE).
+					renderType("translucent").
+					guiLight(UnbakedModel.GuiLight.SIDE).
+					element(builder -> builder.
+						from(0, 0, 0).
+						to(16, 16, 16).
+						allFaces((direction, faceBuilder) ->
+							faceBuilder.uvs(0, 0, 16, 16)).
+						texture(TextureSlot.ALL));
+			
+			ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).createWithSuffix(block.get(), "_" + q, blockModels.modelOutput);
+			
+			variants[q] = Variant.variant().with(VariantProperties.MODEL, modelLocation);
+		}
+		
+		blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block.get(), variants));
+		
+		blockModels.registerSimpleFlatItemModel(block.get(), "_0");
+	}
+	
+    private void createNorphOverlay(@NotNull BlockModelGenerators blockModels)
     {
-        TextureMapping mapping = new TextureMapping().put(TextureSlot.ALL, TextureMapping.getBlockTexture(block)).put(TextureSlot.PARTICLE, TextureMapping.getBlockTexture(block));
+        DeferredBlock<NorphOverlay> block = Registration.BlockReg.NORPH_OVERLAY;
+		
+		ResourceLocation texture = TextureMapping.getBlockTexture(block.get());
+		
+		for (int q = 0; q < 8; q++)
+		{
+			TextureMapping mapping = new TextureMapping().put(TextureSlot.ALL, texture.withSuffix("_" + q)).
+					put(TextureSlot.PARTICLE, texture.withSuffix("_" + q));
+			
+			ExtendedModelTemplateBuilder template = BLOCK.extend().
+					parent(Database.mineRl(blockPrefix("block"))).
+					requiredTextureSlot(TextureSlot.ALL).
+					requiredTextureSlot(TextureSlot.PARTICLE).
+					renderType("translucent").
+					guiLight(UnbakedModel.GuiLight.SIDE).
+					element(builder -> builder.
+					from(0f,0f,0.1f).
+					to(16f,16f,0.1f).
+					face(Direction.NORTH,
+					faceBuilder -> faceBuilder.uvs(16f, 0f, 0f, 16f)).
+					face(Direction.SOUTH,
+					faceBuilder -> faceBuilder.uvs(0f,0f, 16f, 16f)).
+					texture(TextureSlot.ALL));
+			
+			ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).createWithSuffix(block.get(), "_" + q, blockModels.modelOutput);
+		}
+	    
+	    MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(block.get());
+	    Condition.TerminalCondition condition$terminalcondition = Util.make(
+			    Condition.condition(), condition -> BlockModelGenerators.MULTIFACE_GENERATOR.stream().map(Pair::getFirst).map(MultifaceBlock::getFaceProperty).forEach(property ->
+			    {
+				    if (block.get().defaultBlockState().hasProperty(property))
+					    condition.term(property, false);
+			    }));
+	    
+	    for (Pair<Direction, BiFunction<ResourceLocation, Integer, Variant[]>> pair : MULTIFACE_MULTIMODEL_GENERATOR)
+	    {
+		    BooleanProperty booleanproperty = MultifaceBlock.getFaceProperty(pair.getFirst());
+		    BiFunction<ResourceLocation, Integer, Variant[]> function = pair.getSecond();
+		    if (block.get().defaultBlockState().hasProperty(booleanproperty))
+		    {
+			    multipartgenerator.with(Condition.condition().term(booleanproperty, true), function.apply(
+						ModelLocationUtils.getModelLocation(block.get()), 8));
+			    multipartgenerator.with(condition$terminalcondition, function.apply(
+						ModelLocationUtils.getModelLocation(block.get()), 8));
+		    }
+	    }
+		
+	    blockModels.blockStateOutput.accept(multipartgenerator);
 
-        ExtendedModelTemplateBuilder template = BLOCK.extend().
-                parent(ResourceLocation.withDefaultNamespace(blockPrefix("block"))).
-                requiredTextureSlot(TextureSlot.ALL).
-                requiredTextureSlot(TextureSlot.PARTICLE).
-                renderType("translucent").
-                guiLight(UnbakedModel.GuiLight.SIDE).
-                element(builder -> builder.
-                        from(0f,0f,0.1f).
-                        to(16f,16f,0.1f).
-                        face(Direction.NORTH,
-                                faceBuilder -> faceBuilder.uvs(16f, 0f, 0f, 16f)).
-                        face(Direction.SOUTH,
-                                faceBuilder -> faceBuilder.uvs(0f,0f, 16f, 16f)).
-                        texture(TextureSlot.ALL));
-
-        ResourceLocation modelLocation = new TexturedModel(mapping, template.build()).create(block, blockModels.modelOutput);
-
-        MultiPartGenerator multipartgenerator = MultiPartGenerator.multiPart(block);
-        Condition.TerminalCondition condition$terminalcondition = Util.make(
-                Condition.condition(), condition -> BlockModelGenerators.MULTIFACE_GENERATOR.stream().map(Pair::getFirst).map(MultifaceBlock::getFaceProperty).forEach(property ->
-                {
-                    if (block.defaultBlockState().hasProperty(property))
-                        condition.term(property, false);
-                }));
-
-        for (Pair<Direction, Function<ResourceLocation, Variant>> pair : BlockModelGenerators.MULTIFACE_GENERATOR)
-        {
-            BooleanProperty booleanproperty = MultifaceBlock.getFaceProperty(pair.getFirst());
-            Function<ResourceLocation, Variant> function = pair.getSecond();
-            if (block.defaultBlockState().hasProperty(booleanproperty))
-            {
-                multipartgenerator.with(Condition.condition().term(booleanproperty, true), function.apply(modelLocation));
-                multipartgenerator.with(condition$terminalcondition, function.apply(modelLocation));
-            }
-        }
-
-        blockModels.blockStateOutput.accept(multipartgenerator);
-
-        blockModels.registerSimpleFlatItemModel(block);
+        blockModels.registerSimpleFlatItemModel(block.get(), "_0");
     }
 
     private void createLureCampfireModel(@NotNull BlockModelGenerators blockModels)
@@ -5480,7 +6046,25 @@ public class SummaryModelProvider extends ModelProvider
         blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block, Variant.variant().with(VariantProperties.MODEL, modelLocation)).
                 with(BlockModelGenerators.createHorizontalFacingDispatchAlt()));
     }
-
+	
+	private record StairVariant(Direction dir, Half half, StairsShape shape)
+	{
+		@Override
+		public boolean equals(Object o)
+		{
+			if (! (o instanceof StairVariant (Direction dir1, Half half1, StairsShape shape1)))
+				return false;
+			return half() == half1 && dir() == dir1 && shape() == shape1;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return Objects.hash(dir(), half(), shape());
+		}
+	}
+	
+	
     @Override
     protected void registerModels(@NotNull BlockModelGenerators blockModels, @NotNull ItemModelGenerators itemModels)
     {

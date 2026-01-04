@@ -63,7 +63,7 @@
   "biomorphosis.book.page.text.v006": "• Small internal changes and filled up book\n• Fixed entities not attacked and crash by missing sound.\n• A bit changed descriptions in book\n• A bit nerfed Queen Guard. He was have too much armor",
   "biomorphosis.book.page.text.v007": "• Renamed lymph into acid \n• Changed recipes to work with float values of fluids\n• Added Squeezer",
   "biomorphosis.book.page.text.v0071": "• Added an overlay to the Manipulator to explain how it works",
-  "biomorphosis.book.page.text.v008": "• Added turret for base defence\n• Added first version of palladin orders with some world gen",
+  "biomorphosis.book.page.text.v008": "• Added turret for base defence\n• Added first version of palladin orders with some world gen \n• Changed model for norph blocks",
   "biomorphosis.book.page.title.catcher": "</block;biomorphosis:catcher/>Biofluid Extractor",
   "biomorphosis.book.page.title.chamber": "</block;biomorphosis:chamber/>Chamber",
   "biomorphosis.book.page.title.crusher": "</block;biomorphosis:crusher/>Crusher",

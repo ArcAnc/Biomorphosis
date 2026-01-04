@@ -1,0 +1,37 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#all",
+          "uv": [
+            16.0,
+            0.0,
+            0.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#all"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0.1
+      ],
+      "to": [
+        16,
+        16,
+        0.1
+      ]
+    }
+  ],
+  "gui_light": "side",
+  "render_type": "minecraft:translucent",
+  "textures": {
+    "all": "biomorphosis:block/norph_overlay_4",
+    "particle": "biomorphosis:block/norph_overlay_4"
+  }
+}
