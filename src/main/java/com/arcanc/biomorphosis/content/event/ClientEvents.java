@@ -28,10 +28,7 @@ import com.arcanc.biomorphosis.data.loot.BioGlobalLootModifier;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
 import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
-import com.arcanc.biomorphosis.data.tags.BioBlockTagsProvider;
-import com.arcanc.biomorphosis.data.tags.BioDamageTypeTagsProvider;
-import com.arcanc.biomorphosis.data.tags.BioEntityTagsProvider;
-import com.arcanc.biomorphosis.data.tags.BioItemTagsProvider;
+import com.arcanc.biomorphosis.data.tags.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -194,7 +191,7 @@ public final class ClientEvents
         gen.addProvider(true, btp);
         gen.addProvider(true, new BioItemTagsProvider(packOutput, lookupProvider, btp));
         gen.addProvider(true, new BioEntityTagsProvider(packOutput, lookupProvider));
-
+		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, lookupProvider));
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider));
 

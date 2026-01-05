@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.worldgen.srf;
 
 
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrders;
+import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
@@ -21,7 +22,6 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
@@ -53,7 +53,7 @@ public class SwarmResistanceForces
 			context.register(orderData.getStructureInfo(StructureType.HEADQUARTERS).
 					structure(),
 					new JigsawStructure(
-							new Structure.StructureSettings.Builder(biomes.getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS)).
+							new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SRF_HEADQUARTERS)).
 									terrainAdapation(TerrainAdjustment.BEARD_THIN).
 /*									spawnOverrides(Map.of(
 											MobCategory.MONSTER,
@@ -71,7 +71,7 @@ public class SwarmResistanceForces
 			context.register(orderData.getStructureInfo(StructureType.TOWER).
 							structure(),
 					new JigsawStructure(
-							new Structure.StructureSettings.Builder(biomes.getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS)).
+							new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SRF_TOWER)).
 											terrainAdapation(TerrainAdjustment.BEARD_THIN).
 									/*									spawnOverrides(Map.of(
 																				MobCategory.MONSTER,

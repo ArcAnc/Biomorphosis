@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.worldgen.swarm_village;
 
 
 import com.arcanc.biomorphosis.data.BioWorldGenProvider;
+import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.collect.ImmutableList;
 import com.mojang.datafixers.util.Pair;
@@ -50,7 +51,7 @@ public class SwarmVillage
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 
 		context.register(VILLAGE.structure(), new SwarmVillageStructure(
-				new Structure.StructureSettings.Builder(biomes.getOrThrow(BiomeTags.HAS_VILLAGE_PLAINS)).
+				new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SWARM_VILLAGE)).
 					terrainAdapation(TerrainAdjustment.BEARD_THIN).build(),
 					pools.getOrThrow(VILLAGE.pools().getPoolKey(CellType.CENTER)),
 				6,

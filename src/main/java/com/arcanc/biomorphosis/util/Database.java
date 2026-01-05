@@ -192,6 +192,7 @@ public class Database
 	            public static final PageInfo V007 = new PageInfo(rl("v007"));
 	            public static final PageInfo V0071 = new PageInfo(rl("v0071"));
 				public static final PageInfo V008 = new PageInfo(rl("v008"));
+	            public static final PageInfo V0081 = new PageInfo(rl("v0081"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
