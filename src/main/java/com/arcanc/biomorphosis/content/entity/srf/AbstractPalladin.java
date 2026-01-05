@@ -113,4 +113,16 @@ public class AbstractPalladin extends PathfinderMob
 		if (compound.contains("guard_pos"))
 			this.guardPos = TagHelper.readBlockPos(compound, "guard_pos");
 	}
+	
+	@Override
+	public boolean removeWhenFarAway(double distanceToClosestPlayer)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean isPersistenceRequired()
+	{
+		return true;
+	}
 }

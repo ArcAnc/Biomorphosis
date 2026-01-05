@@ -150,4 +150,10 @@ public class Worker extends Monster implements GeoEntity
 	{
 		return false;
 	}
+	
+	@Override
+	public boolean isPersistenceRequired()
+	{
+		return true;
+	}
 }

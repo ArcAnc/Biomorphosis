@@ -217,4 +217,10 @@ public class QueenGuard extends Monster implements GeoEntity
     {
         return false;
     }
+	
+	@Override
+	public boolean isPersistenceRequired()
+	{
+		return true;
+	}
 }
