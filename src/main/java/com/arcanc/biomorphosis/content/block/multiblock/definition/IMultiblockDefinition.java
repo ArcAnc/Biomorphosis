@@ -22,7 +22,7 @@ public interface IMultiblockDefinition
 
     MultiblockType type();
 
-    BlockStateMap getStructure(BlockGetter level, BlockPos origin);
+    PartsMap getStructure(BlockGetter level, BlockPos origin);
 
     BlockPos size();
 }

@@ -13,7 +13,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.mojang.datafixers.util.Pair;
@@ -27,6 +27,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public abstract class StaticMultiblockPart extends BioMultiblockPart implements ServerTickableBE
 {
@@ -68,28 +71,18 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
             return true;
         if (!isMaster())
             return true;
-        BlockStateMap map = this.definition.getStructure(getLevel(), getBlockPos());
+        PartsMap map = this.definition.getStructure(getLevel(), getBlockPos());
         
         BlockState placedState = map.getPlacedBlock();
         
-        List<Pair<BlockPos, BlockState>> structure = map.getStates().
-                entrySet().
-                stream().
-                filter(entry -> !entry.getKey().equals(BlockPos.ZERO)).
-                map(entry ->
-                {
-                    Direction dir = DirectionHelper.getFace(getBlockState());
-                    BlockPos rotatedPos = DirectionHelper.rotatePosition(entry.getKey(), dir);
-                    return Pair.of(rotatedPos, entry.getValue().rotate(DirectionHelper.rotationFromNorth(dir)));
-                }).
-                toList();
+        Set<BlockPos> structure = map.getParts().keySet();
 
         if (structure.isEmpty())
             return false;
 
-        for (Pair<BlockPos, BlockState> pair : structure)
+        for (BlockPos pos : structure)
         {
-            BlockPos realPos = pair.getFirst().offset(getBlockPos());
+            BlockPos realPos = pos.offset(getBlockPos());
             if (!this.level.isLoaded(realPos))
                 return false;
             BlockState toCheck = this.level.getBlockState(realPos);
@@ -108,28 +101,26 @@ public abstract class StaticMultiblockPart extends BioMultiblockPart implements 
         if (!isMaster())
             return;
 
-        List<Pair<BlockPos, BlockState>> structure = this.definition.getStructure(getLevel(), getBlockPos()).getStates().
-                entrySet().
+		PartsMap map = this.definition.getStructure(getLevel(), getBlockPos());
+	    BlockState placedState = map.getPlacedBlock();
+		
+	    Set<BlockPos> structure = map.getParts().
+		        keySet().
                 stream().
-                filter(entry -> !entry.getKey().equals(BlockPos.ZERO)).
-                map(entry ->
-                {
-                    Direction dir = DirectionHelper.getFace(getBlockState());
-                    BlockPos rotatedPos = DirectionHelper.rotatePosition(entry.getKey(), dir);
-                    return Pair.of(rotatedPos, entry.getValue().rotate(DirectionHelper.rotationFromNorth(dir)));
-                }).
-                toList();
+                filter(blockPos -> ! blockPos.equals(BlockPos.ZERO)).
+                collect(Collectors.toUnmodifiableSet());
 
         if (structure.isEmpty())
             return;
-
-        for (Pair<BlockPos, BlockState> pair : structure)
+	    
+        
+		for (BlockPos pos : structure)
         {
-            BlockPos realPos = pair.getFirst().offset(getBlockPos());
+            BlockPos realPos = pos.offset(getBlockPos());
             if (!this.level.isLoaded(realPos))
                 continue;
             BlockState toCheck = this.level.getBlockState(realPos);
-            if (!BlockHelper.statesEquivalent(pair.getSecond(), toCheck))
+            if (!toCheck.is(placedState.getBlock()))
                 continue;
             this.level.destroyBlock(realPos, true);
         }

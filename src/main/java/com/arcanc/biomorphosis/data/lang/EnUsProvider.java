@@ -10,20 +10,16 @@
 package com.arcanc.biomorphosis.data.lang;
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class EnUsProvider extends LanguageProvider
@@ -156,40 +152,40 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V0081.textLangKey(), "\u2022 Fixed broken generation for village \n\u2022 Changed generation rules for village");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
-		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: </recipe;minecraft:crafting_shaped;minecraft:flesh/>The Swarm is built from flesh. Remember that" );
+		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
 	    
 	    this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.titleLangKey(), "</block;biomorphosis:norph_source/>Norph Source");
-        this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.textLangKey(), "The next thing you must learn is Norph — the living ground beneath us. Norph is the membrane between our world and theirs. Through it, we draw resources, power, and life itself. But remember this well — our structures live only upon Norph. Without it, they cannot breathe, cannot grow. Norph can be born only from a Source. Craft one like this: </recipe;minecraft:crafting_shaped;biomorphosis:norph_source/>Place it, and the Norph will spread on its own... slowly, hungrily. Watch as the world turns alive");
+        this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.textLangKey(), "The next thing you must learn is Norph — the living ground beneath us. Norph is the membrane between our world and theirs. Through it, we draw resources, power, and life itself. But remember this well — our structures live only upon Norph. Without it, they cannot breathe, cannot grow. Norph can be born only from a Source. Craft one like this: " + recipeForBook(RecipeType.CRAFTING, "_shaped", Database.rl("norph_source")) + " Place it, and the Norph will spread on its own... slowly, hungrily. Watch as the world turns alive");
 		
 		this.add(Database.GUI.GuideBook.Pages.CHAMBER.titleLangKey(), "</block;biomorphosis:chamber/>Chamber");
-		this.add(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey(), "Now... the Chamber. You cannot simply build it. Nothing of ours is built — it is grown. The Chamber is the heart of creation. Through it, the Swarm expands. Without it, you are nothing. To grow one, you’ll need this: </recipe;minecraft:crafting_shaped;biomorphosis:multiblock_morpher/>But remember, this will be the last thing you can obtain the human way. From now on — everything must be grown. Drop the required matter onto the Morpher, and it will take shape. Do not interrupt the process... It screams when disturbed. Curious what’s needed? Good. You’ll need: " + multiblockParts(Database.rl("chamber")));
+		this.add(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey(), "Now... the Chamber. You cannot simply build it. Nothing of ours is built — it is grown. The Chamber is the heart of creation. Through it, the Swarm expands. Without it, you are nothing. To grow one, you’ll need this: " + recipeForBook(RecipeType.CRAFTING, "_shaped", Database.rl("multiblock_morpher")) + "But remember, this will be the last thing you can obtain the human way. From now on — everything must be grown. Drop the required matter onto the Morpher, and it will take shape. Do not interrupt the process... It screams when disturbed. Curious what’s needed? Good. You’ll need: " + multiblock(Database.rl("chamber")));
 		
 		this.add(Database.GUI.GuideBook.Pages.STORAGES.titleLangKey(), "</block;biomorphosis:chest/>Storages");
-		this.add(Database.GUI.GuideBook.Pages.STORAGES.textLangKey(), "To grow within the Chamber, you’ll need resources — flesh, fluids, essence. They must be stored, contained, like organs within a body. Use these to shape our vessels: </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_storage_from_chamber/>and</recipe;biomorphosis:chamber;biomorphosis:chamber/chest_from_chamber/>Each will serve as part of the Swarm’s anatomy — one holds fluids, the other, matter");
+		this.add(Database.GUI.GuideBook.Pages.STORAGES.textLangKey(), "To grow within the Chamber, you’ll need resources — flesh, fluids, essence. They must be stored, contained, like organs within a body. Use these to shape our vessels: " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/fluid_storage_from_chamber")) + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/chest_from_chamber")) + "Each will serve as part of the Swarm’s anatomy — one holds fluids, the other, matter");
 		
 		this.add(Database.GUI.GuideBook.Pages.CRUSHER.titleLangKey(), "</block;biomorphosis:crusher/>Crusher");
-		this.add(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey(), "You’ve learned to feed. Now, learn to break. The Crusher — it grinds, tears, reduces. From cold ore, it makes dust. From hard matter, it makes food for the Swarm </recipe;biomorphosis:chamber;biomorphosis:chamber/crusher_from_chamber/>Simple, but vital. Every scream of stone becomes a whisper of progress");
+		this.add(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey(), "You’ve learned to feed. Now, learn to break. The Crusher — it grinds, tears, reduces. From cold ore, it makes dust. From hard matter, it makes food for the Swarm " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/crusher_from_chamber")) + "Simple, but vital. Every scream of stone becomes a whisper of progress");
 
 	    this.add(Database.GUI.GuideBook.Pages.SQUEEZER.titleLangKey(), "</block;biomorphosis:squeezer/>Squeezer");
-	    this.add(Database.GUI.GuideBook.Pages.SQUEEZER.textLangKey(), "Hunger gnaws at all of us, young one. If you wish to feed — you must learn to harvest. The only way to nourish the Swarm is to grow a Squeezer. It accepts any organic matter... and crushes it, crushes it, until nothing remains but rich, flowing biomass. As long as it drips — we live. As long as you feed it — the Swarm stays strong</recipe;biomorphosis:chamber;biomorphosis:chamber/squeezer_from_chamber/>");
+	    this.add(Database.GUI.GuideBook.Pages.SQUEEZER.textLangKey(), "Hunger gnaws at all of us, young one. If you wish to feed — you must learn to harvest. The only way to nourish the Swarm is to grow a Squeezer. It accepts any organic matter... and crushes it, crushes it, until nothing remains but rich, flowing biomass. As long as it drips — we live. As long as you feed it — the Swarm stays strong" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/squeezer_from_chamber")));
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FORGE.titleLangKey(), "</block;biomorphosis:forge/>BioForge");
-	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Even the Swarm needs heat. Our Forge burns without fire, consumes without flame. It melts ores, cooks flesh, and does so faster than your crude furnaces</recipe;biomorphosis:chamber;biomorphosis:chamber/forge_from_chamber/>It needs no fuel — only biomass. Add acid or adrenaline, and the process quickens, pulsing like a heart in rage. And should you desire more — evolution awaits. Feed it this: </item;biomorphosis:forge_upgrade/>How to find it? Heh... The Swarm rewards those who dig deep enough");
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Even the Swarm needs heat. Our Forge burns without fire, consumes without flame. It melts ores, cooks flesh, and does so faster than your crude furnaces " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/forge_from_chamber")) + "It needs no fuel — only biomass. Add acid or adrenaline, and the process quickens, pulsing like a heart in rage. And should you desire more — evolution awaits. Feed it this: </item;biomorphosis:forge_upgrade/>How to find it? Heh... The Swarm rewards those who dig deep enough");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey(), "</block;biomorphosis:stomach/>Organic Reprocessor");
-	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "To feed the Swarm, you must grow a Organic Reprocessor. It consumes meat, breaks it down, and births acid — pure life matter. Feed it flesh, and it will pulse. Feed it acid and adrenaline, and it will roar, devouring faster, stronger</recipe;biomorphosis:chamber;biomorphosis:chamber/stomach_from_chamber/>Everything that enters becomes part of us");
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "To feed the Swarm, you must grow a Organic Reprocessor. It consumes meat, breaks it down, and births acid — pure life matter. Feed it flesh, and it will pulse. Feed it acid and adrenaline, and it will roar, devouring faster, stronger" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/stomach_from_chamber")) + "Everything that enters becomes part of us");
 		
 		this.add(Database.GUI.GuideBook.Pages.CATCHER.titleLangKey(), "</block;biomorphosis:catcher/>Biofluid Extractor");
-		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "You’ve heard of acid, haven’t you? Now you shall take it. Grow a Fluid Extractor, and lure the living close. When it bites, it drinks — drawing life from their veins. The process is... Exquisite. Painful for them, perhaps. But necessary. Be warned: some creatures are too strong to be captured by our devices. Those beasts resist the pull — you will not take them easily</recipe;biomorphosis:chamber;biomorphosis:chamber/catcher_from_chamber/>");
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "You’ve heard of acid, haven’t you? Now you shall take it. Grow a Fluid Extractor, and lure the living close. When it bites, it drinks — drawing life from their veins. The process is... Exquisite. Painful for them, perhaps. But necessary. Be warned: some creatures are too strong to be captured by our devices. Those beasts resist the pull — you will not take them easily" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/catcher_from_chamber")));
 
 	    this.add(Database.GUI.GuideBook.Pages.MANIPULATOR.titleLangKey(), "</item;biomorphosis:wrench/>Manipulator");
-	    this.add(Database.GUI.GuideBook.Pages.MANIPULATOR.textLangKey(), "Remember this, young one: without a proper tool, you are nothing but soft flesh. To shape, to repair, to open and to bind — you need the Manipulator. It is simple... yet irreplaceable. Fine tendrils, hardened claws, stiff cartilage — everything in it is crafted for precise, delicate work. Humans use a ‘screwdriver’ for such tasks. We possess something far more refined. The Manipulator is an extension of your will. Through it you build the Swarm... and keep it alive. But be aware: every block responds to touch in its own unique way. If you wish to learn how the Manipulator interacts with a specific structure — consult the guide page of that block</recipe;biomorphosis:chamber;biomorphosis:chamber/wrench_from_chamber/>");
+	    this.add(Database.GUI.GuideBook.Pages.MANIPULATOR.textLangKey(), "Remember this, young one: without a proper tool, you are nothing but soft flesh. To shape, to repair, to open and to bind — you need the Manipulator. It is simple... yet irreplaceable. Fine tendrils, hardened claws, stiff cartilage — everything in it is crafted for precise, delicate work. Humans use a ‘screwdriver’ for such tasks. We possess something far more refined. The Manipulator is an extension of your will. Through it you build the Swarm... and keep it alive. But be aware: every block responds to touch in its own unique way. If you wish to learn how the Manipulator interacts with a specific structure — consult the guide page of that block" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/wrench_from_chamber")));
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
-	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good. Now you will learn how to let our essence flow — how to spread fluids through the veins of the Swarm without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life </recipe;biomorphosis:chamber;biomorphosis:chamber/fluid_transmitter_from_chamber/>To link two different blocks, use the Manipulator while sneaking. First select the block from which you want to transfer fluids, then select the block to which the fluid should be transferred. After that, stop sneaking and use the Manipulator on the transmitter");
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good. Now you will learn how to let our essence flow — how to spread fluids through the veins of the Swarm without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/fluid_transmitter_from_chamber")) + "To link two different blocks, use the Manipulator while sneaking. First select the block from which you want to transfer fluids, then select the block to which the fluid should be transferred. After that, stop sneaking and use the Manipulator on the transmitter");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.TURRET.titleLangKey(), "</block;biomorphosis:multiblock_turret/>Turret");
-	    this.add(Database.GUI.GuideBook.Pages.TURRET.textLangKey(), "Before you stands a sentry outgrowth of the Swarm. A Turret. It is far from perfect... but it is vicious enough to drive unwanted guests away. It roots itself in the Norph, senses approaching intruders, and responds without hesitation. Not for hunting — for protection. Not for glory — for survival. Like many of our creations, it is not built — it is grown. Use the Morpher and provide the required tissues and substances. Without them, it will not take shape. Remember this: the Turret lives only as long as it is fed. Without a steady flow of the fluids it requires, its muscles stiffen and its vision fades. Feed it — and it will kill for you. To grow it you will need: " + multiblockParts(Database.rl("turret")));
+	    this.add(Database.GUI.GuideBook.Pages.TURRET.textLangKey(), "Before you stands a sentry outgrowth of the Swarm. A Turret. It is far from perfect... but it is vicious enough to drive unwanted guests away. It roots itself in the Norph, senses approaching intruders, and responds without hesitation. Not for hunting — for protection. Not for glory — for survival. Like many of our creations, it is not built — it is grown. Use the Morpher and provide the required tissues and substances. Without them, it will not take shape. Remember this: the Turret lives only as long as it is fed. Without a steady flow of the fluids it requires, its muscles stiffen and its vision fades. Feed it — and it will kill for you. To grow it you will need: " + multiblock(Database.rl("turret")));
 	    
 	    
 	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
@@ -264,32 +260,28 @@ public class EnUsProvider extends LanguageProvider
         this.add(subtitle.getDeath(), description + " dies");
     }
 
-	private @NotNull String multiblockParts(ResourceLocation multiblockLocation)
+	private @NotNull String multiblock(ResourceLocation multiblockLocation)
 	{
 		Preconditions.checkNotNull(multiblockLocation);
 		
-		HolderLookup.Provider provider = lookupProvider.join();
-				
-		IMultiblockDefinition definition = provider.lookupOrThrow(Registration.MultiblockReg.DEFINITION_KEY).
-				get(ResourceKey.create(Registration.MultiblockReg.DEFINITION_KEY, multiblockLocation)).
-				orElseThrow().
-				value();
-		List<ItemStack> data = definition.getStructure(null, null).getStackedStructure();
-		
-		StringBuilder returned = new StringBuilder();
-		for (ItemStack stack : data)
-		{
-			returned.append("</item;").append(stack.getItemHolder().getRegisteredName()).append("/>").append(" x ").append(stack.getCount());
-		}
-		
-		return returned.toString();
+		return "</multiblock;" + multiblockLocation + "/>";
 	}
 	
-    private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
+	private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
+	{
+		return recipeForBook(recipeType, "", recipeId);
+	}
+	
+	private @NotNull String recipeForBook(@NotNull RecipeType<?> recipeType, String suffix, ResourceLocation recipeId)
+	{
+		return recipeForBook(ResourceLocation.parse(recipeType.toString()), suffix, recipeId);
+	}
+	
+    private @NotNull String recipeForBook(ResourceLocation recipeType, String suffix, ResourceLocation recipeId)
     {
         Preconditions.checkNotNull(recipeType);
         Preconditions.checkNotNull(recipeId);
 
-        return "</recipe;" + recipeType.toString() + ";"+ recipeId.toString()+"/>";
+        return "</recipe;" + recipeType.withSuffix(suffix).toString() + ";"+ recipeId.toString()+"/>";
     }
 }

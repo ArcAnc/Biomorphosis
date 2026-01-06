@@ -73,7 +73,7 @@ public class MultiblockFluidStorage extends DynamicMultiblockPart implements Blo
     @Override
     protected void updateCapabilities()
     {
-        this.handler.setTankCapacity(0, 10000 * this.definition.getStructure(getLevel(), getBlockPos()).getStates().size());
+        this.handler.setTankCapacity(0, 10000 * this.definition.getStructure(getLevel(), getBlockPos()).getParts().size());
     }
 
     @Override

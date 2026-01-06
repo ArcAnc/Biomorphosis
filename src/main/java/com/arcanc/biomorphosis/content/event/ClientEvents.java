@@ -185,7 +185,6 @@ public final class ClientEvents
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-
         gen.addProvider(true, new SummaryModelProvider(packOutput));
         BlockTagsProvider btp = new BioBlockTagsProvider(packOutput, lookupProvider);
         gen.addProvider(true, btp);
@@ -194,7 +193,7 @@ public final class ClientEvents
 		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, lookupProvider));
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider));
-
+	    gen.addProvider(true, new BioMultiblockProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, BioLootTableProvider.create(
                 List.of(
                         new LootTableProvider.SubProviderEntry(BioBlockLoot ::new, LootContextParamSets.BLOCK),
@@ -204,7 +203,6 @@ public final class ClientEvents
 
 		BioRegistryData.register(new BioDamageTypesProvider());
         BioRegistryData.register(new BioBookProvider());
-        BioRegistryData.register(new BioMultiblockProvider());
 		BioRegistryData.register(new BioPalladinOrdersProvider());
         BioRegistryData.register(new BioWorldGenProvider());
 		BioRegistryData.register(new BioGenomeProvider());

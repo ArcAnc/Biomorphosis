@@ -12,7 +12,7 @@ package com.arcanc.biomorphosis.content.block.multiblock;
 
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.model.obj.MorpherBaseObj;
@@ -68,11 +68,11 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 		else
 		{
 			IMultiblockDefinition definition = animatable.getDefinition().get();
-			BlockStateMap map = definition.getStructure(animatable.getLevel(), animatable.getBlockPos());
+			PartsMap map = definition.getStructure(animatable.getLevel(), animatable.getBlockPos());
 
 			float progressPartial = animatable.getMorphProgress() + (animatable.getAccumulatedTicks() + partialTick) / animatable.getMorphDelay();
 
-			float value = progressPartial / map.getStates().size();
+			float value = progressPartial / map.getParts().size();
 			BlockPos maxSize = map.getSize();
 			int maxScale = Math.max(maxSize.getX(), Math.max(maxSize.getY(), maxSize.getZ()));
 

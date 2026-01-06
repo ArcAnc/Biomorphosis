@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.MasterRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.SlaveRoleBehavior;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.BlockStateMap;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -63,16 +63,16 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
 		if (!(this.definition instanceof DynamicMultiblockDefinition dynDefinition))
             return;
 
-        BlockStateMap map = dynDefinition.getStructure(level, pos);
+        PartsMap map = dynDefinition.getStructure(level, pos);
 
-        if (map.getStates().isEmpty())
+        if (map.getParts().isEmpty())
             return;
 
         /*It's MASTER!!*/
-        if (map.getStates().size() == 1)
+        if (map.getParts().size() == 1)
             markAsPartOfMultiblock(getBlockPos());
         else
-            for (Map.Entry<BlockPos, BlockState> entry : map.getStates().entrySet())
+            for (Map.Entry<BlockPos, PartsMap.MultiblockPart> entry : map.getParts().entrySet())
             {
                 BlockPos targetRealPos = getBlockPos().offset(entry.getKey());
                 if (entry.getKey().equals(BlockPos.ZERO))
@@ -115,8 +115,8 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
             if (poses.isEmpty())
                 return;
             BlockPos startPos = poses.stream().findAny().get();
-            BlockStateMap map = this.definition.getStructure(level, startPos);
-            BlockPos newMasterPos = map.getStates().keySet().
+            PartsMap map = this.definition.getStructure(level, startPos);
+            BlockPos newMasterPos = map.getParts().keySet().
                     stream().
                     findAny().
                     orElse(null);
@@ -130,7 +130,7 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
                         this.transferRequiredData(newMaster);
                         newMaster.updateCapabilities();
                     });
-            map.getStates().keySet().stream().
+            map.getParts().keySet().stream().
                     filter(entry -> !entry.equals(newMasterPos)).
                     forEach(slavePos ->
                             BlockHelper.castTileEntity(level, startPos.offset(slavePos), this.getClass()).

@@ -124,12 +124,13 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
         if (master == null || master.definition == null)
             return Shapes.block();
         
-        BlockState stateAtLocal = master.definition
-                .getStructure(level, masterPos)
-                .getStates()
-                .get(localPos);
+        VoxelShape shape = master.definition.
+				        getStructure(level, masterPos).
+				        getParts().
+		                get(localPos).
+		                shape();
         
-        return stateAtLocal != null ? stateAtLocal.getShape(level, localPos) : Shapes.block();
+        return shape != null ? shape : Shapes.block();
     }
     
     @Override

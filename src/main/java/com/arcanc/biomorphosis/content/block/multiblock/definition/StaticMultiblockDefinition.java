@@ -19,13 +19,13 @@ public class StaticMultiblockDefinition implements IMultiblockDefinition
 {
     public static final MapCodec<StaticMultiblockDefinition> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.group(
             ResourceLocation.CODEC.fieldOf("id").forGetter(StaticMultiblockDefinition :: getId),
-            BlockStateMap.CODEC.fieldOf("structure").forGetter(StaticMultiblockDefinition :: getStructure)).
+            PartsMap.CODEC.fieldOf("structure").forGetter(StaticMultiblockDefinition :: getStructure)).
             apply(instance, StaticMultiblockDefinition::new));
 
     private final ResourceLocation id;
-    private final BlockStateMap structure;
+    private final PartsMap structure;
 
-    public StaticMultiblockDefinition(ResourceLocation id, BlockStateMap map)
+    public StaticMultiblockDefinition(ResourceLocation id, PartsMap map)
     {
         this.id = id;
         this.structure = map;
@@ -37,13 +37,13 @@ public class StaticMultiblockDefinition implements IMultiblockDefinition
         return this.id;
     }
 
-    public BlockStateMap getStructure()
+    public PartsMap getStructure()
     {
         return this.structure;
     }
 
     @Override
-    public BlockStateMap getStructure(BlockGetter level, BlockPos origin)
+    public PartsMap getStructure(BlockGetter level, BlockPos origin)
     {
         return getStructure();
     }

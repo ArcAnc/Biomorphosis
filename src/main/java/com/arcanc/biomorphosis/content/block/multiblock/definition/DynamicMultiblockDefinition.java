@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.block.multiblock.definition;
 
+import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -16,9 +17,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
@@ -66,7 +70,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
     }
 
     @Override
-    public BlockStateMap getStructure(BlockGetter level, BlockPos origin)
+    public PartsMap getStructure(BlockGetter level, BlockPos origin)
     {
         return this.behavior.getStructure(level, origin, this);
     }
@@ -99,7 +103,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             this.executor = executor;
         }
 
-        private static @NotNull Map<BlockPos, BlockState> dfs(BlockGetter level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static @NotNull Map<BlockPos, PartsMap.MultiblockPart> dfs(BlockGetter level, @NotNull Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             if (visited.containsKey(startPos))
                 return visited;
@@ -108,7 +112,10 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             if (!withinBounds(startPos, startPos, definition.size()))
                 return visited;
 
-            visited.put(startPos, level.getBlockState(startPos));
+			BlockState state = level.getBlockState(startPos);
+	        VoxelShape shape = state.getShape(level, startPos);
+			
+            visited.put(startPos, new PartsMap.MultiblockPart(shape, IngredientWithSize.of(state.getBlock())));
 
             for (Direction dir : Direction.values())
                 dfs(level, visited, startPos.relative(dir), definition);
@@ -116,7 +123,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             return visited;
         }
 
-        private static @NotNull Map<BlockPos, BlockState> bfs(BlockGetter level, @NotNull Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static @NotNull Map<BlockPos, PartsMap.MultiblockPart> bfs(BlockGetter level, @NotNull Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             Queue<BlockPos> queue = new ArrayDeque<>();
             queue.add(startPos);
@@ -131,8 +138,11 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
                     continue;
                 if (!withinBounds(current, startPos, definition.size()))
                     continue;
-
-                visited.put(current, level.getBlockState(current));
+	            
+	            BlockState state = level.getBlockState(current);
+	            VoxelShape shape = state.getShape(level, current);
+				
+                visited.put(current, new PartsMap.MultiblockPart(shape, IngredientWithSize.of(state.getBlock())));
 
                 for (Direction dir : Direction.values())
                 {
@@ -159,11 +169,11 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
                     && Math.abs(pos.getZ() - origin.getZ()) <= maxSize.getZ();
         }
 
-        public @NotNull BlockStateMap getStructure(BlockGetter level, BlockPos startPos, DynamicMultiblockDefinition definition)
+        public @NotNull PartsMap getStructure(BlockGetter level, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
-            Map<BlockPos, BlockState> globalMap = this.executor.findStructure(level, new HashMap<>(), startPos, definition);
+            Map<BlockPos, PartsMap.MultiblockPart> globalMap = this.executor.findStructure(level, new HashMap<>(), startPos, definition);
 
-            return new BlockStateMap(globalMap.entrySet().stream().
+            return new PartsMap(globalMap.entrySet().stream().
                     collect(Collectors.toMap(
                             entry -> entry.getKey().subtract(startPos),
                             Map.Entry :: getValue)),
@@ -180,6 +190,6 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
     @FunctionalInterface
     private interface BehaviorExecutor
     {
-        Map<BlockPos, BlockState> findStructure(BlockGetter level, Map<BlockPos, BlockState> visited, BlockPos startPos, DynamicMultiblockDefinition definition);
+        Map<BlockPos, PartsMap.MultiblockPart> findStructure(BlockGetter level, Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition);
     }
 }

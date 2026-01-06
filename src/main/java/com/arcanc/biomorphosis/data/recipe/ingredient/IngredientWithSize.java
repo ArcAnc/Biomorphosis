@@ -21,6 +21,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import org.jetbrains.annotations.NotNull;
@@ -80,4 +81,19 @@ public record IngredientWithSize(Ingredient ingredient, int amount) implements I
                         map(itemHolder -> new SlotDisplay.ItemStackSlotDisplay(new ItemStack(itemHolder, this.amount))).
                         map(itemStackSlotDisplay -> (SlotDisplay) itemStackSlotDisplay).toList()));
     }
+	
+	public static @NotNull IngredientWithSize of (@NotNull ItemStack stack)
+	{
+		return new IngredientWithSize(Ingredient.of(stack.getItem()), stack.getCount());
+	}
+	
+	public static @NotNull IngredientWithSize of (@NotNull ItemLike item)
+	{
+		return new IngredientWithSize(Ingredient.of(item));
+	}
+	
+	public static @NotNull IngredientWithSize of (@NotNull Ingredient ingredient)
+	{
+		return new IngredientWithSize(ingredient);
+	}
 }
