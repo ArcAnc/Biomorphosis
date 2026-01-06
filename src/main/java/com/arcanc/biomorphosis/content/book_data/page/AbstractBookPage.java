@@ -36,8 +36,8 @@ public abstract class AbstractBookPage extends AbstractWidget
             "</(item|block);([\\w:]+)/>" + "|" +
                     "</tag;(item|block|fluid);([\\w:]+)/>" + "|" +
                     "</recipe;([\\w:]+);([^>]+)/>" + "|" +
-                    "</entity;([\\w:]+)/>"
-    );
+                    "</entity;([\\w:]+)/>" + "|" +
+		            "</multiblock;([\\w:]+)/>");
 
     private final BookPageData data;
     private final List<AbstractPageComponent> components;
@@ -81,8 +81,11 @@ public abstract class AbstractBookPage extends AbstractWidget
             else if (matcher.group(7) != null)
                 // Entity
                 components.add(new EntityPageComponent(ResourceLocation.parse(matcher.group(7))));
-
-            lastEnd = matcher.end();
+            else if (matcher.group(8) != null)
+				// Multiblock
+				components.add(new MultiblockPageComponent(ResourceLocation.parse(matcher.group(8))));
+	        
+	        lastEnd = matcher.end();
         }
 
         if (lastEnd < string.length())

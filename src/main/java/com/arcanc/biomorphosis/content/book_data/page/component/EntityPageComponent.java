@@ -96,7 +96,7 @@ public class EntityPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
     {
 
     }

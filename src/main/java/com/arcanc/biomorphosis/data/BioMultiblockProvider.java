@@ -30,12 +30,15 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class BioMultiblockProvider
@@ -109,10 +112,11 @@ public class BioMultiblockProvider
 		
 		addMultiblock(staticBuilder(Database.rl("turret")).
 				addPart(new BlockPos(0,0,0), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
-				addPart(new BlockPos(0, 1, 0), Shapes.block(), IngredientWithSize.of(Ingredient.of(tag(ItemTags.FENCES)))).
+				addPart(new BlockPos(0, 1, 0), Shapes.box(0.375d, 0, 0.375d, 0.625d, 1, 0.625d),
+						IngredientWithSize.of(Ingredient.of(tag(ItemTags.FENCES)))).
 				setPlacedBlock(Registration.BlockReg.MULTIBLOCK_TURRET.get().defaultBlockState()).
 				end());
-
+		
         addMultiblock(dynamicBuilder(Database.rl("fluid_storage")).
                 setBehavior(DynamicMultiblockDefinition.ScanBehavior.BFS).
                 setMaxSize(2, 3, 2).
@@ -120,7 +124,7 @@ public class BioMultiblockProvider
                 end());
     }
 
-	private @NotNull HolderSet<Item> tag(TagKey<Item> tag)
+	private @NotNull HolderSet<Item> tag(@NotNull TagKey<Item> tag)
 	{
 		return this.registries.lookupOrThrow(Registries.ITEM).getOrThrow(tag);
 	}

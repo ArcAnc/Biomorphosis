@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.api.book.recipe.RecipeRenderer;
 import com.arcanc.biomorphosis.content.book_data.page.component.AbstractPageComponent;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.C2SRecipeRequest;
+import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -34,12 +35,12 @@ public class AbstractRecipeComponent extends AbstractPageComponent
     private final ResourceLocation location;
     private Recipe<?> recipe;
 
-    private AbstractRecipeComponent(ResourceLocation recipeType, ResourceLocation location)
+    private AbstractRecipeComponent(@NotNull ResourceLocation recipeType, ResourceLocation location)
     {
         super(0, 0, 0, 0, Component.empty());
         this.location = location;
-        if (recipeType.equals(ResourceLocation.withDefaultNamespace("crafting_shaped")) || recipeType.equals(ResourceLocation.withDefaultNamespace("crafting_shapeless")))
-            recipeType = ResourceLocation.withDefaultNamespace("crafting");
+        if (recipeType.equals(Database.mineRl("crafting_shaped")) || recipeType.equals(Database.mineRl("crafting_shapeless")))
+            recipeType = Database.mineRl("crafting");
         ResourceLocation finalResourceLocation = recipeType;
         ClientPacketListener connection = RenderHelper.mc().getConnection();
         if (connection != null)
