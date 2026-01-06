@@ -150,6 +150,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V008.textLangKey(), "\u2022 Added turret for base defence\n\u2022 Added first version of palladin orders with some world gen\n\u2022 Changed model for norph blocks");
 	    this.add(Database.GUI.GuideBook.Pages.V0081.titleLangKey(), "Version: 0.0.8.1");
 	    this.add(Database.GUI.GuideBook.Pages.V0081.textLangKey(), "\u2022 Fixed broken generation for village \n\u2022 Changed generation rules for village");
+	    this.add(Database.GUI.GuideBook.Pages.V0082.titleLangKey(), "Version: 0.0.8.2");
+	    this.add(Database.GUI.GuideBook.Pages.V0082.textLangKey(), "\u2022 Reworked multiblock internal settings. Now it's uses voxel shape and list of components \n\u2022 Added renderer for multiblock recipe\n\u2022 Changed multiblock datagen");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
 		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
