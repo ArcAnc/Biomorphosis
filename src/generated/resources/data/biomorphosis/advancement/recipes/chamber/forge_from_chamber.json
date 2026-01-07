@@ -21,16 +21,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_norph": {
-      "conditions": {
-        "items": [
-          {
-            "items": "biomorphosis:norph"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "biomorphosis:chamber/forge_from_chamber"
@@ -41,7 +31,6 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_norph",
       "has_flesh",
       "has_blast_furnace"
     ]

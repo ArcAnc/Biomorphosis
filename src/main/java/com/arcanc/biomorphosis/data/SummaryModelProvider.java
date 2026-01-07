@@ -5796,7 +5796,7 @@ public class SummaryModelProvider extends ModelProvider
 					parent(Database.mineRl(blockPrefix("block"))).
 					requiredTextureSlot(TextureSlot.ALL).
 					requiredTextureSlot(TextureSlot.PARTICLE).
-					renderType("translucent").
+					renderType("solid").
 					guiLight(UnbakedModel.GuiLight.SIDE).
 					element(builder -> builder.
 						from(0, 0, 0).
@@ -5812,7 +5812,7 @@ public class SummaryModelProvider extends ModelProvider
 		
 		blockModels.blockStateOutput.accept(MultiVariantGenerator.multiVariant(block.get(), variants));
 		
-		blockModels.registerSimpleFlatItemModel(block.get(), "_0");
+		blockModels.registerSimpleItemModel(block.get(), texture.withSuffix("_0"));
 	}
 	
     private void createNorphOverlay(@NotNull BlockModelGenerators blockModels)

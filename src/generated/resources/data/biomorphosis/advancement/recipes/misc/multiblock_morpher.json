@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_norph": {
+    "has_flesh": {
       "conditions": {
         "items": [
           {
-            "items": "biomorphosis:norph"
+            "items": "biomorphosis:flesh"
           }
         ]
       },
@@ -43,7 +43,7 @@
       "has_the_recipe",
       "has_water_bucket",
       "has_stone",
-      "has_norph"
+      "has_flesh"
     ]
   ],
   "rewards": {

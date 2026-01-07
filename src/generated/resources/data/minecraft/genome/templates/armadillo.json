@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:armadillo",
+  "genomes": [
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "vorrath",
+            "id": "biomorphosis:protection"
+          },
+          {
+            "gene_rarity": "xyrr",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 1
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "xyrr",
+            "id": "biomorphosis:protection"
+          },
+          {
+            "gene_rarity": "grath",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 9
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "grath",
+            "id": "biomorphosis:protection"
+          },
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 20
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:protection"
+          }
+        ]
+      },
+      "weight": 70
+    }
+  ]
+}

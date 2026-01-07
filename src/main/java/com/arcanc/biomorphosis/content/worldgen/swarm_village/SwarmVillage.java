@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.worldgen.swarm_village;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.BioWorldGenProvider;
 import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.arcanc.biomorphosis.util.Database;
@@ -24,12 +25,16 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.BiomeTags;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
@@ -52,8 +57,30 @@ public class SwarmVillage
 
 		context.register(VILLAGE.structure(), new SwarmVillageStructure(
 				new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SWARM_VILLAGE)).
-					terrainAdapation(TerrainAdjustment.BEARD_THIN).build(),
-					pools.getOrThrow(VILLAGE.pools().getPoolKey(CellType.CENTER)),
+						terrainAdapation(TerrainAdjustment.BEARD_THIN).
+						spawnOverrides(Map.of(
+								MobCategory.MONSTER,
+								new StructureSpawnOverride(
+										StructureSpawnOverride.BoundingBoxType.STRUCTURE,
+										WeightedRandomList.create(
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 2, 2),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), 1, 8, 8),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), 1, 3, 3),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), 1, 4, 4),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), 1, 4, 4),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_WORKER.getEntityHolder().get(), 1, 8, 8),
+												new MobSpawnSettings.SpawnerData(
+														Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get(), 1, 8, 8)
+										)
+								)
+				)).build(),
+						pools.getOrThrow(VILLAGE.pools().getPoolKey(CellType.CENTER)),
 				6,
 				ConstantHeight.of(VerticalAnchor.absolute(-1)),
 				true,

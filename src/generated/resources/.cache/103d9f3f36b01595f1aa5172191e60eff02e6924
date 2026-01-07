@@ -1,4 +1,4 @@
-// 1.21.4	2026-01-06T21:37:57.06750237	Registries
+// 1.21.4	2026-01-07T20:05:16.749500803	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -26,12 +26,12 @@ d50fc8762a7407ac66f3778c8106a92234d1be46 data/biomorphosis/book/page/v008.json
 cdf44eeeefcbf0d8f273c88494c3e8eb1716d6ab data/biomorphosis/book/page/v0081.json
 7fc5d7ce49fb85257795e0ca2f8dbc7db217318e data/biomorphosis/book/page/v0082.json
 32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
-b6da51fe44f9595161feade22439ab5e892e9cd9 data/biomorphosis/genome/balance.json
-e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/health.json
+b6da51fe44f9595161feade22439ab5e892e9cd9 data/biomorphosis/genome/effect/balance.json
+e7b45e524d4ffcfab656d8d474ff8a57d93445b0 data/biomorphosis/genome/effect/health.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
-fe3d4e3215f6d33c04b67927838ab5ff83ff4483 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
-263687ac02b06f88e99456165b20d69992462131 data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
-8216b4ccbc82b7e8112f1311826923659d2ccf2d data/biomorphosis/worldgen/structure/village.json
+9b5a87d3c184005159db92562540415c92d681f6 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
+1ac6807b68337de982d5c1169c6c523b7fb352ea data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
+e1252a9cbcffe76230643e243446bdc6716e1e36 data/biomorphosis/worldgen/structure/village.json
 68aec96ec0618a496e1d0afe39665afaa2d5a8e6 data/biomorphosis/worldgen/structure_set/srf/orders/base/headquarters.json
 6d7945ad0de398f99fa3ce6ba701ea1e81663c88 data/biomorphosis/worldgen/structure_set/srf/orders/base/tower.json
 8e1ba36819042cf1e364ef310e2960a0ba402449 data/biomorphosis/worldgen/structure_set/village.json

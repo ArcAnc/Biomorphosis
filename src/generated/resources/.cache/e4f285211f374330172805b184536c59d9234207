@@ -1,4 +1,4 @@
-// 1.21.4	2026-01-04T21:23:48.585747747	Biomorphosis: Models
+// 1.21.4	2026-01-07T14:01:25.696115208	Biomorphosis: Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 ead72ed72d55ead82f4ffdeffd5eba92bba572b7 assets/biomorphosis/blockstates/crusher.json
@@ -68,7 +68,7 @@ cbd7b9baaa51d4f33e1a4607ed3bbdf5a9408a6f assets/biomorphosis/items/inner.json
 04aecc60ff35b94208c17cae7835c412ea7fcc58 assets/biomorphosis/items/multiblock_fluid_storage.json
 c0662f7d817ea6bf9cb62da4b604f9146b0986cb assets/biomorphosis/items/multiblock_morpher.json
 d8ea93017ead7d944553345610df5bf494c26b96 assets/biomorphosis/items/multiblock_turret.json
-58bf88d3cb4f88739eeb3fb60f9adc0f6bc4452b assets/biomorphosis/items/norph.json
+9927b8b8343d3d7637e7db11ee8c9e8f3f095931 assets/biomorphosis/items/norph.json
 74b119b80a366333584a8c1d608636d08726a0e5 assets/biomorphosis/items/norph_overlay.json
 f438344f6c482fe538749c7a6f57bcdee8b6e861 assets/biomorphosis/items/norph_source.json
 0702266c1c5dd69088c294367b28333a9540932e assets/biomorphosis/items/norph_stairs.json
@@ -127,14 +127,14 @@ d826db2ea76a1547aafa1e99757396b6ff7868a9 assets/biomorphosis/models/block/multib
 519ed667687f3c2f952895c4427977b1cd3a34cf assets/biomorphosis/models/block/multiblock_fluid_storage.json
 97a1308e4db1583bb2087485c386d8d0b5bc06bd assets/biomorphosis/models/block/multiblock_morpher.json
 2c82fdbdf6d212895adf1db6c0939475a7f923f1 assets/biomorphosis/models/block/multiblock_turret.json
-9cac74fa5de03f155aff614c05bc375a68b4fb09 assets/biomorphosis/models/block/norph_0.json
-402456389d78588c906489c8895a2a8472bd2d34 assets/biomorphosis/models/block/norph_1.json
-0d6bd611ac7c5272e1cb7e18b1e9f0cd33175079 assets/biomorphosis/models/block/norph_2.json
-7c81b7b5b677d4cce2da232c21b4ebb12b032abe assets/biomorphosis/models/block/norph_3.json
-4040c28a203bdd513bb191fea7f83981020186a8 assets/biomorphosis/models/block/norph_4.json
-3ab45582ddb6755e3d73b479f1da06a1a1f502a0 assets/biomorphosis/models/block/norph_5.json
-3ec721b7f76df1ab37f33d4a650a06931885aa36 assets/biomorphosis/models/block/norph_6.json
-23ed802cef1e405cf14d384737bb6e9e68f9fad0 assets/biomorphosis/models/block/norph_7.json
+ae395feddd977033c4219cda48be236c8e293b06 assets/biomorphosis/models/block/norph_0.json
+161061f0e409bce53c467517ee935c5773db12b2 assets/biomorphosis/models/block/norph_1.json
+b2aeff355eb58a7f6958055e735d1154374df9d1 assets/biomorphosis/models/block/norph_2.json
+2bfe4cb9e7cfc7dd43956fca87a6a5d6d0598020 assets/biomorphosis/models/block/norph_3.json
+5f385192d827d4280fa0d95623eb01cd0f763800 assets/biomorphosis/models/block/norph_4.json
+3f6ec480a68d0cf7c9734f73851bbb69530136bd assets/biomorphosis/models/block/norph_5.json
+99d194d1868f64561e845e58011b248cb597c29f assets/biomorphosis/models/block/norph_6.json
+6b824f088bf080d2c6dd8c1ff80f6eff21d8b169 assets/biomorphosis/models/block/norph_7.json
 fbf514faeb09b4a2fd525ebd54fbae21055c139d assets/biomorphosis/models/block/norph_overlay_0.json
 701c1839b5e2eabd1b5ef22d16048f477f19b28e assets/biomorphosis/models/block/norph_overlay_1.json
 2f2b278dbb1266cd5e6384acaf9f1c9cdae9449e assets/biomorphosis/models/block/norph_overlay_2.json
@@ -201,7 +201,6 @@ b4f3f4d76287d781b1e9554929dc36f185190ed8 assets/biomorphosis/models/item/forge_u
 89c56a9169a80a3a7bcc95f2a96544fc5ca66a8a assets/biomorphosis/models/item/guard_armor_piece.json
 fe5f1dad0d6a5f17788abfb2d0143b36ae17bedd assets/biomorphosis/models/item/infestor_sting.json
 0f054c04697a2d9a02e50bfee7be2bc3f0f4779b assets/biomorphosis/models/item/moss_hanging.json
-50db867ca39de6a3fad0b9d29bb3555f69f646a2 assets/biomorphosis/models/item/norph.json
 160f1517a15153f9303b937868c9041737d35d46 assets/biomorphosis/models/item/norph_overlay.json
 b301e9dceb6504c676af214d83b5865f5efce02c assets/biomorphosis/models/item/queens_brain.json
 d84f133bd83e79a77c9a6b9f0fe54a0d2a3234cb assets/biomorphosis/models/item/swarmling_head.json

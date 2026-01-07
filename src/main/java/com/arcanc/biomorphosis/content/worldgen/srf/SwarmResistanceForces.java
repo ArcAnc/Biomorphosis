@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.worldgen.srf;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrders;
 import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.google.common.collect.ImmutableList;
@@ -22,12 +23,16 @@ import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.random.WeightedRandomList;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.biome.MobSpawnSettings;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.heightproviders.ConstantHeight;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
+import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
@@ -55,13 +60,20 @@ public class SwarmResistanceForces
 					new JigsawStructure(
 							new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SRF_HEADQUARTERS)).
 									terrainAdapation(TerrainAdjustment.BEARD_THIN).
-/*									spawnOverrides(Map.of(
-											MobCategory.MONSTER,
+									spawnOverrides(Map.of(
+											MobCategory.CREATURE,
 											new StructureSpawnOverride(
 													StructureSpawnOverride.BoundingBoxType.STRUCTURE,
-													WeightedRandomList.create(new MobSpawnSettings.SpawnerData(
-															Registration.EntityReg.))))).
-*/									build(),
+													WeightedRandomList.create(
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_SOLDIER.getEntityHolder().get(), 90, 6, 8),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_BLACKSMITH.getEntityHolder().get(), 4, 1, 1),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_SERGEANT.getEntityHolder().get(), 4, 2, 2),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_CAPTAIN.getEntityHolder().get(), 2, 1, 1))))).
+									build(),
 							pools.getOrThrow(orderData.pools.getStartPool(StructureType.HEADQUARTERS)),
 							3,
 							ConstantHeight.of(VerticalAnchor.absolute(-1)),
@@ -72,14 +84,21 @@ public class SwarmResistanceForces
 							structure(),
 					new JigsawStructure(
 							new Structure.StructureSettings.Builder(biomes.getOrThrow(BioBiomesTags.HAS_SRF_TOWER)).
-											terrainAdapation(TerrainAdjustment.BEARD_THIN).
-									/*									spawnOverrides(Map.of(
-																				MobCategory.MONSTER,
-																				new StructureSpawnOverride(
-																						StructureSpawnOverride.BoundingBoxType.STRUCTURE,
-																						WeightedRandomList.create(new MobSpawnSettings.SpawnerData(
-																								Registration.EntityReg.))))).
-									*/									build(),
+									terrainAdapation(TerrainAdjustment.BEARD_THIN).
+									spawnOverrides(Map.of(
+											MobCategory.CREATURE,
+											new StructureSpawnOverride(
+													StructureSpawnOverride.BoundingBoxType.STRUCTURE,
+													WeightedRandomList.create(
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_SOLDIER.getEntityHolder().get(), 90, 4, 4),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_BLACKSMITH.getEntityHolder().get(), 4, 1, 1),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_SERGEANT.getEntityHolder().get(), 4, 2, 2),
+															new MobSpawnSettings.SpawnerData(
+																	Registration.EntityReg.MOB_BASE_CAPTAIN.getEntityHolder().get(), 2, 1, 1))))).
+									build(),
 							pools.getOrThrow(orderData.pools.getStartPool(StructureType.TOWER)),
 							3,
 							ConstantHeight.of(VerticalAnchor.absolute(0)),
@@ -89,7 +108,7 @@ public class SwarmResistanceForces
 		
 	}
 	
-	public static void structureSets(BootstrapContext<StructureSet> context)
+	public static void structureSets(@NotNull BootstrapContext<StructureSet> context)
 	{
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 		

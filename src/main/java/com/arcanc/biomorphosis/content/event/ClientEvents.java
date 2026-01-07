@@ -63,7 +63,7 @@ public final class ClientEvents
     {
         modEventBus.addListener(ClientEvents :: clientSetup);
         modEventBus.addListener(ClientEvents :: gatherData);
-        modEventBus.addListener(ClientEvents :: registerBlockEntityRenderers);
+        modEventBus.addListener(ClientEvents :: registerRenderers);
         modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
         modEventBus.addListener(ClientEvents :: setupItemColor);
@@ -141,7 +141,7 @@ public final class ClientEvents
 
     }
 
-    private static void registerBlockEntityRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
+    private static void registerRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
     {
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().
                 map(DeferredHolder :: get).
@@ -194,6 +194,7 @@ public final class ClientEvents
         gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider));
 	    gen.addProvider(true, new BioMultiblockProvider.Runner(packOutput, lookupProvider));
+		gen.addProvider(true, new BioGenomeTemplatesProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, BioLootTableProvider.create(
                 List.of(
                         new LootTableProvider.SubProviderEntry(BioBlockLoot ::new, LootContextParamSets.BLOCK),

@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "biomorphosis:item/norph"
+    "model": "biomorphosis:block/norph_0"
   }
 }

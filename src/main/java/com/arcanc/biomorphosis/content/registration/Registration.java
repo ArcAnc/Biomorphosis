@@ -43,6 +43,7 @@ import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.TurretScreen;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
+import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
@@ -1875,7 +1876,8 @@ public final class Registration
 	public static class GenomeReg
 	{
 		public static final ResourceKey<Registry<IGeneEffectType<?>>> EFFECT_TYPE_KEY = ResourceKey.createRegistryKey(Database.rl("genome_effect_type"));
-		public static final ResourceKey<Registry<GeneDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("genome"));
+		public static final ResourceKey<Registry<GeneDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(Database.mineRl("genome/effect"));
+		public static final ResourceKey<Registry<GenomeTemplate>> GENOME_TEMPLATES_KEY = ResourceKey.createRegistryKey(Database.mineRl("genome/templates"));
 		
 		public static final DeferredRegister<IGeneEffectType<?>> EFFECT_TYPES = DeferredRegister.create(EFFECT_TYPE_KEY, Database.MOD_ID);
 		public static Registry<IGeneEffectType<?>> EFFECT_TYPE_REGISTRY;
@@ -1885,6 +1887,7 @@ public final class Registration
 		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
 		{
 			event.dataPackRegistry(DEFINITION_KEY, GeneDefinition.CODEC, GeneDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
+			event.dataPackRegistry(GENOME_TEMPLATES_KEY, GenomeTemplate.CODEC, GenomeTemplate.CODEC, regBuilder -> makeRegistry(regBuilder, GENOME_TEMPLATES_KEY));
 		}
 		
 		public static void init(@NotNull final IEventBus modEventBus)

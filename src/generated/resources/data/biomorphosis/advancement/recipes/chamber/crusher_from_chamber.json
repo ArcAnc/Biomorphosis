@@ -21,16 +21,6 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_norph": {
-      "conditions": {
-        "items": [
-          {
-            "items": "biomorphosis:norph"
-          }
-        ]
-      },
-      "trigger": "minecraft:inventory_changed"
-    },
     "has_the_recipe": {
       "conditions": {
         "recipe": "biomorphosis:chamber/crusher_from_chamber"
@@ -42,7 +32,6 @@
     [
       "has_the_recipe",
       "has_grindstone",
-      "has_norph",
       "has_flesh"
     ]
   ],
