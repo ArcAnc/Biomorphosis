@@ -2,10 +2,115 @@
   "id": "biomorphosis:balance",
   "image": "biomorphosis:textures/genome/balance",
   "rarity_data": {
+    "grath": {
+      "destabilization_amount": -15,
+      "effects": [
+        {
+          "type": "biomorphosis:balance",
+          "params": {
+            "amount": -15
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 185,
+        "green": 205,
+        "red": 215
+      },
+      "secondary_color": {
+        "blue": 50,
+        "green": 85,
+        "red": 120
+      }
+    },
     "slyth": {
       "destabilization_amount": -10,
-      "effects": [],
-      "incompatibilities": []
+      "effects": [
+        {
+          "type": "biomorphosis:balance",
+          "params": {
+            "amount": -10
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 185,
+        "green": 190,
+        "red": 190
+      },
+      "secondary_color": {
+        "blue": 65,
+        "green": 85,
+        "red": 70
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": -25,
+      "effects": [
+        {
+          "type": "biomorphosis:balance",
+          "params": {
+            "amount": -25
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 255,
+        "green": 245,
+        "red": 240
+      },
+      "secondary_color": {
+        "blue": 140,
+        "green": 90,
+        "red": 73
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": -30,
+      "effects": [
+        {
+          "type": "biomorphosis:balance",
+          "params": {
+            "amount": -30
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 255,
+        "green": 255,
+        "red": 255
+      },
+      "secondary_color": {
+        "blue": 30,
+        "green": 30,
+        "red": 30
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": -20,
+      "effects": [
+        {
+          "type": "biomorphosis:balance",
+          "params": {
+            "amount": -20
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 225,
+        "green": 230,
+        "red": 230
+      },
+      "secondary_color": {
+        "blue": 140,
+        "green": 90,
+        "red": 70
+      }
     }
   }
 }

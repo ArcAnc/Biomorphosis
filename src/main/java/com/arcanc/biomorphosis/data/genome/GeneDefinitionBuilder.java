@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.mutations.AttributeParams;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.GeneRarity;
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
+import com.arcanc.biomorphosis.util.SerializableColor;
 import com.google.common.base.Preconditions;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -69,6 +70,8 @@ public class GeneDefinitionBuilder
 		private final List<GeneDefinition.GeneEffectEntry> effects = new ArrayList<>();
 		private final List<ResourceLocation> incompatibilities = new ArrayList<>();
 		private int destabilizationAmount;
+		private SerializableColor mainColor = new SerializableColor(-1);
+		private SerializableColor secondaryColor = new SerializableColor(-1);
 		
 		private RarityDataBuilder(GeneRarity rarity)
 		{
@@ -96,9 +99,23 @@ public class GeneDefinitionBuilder
 			return this;
 		}
 		
+		public RarityDataBuilder setMainColor(SerializableColor mainColor)
+		{
+			Preconditions.checkNotNull(mainColor);
+			this.mainColor = mainColor;
+			return this;
+		}
+		
+		public RarityDataBuilder setSecondaryColor(SerializableColor secondaryColor)
+		{
+			Preconditions.checkNotNull(secondaryColor);
+			this.secondaryColor = secondaryColor;
+			return this;
+		}
+		
 		public GeneDefinitionBuilder end()
 		{
-			return GeneDefinitionBuilder.this.addRarityInfo(this.rarity, new GeneDefinition.RarityData(this.effects, this.incompatibilities, this.destabilizationAmount));
+			return GeneDefinitionBuilder.this.addRarityInfo(this.rarity, new GeneDefinition.RarityData(this.effects, this.incompatibilities, this.destabilizationAmount, this.mainColor, this.secondaryColor));
 		}
 	}
 }

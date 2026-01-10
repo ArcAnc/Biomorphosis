@@ -10,16 +10,31 @@
 package com.arcanc.biomorphosis.util.helper;
 
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.content.gui.screen.container.GenomeScreen;
+import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
+import com.arcanc.biomorphosis.content.mutations.GeneInstance;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.model.obj.BioGeneModel;
+import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
+import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.math.Axis;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -60,6 +75,11 @@ public class RenderHelper
     {
         Minecraft.getInstance().setScreen(new GuideScreen());
     }
+	
+	public static void openGenomeScreen(LivingEntity entity)
+	{
+		Minecraft.getInstance().setScreen(new GenomeScreen(entity));
+	}
 
     public static ItemStack getStackAtCurrentTime(@NotNull IngredientWithSize ingredient)
     {
@@ -161,4 +181,60 @@ public class RenderHelper
         vertexconsumer.addVertex(matrix4f, x2, y2, 0.0F).setUv(maxU, maxV).setColor(color);
         vertexconsumer.addVertex(matrix4f, x2, y1, 0.0F).setUv(maxU, minV).setColor(color);
     }
+	
+	public static class GenomeRenderer
+	{
+		private static final int RENDER_GENE_AMOUNT_PER_INSTANCE = 5;
+		private static final ResourceLocation GENE_TEXTURE = Database.rl("textures/gui/gene.png");
+		public static final BioGeneModel GENE_MODEL = new BioGeneModel(GENE_TEXTURE);
+		
+		public static void renderGeneInGui(@NotNull GeneInstance gene, @NotNull GuiGraphics guiGraphics, Rect2d bounds)
+		{
+			Minecraft mc = mc();
+			ClientPacketListener listener = mc.getConnection();
+			if (listener == null)
+				return;
+			GeneDefinition definition = listener.registryAccess().
+					lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
+					getValue(gene.id());
+			if (definition == null)
+				return;
+			
+			GeneDefinition.RarityData data = definition.rarityData().
+					get(gene.rarity());
+			if (data == null)
+				return;
+			
+			PoseStack poseStack = guiGraphics.pose();
+			float time = (Util.getMillis() % 10000) / 1000f;
+			float rotation = time * 360f * 0.15f;
+			float geneSize = (float) Math.min(bounds.width(), bounds.height());
+			float sizeX = geneSize / RENDER_GENE_AMOUNT_PER_INSTANCE;
+			for (int q = 0; q < RENDER_GENE_AMOUNT_PER_INSTANCE; q++)
+			{
+				float x = (float) (bounds.x() + sizeX * q + sizeX * 0.5d);
+				float y = (float) (bounds.y() + geneSize * 0.5d);
+				poseStack.pushPose();
+				poseStack.translate(x, y, 200);
+				poseStack.scale(geneSize, geneSize, geneSize);
+				poseStack.mulPose(Axis.XP.rotationDegrees(rotation + q * 36));
+				
+				guiGraphics.drawSpecial(multiBufferSource ->
+						GENE_MODEL.renderModel(
+								poseStack,
+								ObjRenderTypes :: trianglesSolid,
+								multiBufferSource,
+								OverlayTexture.NO_OVERLAY,
+								15728880,
+								data.mainColor().color(),
+								data.secondaryColor().color()));
+				
+				poseStack.popPose();
+			}
+		}
+	}
+	
+	public record Rect2d(double x, double y, double width, double height)
+	{
+	}
 }

@@ -229,9 +229,9 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.Overlays.Tooltip.WRONG_FLUID_HANDLER, "ANOTHER ONE!");
 		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_SECOND_FLUID_HANDLER, "Choose the second fluid container and use %s on it");
 		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_TRANSMITTER, "Choose the Fluid Transmitter and use %s on it");
-        //-----------------------------
+  
+		//-----------------------------
         //SOUND
-
         this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
         this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");
         this.add(Database.GUI.Sounds.BLOCK_STEP_NORMAL, "Footsteps");
@@ -240,6 +240,19 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.Sounds.BLOCK_CHEST_OPEN, "Swarm chest opened");
         this.add(Database.GUI.Sounds.BLOCK_CHEST_CLOSE, "Swarm chest closed");
         this.add(Database.GUI.Sounds.BLOCK_HIVE_DECO, "Hive buzzes");
+	    
+	    //-----------------------------
+	    //GENOME
+	    this.add(Database.GUI.Genome.Translations.NO_GENE_EFFECT, "This gene have no special effect");
+		this.add(Database.GUI.Genome.Translations.NO_GENES, "This entity have no eny genes");
+		this.add(Database.GUI.Genome.Translations.GENE_RARITY, "Rarity: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_INSTABILITY, "Instability: %s");
+		this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.PROTECTION.id()), "Will add %s armor to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.HEALTH.id()), "Will add %s health to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.BALANCE.id()), "It's will add %s instability to owner genome");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.HEALTH.id()), "Health");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.BALANCE.id()), "Balance");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.PROTECTION.id()), "Protection");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)

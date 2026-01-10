@@ -17,12 +17,12 @@ import com.arcanc.biomorphosis.content.mutations.templates.GenomeDataDefinition;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.SerializableColor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
@@ -52,10 +52,10 @@ public class BioGenomeTemplatesProvider
 								new GenomeInstance(
 										List.of(
 												new GeneInstance(
-														Database.GUI.GenomeData.PROTECTION.id(),
+														Database.GUI.Genome.PROTECTION.id(),
 														GeneRarity.LEGENDARY),
 												new GeneInstance(
-														Database.GUI.GenomeData.BALANCE.id(),
+														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.ULTRA_RARE))
 								)),
 						new GenomeDataDefinition(
@@ -63,10 +63,10 @@ public class BioGenomeTemplatesProvider
 								new GenomeInstance(
 										List.of(
 												new GeneInstance(
-														Database.GUI.GenomeData.PROTECTION.id(),
+														Database.GUI.Genome.PROTECTION.id(),
 														GeneRarity.ULTRA_RARE),
 												new GeneInstance(
-														Database.GUI.GenomeData.BALANCE.id(),
+														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.UNCOMMON))
 								)),
 						new GenomeDataDefinition(
@@ -74,17 +74,17 @@ public class BioGenomeTemplatesProvider
 								new GenomeInstance(
 										List.of(
 												new GeneInstance(
-														Database.GUI.GenomeData.PROTECTION.id(),
+														Database.GUI.Genome.PROTECTION.id(),
 														GeneRarity.UNCOMMON),
 												new GeneInstance(
-														Database.GUI.GenomeData.BALANCE.id(),
+														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.COMMON))
 								)),
 						new GenomeDataDefinition(70,
 								new GenomeInstance(
 										List.of(
 												new GeneInstance(
-														Database.GUI.GenomeData.PROTECTION.id(),
+														Database.GUI.Genome.PROTECTION.id(),
 														GeneRarity.COMMON))
 								))
 				)));

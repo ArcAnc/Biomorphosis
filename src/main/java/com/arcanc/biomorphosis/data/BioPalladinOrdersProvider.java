@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrders;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
-import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.SerializableColor;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
@@ -36,7 +36,7 @@ public class BioPalladinOrdersProvider extends BioRegistryData
 	@Override
 	protected void addContent()
 	{
-		addOrder(PalladinOrders.BASE_ORDER.location(), new PalladinOrder(new PalladinOrder.OrderColor(255, 194, 194)));
+		addOrder(PalladinOrders.BASE_ORDER.location(), new PalladinOrder(new SerializableColor(255, 194, 194)));
 	}
 	
 	private void addOrder(ResourceLocation id, PalladinOrder order)

@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.mutations;
 
 
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
+import com.arcanc.biomorphosis.util.SerializableColor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
@@ -28,13 +29,15 @@ public record GeneDefinition(ResourceLocation id, ResourceLocation image, Map<Ge
 							fieldOf("rarity_data").forGetter(GeneDefinition :: rarityData)).
 					apply(instance, GeneDefinition :: new));
 
-	public record RarityData(List<GeneEffectEntry> effects, List<ResourceLocation> incompatibilities, int destabilizationAmount)
+	public record RarityData(List<GeneEffectEntry> effects, List<ResourceLocation> incompatibilities, int destabilizationAmount, SerializableColor mainColor, SerializableColor secondaryColor)
 	{
 		public static final Codec<RarityData> CODEC = RecordCodecBuilder.create(instance ->
 				instance.group(
 						GeneEffectEntry.CODEC.listOf().fieldOf("effects").forGetter(RarityData :: effects),
 						ResourceLocation.CODEC.listOf().fieldOf("incompatibilities").forGetter(RarityData :: incompatibilities),
-						Codec.INT.fieldOf("destabilization_amount").forGetter(RarityData :: destabilizationAmount)
+						Codec.INT.fieldOf("destabilization_amount").forGetter(RarityData :: destabilizationAmount),
+						SerializableColor.CODEC.fieldOf("main_color").forGetter(RarityData :: mainColor),
+						SerializableColor.CODEC.fieldOf("secondary_color").forGetter(RarityData :: secondaryColor)
 				).apply(instance, RarityData ::new));
 	}
 	

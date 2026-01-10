@@ -37,6 +37,7 @@ public class NetworkEngine
 
         registerMessage(registrar, S2CRecipeResponse.STREAM_CODEC, S2CRecipeResponse.TYPE, PacketFlow.CLIENTBOUND);
         registerMessage(registrar, S2CFluidTransportPacket.STREAM_CODEC, S2CFluidTransportPacket.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CGenomeSync.STREAM_CODEC, S2CGenomeSync.TYPE, PacketFlow.CLIENTBOUND);
     }
 
     private <T extends IPacket> void registerMessage(

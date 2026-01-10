@@ -14,7 +14,17 @@
       ],
       "incompatibilities": [
         "biomorphosis:protection"
-      ]
+      ],
+      "main_color": {
+        "blue": 45,
+        "green": 55,
+        "red": 110
+      },
+      "secondary_color": {
+        "blue": 125,
+        "green": 110,
+        "red": 95
+      }
     },
     "slyth": {
       "destabilization_amount": 1,
@@ -28,7 +38,89 @@
       ],
       "incompatibilities": [
         "biomorphosis:protection"
-      ]
+      ],
+      "main_color": {
+        "blue": 60,
+        "green": 60,
+        "red": 85
+      },
+      "secondary_color": {
+        "blue": 190,
+        "green": 195,
+        "red": 195
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 5,
+      "effects": [
+        {
+          "type": "biomorphosis:health",
+          "params": {
+            "amount": 8
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:protection"
+      ],
+      "main_color": {
+        "blue": 30,
+        "green": 30,
+        "red": 180
+      },
+      "secondary_color": {
+        "blue": 200,
+        "green": 210,
+        "red": 220
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 8,
+      "effects": [
+        {
+          "type": "biomorphosis:health",
+          "params": {
+            "amount": 10
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:protection"
+      ],
+      "main_color": {
+        "blue": 40,
+        "green": 40,
+        "red": 255
+      },
+      "secondary_color": {
+        "blue": 200,
+        "green": 200,
+        "red": 40
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 3,
+      "effects": [
+        {
+          "type": "biomorphosis:health",
+          "params": {
+            "amount": 6
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:protection"
+      ],
+      "main_color": {
+        "blue": 45,
+        "green": 45,
+        "red": 140
+      },
+      "secondary_color": {
+        "blue": 90,
+        "green": 130,
+        "red": 120
+      }
     }
   }
 }

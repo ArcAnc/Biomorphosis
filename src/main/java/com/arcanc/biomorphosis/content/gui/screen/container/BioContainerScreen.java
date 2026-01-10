@@ -40,7 +40,7 @@ import java.util.function.Consumer;
 public abstract class BioContainerScreen<T extends AbstractContainerMenu> extends AbstractContainerScreen<T>
 {
     private final List<InfoArea> infoAreas = new ArrayList<>();
-    protected static final ResourceLocation BACKGROUND = Database.rl("textures/gui/background.png");
+    public static final ResourceLocation BACKGROUND = Database.rl("textures/gui/background.png");
 
     public BioContainerScreen(T menu, Inventory playerInventory, Component title)
     {

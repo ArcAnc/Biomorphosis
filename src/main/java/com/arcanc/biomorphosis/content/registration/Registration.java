@@ -43,11 +43,14 @@ import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
 import com.arcanc.biomorphosis.content.gui.screen.container.TurretScreen;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
+import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
+import com.arcanc.biomorphosis.content.mutations.types.BalanceEffectType;
 import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
 import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
-import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
+import com.arcanc.biomorphosis.content.mutations.types.ProtectionEffectType;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
+import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
@@ -175,6 +178,13 @@ public final class Registration
 	public static class DataAttachmentsReg
 	{
 		public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Database.MOD_ID);
+		
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<GenomeInstance>> GENOME = TYPES.register(
+				"genome",
+				() -> AttachmentType.builder(() -> GenomeInstance.EMPTY).
+						serialize(GenomeInstance.CODEC).
+						copyOnDeath().
+						build());
 		
 		private static void init (@NotNull final IEventBus bus)
 		{
@@ -1883,6 +1893,8 @@ public final class Registration
 		public static Registry<IGeneEffectType<?>> EFFECT_TYPE_REGISTRY;
 		
 		public static final DeferredHolder<IGeneEffectType<?>, HealthEffectType> HEALTH = EFFECT_TYPES.register("health", HealthEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, ProtectionEffectType> PROTECTION = EFFECT_TYPES.register("protection", ProtectionEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, BalanceEffectType> BALANCE = EFFECT_TYPES.register("balance", BalanceEffectType :: new);
 		
 		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
 		{

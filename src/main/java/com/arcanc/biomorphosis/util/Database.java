@@ -145,7 +145,7 @@ public class Database
             }
         }
 
-		public static final class GenomeData
+		public static final class Genome
 		{
 			public static final GeneInfo ACCURACY = new GeneInfo(Database.rl("accuracy"));
 			public static final GeneInfo BALANCE = new GeneInfo(Database.rl("balance"));
@@ -154,6 +154,16 @@ public class Database
 			public static final GeneInfo HEALTH = new GeneInfo(Database.rl("health"));
 			public static final GeneInfo PROTECTION = new GeneInfo(Database.rl("protection"));
 			public static final GeneInfo SPEED = new GeneInfo(Database.rl("speed"));
+			
+			public static final class Translations
+			{
+				public static final String GENE_RARITY = rl(GUI + ".tooltip.genome.gene.rarity").toLanguageKey();
+				public static final String GENE_INSTABILITY = rl(GUI + ".tooltip.genome.gene.instability").toLanguageKey();
+				public static final String NO_GENES = rl(GUI + ".tooltip.genome.no_genes").toLanguageKey();
+				public static final Function<ResourceLocation, String> GENE_NAME = input -> input.withPrefix(GUI + ".tooltip.genome.gene.name.").toLanguageKey();
+				public static final String NO_GENE_EFFECT = rl(GUI + ".tooltip.genome.effect.no_effect").toLanguageKey();
+				public static final Function<ResourceLocation, String> GENE_EFFECT_DESCRIPTION = input -> input.withPrefix(GUI + ".tooltip.genome.effect.").toLanguageKey();
+			}
 			
 			public record GeneInfo(ResourceLocation id, ResourceLocation image)
 			{
@@ -330,7 +340,8 @@ public class Database
             public static final String MODES = "modes";
             public static final String INTS = "ints";
             public static final String INDEX_TO_MODE = "index_to_mode";
-            public static final class Holder
+            
+			public static final class Holder
             {
                 public static final String ITEM = "item";
                 public static final String CAPACITY = "capacity";

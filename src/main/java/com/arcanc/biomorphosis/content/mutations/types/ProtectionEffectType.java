@@ -1,7 +1,7 @@
 /**
  * @author ArcAnc
- * Created at: 06.10.2025
- * Copyright (c) 2025
+ * Created at: 09.01.2026
+ * Copyright (c) 2026
  * <p>
  * This code is licensed under "Arc's License of Common Sense"
  * Details can be found in the license file in the root folder of this project
@@ -16,12 +16,12 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 
-public class HealthEffectType implements IGeneEffectType<HealthEffectType>
+public class ProtectionEffectType implements IGeneEffectType<ProtectionEffectType>
 {
-	public static final MapCodec<HealthEffectType> CODEC = MapCodec.unit(HealthEffectType::new);
+	public static final MapCodec<ProtectionEffectType> CODEC = MapCodec.unit(ProtectionEffectType::new);
 	
 	@Override
-	public MapCodec<HealthEffectType> mapCodec()
+	public MapCodec<ProtectionEffectType> mapCodec()
 	{
 		return CODEC;
 	}
@@ -29,7 +29,7 @@ public class HealthEffectType implements IGeneEffectType<HealthEffectType>
 	@Override
 	public ResourceLocation getId()
 	{
-		return Database.GUI.Genome.HEALTH.id();
+		return Database.GUI.Genome.PROTECTION.id();
 	}
 	
 	@Override

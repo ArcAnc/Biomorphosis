@@ -16,6 +16,7 @@ import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,7 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -171,9 +173,23 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         return this.isValid.test(player);
     }
 
-    protected static @NotNull MenuContext blockCtx(MenuType<?> pMenuType, int pContainerId, BlockEntity be)
+	protected static @NotNull MenuContext entityCtx(MenuType<?> menuType, int containerId, Entity entity)
+	{
+		return new MenuContext(menuType, containerId, ContextType.ENTITY, () ->
+		{
+		},
+		player ->
+		{
+			if (!entity.isAlive())
+				return false;
+			else
+				return !(player.distanceToSqr(entity) >= 64d);
+		});
+	}
+	
+    protected static @NotNull MenuContext blockCtx(MenuType<?> menuType, int containerId, BlockEntity be)
     {
-        return new MenuContext(pMenuType, pContainerId, ContextType.BLOCK, () ->
+        return new MenuContext(menuType, containerId, ContextType.BLOCK, () ->
         {
             be.setChanged();
             if(be instanceof BioBaseBlockEntity bioBE)

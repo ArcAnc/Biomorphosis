@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.content.entity.trades.Trades;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,7 +43,8 @@ public class CommonEvents
         FluidTransportHandler.registerHandler();
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
         NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
-        ChestMenu.registerEvents();
+	    GenomeHandler.register(modEventBus);
+		ChestMenu.registerEvents();
 	    Trades.register(modEventBus);
 		
 		/*FIXME: придумать адекватный метод добавления биома, без терраблендера, ибо лютая какая-то хуйня получается
