@@ -124,6 +124,8 @@
   "biomorphosis.gui.tooltip.genome.effect.health": "Will add %s health to owner",
   "biomorphosis.gui.tooltip.genome.effect.no_effect": "This gene have no special effect",
   "biomorphosis.gui.tooltip.genome.effect.protection": "Will add %s armor to owner",
+  "biomorphosis.gui.tooltip.genome.gene.effects": "Effects: %s",
+  "biomorphosis.gui.tooltip.genome.gene.incompatibility": "Incompatibility: %s",
   "biomorphosis.gui.tooltip.genome.gene.instability": "Instability: %s",
   "biomorphosis.gui.tooltip.genome.gene.name.balance": "Balance",
   "biomorphosis.gui.tooltip.genome.gene.name.health": "Health",

@@ -247,7 +247,9 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.Genome.Translations.NO_GENES, "This entity have no eny genes");
 		this.add(Database.GUI.Genome.Translations.GENE_RARITY, "Rarity: %s");
 	    this.add(Database.GUI.Genome.Translations.GENE_INSTABILITY, "Instability: %s");
-		this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.PROTECTION.id()), "Will add %s armor to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_INCOMPATIBILITIES, "Incompatibilities: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECTS, "Effects: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.PROTECTION.id()), "Will add %s armor to owner");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.HEALTH.id()), "Will add %s health to owner");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.BALANCE.id()), "It's will add %s instability to owner genome");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.HEALTH.id()), "Health");

@@ -159,6 +159,8 @@ public class Database
 			{
 				public static final String GENE_RARITY = rl(GUI + ".tooltip.genome.gene.rarity").toLanguageKey();
 				public static final String GENE_INSTABILITY = rl(GUI + ".tooltip.genome.gene.instability").toLanguageKey();
+				public static final String GENE_INCOMPATIBILITIES = rl(GUI + ".tooltip.genome.gene.incompatibility").toLanguageKey();
+				public static final String GENE_EFFECTS = rl(GUI + ".tooltip.genome.gene.effects").toLanguageKey();
 				public static final String NO_GENES = rl(GUI + ".tooltip.genome.no_genes").toLanguageKey();
 				public static final Function<ResourceLocation, String> GENE_NAME = input -> input.withPrefix(GUI + ".tooltip.genome.gene.name.").toLanguageKey();
 				public static final String NO_GENE_EFFECT = rl(GUI + ".tooltip.genome.effect.no_effect").toLanguageKey();

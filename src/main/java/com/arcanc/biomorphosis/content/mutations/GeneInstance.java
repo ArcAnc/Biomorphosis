@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.mutations;
 
 
-import com.arcanc.biomorphosis.util.SerializableColor;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.network.FriendlyByteBuf;

@@ -19,7 +19,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
@@ -28,6 +27,7 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -79,7 +79,6 @@ public class GeneChooser extends AbstractWidget
 			return;
 		}
 		
-		float time = (Util.getMillis() % 10000) / 1000f;
 		int geneAmount = genome.geneInstances().size();
 		float reservedTop = this.getHeight() * 0.20f;
 		float reservedRight = this.getWidth() * 0.6f;
@@ -136,25 +135,37 @@ public class GeneChooser extends AbstractWidget
 							append("\n").
 							append(Component.translatable(Database.GUI.Genome.Translations.GENE_INSTABILITY,
 											Component.literal(String.valueOf(data.destabilizationAmount())).
-															withColor(gene.rarity().getColor())));
-					
-					
-					if (data.effects().isEmpty())
-						component.append("\n • ").append(Component.translatable(Database.GUI.Genome.Translations.NO_GENE_EFFECT));
-					
-					for (int q = 0; q < data.effects().size(); q++)
+															withColor(gene.rarity().getColor()))).
+							append("\n");
+							
+					if (!data.incompatibilities().isEmpty())
 					{
-						GeneDefinition.GeneEffectEntry entry = data.effects().get(q);
-						List<Object> values = GenomeHelper.getAllEffectData(entry);
-						List<Component> stringifies = new ArrayList<>();
-						
-						String address = Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(entry.type().getId());
-						for (Object value : values)
-							stringifies.add(Component.literal(value.toString()).
-									withColor(gene.rarity().getColor()));
-						component.append("\n • ").append(Component.translatable(address, stringifies.toArray()));
+						MutableComponent incompatibilities = Component.empty();
+						for (ResourceLocation inc : data.incompatibilities())
+							incompatibilities.append("\n • ").
+									append(Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(inc)));
+								
+						component.append(Component.translatable(Database.GUI.Genome.Translations.GENE_INCOMPATIBILITIES, incompatibilities)).
+								append("\n");
 					}
 					
+					MutableComponent effects = Component.empty();
+					if (data.effects().isEmpty())
+						effects.append("\n • ").append(Component.translatable(Database.GUI.Genome.Translations.NO_GENE_EFFECT));
+					else
+						for (int q = 0; q < data.effects().size(); q++)
+						{
+							GeneDefinition.GeneEffectEntry entry = data.effects().get(q);
+							List<Object> values = GenomeHelper.getAllEffectData(entry);
+							List<Component> stringifies = new ArrayList<>();
+						
+							String address = Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(entry.type().getId());
+							for (Object value : values)
+								stringifies.add(Component.literal(value.toString()).
+										withColor(gene.rarity().getColor()));
+							effects.append("\n • ").append(Component.translatable(address, stringifies.toArray()));
+						}
+					component.append(Component.translatable(Database.GUI.Genome.Translations.GENE_EFFECTS, effects));
 					guiGraphics.drawWordWrap(
 							font,
 							component,
