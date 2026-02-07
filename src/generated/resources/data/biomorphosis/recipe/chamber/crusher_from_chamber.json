@@ -1,0 +1,40 @@
+{
+  "type": "biomorphosis:chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:grindstone"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:stone"
+    },
+    {
+      "amount": 1,
+      "ingredient": "minecraft:stone"
+    },
+    {
+      "amount": 1,
+      "ingredient": "biomorphosis:flesh"
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 400
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:crusher"
+  }
+}

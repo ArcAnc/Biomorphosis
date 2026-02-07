@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "biomorphosis:block/norph_0"
+      },
+      {
+        "model": "biomorphosis:block/norph_1"
+      },
+      {
+        "model": "biomorphosis:block/norph_2"
+      },
+      {
+        "model": "biomorphosis:block/norph_3"
+      },
+      {
+        "model": "biomorphosis:block/norph_4"
+      },
+      {
+        "model": "biomorphosis:block/norph_5"
+      },
+      {
+        "model": "biomorphosis:block/norph_6"
+      },
+      {
+        "model": "biomorphosis:block/norph_7"
+      }
+    ]
+  }
+}

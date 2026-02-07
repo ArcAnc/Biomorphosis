@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:jump_strength",
+  "image": "biomorphosis:textures/genome/jump_strength.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 4,
+      "effects": [
+        {
+          "type": "biomorphosis:jump_strength",
+          "params": {
+            "modifier": 25
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 40,
+        "green": 130,
+        "red": 70
+      },
+      "secondary_color": {
+        "blue": 120,
+        "green": 50,
+        "red": 90
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:jump_strength",
+          "params": {
+            "modifier": 10
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 35,
+        "green": 85,
+        "red": 45
+      },
+      "secondary_color": {
+        "blue": 85,
+        "green": 40,
+        "red": 65
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 11,
+      "effects": [
+        {
+          "type": "biomorphosis:jump_strength",
+          "params": {
+            "modifier": 75
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 50,
+        "green": 220,
+        "red": 140
+      },
+      "secondary_color": {
+        "blue": 210,
+        "green": 70,
+        "red": 155
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 15,
+      "effects": [
+        {
+          "type": "biomorphosis:jump_strength",
+          "params": {
+            "modifier": 100
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 60,
+        "green": 255,
+        "red": 180
+      },
+      "secondary_color": {
+        "blue": 255,
+        "green": 90,
+        "red": 190
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 7,
+      "effects": [
+        {
+          "type": "biomorphosis:jump_strength",
+          "params": {
+            "modifier": 50
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 45,
+        "green": 180,
+        "red": 100
+      },
+      "secondary_color": {
+        "blue": 165,
+        "green": 60,
+        "red": 120
+      }
+    }
+  }
+}

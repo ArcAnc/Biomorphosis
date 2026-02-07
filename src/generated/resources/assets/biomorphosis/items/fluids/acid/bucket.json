@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "neoforge:fluid_container",
+    "fluid": "biomorphosis:fluids/acid/still",
+    "textures": {
+      "base": "minecraft:item/bucket",
+      "cover": "neoforge:item/mask/bucket_fluid_cover_drip",
+      "fluid": "neoforge:item/mask/bucket_fluid_drip",
+      "particle": "biomorphosis:block/fluids/acid/bucket"
+    }
+  }
+}

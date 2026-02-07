@@ -1,0 +1,126 @@
+{
+  "id": "biomorphosis:protection",
+  "image": "biomorphosis:textures/genome/protection.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 4,
+      "effects": [
+        {
+          "type": "biomorphosis:protection",
+          "params": {
+            "amount": 4
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:health"
+      ],
+      "main_color": {
+        "blue": 47,
+        "green": 107,
+        "red": 85
+      },
+      "secondary_color": {
+        "blue": 42,
+        "green": 90,
+        "red": 166
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:protection",
+          "params": {
+            "amount": 2
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:health"
+      ],
+      "main_color": {
+        "blue": 54,
+        "green": 64,
+        "red": 58
+      },
+      "secondary_color": {
+        "blue": 194,
+        "green": 207,
+        "red": 201
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 11,
+      "effects": [
+        {
+          "type": "biomorphosis:protection",
+          "params": {
+            "amount": 8
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:health"
+      ],
+      "main_color": {
+        "blue": 0,
+        "green": 204,
+        "red": 46
+      },
+      "secondary_color": {
+        "blue": 163,
+        "green": 216,
+        "red": 230
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 15,
+      "effects": [
+        {
+          "type": "biomorphosis:protection",
+          "params": {
+            "amount": 10
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:health"
+      ],
+      "main_color": {
+        "blue": 0,
+        "green": 255,
+        "red": 76
+      },
+      "secondary_color": {
+        "blue": 51,
+        "green": 0,
+        "red": 43
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 7,
+      "effects": [
+        {
+          "type": "biomorphosis:protection",
+          "params": {
+            "amount": 6
+          }
+        }
+      ],
+      "incompatibilities": [
+        "biomorphosis:health"
+      ],
+      "main_color": {
+        "blue": 58,
+        "green": 127,
+        "red": 59
+      },
+      "secondary_color": {
+        "blue": 139,
+        "green": 143,
+        "red": 79
+      }
+    }
+  }
+}

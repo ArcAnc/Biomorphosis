@@ -1,0 +1,64 @@
+modLoader="javafml"
+loaderVersion="${loader_version_range}"
+license="${mod_license}"
+issueTrackerURL="https://github.com/ArcAnc/Metamorphosis/issues"
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+
+# A URL to query for updates for this mod. See the JSON update specification https://docs.neoforged.net/docs/misc/updatechecker/
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+
+displayURL="https://github.com/ArcAnc/Metamorphosis"
+logoFile="logo.png"
+#credits=""
+authors="${mod_authors}"
+description='''${mod_description}'''
+
+enumExtensions="META-INF/enumextensions.json"
+
+[[mixins]]
+config="${mod_id}.mixins.json"
+[[accessTransformers]]
+file="META-INF/accesstransformer.cfg"
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="${neo_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${ mod_id }]]
+    modId="geckolib"
+    type="required"
+    versionRange = "${geckolib_version}"
+    ordering = "AFTER"
+    side = "BOTH"
+[[dependencies.${ mod_id }]]
+    modId="jei"
+    type="optional"
+    versionRange = "${jei_version}"
+    ordering = "AFTER"
+    side = "BOTH"
+[[dependencies.${ mod_id }]]
+    modId="jade"
+    type="optional"
+    versionRange = "${jade_version}"
+    ordering = "AFTER"
+    side = "BOTH"
+
+
+# Features are specific properties of the game environment, that you may want to declare you require. This example declares
+# that your mod requires GL version 3.2 or higher. Other features will be added. They are side aware so declaring this won't
+# stop your mod loading on the server for example.
+#[features.${mod_id}]
+#openGLVersion="[3.2,)"

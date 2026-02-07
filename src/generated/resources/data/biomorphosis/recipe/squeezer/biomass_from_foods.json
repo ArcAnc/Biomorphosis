@@ -1,0 +1,28 @@
+{
+  "type": "biomorphosis:squeezer",
+  "input": {
+    "amount": 1,
+    "ingredient": "#c:foods"
+  },
+  "resources": {
+    "acid": {
+      "modifier": 1.0,
+      "per_second": 0.25,
+      "required": true
+    },
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "amount": 700,
+    "id": "biomorphosis:fluids/biomass/still"
+  }
+}

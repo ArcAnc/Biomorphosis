@@ -1,0 +1,65 @@
+{
+  "type": "minecraft:piglin",
+  "genomes": [
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "thrynn",
+            "id": "biomorphosis:health"
+          },
+          {
+            "gene_rarity": "grath",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 1
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "xyrr",
+            "id": "biomorphosis:health"
+          },
+          {
+            "gene_rarity": "grath",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 6
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "grath",
+            "id": "biomorphosis:health"
+          },
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 23
+    },
+    {
+      "genome_data": {
+        "genes": [
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:health"
+          },
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:balance"
+          }
+        ]
+      },
+      "weight": 70
+    }
+  ]
+}

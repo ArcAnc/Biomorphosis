@@ -1,0 +1,63 @@
+{
+  "type": "biomorphosis:swarm_village",
+  "biomes": "#biomorphosis:has_structure/swarm_village",
+  "max_distance_from_center": 80,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "size": 6,
+  "spawn_overrides": {
+    "monster": {
+      "bounding_box": "full",
+      "spawns": [
+        {
+          "type": "biomorphosis:infestor",
+          "maxCount": 2,
+          "minCount": 2,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:swarmling",
+          "maxCount": 8,
+          "minCount": 8,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:larva",
+          "maxCount": 3,
+          "minCount": 3,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:ziris",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:ksigg",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:worker",
+          "maxCount": 8,
+          "minCount": 8,
+          "weight": 1
+        },
+        {
+          "type": "biomorphosis:guard",
+          "maxCount": 8,
+          "minCount": 8,
+          "weight": 1
+        }
+      ]
+    }
+  },
+  "start_height": {
+    "absolute": -1
+  },
+  "start_pool": "biomorphosis:village/start",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "use_expansion_hack": true
+}

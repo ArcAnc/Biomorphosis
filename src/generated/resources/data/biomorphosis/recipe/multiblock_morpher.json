@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": "biomorphosis:flesh",
+    "S": "#c:stones",
+    "W": "#c:buckets/water"
+  },
+  "pattern": [
+    "SWS",
+    "FSF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:multiblock_morpher"
+  }
+}

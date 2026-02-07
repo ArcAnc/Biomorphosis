@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            12.0,
+            0.0,
+            8.0,
+            4.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            4.0,
+            4.0,
+            8.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            4.0,
+            4.0,
+            8.0,
+            8.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            12.0,
+            4.0,
+            16.0,
+            8.0
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            8.0,
+            4.0,
+            4.0,
+            0.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            8.0,
+            4.0,
+            12.0,
+            8.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:solid",
+  "textures": {
+    "all": "biomorphosis:block/hive_deco",
+    "particle": "biomorphosis:block/hive_deco"
+  }
+}

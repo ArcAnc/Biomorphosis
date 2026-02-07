@@ -1,0 +1,9 @@
+{
+  "model": {
+    "type": "minecraft:special",
+    "base": "biomorphosis:item/multiblock_morpher",
+    "model": {
+      "type": "biomorphosis:multiblock_morpher_item"
+    }
+  }
+}

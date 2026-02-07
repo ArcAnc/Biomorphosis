@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:damage",
+  "image": "biomorphosis:textures/genome/damage.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 6,
+      "effects": [
+        {
+          "type": "biomorphosis:damage",
+          "params": {
+            "amount": 4
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 22,
+        "green": 22,
+        "red": 102
+      },
+      "secondary_color": {
+        "blue": 12,
+        "green": 98,
+        "red": 140
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 3,
+      "effects": [
+        {
+          "type": "biomorphosis:damage",
+          "params": {
+            "amount": 2
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 18,
+        "green": 18,
+        "red": 72
+      },
+      "secondary_color": {
+        "blue": 8,
+        "green": 72,
+        "red": 96
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 13,
+      "effects": [
+        {
+          "type": "biomorphosis:damage",
+          "params": {
+            "amount": 9
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 42,
+        "green": 42,
+        "red": 182
+      },
+      "secondary_color": {
+        "blue": 32,
+        "green": 176,
+        "red": 255
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 20,
+      "effects": [
+        {
+          "type": "biomorphosis:damage",
+          "params": {
+            "amount": 14
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 64,
+        "green": 64,
+        "red": 230
+      },
+      "secondary_color": {
+        "blue": 64,
+        "green": 64,
+        "red": 230
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 9,
+      "effects": [
+        {
+          "type": "biomorphosis:damage",
+          "params": {
+            "amount": 6
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 30,
+        "green": 30,
+        "red": 139
+      },
+      "secondary_color": {
+        "blue": 4,
+        "green": 142,
+        "red": 217
+      }
+    }
+  }
+}

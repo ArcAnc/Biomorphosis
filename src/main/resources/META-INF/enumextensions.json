@@ -1,0 +1,35 @@
+{
+  "entries":
+  [
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "BIOMORPHOSIS_COMMON",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters":
+      {
+        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
+        "field": "BIO_COMMON"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "BIOMORPHOSIS_RARE",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters":
+      {
+        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
+        "field": "BIO_RARE"
+      }
+    },
+    {
+      "enum": "net/minecraft/world/item/Rarity",
+      "name": "BIOMORPHOSIS_ULTRA_RARE",
+      "constructor": "(ILjava/lang/String;Ljava/util/function/UnaryOperator;)V",
+      "parameters":
+      {
+        "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
+        "field": "BIO_ULTRA_RARE"
+      }
+    }
+  ]
+}

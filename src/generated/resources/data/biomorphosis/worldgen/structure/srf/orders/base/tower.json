@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:jigsaw",
+  "biomes": "#biomorphosis:has_structure/srf_tower",
+  "max_distance_from_center": 80,
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "size": 3,
+  "spawn_overrides": {
+    "creature": {
+      "bounding_box": "full",
+      "spawns": [
+        {
+          "type": "biomorphosis:soldier",
+          "maxCount": 4,
+          "minCount": 4,
+          "weight": 90
+        },
+        {
+          "type": "biomorphosis:blacksmith",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 4
+        },
+        {
+          "type": "biomorphosis:sergeant",
+          "maxCount": 2,
+          "minCount": 2,
+          "weight": 4
+        },
+        {
+          "type": "biomorphosis:captain",
+          "maxCount": 1,
+          "minCount": 1,
+          "weight": 2
+        }
+      ]
+    }
+  },
+  "start_height": {
+    "absolute": 0
+  },
+  "start_pool": "biomorphosis:srf/orders/base/start/tower",
+  "step": "surface_structures",
+  "terrain_adaptation": "beard_thin",
+  "use_expansion_hack": true
+}

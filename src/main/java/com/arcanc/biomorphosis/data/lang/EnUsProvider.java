@@ -1,0 +1,338 @@
+/**
+ * @author ArcAnc
+ * Created at: 29.12.2024
+ * Copyright (c) 2024
+ * <p>
+ * This code is licensed under "Arc's License of Common Sense"
+ * Details can be found in the license file in the root folder of this project
+ */
+
+package com.arcanc.biomorphosis.data.lang;
+
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
+import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.Database;
+import com.google.common.base.Preconditions;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.concurrent.CompletableFuture;
+
+public class EnUsProvider extends LanguageProvider
+{
+	private final CompletableFuture<HolderLookup.Provider> lookupProvider;
+	
+    public EnUsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
+    {
+        super(output, Database.MOD_ID, "en_us");
+		this.lookupProvider = lookupProvider;
+    }
+
+    @Override
+    protected void addTranslations()
+    {
+        this.addItem(Registration.ItemReg.FLESH_PIECE, "Piece Of Flash");
+        this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
+        this.addItem(Registration.ItemReg.BOOK, "Guide");
+        this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
+	    this.addItem(Registration.ItemReg.ANTENNAS, "Antennas");
+	    this.addItem(Registration.ItemReg.GUARD_ARMOR_PIECE, "Guard Armor Piece");
+	    this.addItem(Registration.ItemReg.INFESTOR_STING, "Infestor Sting");
+	    this.addItem(Registration.ItemReg.SWARMLING_HEAD, "Swarmling Head");
+	    this.addItem(Registration.ItemReg.ZIRIS_WING, "Ziris Wing");
+	    this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
+        this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
+		this.addItem(Registration.ItemReg.INJECTOR, "Injector");
+		
+        this.addBlock(Registration.BlockReg.NORPH, "Norph");
+        this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
+        this.addBlock(Registration.BlockReg.NORPH_STAIRS, "Norph Stairs");
+        this.addBlock(Registration.BlockReg.NORPH_SOURCE, "Norph Source");
+        this.addBlock(Registration.BlockReg.FLUID_STORAGE, "Fluid Reservoir");
+        this.addBlock(Registration.BlockReg.FLUID_TRANSMITTER, "Fluid Transmitter");
+        this.addBlock(Registration.BlockReg.CRUSHER, "Crusher");
+		this.addBlock(Registration.BlockReg.SQUEEZER, "Squeezer");
+        this.addBlock(Registration.BlockReg.LURE_CAMPFIRE, "Lure Campfire");
+        this.addBlock(Registration.BlockReg.STOMACH, "Organic Reprocessor");
+        this.addBlock(Registration.BlockReg.CATCHER, "Biofluid Extractor");
+        this.addBlock(Registration.BlockReg.FORGE, "BioForge");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE, "Expandable Fluid Storage");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_MORPHER, "Morpher");
+        this.addBlock(Registration.BlockReg.MULTIBLOCK_CHAMBER, "Chamber");
+        this.addBlock(Registration.BlockReg.PROP_0, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.PROP_1, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.PROP_2, "Pile of Junk");
+        this.addBlock(Registration.BlockReg.GLOW_MOSS, "Glow Moss");
+        this.addBlock(Registration.BlockReg.MOSS, "Moss");
+        this.addBlock(Registration.BlockReg.HANGING_MOSS, "Hanging Moss");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_0, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_STAIR_0, "Norphed Dirt Stairs");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_SLAB_0, "Norphed Dirt Slab");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_1, "Norphed Dirt");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_STAIR_1, "Norphed Dirt Stairs");
+        this.addBlock(Registration.BlockReg.NORPHED_DIRT_SLAB_1, "Norphed Dirt Slab");
+        this.addBlock(Registration.BlockReg.INNER, "Inner");
+        this.addBlock(Registration.BlockReg.ROOF, "Roof");
+        this.addBlock(Registration.BlockReg.ROOF_STAIRS, "Roof Stairs");
+        this.addBlock(Registration.BlockReg.ROOF_SLAB, "Roof Slab");
+        this.addBlock(Registration.BlockReg.ROOF_DIRT, "Roof Dirt");
+        this.addBlock(Registration.BlockReg.TRAMPLED_DIRT, "Trampled Dirt");
+        this.addBlock(Registration.BlockReg.HIVE_DECO, "Hive");
+        this.addBlock(Registration.BlockReg.EGGS_DECO, "Eggs");
+        this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
+		this.addBlock(Registration.BlockReg.MULTIBLOCK_TURRET, "Turret");
+		this.addBlock(Registration.BlockReg.MULTIBLOCK_CHRYSALIS, "Chrysalis");
+		
+        this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
+        this.addFluidDescription(Registration.FluidReg.ACID, "Acid");
+        this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
+
+        this.addEntity(Registration.EntityReg.MOB_QUEEN, "Queen", Database.GUI.Sounds.QUEEN, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_QUEEN_GUARD, "Queen Guard", Database.GUI.Sounds.GUARD, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_KSIGG, "Ksigg", Database.GUI.Sounds.KSIGG, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_LARVA, "Larva", Database.GUI.Sounds.LARVA, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_ZIRIS, "Ziris", Database.GUI.Sounds.ZIRIS, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_INFESTOR, "Infestor", Database.GUI.Sounds.INFESTOR, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_SWARMLING, "Swarmling", Database.GUI.Sounds.SWARMLING, "stridulates");
+        this.addEntity(Registration.EntityReg.MOB_WORKER,"Worker", Database.GUI.Sounds.WORKER, "stridulates");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_SOLDIER,"Soldier", Database.GUI.Sounds.SOLDIER, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_SERGEANT,"Sergeant", Database.GUI.Sounds.SERGEANT, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_CAPTAIN,"Captain", Database.GUI.Sounds.CAPTAIN, "yawns");
+	    this.addEntity(Registration.EntityReg.MOB_BASE_BLACKSMITH,"Blacksmith", Database.GUI.Sounds.BLACKSMITH, "yawns");
+		this.addEntityType(Registration.EntityReg.PROJECTILE_TURRET.getEntityHolder(), "Turret Projectile");
+
+        //-----------------------------
+        // JADE
+
+        //this.add("config.jade.plugin_" + Database.JadeInfo.IDs.FLUID_RENDERER.toLanguageKey(), "Test Fluid Render");
+        //this.add(Database.JadeInfo.Translations.FLUID_AMOUNT, "%s Amount: %s/%s");
+
+        //-----------------------------
+        // JEI
+
+        this.add(Database.Integration.JeiInfo.CHAMBER_RECIPE_NAME, "Chamber");
+        this.add(Database.Integration.JeiInfo.CRUSHER_RECIPE_NAME, "Crusher");
+	    this.add(Database.Integration.JeiInfo.SQUEEZER_RECIPE_NAME, "Squeezer");
+        this.add(Database.Integration.JeiInfo.STOMACH_RECIPE_NAME, "Organic Reprocessor");
+        this.add(Database.Integration.JeiInfo.FORGE_RECIPE_NAME, "BioForge");
+
+        this.add(Database.Integration.JeiInfo.REQUIRED, "Required");
+        this.add(Database.Integration.JeiInfo.OPTIONAL, "Optional");
+        this.add(Database.Integration.JeiInfo.PER_TICK, "%s mB/tick");
+        this.add(Database.Integration.JeiInfo.WITH_ADRENALINE, "x%s Speed");
+        this.add(Database.Integration.JeiInfo.WITH_ACID, "x%s Output");
+
+        //-----------------------------
+        //BOOK
+        this.add(Database.GUI.GuideBook.Chapters.TITLE.langKey(), "</item;minecraft:writable_book/>Patch Notes");
+	    this.add(Database.GUI.GuideBook.Chapters.BASIC.langKey(), "</block;minecraft:dirt/>Basic Info");
+	    this.add(Database.GUI.GuideBook.Chapters.ADVANCED.langKey(), "</block;minecraft:beacon/>Advanced Chapter");
+
+        this.add(Database.GUI.GuideBook.Pages.V001.titleLangKey(), "Version: 0.0.1");
+        this.add(Database.GUI.GuideBook.Pages.V001.textLangKey(), "\u2022 Initial Demo release");
+        this.add(Database.GUI.GuideBook.Pages.V002.titleLangKey(), "Version: 0.0.2");
+        this.add(Database.GUI.GuideBook.Pages.V002.textLangKey(), "\u2022 Added some decorative blocks");
+        this.add(Database.GUI.GuideBook.Pages.V003.titleLangKey(), "Version: 0.0.3");
+        this.add(Database.GUI.GuideBook.Pages.V003.textLangKey(), "\u2022 Added 2 new decorative blocks\n\u2022 Fixed wrong model on Norphed Dirt\n\u2022 Adjusted Infestor Size");
+        this.add(Database.GUI.GuideBook.Pages.V004.titleLangKey(), "Version: 0.0.4");
+        this.add(Database.GUI.GuideBook.Pages.V004.textLangKey(), "\u2022 Finally fixed decorative hive sound\n\u2022 Roof block now spread normally\n\u2022 Removed 2 step sounds. They was too loud\n\u2022 Changed Hive sound frequency. Early it was too rare\n\u2022 Added Queen Guard\n\u2022 Added Worker\n\u2022 Added Eggs Block\n\u2022 Start Working under Swarm Village");
+        this.add(Database.GUI.GuideBook.Pages.V005.titleLangKey(), "Version: 0.0.5");
+        this.add(Database.GUI.GuideBook.Pages.V005.textLangKey(), "\u2022 First version of village generation\n\u2022 A bit reworked multiblocks, now it's can have voxel shape of original block, but I still want more. Fully custom voxel shape will be top. And get rid from blockState to itemStack");
+		this.add(Database.GUI.GuideBook.Pages.V006.titleLangKey(), "Version: 0.0.6");
+		this.add(Database.GUI.GuideBook.Pages.V006.textLangKey(), "\u2022 Small internal changes and filled up book\n\u2022 Fixed entities not attacked and crash by missing sound.\n\u2022 A bit changed descriptions in book\n\u2022 A bit nerfed Queen Guard. He was have too much armor");
+	    this.add(Database.GUI.GuideBook.Pages.V007.titleLangKey(), "Version: 0.0.7");
+	    this.add(Database.GUI.GuideBook.Pages.V007.textLangKey(), "\u2022 Renamed lymph into acid \n\u2022 Changed recipes to work with float values of fluids\n\u2022 Added Squeezer");
+	    this.add(Database.GUI.GuideBook.Pages.V0071.titleLangKey(), "Version: 0.0.7.1");
+	    this.add(Database.GUI.GuideBook.Pages.V0071.textLangKey(), "\u2022 Added an overlay to the Manipulator to explain how it works");
+	    this.add(Database.GUI.GuideBook.Pages.V008.titleLangKey(), "Version: 0.0.8");
+	    this.add(Database.GUI.GuideBook.Pages.V008.textLangKey(), "\u2022 Added turret for base defence\n\u2022 Added first version of palladin orders with some world gen\n\u2022 Changed model for norph blocks");
+	    this.add(Database.GUI.GuideBook.Pages.V0081.titleLangKey(), "Version: 0.0.8.1");
+	    this.add(Database.GUI.GuideBook.Pages.V0081.textLangKey(), "\u2022 Fixed broken generation for village \n\u2022 Changed generation rules for village");
+	    this.add(Database.GUI.GuideBook.Pages.V0082.titleLangKey(), "Version: 0.0.8.2");
+	    this.add(Database.GUI.GuideBook.Pages.V0082.textLangKey(), "\u2022 Reworked multiblock internal settings. Now it's uses voxel shape and list of components \n\u2022 Added renderer for multiblock recipe\n\u2022 Changed multiblock datagen\n\u2022 Fixed broken render for norph block\n\u2022 Fixed broken model for norph block\n\u2022 Removed norph from recipes. Now a lot things craftable");
+	    this.add(Database.GUI.GuideBook.Pages.V261.titleLangKey(), "Version: 26.1");
+	    this.add(Database.GUI.GuideBook.Pages.V261.textLangKey(), "\u2022 Version numbering has been changed to mirror Mojang’s new versioning scheme. The first number now indicates the year of the update release, the second denotes a major update, and the remaining numbers are hotfixes\n\u2022 Added the first version of the gene system\n\u2022 A number of animals now have genes: cow, pig, fox, wolf, etc.\n\u2022 Added the Chrysalis, which allows rewriting the player character’s genome and modifying it as desired\n\u2022 Added the injector for collecting genes. You must use it to finish off a gene carrier in order to obtain the genes they possessed\n\u2022 Reworked the multiblock system. Each block now has its own hitbox\n\u2022 Items and ingredients can now be used in multiblock structures\n\u2022 Added an achievement system. Currently, it is used to notify the player when new genes are obtained; it will be reworked later\n\u2022 Fixed a bug with the fluid transmitter that caused an infinite fluid source to be created\n\u2022 Fixed the display of multiblock recipes in the guide book\n\u2022 Added a new API for creating genes.");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
+		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
+	    
+	    this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.titleLangKey(), "</block;biomorphosis:norph_source/>Norph Source");
+        this.add(Database.GUI.GuideBook.Pages.NORPH_SOURCE.textLangKey(), "The next thing you must learn is Norph — the living ground beneath us. Norph is the membrane between our world and theirs. Through it, we draw resources, power, and life itself. But remember this well — our structures live only upon Norph. Without it, they cannot breathe, cannot grow. Norph can be born only from a Source. Craft one like this: " + recipeForBook(RecipeType.CRAFTING, "_shaped", Database.rl("norph_source")) + " Place it, and the Norph will spread on its own... slowly, hungrily. Watch as the world turns alive");
+		
+		this.add(Database.GUI.GuideBook.Pages.CHAMBER.titleLangKey(), "</block;biomorphosis:chamber/>Chamber");
+		this.add(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey(), "Now... the Chamber. You cannot simply build it. Nothing of ours is built — it is grown. The Chamber is the heart of creation. Through it, the Swarm expands. Without it, you are nothing. To grow one, you’ll need this: " + recipeForBook(RecipeType.CRAFTING, "_shaped", Database.rl("multiblock_morpher")) + "But remember, this will be the last thing you can obtain the human way. From now on — everything must be grown. Drop the required matter onto the Morpher, and it will take shape. Do not interrupt the process... It screams when disturbed. Curious what’s needed? Good. You’ll need: " + multiblock(Database.rl("chamber")));
+		
+		this.add(Database.GUI.GuideBook.Pages.STORAGES.titleLangKey(), "</block;biomorphosis:chest/>Storages");
+		this.add(Database.GUI.GuideBook.Pages.STORAGES.textLangKey(), "To grow within the Chamber, you’ll need resources — flesh, fluids, essence. They must be stored, contained, like organs within a body. Use these to shape our vessels: " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/fluid_storage_from_chamber")) + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/chest_from_chamber")) + "Each will serve as part of the Swarm’s anatomy — one holds fluids, the other, matter");
+		
+		this.add(Database.GUI.GuideBook.Pages.CRUSHER.titleLangKey(), "</block;biomorphosis:crusher/>Crusher");
+		this.add(Database.GUI.GuideBook.Pages.CRUSHER.textLangKey(), "You’ve learned to feed. Now, learn to break. The Crusher — it grinds, tears, reduces. From cold ore, it makes dust. From hard matter, it makes food for the Swarm " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/crusher_from_chamber")) + "Simple, but vital. Every scream of stone becomes a whisper of progress");
+
+	    this.add(Database.GUI.GuideBook.Pages.SQUEEZER.titleLangKey(), "</block;biomorphosis:squeezer/>Squeezer");
+	    this.add(Database.GUI.GuideBook.Pages.SQUEEZER.textLangKey(), "Hunger gnaws at all of us, young one. If you wish to feed — you must learn to harvest. The only way to nourish the Swarm is to grow a Squeezer. It accepts any organic matter... and crushes it, crushes it, until nothing remains but rich, flowing biomass. As long as it drips — we live. As long as you feed it — the Swarm stays strong" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/squeezer_from_chamber")));
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.titleLangKey(), "</block;biomorphosis:forge/>BioForge");
+	    this.add(Database.GUI.GuideBook.Pages.FORGE.textLangKey(), "Even the Swarm needs heat. Our Forge burns without fire, consumes without flame. It melts ores, cooks flesh, and does so faster than your crude furnaces " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/forge_from_chamber")) + "It needs no fuel — only biomass. Add acid or adrenaline, and the process quickens, pulsing like a heart in rage. And should you desire more — evolution awaits. Feed it this: </item;biomorphosis:forge_upgrade/>How to find it? Heh... The Swarm rewards those who dig deep enough");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.titleLangKey(), "</block;biomorphosis:stomach/>Organic Reprocessor");
+	    this.add(Database.GUI.GuideBook.Pages.STOMACH.textLangKey(), "To feed the Swarm, you must grow a Organic Reprocessor. It consumes meat, breaks it down, and births acid — pure life matter. Feed it flesh, and it will pulse. Feed it acid and adrenaline, and it will roar, devouring faster, stronger" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/stomach_from_chamber")) + "Everything that enters becomes part of us");
+		
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.titleLangKey(), "</block;biomorphosis:catcher/>Biofluid Extractor");
+		this.add(Database.GUI.GuideBook.Pages.CATCHER.textLangKey(), "You’ve heard of acid, haven’t you? Now you shall take it. Grow a Fluid Extractor, and lure the living close. When it bites, it drinks — drawing life from their veins. The process is... Exquisite. Painful for them, perhaps. But necessary. Be warned: some creatures are too strong to be captured by our devices. Those beasts resist the pull — you will not take them easily" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/catcher_from_chamber")));
+
+	    this.add(Database.GUI.GuideBook.Pages.MANIPULATOR.titleLangKey(), "</item;biomorphosis:wrench/>Manipulator");
+	    this.add(Database.GUI.GuideBook.Pages.MANIPULATOR.textLangKey(), "Remember this, young one: without a proper tool, you are nothing but soft flesh. To shape, to repair, to open and to bind — you need the Manipulator. It is simple... yet irreplaceable. Fine tendrils, hardened claws, stiff cartilage — everything in it is crafted for precise, delicate work. Humans use a ‘screwdriver’ for such tasks. We possess something far more refined. The Manipulator is an extension of your will. Through it you build the Swarm... and keep it alive. But be aware: every block responds to touch in its own unique way. If you wish to learn how the Manipulator interacts with a specific structure — consult the guide page of that block" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/wrench_from_chamber")));
+	    
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.titleLangKey(), "</block;biomorphosis:fluid_transmitter/>Fluid Transmitter");
+	    this.add(Database.GUI.GuideBook.Pages.FLUID_TRANSMITTER.textLangKey(), "Ah... So you’ve finally reached this stage. Good. Now you will learn how to let our essence flow — how to spread fluids through the veins of the Swarm without touching them yourself.For this, you must grow a Fluid Transmitter. Place it... Connect the storage to the desired organ — and then, watch. The flow will begin on its own, like blood through flesh. No pipes. No hands. Only life moving life " + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/fluid_transmitter_from_chamber")) + "To link two different blocks, use the Manipulator while sneaking. First select the block from which you want to transfer fluids, then select the block to which the fluid should be transferred. After that, stop sneaking and use the Manipulator on the transmitter");
+	    
+	    this.add(Database.GUI.GuideBook.Pages.TURRET.titleLangKey(), "</block;biomorphosis:multiblock_turret/>Turret");
+	    this.add(Database.GUI.GuideBook.Pages.TURRET.textLangKey(), "Before you stands a sentry outgrowth of the Swarm. A Turret. It is far from perfect... but it is vicious enough to drive unwanted guests away. It roots itself in the Norph, senses approaching intruders, and responds without hesitation. Not for hunting — for protection. Not for glory — for survival. Like many of our creations, it is not built — it is grown. Use the Morpher and provide the required tissues and substances. Without them, it will not take shape. Remember this: the Turret lives only as long as it is fed. Without a steady flow of the fluids it requires, its muscles stiffen and its vision fades. Feed it — and it will kill for you. To grow it you will need: " + multiblock(Database.rl("turret")));
+
+	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.titleLangKey(), "</block;biomorphosis:multiblock_chrysalis/>Chrysalis");
+	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.textLangKey(), "The Chrysalis... One of the simplest forms, and yet one of the most vital technologies of the Swarm. Within it, flesh remembers what it can become. It allows you to accept discovered genes into yourself — to mutate, to reshape, to rise beyond your previous form. To grow a Chrysalis, the Swarm requires the following tissues and substances:" + multiblock(Database.rl("chrysalis")) + "A natural question follows — where do the genes come from? The answer is simple: life always carries them... unwillingly. Take the Injector and extract them yourself. It does not matter who stands before you — a Villager, a beast, or any other living form. All of them carry something that can be torn out and repurposed. To grow an Injector, you will need:" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/injector_from_chamber")));
+	    
+	    
+	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
+        this.add(Database.GUI.GuideBook.Pages.Components.SHAPELESS, "Shapeless");
+        this.add(Database.GUI.GuideBook.Pages.Components.TICKS, "Ticks: %s");
+        this.add(Database.GUI.GuideBook.Pages.Components.EXP, "Experience: %s");
+        this.add(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT, "Back");
+        this.add(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT, "Next");
+        this.add(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE, "To Title");
+
+        //-----------------------------
+        //TOOLTIP
+
+        this.add(Database.GUI.HOLD_SHIFT, "Hold §4SHIFT§r for additional info");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_SHORT_TOOLTIP, "%s mB");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.NORMAL_EXTENDED_TOOLTIP, "%s/%s mB");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_DENSITY, "Density: %s kg/m³");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_TEMPERATURE, "Temperature: %s K");
+        this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_VISCOSITY, "Viscosity: %s m²/s");
+        this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.PERCENT, "%s / %s %%");
+        this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.DIRECT, "%s / %s");
+	    this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.STABILITY, "Stability: %s");
+	    this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.LOW_STABILITY, "Warning! Stability lower than 0. YOU WILL DIE!!!");
+		this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.Tooltip.STABILITY_TOOLTIP, "Stability determines the limit of mutations an organism can withstand. Each added gene reduces stability, and if stability drops below 0, the organism dies. Therefore, proceed with caution!");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_GENE, "Unknown gene %s with rarity %s");
+	    this.add(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_RARITY_DATA, "Gene %s have no such rarity %s");
+	    this.add(Database.GUI.InfoArea.ErrorInfoArea.INCOMPATIBLE_GENES, "Gene %s is incompatible with gene %s");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.MORE_POWERFUL_GENE, "Gene %s is more powerful than %s");
+		
+        this.add(Database.GUI.ChamberButton.START, "Start Process");
+        this.add(Database.GUI.ChamberButton.PROCESS, "Processing...");
+		
+		for (MultiblockTurret.TurretEffect effect : MultiblockTurret.TurretEffect.values())
+			this.add(Database.GUI.TurretButton.effectTooltip.apply(effect).getString(), "Current Effect: " + effect.getName().substring(0, 1).toUpperCase() + effect.getName().substring(1));
+	
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.PLAYERS).getString(), "Current Target Mode: attacking ONLY Players");
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.AGGRESSIVE_MOBS).getString(), "Current Target Mode: attacking ONLY Aggressive Mobs");
+	    this.add(Database.GUI.TurretButton.targetModeTooltip.apply(MultiblockTurret.TargetMode.EVERYONE).getString(), "Current Target Mode: attacking EVERYONE (even you)!");
+	    
+		this.add(Database.GUI.TurretButton.onOffTooltip.apply(true).getString(), "Turret is Enabled");
+		this.add(Database.GUI.TurretButton.onOffTooltip.apply(false).getString(), "Turret is Disabled");
+		
+		this.add(Database.GUI.Chrysalis.PROGRESS_BAR, "Mutation Progress: %s %%");
+		
+	    //-----------------------------
+	    //OVERLAY
+	    this.add(Database.GUI.Overlays.Tooltip.START_FLUID_HANDLER, "Using %s on %s will allow you to begin linking two fluid containers");
+		this.add(Database.GUI.Overlays.Tooltip.WRONG_FLUID_HANDLER, "ANOTHER ONE!");
+		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_SECOND_FLUID_HANDLER, "Choose the second fluid container and use %s on it");
+		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_TRANSMITTER, "Choose the Fluid Transmitter and use %s on it");
+		
+		this.add(Database.GUI.Overlays.Advancements.RECEIVE_GENE, "You receive gene ");
+  
+		//-----------------------------
+        //SOUND
+        this.add(Database.GUI.Sounds.ADVANCEMENT_RECEIVE, "Advancement received");
+	    
+	    this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
+        this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_NORMAL, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_TRAMPLED, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_STEP_LEAF, "Footsteps");
+        this.add(Database.GUI.Sounds.BLOCK_CHEST_OPEN, "Swarm chest opened");
+        this.add(Database.GUI.Sounds.BLOCK_CHEST_CLOSE, "Swarm chest closed");
+        this.add(Database.GUI.Sounds.BLOCK_HIVE_DECO, "Hive buzzes");
+	    
+	    //-----------------------------
+	    //GENOME
+	    this.add(Database.GUI.Genome.Translations.NO_GENE_EFFECT, "This gene have no special effect");
+		this.add(Database.GUI.Genome.Translations.NO_GENES, "This entity have no eny genes");
+		this.add(Database.GUI.Genome.Translations.GENE_RARITY, "Rarity: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_INSTABILITY, "Instability: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_INCOMPATIBILITIES, "Incompatibilities: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECTS, "Effects: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.DAMAGE.id()), "Will add %s damage to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.SPEED.id()), "Movement Speed increased by %s%%");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.PROTECTION.id()), "Will add %s armor to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.HEALTH.id()), "Will add %s health to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.BALANCE.id()), "It's will add %s instability to owner genome");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed increased by %s%%");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Strength increased by %s%%");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.VAMPIRISM.id()), "Each melee attack will restore %s%% of the damage dealt");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.DAMAGE.id()), "Damage");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SPEED.id()), "Speed");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.HEALTH.id()), "Health");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.BALANCE.id()), "Balance");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.PROTECTION.id()), "Protection");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Height");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.VAMPIRISM.id()), "Vampirism");
+	    
+	    //-----------------------------
+	    //DAMAGE TYPES
+		this.add("death.attack.biomorphosis:impossible_mutation", "Player %s mutated too hard");
+    }
+
+    private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)
+    {
+        this.addItem(entry.bucket(), description + " Bucket");
+        this.add(entry.still().getId().toLanguageKey(), description);
+        this.add(entry.flowing().getId().toLanguageKey(), description);
+        this.addBlock(entry.block(), description);
+        this.add(entry.type().get().getDescriptionId(), description);
+    }
+
+    private void addEntity(Registration.EntityReg.@NotNull EntityEntry<?> entity, String description, Database.GUI.Sounds.EntitySoundSubtitle subtitle, String idleAction)
+    {
+        this.addEntityType(entity.getEntityHolder(), description);
+        if (entity.getEggHolder() != null)
+            this.addItem(entity.getEggHolder(), description + " Spawn Egg");
+
+        this.add(subtitle.getIdle(), description + " " + idleAction);
+        this.add(subtitle.getHurt(), description + " hurts");
+        this.add(subtitle.getDeath(), description + " dies");
+    }
+
+	private @NotNull String multiblock(ResourceLocation multiblockLocation)
+	{
+		Preconditions.checkNotNull(multiblockLocation);
+		
+		return "</multiblock;" + multiblockLocation + "/>";
+	}
+	
+	private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
+	{
+		return recipeForBook(recipeType, "", recipeId);
+	}
+	
+	private @NotNull String recipeForBook(@NotNull RecipeType<?> recipeType, String suffix, ResourceLocation recipeId)
+	{
+		return recipeForBook(ResourceLocation.parse(recipeType.toString()), suffix, recipeId);
+	}
+	
+    private @NotNull String recipeForBook(ResourceLocation recipeType, String suffix, ResourceLocation recipeId)
+    {
+        Preconditions.checkNotNull(recipeType);
+        Preconditions.checkNotNull(recipeId);
+
+        return "</recipe;" + recipeType.withSuffix(suffix).toString() + ";"+ recipeId.toString()+"/>";
+    }
+}

@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.arcanc.biomorphosis.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "refmap": "biomorphosis.refmap.json",
+  "mixins": [
+    "FluidTypeRarityAccessor",
+    "GenomeEffectsHolderMixin",
+    "MutationTicker"
+  ],
+  "minVersion": "0.8",
+  "client": [
+    "client.GuiGraphicsMixin",
+    "client.RecipeUpdateMixin"
+  ]
+}

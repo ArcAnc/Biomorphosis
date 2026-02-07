@@ -1,0 +1,27 @@
+// 1.21.4	2026-02-04T18:39:41.619188712	biomorphosis: Genome Templates Provider
+6605ce4223370b7100f7f9236d8ef28e2c68ac2b data/minecraft/genome/templates/armadillo.json
+2d1f58e7b16d52135517f7d5e93e919fc3f5dc42 data/minecraft/genome/templates/axolotl.json
+f51ae0e856aaeadc7e223da4477f4bbdf3e62cd6 data/minecraft/genome/templates/bat.json
+81a798d850dc383c24719ba4c21f076c1e39e4b3 data/minecraft/genome/templates/cat.json
+b2fa5de480968ab58111b939b95140de0bc8c0df data/minecraft/genome/templates/cod.json
+fff8d4fb8bb3ec74ab52c265588314b7db54500e data/minecraft/genome/templates/cow.json
+24ca4c59ae3bd9eb16919cb98e27e813ea95cf21 data/minecraft/genome/templates/dolphin.json
+ef356d0ee401b13dc2621c58f3155329037d1db3 data/minecraft/genome/templates/fox.json
+fd7a1172d52d81923b877d6ed93b552eebdf9b02 data/minecraft/genome/templates/frog.json
+c31f20af7589f914cef687a6410cc4c4e3f8589e data/minecraft/genome/templates/glow_squid.json
+ac0056b08d8942e5f8ac468adc8712d8d62a752e data/minecraft/genome/templates/hoglin.json
+21166bf483272155860ef83a5b06021786054c12 data/minecraft/genome/templates/horse.json
+9d28fa445109410c429e81c0a33d958d8f9715af data/minecraft/genome/templates/mule.json
+8879f3986967d03dafef4164e4e1136d8447c01b data/minecraft/genome/templates/ocelot.json
+12910cd2e6fc555f8804b0cba956b7aee5f5959b data/minecraft/genome/templates/panda.json
+9fad38913799012c505b8459f9ea6aa8d643e0c8 data/minecraft/genome/templates/pig.json
+b70578d83d4ba5697867917addf39408561486ac data/minecraft/genome/templates/piglin.json
+560465d755474f299cc1c964e9e723fbc268c243 data/minecraft/genome/templates/polar_bear.json
+e1be4a324351e7eeeedcaa543bdd7a8ae92e84e9 data/minecraft/genome/templates/rabbit.json
+736c2c73a0144fb17cefa37d8180d791708ad07e data/minecraft/genome/templates/salmon.json
+ca088e5a5119fe739b240a8460e988b8b55df38c data/minecraft/genome/templates/sheep.json
+73419523b1eaa336f829ad75970cd3a1afeed017 data/minecraft/genome/templates/silverfish.json
+974ba90fbb5bf5cad3872532358c54a8acffd67e data/minecraft/genome/templates/squid.json
+d0ffde1cd1fc36bc2ff28db66313b295ea5c3905 data/minecraft/genome/templates/tropical_fish.json
+81b79de1c52be971410b2a06ec0a955ad8e6e2b1 data/minecraft/genome/templates/turtle.json
+fb17baf8ac80fd163a93928e3678d26641ebc13a data/minecraft/genome/templates/wolf.json

@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:speed",
+  "image": "biomorphosis:textures/genome/speed.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 4,
+      "effects": [
+        {
+          "type": "biomorphosis:speed",
+          "params": {
+            "modifier": 10
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 88,
+        "green": 84,
+        "red": 28
+      },
+      "secondary_color": {
+        "blue": 42,
+        "green": 128,
+        "red": 72
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:speed",
+          "params": {
+            "modifier": 5
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 56,
+        "green": 54,
+        "red": 18
+      },
+      "secondary_color": {
+        "blue": 28,
+        "green": 78,
+        "red": 42
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 11,
+      "effects": [
+        {
+          "type": "biomorphosis:speed",
+          "params": {
+            "modifier": 30
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 192,
+        "green": 186,
+        "red": 72
+      },
+      "secondary_color": {
+        "blue": 96,
+        "green": 230,
+        "red": 168
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 15,
+      "effects": [
+        {
+          "type": "biomorphosis:speed",
+          "params": {
+            "modifier": 50
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 236,
+        "green": 230,
+        "red": 112
+      },
+      "secondary_color": {
+        "blue": 140,
+        "green": 255,
+        "red": 210
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 7,
+      "effects": [
+        {
+          "type": "biomorphosis:speed",
+          "params": {
+            "modifier": 15
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 144,
+        "green": 138,
+        "red": 42
+      },
+      "secondary_color": {
+        "blue": 68,
+        "green": 196,
+        "red": 118
+      }
+    }
+  }
+}

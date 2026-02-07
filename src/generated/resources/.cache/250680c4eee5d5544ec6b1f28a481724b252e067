@@ -1,0 +1,7 @@
+// 1.21.4	2026-02-06T21:11:25.649231407	Tags for minecraft:damage_type mod id biomorphosis
+476fa0aad858c6c5a468bcb7e2eb569110d63f9f data/minecraft/tags/damage_type/bypasses_armor.json
+476fa0aad858c6c5a468bcb7e2eb569110d63f9f data/minecraft/tags/damage_type/bypasses_invulnerability.json
+476fa0aad858c6c5a468bcb7e2eb569110d63f9f data/minecraft/tags/damage_type/bypasses_resistance.json
+307412780fd471e79d46f77e79913a026e8543c5 data/minecraft/tags/damage_type/no_knockback.json
+cb681518fb26b02086a4edf640e2290cf3eba841 data/neoforge/tags/damage_type/is_environment.json
+cb681518fb26b02086a4edf640e2290cf3eba841 data/neoforge/tags/damage_type/is_physical.json

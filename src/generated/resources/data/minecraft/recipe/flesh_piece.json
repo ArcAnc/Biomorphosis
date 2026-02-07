@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "biomorphosis:flesh"
+  ],
+  "result": {
+    "count": 9,
+    "id": "biomorphosis:flesh_piece"
+  }
+}

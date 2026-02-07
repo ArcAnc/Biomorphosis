@@ -1,0 +1,47 @@
+{
+  "type": "static",
+  "id": "biomorphosis:turret",
+  "structure": {
+    "parts": {
+      "0, 0, 0": {
+        "ingredients": [
+          {
+            "amount": 1,
+            "ingredient": "biomorphosis:flesh"
+          }
+        ],
+        "shape": [
+          0.0,
+          0.0,
+          0.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "0, 1, 0": {
+        "ingredients": [
+          {
+            "amount": 1,
+            "ingredient": "#minecraft:fences"
+          }
+        ],
+        "shape": [
+          0.375,
+          0.0,
+          0.375,
+          0.625,
+          1.0,
+          0.625
+        ]
+      }
+    },
+    "placedBlock": {
+      "Name": "biomorphosis:multiblock_turret",
+      "Properties": {
+        "facing": "north",
+        "multiblock_state": "disassembled"
+      }
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "biomorphosis:block/roof_slab"
+    },
+    "type=double": {
+      "model": "biomorphosis:block/roof"
+    },
+    "type=top": {
+      "model": "biomorphosis:block/roof_slab_top"
+    }
+  }
+}

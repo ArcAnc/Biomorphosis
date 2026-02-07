@@ -1,0 +1,28 @@
+{
+  "type": "biomorphosis:stomach",
+  "input": {
+    "amount": 1,
+    "ingredient": "#c:foods"
+  },
+  "resources": {
+    "acid": {
+      "modifier": 1.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.5,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "amount": 700,
+    "id": "biomorphosis:fluids/acid/still"
+  }
+}
