@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.builders.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import com.google.gson.Gson;
@@ -247,6 +248,20 @@ public class BioRecipeProvider extends RecipeProvider
 				unlockedBy("has_" + Tags.Items.RODS_WOODEN.location().getPath(), has(Tags.Items.RODS_WOODEN)).
 				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
 				save(this.output, Database.rl("wrench_from_chamber").toString());
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(tag(BioItemTags.WRENCH))).
+				addInput(new IngredientWithSize(tag(Tags.Items.GLASS_PANES))).
+				addInput(new IngredientWithSize(tag(Tags.Items.GLASS_PANES))).
+				addInput(new IngredientWithSize(tag(Tags.Items.SLIME_BALLS))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.INJECTOR.get())).
+				unlockedBy("has_" + BioItemTags.WRENCH.location().getPath(), has(BioItemTags.WRENCH)).
+				unlockedBy("has_" + Tags.Items.GLASS_PANES.location().getPath(), has(Tags.Items.GLASS_PANES)).
+				unlockedBy("has_ " + Registration.ItemReg.FLESH_PIECE, has(Registration.ItemReg.FLESH_PIECE)).
+				save(this.output, Database.rl("injector_from_chamber").toString());
 	}
 	
 	private void generateCrusherRecipes()

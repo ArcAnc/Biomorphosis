@@ -38,5 +38,14 @@ public class BioDamageTypeTagsProvider extends DamageTypeTagsProvider
 		this.tag(DamageTypeTags.NO_KNOCKBACK).
 				add(Registration.DamageTypeReg.TURRET_DAMAGE);
 		
+		
+		this.tag(DamageTypeTags.BYPASSES_ARMOR).
+				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION);
+		this.tag(DamageTypeTags.BYPASSES_INVULNERABILITY).
+				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION);
+		this.tag(DamageTypeTags.BYPASSES_RESISTANCE).
+				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION);
+		this.tag(DamageTypeTags.NO_KNOCKBACK).
+				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION);
 	}
 }

@@ -441,55 +441,55 @@ public abstract class FluidTransportHandler
                     FluidStack ret = FluidHelper.getFluidHandler(ticker, BlockPos.containing(this.finishPos)).map(handler ->
                     {
                         FluidStack left = new FluidStack(this.stack.getFluid(), this.stack.getAmount() - handler.fill(this.stack, IFluidHandler.FluidAction.EXECUTE));
-                        FluidTransportHandler.removeTransport(ticker, this);
                         if (left.isEmpty())
                             return FluidStack.EMPTY;
                         return left;
                     }).orElse(this.stack);
-                    if (!ret.isEmpty())
-                        FluidTransportHandler.addTransport(ticker, new FluidTransport(this.finishPos, this.transmitterPos, this.startPos, ret, new ArrayList<>(route).reversed()));
+	                FluidTransportHandler.removeTransport(ticker, this);
+	                if (!ret.isEmpty())
+                        FluidTransportHandler.addTransport(ticker, new FluidTransport(this.finishPos, this.transmitterPos, this.startPos, ret, new ArrayList<>(this.route).reversed()));
                 }
             }
         }
 
         public UUID getId()
         {
-            return id;
+            return this.id;
         }
 
         public Vec3 getStartPos()
         {
-            return startPos;
+            return this.startPos;
         }
 
         public Vec3 getTransmitterPos()
         {
-            return transmitterPos;
+            return this.transmitterPos;
         }
 
         public Vec3 getFinishPos()
         {
-            return finishPos;
+            return this.finishPos;
         }
 
         public List<Vec3> getRoute()
         {
-            return route;
+            return this.route;
         }
 
         public FluidStack getStack()
         {
-            return stack;
+            return this.stack;
         }
 
         public int getStep()
         {
-            return step;
+            return this.step;
         }
 
         private void lerpPos(float partialTick)
         {
-            this.prevPos = Mth.lerp(partialTick, prevPos, position);
+            this.prevPos = Mth.lerp(partialTick, this.prevPos, this.position);
         }
 
         @Override

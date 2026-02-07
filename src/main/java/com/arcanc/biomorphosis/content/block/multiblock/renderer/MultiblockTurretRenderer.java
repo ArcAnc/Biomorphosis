@@ -7,13 +7,13 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.multiblock;
+package com.arcanc.biomorphosis.content.block.multiblock.renderer;
 
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
-import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockGeoModel;
 import com.arcanc.biomorphosis.util.Database;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -28,8 +28,6 @@ import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
-
-import java.util.Arrays;
 
 public class MultiblockTurretRenderer extends GeoBlockRenderer<MultiblockTurret>
 {

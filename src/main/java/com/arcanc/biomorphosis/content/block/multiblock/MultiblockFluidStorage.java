@@ -37,7 +37,6 @@ import java.util.List;
 
 public class MultiblockFluidStorage extends DynamicMultiblockPart implements BlockInterfaces.IWrencheable
 {
-
     private final FluidSidedStorage handler;
 
     public MultiblockFluidStorage(BlockPos pos, BlockState blockState)

@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_ DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}": {
+      "conditions": {
+        "items": [
+          {
+            "items": "biomorphosis:flesh_piece"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_glass_panes": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:glass_panes"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomorphosis:chamber/injector_from_chamber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "has_wrench": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#biomorphosis:wrench"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_wrench",
+      "has_glass_panes",
+      "has_ DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomorphosis:chamber/injector_from_chamber"
+    ]
+  }
+}

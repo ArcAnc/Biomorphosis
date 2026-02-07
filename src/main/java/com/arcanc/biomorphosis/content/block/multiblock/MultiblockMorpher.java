@@ -23,10 +23,7 @@ import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Holder;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
@@ -141,6 +138,8 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 					BlockState placedState = this.morphSequence.placedBlockState();
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
+					if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
+						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
 					level.setBlockAndUpdate(offsetPos, placedState);
 					BlockHelper.castTileEntity(level, offsetPos, StaticMultiblockPart.class).
 						ifPresent(part -> part.markAsPartOfMultiblock(getBlockPos()));
@@ -155,6 +154,8 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 					BlockState placedState = this.morphSequence.placedBlockState();
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
+					if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
+						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
 					level.setBlockAndUpdate(toPlacePos, placedState);
 					BlockHelper.castTileEntity(level, toPlacePos, StaticMultiblockPart.class).
 							ifPresent(part ->
@@ -182,6 +183,8 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		BlockState placedState = this.morphSequence.placedBlockState();
 		if (placedState.hasProperty(MultiblockPartBlock.STATE))
 			placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.MORPHING);
+		if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
+			placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
 		level.setBlockAndUpdate(offsetPos, placedState);
 		BlockHelper.castTileEntity(level, offsetPos, StaticMultiblockPart.class).
 				ifPresent(part -> part.startMorphing(getBlockPos()));
@@ -286,7 +289,6 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 	{
 		if (available.isEmpty() || required.isEmpty())
 			return false;
-
 		for (IngredientWithSize ingredient : required)
 		{
 			ItemStack item = ItemStack.EMPTY;
@@ -312,7 +314,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 
 	public float getPreparationTimer()
 	{
-		return preparationTimer;
+		return this.preparationTimer;
 	}
 
 	public float getMorphProgress()

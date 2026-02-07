@@ -15,10 +15,14 @@ import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.jetbrains.annotations.NotNull;
 
 public class ProtectionEffectType implements IGeneEffectType<ProtectionEffectType>
 {
-	public static final MapCodec<ProtectionEffectType> CODEC = MapCodec.unit(ProtectionEffectType::new);
+	public static final MapCodec<ProtectionEffectType> CODEC = MapCodec.unit(ProtectionEffectType :: new);
 	
 	@Override
 	public MapCodec<ProtectionEffectType> mapCodec()
@@ -33,20 +37,32 @@ public class ProtectionEffectType implements IGeneEffectType<ProtectionEffectTyp
 	}
 	
 	@Override
-	public void apply(LivingEntity entity, AttributeParams params)
+	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
-	
+		int armorAmount = params.getInt("amount", 0);
+		if (armorAmount == 0)
+			return;
+		AttributeInstance instance = entity.getAttribute(Attributes.ARMOR);
+		if (instance == null)
+			return;
+		instance.removeModifier(this.getId());
+		instance.addTransientModifier(new AttributeModifier(this.getId(), armorAmount, AttributeModifier.Operation.ADD_VALUE));
 	}
 	
 	@Override
-	public void remove(LivingEntity entity, AttributeParams params)
+	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
-	
+		int armorAmount = params.getInt("amount", 0);
+		if (armorAmount == 0)
+			return;
+		AttributeInstance instance = entity.getAttribute(Attributes.ARMOR);
+		if (instance == null)
+			return;
+		instance.removeModifier(this.getId());
 	}
 	
 	@Override
-	public void tick(LivingEntity entity, AttributeParams params)
+	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
-	
 	}
 }

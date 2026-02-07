@@ -46,6 +46,7 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
                 add(Registration.BlockReg.MULTIBLOCK_MORPHER.get()).
 		        add(Registration.BlockReg.MULTIBLOCK_TURRET.get()).
+		        add(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.get()).
                 add(Registration.BlockReg.PROP_0.get()).
                 add(Registration.BlockReg.PROP_1.get()).
                 add(Registration.BlockReg.PROP_2.get()).
@@ -56,7 +57,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Blocks.LAVA).
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
                 add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get()).
-                add(Registration.BlockReg.MULTIBLOCK_TURRET.get());
+                add(Registration.BlockReg.MULTIBLOCK_TURRET.get()).
+                add(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.get());
         this.tag(BlockTags.CLIMBABLE).
                 add(Registration.BlockReg.GLOW_MOSS.get()).
                 add(Registration.BlockReg.MOSS.get());

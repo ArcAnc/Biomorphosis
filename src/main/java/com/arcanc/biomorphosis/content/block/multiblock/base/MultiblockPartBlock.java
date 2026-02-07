@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRol
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.DynamicMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -130,7 +131,13 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
 		                get(localPos).
 		                shape();
         
-        return shape != null ? shape : Shapes.block();
+		if (shape == null)
+			return Shapes.block();
+		
+		BlockState masterState = master.getBlockState();
+		if (masterState.hasProperty(HORIZONTAL_FACING))
+			return VoxelShapeHelper.rotateHorizontal(shape, masterState.getValue(HORIZONTAL_FACING));
+        return shape;
     }
     
     @Override

@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:vampirism",
+  "image": "biomorphosis:textures/genome/vampirism.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 4,
+      "effects": [
+        {
+          "type": "biomorphosis:vampirism",
+          "params": {
+            "modifier": 10
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 35,
+        "green": 25,
+        "red": 95
+      },
+      "secondary_color": {
+        "blue": 75,
+        "green": 20,
+        "red": 50
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:vampirism",
+          "params": {
+            "modifier": 5
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 25,
+        "green": 20,
+        "red": 60
+      },
+      "secondary_color": {
+        "blue": 45,
+        "green": 15,
+        "red": 30
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 11,
+      "effects": [
+        {
+          "type": "biomorphosis:vampirism",
+          "params": {
+            "modifier": 25
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 45,
+        "green": 15,
+        "red": 170
+      },
+      "secondary_color": {
+        "blue": 130,
+        "green": 30,
+        "red": 95
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 15,
+      "effects": [
+        {
+          "type": "biomorphosis:vampirism",
+          "params": {
+            "modifier": 40
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 60,
+        "green": 20,
+        "red": 220
+      },
+      "secondary_color": {
+        "blue": 160,
+        "green": 40,
+        "red": 120
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 7,
+      "effects": [
+        {
+          "type": "biomorphosis:vampirism",
+          "params": {
+            "modifier": 15
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 40,
+        "green": 20,
+        "red": 130
+      },
+      "secondary_color": {
+        "blue": 100,
+        "green": 25,
+        "red": 70
+      }
+    }
+  }
+}

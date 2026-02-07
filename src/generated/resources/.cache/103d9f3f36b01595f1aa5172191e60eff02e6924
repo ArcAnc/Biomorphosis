@@ -1,9 +1,10 @@
-// 1.21.4	2026-01-10T20:38:12.985691684	Registries
+// 1.21.4	2026-02-06T21:01:43.312886189	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
 12834d13e46bba77a1593f2ab99e7a0d635c0ab4 data/biomorphosis/book/page/catcher.json
 5c50a6bc03e0141cb3c9edb59521c86b50e090f4 data/biomorphosis/book/page/chamber.json
+8905c4269188cc54057500c2eb9333d412e524ef data/biomorphosis/book/page/chrysalis.json
 47f98407c01c66dd709a1dbd7aa4729d4221d255 data/biomorphosis/book/page/crusher.json
 a94d0260f21c3bba7e4554d572653204aaea0db1 data/biomorphosis/book/page/flesh.json
 66451f5c472554f4a24ab52c54fbdade25e93275 data/biomorphosis/book/page/fluid_transmitter.json
@@ -25,10 +26,17 @@ e1187b630e6e47e484f4966557a958b76585861e data/biomorphosis/book/page/v004.json
 d50fc8762a7407ac66f3778c8106a92234d1be46 data/biomorphosis/book/page/v008.json
 cdf44eeeefcbf0d8f273c88494c3e8eb1716d6ab data/biomorphosis/book/page/v0081.json
 7fc5d7ce49fb85257795e0ca2f8dbc7db217318e data/biomorphosis/book/page/v0082.json
+a02d4660ec2170e11205854f4eedc81a56b65c0c data/biomorphosis/book/page/v261.json
+5ff9e6254461dc6f77d7ad80848d040b3e3bf843 data/biomorphosis/damage_type/impossible_mutation.json
 32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
-b473a35fb79cab1455adcb24419d35c082981e85 data/biomorphosis/genome/effect/balance.json
-f67a52a31779d9e046f2424c58842f2d01a41184 data/biomorphosis/genome/effect/health.json
-d0998938b66c321efce3db8945148df5dc9f04dc data/biomorphosis/genome/effect/protection.json
+e5b6429b831da25f1ad45182a288e5149509445e data/biomorphosis/genome/effect/balance.json
+443790f4a48be4d14797b21d67aa2d60c86dc206 data/biomorphosis/genome/effect/damage.json
+06acc2c5979c99c17e9952ee69331eab0f7f3810 data/biomorphosis/genome/effect/health.json
+d07f2143f0c35e9f5775b0990a4410d72c0fbb44 data/biomorphosis/genome/effect/jump_strength.json
+ae2d864cd0ee1afc1ef238add0d3e13fd7cdcdc1 data/biomorphosis/genome/effect/protection.json
+32a7616e4a891ed73a64a369b5b4a1e262d00142 data/biomorphosis/genome/effect/speed.json
+f1e6330501e1f5f5ab6ff548d7c327861f32a9f5 data/biomorphosis/genome/effect/swim_speed.json
+25257d2b060679fa6431a2ca0b6338acf30b2b79 data/biomorphosis/genome/effect/vampirism.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
 9b5a87d3c184005159db92562540415c92d681f6 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
 1ac6807b68337de982d5c1169c6c523b7fb352ea data/biomorphosis/worldgen/structure/srf/orders/base/tower.json

@@ -60,7 +60,7 @@ public class ObjRenderTypes
                     setLightmapState(LIGHTMAP).
                     setOverlayState(OVERLAY).
                     createCompositeState(true);
-            return create("triangles_solid", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 1536, true, true, state);
+            return create("triangles_translucent", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 1536, true, true, state);
         }
 
         private RenderTypeProviders(String s, VertexFormat v, VertexFormat.Mode m, int i, boolean b, boolean b2, Runnable r, Runnable r2)

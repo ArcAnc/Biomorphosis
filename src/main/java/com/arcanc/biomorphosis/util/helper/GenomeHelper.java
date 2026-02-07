@@ -11,19 +11,18 @@ package com.arcanc.biomorphosis.util.helper;
 
 
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
+import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
+import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeDataDefinition;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
-import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
-import com.arcanc.biomorphosis.content.network.NetworkEngine;
-import com.arcanc.biomorphosis.content.network.packets.S2CGenomeSync;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.mojang.serialization.Dynamic;
-import com.mojang.serialization.JsonOps;
+import net.minecraft.core.Registry;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,6 +38,42 @@ public class GenomeHelper
 				registryAccess().
 				lookupOrThrow(Registration.GenomeReg.GENOME_TEMPLATES_KEY).
 				getValue(EntityType.getKey(entity.getType()));
+	}
+	
+	public static UnlockedGenome getUnlockedGenome(@NotNull Player player)
+	{
+		UnlockedGenome instance;
+		if (player.hasData(Registration.DataAttachmentsReg.UNLOCKED_GENOME))
+			instance = player.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+		else
+			instance = UnlockedGenome.EMPTY;
+		return instance;
+	}
+	
+	public static int calculateStability(LivingEntity entity)
+	{
+		return calculateStability(getGenome(entity), entity.level());
+	}
+	
+	public static int calculateStability(GenomeInstance genome, Level level)
+	{
+		if (genome == null || genome.isEmpty())
+			return 0;
+		
+		Registry<GeneDefinition> registry = level.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
+		int result = 0;
+		for (GeneInstance geneInstance : genome.geneInstances())
+		{
+			GeneDefinition def = registry.getValue(geneInstance.id());
+			if (def == null)
+				continue;
+			GeneDefinition.RarityData data = def.rarityData().get(geneInstance.rarity());
+			if (data == null)
+				continue;
+			
+			result -= data.destabilizationAmount();
+		}
+		return result;
 	}
 	
 	public static <T extends LivingEntity> @NotNull GenomeInstance getGenome(@NotNull T entity)

@@ -1,6 +1,6 @@
 {
   "id": "biomorphosis:health",
-  "image": "biomorphosis:textures/genome/health",
+  "image": "biomorphosis:textures/genome/health.png",
   "rarity_data": {
     "grath": {
       "destabilization_amount": 2,

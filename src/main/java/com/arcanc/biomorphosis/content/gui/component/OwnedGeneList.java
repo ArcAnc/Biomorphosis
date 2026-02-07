@@ -10,8 +10,8 @@
 package com.arcanc.biomorphosis.content.gui.component;
 
 
-import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
-import com.arcanc.biomorphosis.content.mutations.GeneInstance;
+import com.arcanc.biomorphosis.content.mutations.GeneRarity;
+import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -20,13 +20,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.core.Registry;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
+import java.util.Set;
 
 public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGeneEntry>
 {
@@ -38,13 +39,17 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 		this.setX(x);
 		this.rarityList = rarityList;
 		
-		ClientPacketListener listener = minecraft.getConnection();
-		if (listener == null)
+		LocalPlayer player = minecraft.player;
+		if (player == null)
 			return;
-		Registry<GeneDefinition> definitions = listener.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
 		
-		definitions.forEach(geneDefinition ->
-						this.addEntry(new OwnedGeneEntry(geneDefinition.id())));
+		UnlockedGenome unlockedGenome = player.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+		
+		if (unlockedGenome.unlockedGenes().isEmpty())
+			return;
+		
+		for (ResourceLocation geneId : unlockedGenome.getGeneNames())
+			addEntry(new OwnedGeneEntry(geneId));
 		
 		if (this.children().isEmpty())
 			return;
@@ -54,23 +59,19 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	
 	public void updateBoundedRarities(ResourceLocation id)
 	{
-		ClientPacketListener listener = minecraft.getConnection();
-		if (listener == null)
-			return;
-		Registry<GeneDefinition> definitions = listener.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
-		
-		GeneDefinition definition = definitions.
-				getValue(id);
-		
-		if (definition == null)
+		LocalPlayer player = this.minecraft.player;
+		if (player == null)
 		{
-			this.rarityList.replaceEntries(List.of());
+			this.rarityList.updateValues(Set.of());
 			return;
 		}
 		
-		this.rarityList.updateValues(definition.
-				rarityData().
-				keySet());
+		UnlockedGenome genome = player.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+		Set<GeneRarity> rarities = genome.getRaritiesById(id);
+		this.rarityList.updateValues(rarities);
+		
+		if (rarities.isEmpty())
+			return;
 		this.rarityList.setSelectedIndex(0);
 	}
 	
@@ -81,9 +82,54 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	}
 	
 	@Override
+	public int getRowRight()
+	{
+		return super.getRowRight();
+	}
+	
+	@Override
+	public int getRowLeft()
+	{
+		return this.getX();
+	}
+	
+	@Override
+	protected int scrollBarX()
+	{
+		return this.getRowLeft() + this.getRowWidth();
+	}
+	
+	@Override
 	public int getRowWidth()
 	{
-		return (int)(this.getWidth() - this.getWidth() * 0.05f);
+		return this.getWidth() - (int)(this.getWidth() * 0.13f);
+	}
+	
+	@Override
+	protected @Nullable OwnedGeneEntry getEntryAtPosition(double mouseX, double mouseY)
+	{
+		int left = this.getRowLeft();
+		int right = this.getRowRight();
+		int i1 = Mth.floor(mouseY - (double)this.getY()) - this.headerHeight + (int)this.scrollAmount() - 4;
+		int j1 = i1 / this.itemHeight;
+		return mouseX >= (double)left && mouseX <= (double)right && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
+	}
+	
+	@Override
+	protected void renderSelection(@NotNull GuiGraphics guiGraphics, int top, int width, int height, int outerColor, int innerColor)
+	{
+		int left = getRowLeft();
+		int right = getRowRight();
+		guiGraphics.fill(left + 1, top - 2, right - 1, top + height + 2, outerColor);
+		guiGraphics.fill(left + 2, top - 1, right - 2, top + height + 1, innerColor);
+	}
+	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double p_388604_, double p_386550_)
+	{
+		if (this.isMouseOver(mouseX, mouseY))
+			return super.mouseScrolled(mouseX, mouseY, p_388604_, p_386550_);
+		return false;
 	}
 	
 	public class OwnedGeneEntry extends AbstractSelectionList.Entry<OwnedGeneEntry>
@@ -106,20 +152,29 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 			Minecraft mc = RenderHelper.mc();
 			Font font = mc.font;
 			
+			guiGraphics.pose().pushPose();
+			guiGraphics.pose().translate(left + 5, top + height / 2 - font.lineHeight / 2, 0);
+			guiGraphics.pose().scale(0.7f, 0.7f, 1);
+
 			guiGraphics.drawWordWrap(font,
 					Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(getValue())),
-					left + 5,
-					top + height /2 - font.lineHeight / 2,
-					width,
+					0,
+					0,
+					(int) (width + width * 0.3f),
 					-1,
 					false);
+			guiGraphics.pose().popPose();
 		}
 		
 		@Override
 		public boolean mouseClicked(double mouseX, double mouseY, int button)
 		{
-			OwnedGeneList.this.updateBoundedRarities(this.getValue());
-			return true;
+			if (isMouseOver(mouseX, mouseY))
+			{
+				OwnedGeneList.this.updateBoundedRarities(this.getValue());
+				return true;
+			}
+			return false;
 		}
 	}
 }

@@ -46,7 +46,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.addItem(Registration.ItemReg.ZIRIS_WING, "Ziris Wing");
 	    this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
         this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
-
+		this.addItem(Registration.ItemReg.INJECTOR, "Injector");
+		
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_STAIRS, "Norph Stairs");
@@ -84,7 +85,8 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.EGGS_DECO, "Eggs");
         this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
 		this.addBlock(Registration.BlockReg.MULTIBLOCK_TURRET, "Turret");
-
+		this.addBlock(Registration.BlockReg.MULTIBLOCK_CHRYSALIS, "Chrysalis");
+		
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.ACID, "Acid");
         this.addFluidDescription(Registration.FluidReg.ADRENALINE, "Adrenaline");
@@ -152,6 +154,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V0081.textLangKey(), "\u2022 Fixed broken generation for village \n\u2022 Changed generation rules for village");
 	    this.add(Database.GUI.GuideBook.Pages.V0082.titleLangKey(), "Version: 0.0.8.2");
 	    this.add(Database.GUI.GuideBook.Pages.V0082.textLangKey(), "\u2022 Reworked multiblock internal settings. Now it's uses voxel shape and list of components \n\u2022 Added renderer for multiblock recipe\n\u2022 Changed multiblock datagen\n\u2022 Fixed broken render for norph block\n\u2022 Fixed broken model for norph block\n\u2022 Removed norph from recipes. Now a lot things craftable");
+	    this.add(Database.GUI.GuideBook.Pages.V261.titleLangKey(), "Version: 26.1");
+	    this.add(Database.GUI.GuideBook.Pages.V261.textLangKey(), "\u2022 Version numbering has been changed to mirror Mojang’s new versioning scheme. The first number now indicates the year of the update release, the second denotes a major update, and the remaining numbers are hotfixes\n\u2022 Added the first version of the gene system\n\u2022 A number of animals now have genes: cow, pig, fox, wolf, etc.\n\u2022 Added the Chrysalis, which allows rewriting the player character’s genome and modifying it as desired\n\u2022 Added the injector for collecting genes. You must use it to finish off a gene carrier in order to obtain the genes they possessed\n\u2022 Reworked the multiblock system. Each block now has its own hitbox\n\u2022 Items and ingredients can now be used in multiblock structures\n\u2022 Added an achievement system. Currently, it is used to notify the player when new genes are obtained; it will be reworked later\n\u2022 Fixed a bug with the fluid transmitter that caused an infinite fluid source to be created\n\u2022 Fixed the display of multiblock recipes in the guide book\n\u2022 Added a new API for creating genes.");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
 		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
@@ -188,6 +192,9 @@ public class EnUsProvider extends LanguageProvider
 	    
 	    this.add(Database.GUI.GuideBook.Pages.TURRET.titleLangKey(), "</block;biomorphosis:multiblock_turret/>Turret");
 	    this.add(Database.GUI.GuideBook.Pages.TURRET.textLangKey(), "Before you stands a sentry outgrowth of the Swarm. A Turret. It is far from perfect... but it is vicious enough to drive unwanted guests away. It roots itself in the Norph, senses approaching intruders, and responds without hesitation. Not for hunting — for protection. Not for glory — for survival. Like many of our creations, it is not built — it is grown. Use the Morpher and provide the required tissues and substances. Without them, it will not take shape. Remember this: the Turret lives only as long as it is fed. Without a steady flow of the fluids it requires, its muscles stiffen and its vision fades. Feed it — and it will kill for you. To grow it you will need: " + multiblock(Database.rl("turret")));
+
+	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.titleLangKey(), "</block;biomorphosis:multiblock_chrysalis/>Chrysalis");
+	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.textLangKey(), "The Chrysalis... One of the simplest forms, and yet one of the most vital technologies of the Swarm. Within it, flesh remembers what it can become. It allows you to accept discovered genes into yourself — to mutate, to reshape, to rise beyond your previous form. To grow a Chrysalis, the Swarm requires the following tissues and substances:" + multiblock(Database.rl("chrysalis")) + "A natural question follows — where do the genes come from? The answer is simple: life always carries them... unwillingly. Take the Injector and extract them yourself. It does not matter who stands before you — a Villager, a beast, or any other living form. All of them carry something that can be torn out and repurposed. To grow an Injector, you will need:" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/injector_from_chamber")));
 	    
 	    
 	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
@@ -209,7 +216,14 @@ public class EnUsProvider extends LanguageProvider
         this.add(Database.GUI.InfoArea.FluidArea.Tooltip.ADVANCED_TOOLTIP_VISCOSITY, "Viscosity: %s m²/s");
         this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.PERCENT, "%s / %s %%");
         this.add(Database.GUI.InfoArea.ProgressBar.Tooltip.DIRECT, "%s / %s");
-
+	    this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.STABILITY, "Stability: %s");
+	    this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.LOW_STABILITY, "Warning! Stability lower than 0. YOU WILL DIE!!!");
+		this.add(Database.GUI.InfoArea.GenomeStabilityInfoArea.Tooltip.STABILITY_TOOLTIP, "Stability determines the limit of mutations an organism can withstand. Each added gene reduces stability, and if stability drops below 0, the organism dies. Therefore, proceed with caution!");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_GENE, "Unknown gene %s with rarity %s");
+	    this.add(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_RARITY_DATA, "Gene %s have no such rarity %s");
+	    this.add(Database.GUI.InfoArea.ErrorInfoArea.INCOMPATIBLE_GENES, "Gene %s is incompatible with gene %s");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.MORE_POWERFUL_GENE, "Gene %s is more powerful than %s");
+		
         this.add(Database.GUI.ChamberButton.START, "Start Process");
         this.add(Database.GUI.ChamberButton.PROCESS, "Processing...");
 		
@@ -223,16 +237,22 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.TurretButton.onOffTooltip.apply(true).getString(), "Turret is Enabled");
 		this.add(Database.GUI.TurretButton.onOffTooltip.apply(false).getString(), "Turret is Disabled");
 		
+		this.add(Database.GUI.Chrysalis.PROGRESS_BAR, "Mutation Progress: %s %%");
+		
 	    //-----------------------------
 	    //OVERLAY
 	    this.add(Database.GUI.Overlays.Tooltip.START_FLUID_HANDLER, "Using %s on %s will allow you to begin linking two fluid containers");
 		this.add(Database.GUI.Overlays.Tooltip.WRONG_FLUID_HANDLER, "ANOTHER ONE!");
 		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_SECOND_FLUID_HANDLER, "Choose the second fluid container and use %s on it");
 		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_TRANSMITTER, "Choose the Fluid Transmitter and use %s on it");
+		
+		this.add(Database.GUI.Overlays.Advancements.RECEIVE_GENE, "You receive gene ");
   
 		//-----------------------------
         //SOUND
-        this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
+        this.add(Database.GUI.Sounds.ADVANCEMENT_RECEIVE, "Advancement received");
+	    
+	    this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
         this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");
         this.add(Database.GUI.Sounds.BLOCK_STEP_NORMAL, "Footsteps");
         this.add(Database.GUI.Sounds.BLOCK_STEP_TRAMPLED, "Footsteps");
@@ -249,12 +269,26 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_INSTABILITY, "Instability: %s");
 	    this.add(Database.GUI.Genome.Translations.GENE_INCOMPATIBILITIES, "Incompatibilities: %s");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECTS, "Effects: %s");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.DAMAGE.id()), "Will add %s damage to owner");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.SPEED.id()), "Movement Speed increased by %s%%");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.PROTECTION.id()), "Will add %s armor to owner");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.HEALTH.id()), "Will add %s health to owner");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.BALANCE.id()), "It's will add %s instability to owner genome");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed increased by %s%%");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Strength increased by %s%%");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.VAMPIRISM.id()), "Each melee attack will restore %s%% of the damage dealt");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.DAMAGE.id()), "Damage");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SPEED.id()), "Speed");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.HEALTH.id()), "Health");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.BALANCE.id()), "Balance");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.PROTECTION.id()), "Protection");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Height");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.VAMPIRISM.id()), "Vampirism");
+	    
+	    //-----------------------------
+	    //DAMAGE TYPES
+		this.add("death.attack.biomorphosis:impossible_mutation", "Player %s mutated too hard");
     }
 
     private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)

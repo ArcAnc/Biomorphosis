@@ -52,6 +52,10 @@
           {
             "gene_rarity": "slyth",
             "id": "biomorphosis:protection"
+          },
+          {
+            "gene_rarity": "slyth",
+            "id": "biomorphosis:balance"
           }
         ]
       },

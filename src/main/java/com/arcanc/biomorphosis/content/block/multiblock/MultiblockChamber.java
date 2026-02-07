@@ -81,7 +81,8 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     }
 
     public void tryStart()
-    {   if (this.canWork)
+    {
+		if (this.canWork)
             return;
 
         this.canWork = true;

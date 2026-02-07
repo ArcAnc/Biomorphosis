@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.item.renderer;
 
-import com.arcanc.biomorphosis.content.block.multiblock.MultiblockMorpherRenderer;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockMorpherRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -43,7 +43,6 @@ public class MultiblockMorpherSpecialRenderer implements SpecialModelRenderer<Vo
 
     public static class Unbaked implements SpecialModelRenderer.Unbaked
     {
-
         public static final MapCodec<Unbaked> MAP_CODEC = MapCodec.unit(MultiblockMorpherSpecialRenderer.Unbaked::new);
 
         @Override

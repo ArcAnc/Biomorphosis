@@ -1,4 +1,10 @@
 {
+  "advancement": {
+    "sounds": [
+      "biomorphosis:advancement/0"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.advancement.receive"
+  },
   "block_chest_close": {
     "sounds": [
       "biomorphosis:block/chest_close"

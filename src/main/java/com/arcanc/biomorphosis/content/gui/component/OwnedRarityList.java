@@ -47,6 +47,14 @@ public class OwnedRarityList extends AbstractSelectionList<OwnedRarityList.Owned
 	
 	}
 	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double p_388604_, double p_386550_)
+	{
+		if (this.isMouseOver(mouseX, mouseY))
+			return super.mouseScrolled(mouseX, mouseY, p_388604_, p_386550_);
+		return false;
+	}
+	
 	public static class OwnedRarityEntry extends AbstractSelectionList.Entry<OwnedRarityEntry>
 	{
 		private final GeneRarity value;

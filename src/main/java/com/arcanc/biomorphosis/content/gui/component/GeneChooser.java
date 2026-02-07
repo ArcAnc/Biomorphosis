@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.content.gui.component;
 
 
-import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
+import com.arcanc.biomorphosis.content.gui.component.info.ErrorInfoArea;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
@@ -24,7 +24,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -43,12 +42,25 @@ public class GeneChooser extends AbstractWidget
 	private final GenomeInstance genome;
 	private final List<Rect2d> genePositions = new ArrayList<>();
 	private int chosenGene = -1;
+	private final ErrorInfoArea error;
+	private final FittingMultiLineText text;
 	
-	public GeneChooser(int x, int y, int width, int height, @NotNull LivingEntity entity)
+	public GeneChooser(int x, int y, int width, int height, @NotNull LivingEntity entity, ErrorInfoArea errorInfoArea)
 	{
 		super(x, y, width, height, Component.empty());
+		this.error = errorInfoArea;
 		this.livingEntity = entity;
 		this.genome = new GenomeInstance(new ArrayList<>(entity.getData(Registration.DataAttachmentsReg.GENOME).geneInstances()));
+		
+		int textWidth = (int) (width * 0.75f);
+		int textHeight = (int) (height * 0.35f);
+		
+		this.text = new FittingMultiLineText(x + 1,
+				y + this.height - textHeight + 3,
+				textWidth,
+				textHeight,
+				Component.empty(),
+				RenderHelper.mc().font);
 	}
 	
 	@Override
@@ -57,15 +69,6 @@ public class GeneChooser extends AbstractWidget
 		GenomeInstance genome = this.genome;
 		Minecraft mc = RenderHelper.mc();
 		Font font = mc.font;
-		
-		RenderHelper.blit(guiGraphics,
-				RenderType :: guiTextured,
-				BioContainerScreen.BACKGROUND,
-				this.getX(), this.getY(),
-				0, 0,
-				getWidth(), getHeight(),
-				256, 256,
-				256, 256);
 		
 		if (genome.geneInstances().isEmpty())
 		{
@@ -80,23 +83,15 @@ public class GeneChooser extends AbstractWidget
 		}
 		
 		int geneAmount = genome.geneInstances().size();
-		float reservedTop = this.getHeight() * 0.20f;
-		float reservedRight = this.getWidth() * 0.6f;
 		
-		float availableWidth = this.getWidth() - reservedRight;
-		float availableHeight = this.getHeight() - reservedTop;
+		float availableWidth = this.getWidth();
+		float availableHeight = this.getHeight() * 0.34f;
 		float geneSize = Math.min(availableHeight, availableWidth / geneAmount);
 		
 		float totalGeneWidth = geneSize * geneAmount;
 		float startX = this.getX() + (availableWidth - totalGeneWidth) / 2;
-		float centerY = this.getY() + reservedTop + availableHeight / 2;
+		float centerY = this.getY() + availableHeight / 2;
 		this.genePositions.clear();
-		
-		guiGraphics.drawCenteredString(font,
-				livingEntity.getName(),
-				(int) (this.getX() + availableWidth / 2),
-				this.getY() + 3,
-				-1);
 		
 		for (int q = 0; q < geneAmount; q++)
 		{
@@ -112,10 +107,12 @@ public class GeneChooser extends AbstractWidget
 		
 		if (this.chosenGene == -1)
 			return;
+			
 		GeneInstance gene = genome.geneInstances().get(this.chosenGene);
 		Rect2d sizes = this.genePositions.get(this.chosenGene);
 		
 		guiGraphics.fill((int)sizes.x(), (int)sizes.y(), (int)(sizes.x() + sizes.width()), (int)(sizes.y() + sizes.height()), -1);
+		
 		mc.getConnection().registryAccess().
 				lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
 				getOptional(gene.id()).
@@ -128,10 +125,6 @@ public class GeneChooser extends AbstractWidget
 									apply(geneDefinition.id())).
 							withColor(gene.rarity().getColor())).
 							append(":").
-							append("\n").
-							append(Component.translatable(Database.GUI.Genome.Translations.GENE_RARITY,
-											Component.translatable(gene.rarity().getSerializedName()).
-													withColor(gene.rarity().getColor()))).
 							append("\n").
 							append(Component.translatable(Database.GUI.Genome.Translations.GENE_INSTABILITY,
 											Component.literal(String.valueOf(data.destabilizationAmount())).
@@ -166,14 +159,10 @@ public class GeneChooser extends AbstractWidget
 							effects.append("\n • ").append(Component.translatable(address, stringifies.toArray()));
 						}
 					component.append(Component.translatable(Database.GUI.Genome.Translations.GENE_EFFECTS, effects));
-					guiGraphics.drawWordWrap(
-							font,
-							component,
-							(int)(this.getX() + availableWidth + 3),
-							this.getY() + 3,
-							(int)reservedRight,
-							-1,
-							false);
+					
+					
+					this.text.setMessage(component);
+					this.text.render(guiGraphics, mouseX, mouseY, partialTick);
 				});
 	}
 	
@@ -217,9 +206,24 @@ public class GeneChooser extends AbstractWidget
 				getValue(geneInstance.id());
 		
 		if (inputDefinition == null)
+		{
+			this.error.updateError(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_GENE,
+					Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(geneInstance.id())),
+					Component.literal(geneInstance.rarity().getSerializedName()).
+							withColor(geneInstance.rarity().getColor()));
 			return false;
+		}
 		
 		GeneDefinition.RarityData inputGeneRarityData = inputDefinition.rarityData().get(geneInstance.rarity());
+		
+		if (inputGeneRarityData == null)
+		{
+			this.error.updateError(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_RARITY_DATA,
+					Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(geneInstance.id())),
+					Component.literal(geneInstance.rarity().getSerializedName()).
+							withColor(geneInstance.rarity().getColor()));
+			return false;
+		}
 		
 		boolean canBeAdded = true;
 		for (int q = 0; q < this.genome.geneInstances().size(); q++)
@@ -235,11 +239,39 @@ public class GeneChooser extends AbstractWidget
 			
 			GeneDefinition.RarityData checkGeneRarityData = checkGeneDefinition.rarityData().get(checkGene.rarity());
 			
-			if (inputGeneRarityData.incompatibilities().contains(checkGene.id()) ||
-					checkGeneRarityData.incompatibilities().contains(geneInstance.id()) ||
-					(geneInstance.id().equals(checkGene.id()) &&
-							geneInstance.rarity().ordinal() <= checkGene.rarity().ordinal()))
+			if (inputGeneRarityData.incompatibilities().contains(checkGene.id()))
+			{
+				this.error.updateError(Database.GUI.InfoArea.ErrorInfoArea.INCOMPATIBLE_GENES,
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(geneInstance.id())).
+								withColor(geneInstance.rarity().getColor()),
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(checkGene.id())).
+								withColor(checkGene.rarity().getColor()));
 				canBeAdded = false;
+				break;
+			}
+			
+			if (checkGeneRarityData.incompatibilities().contains(geneInstance.id()))
+			{
+				this.error.updateError(Database.GUI.InfoArea.ErrorInfoArea.INCOMPATIBLE_GENES,
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(checkGene.id())).
+								withColor(checkGene.rarity().getColor()),
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(geneInstance.id())).
+								withColor(geneInstance.rarity().getColor()));
+				canBeAdded = false;
+				break;
+			}
+			
+			if ((geneInstance.id().equals(checkGene.id()) &&
+					geneInstance.rarity().ordinal() <= checkGene.rarity().ordinal()))
+			{
+				this.error.updateError(Database.GUI.InfoArea.ErrorInfoArea.MORE_POWERFUL_GENE,
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(checkGene.id())).
+								withColor(checkGene.rarity().getColor()),
+						Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.apply(geneInstance.id())).
+								withColor(geneInstance.rarity().getColor()));
+				canBeAdded = false;
+				break;
+			}
 		}
 		
 		return canBeAdded;
@@ -278,5 +310,39 @@ public class GeneChooser extends AbstractWidget
 	@Override
 	protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
 	{
+	}
+	
+	@Override
+	public boolean isMouseOver(double mouseX, double mouseY)
+	{
+		if (this.genePositions.isEmpty())
+			return false;
+		for (Rect2d rect : this.genePositions)
+		{
+			if (mouseX >= rect.x() &&
+				mouseX < rect.x() + rect.width() &&
+				mouseY >= rect.y() &&
+				mouseY < rect.y() + rect.height())
+				return true;
+		}
+		return this.text.isMouseOver(mouseX, mouseY);
+	}
+	
+	@Override
+	public boolean mouseClicked(double mouseX, double mouseY, int button)
+	{
+		return this.text.mouseClicked(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button);
+	}
+	
+	@Override
+	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
+	{
+		return this.text.mouseDragged(mouseX, mouseY, button, dragX, dragY) || super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
+	
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY)
+	{
+		return this.text.mouseScrolled(mouseX, mouseY, scrollX, scrollY) || super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
 }

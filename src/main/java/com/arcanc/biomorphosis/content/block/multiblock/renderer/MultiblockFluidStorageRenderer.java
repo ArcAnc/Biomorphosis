@@ -7,8 +7,9 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.multiblock;
+package com.arcanc.biomorphosis.content.block.multiblock.renderer;
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;

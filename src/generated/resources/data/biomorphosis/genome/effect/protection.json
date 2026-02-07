@@ -1,6 +1,6 @@
 {
   "id": "biomorphosis:protection",
-  "image": "biomorphosis:textures/genome/protection",
+  "image": "biomorphosis:textures/genome/protection.png",
   "rarity_data": {
     "grath": {
       "destabilization_amount": 4,

@@ -23,6 +23,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class DamageHelper
 {
+	public static boolean mutationDamage(int amount, @NotNull LivingEntity target)
+	{
+		Level level = target.level();
+		DamageSource source = new DamageSource(
+				level.registryAccess().
+						lookupOrThrow(Registries.DAMAGE_TYPE).
+						getOrThrow(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION));
+		return dealDamage(source, amount, target);
+	}
+	
 	public static boolean turretDamage(@NotNull MultiblockTurret turret, int amount, @NotNull LivingEntity target)
 	{
 		Level level = target.level();

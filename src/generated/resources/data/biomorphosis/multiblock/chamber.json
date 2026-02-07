@@ -228,6 +228,14 @@
           {
             "amount": 1,
             "ingredient": "biomorphosis:flesh"
+          },
+          {
+            "amount": 1,
+            "ingredient": "minecraft:egg"
+          },
+          {
+            "amount": 8,
+            "ingredient": "minecraft:clay_ball"
           }
         ],
         "shape": [

@@ -24,17 +24,17 @@ import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
@@ -76,9 +76,9 @@ public class RenderHelper
         Minecraft.getInstance().setScreen(new GuideScreen());
     }
 	
-	public static void openGenomeScreen(LivingEntity entity)
+	public static void openGenomeScreen(Player player, LivingEntity entity)
 	{
-		Minecraft.getInstance().setScreen(new GenomeScreen(entity));
+		Minecraft.getInstance().setScreen(new GenomeScreen(player, entity));
 	}
 
     public static ItemStack getStackAtCurrentTime(@NotNull IngredientWithSize ingredient)
@@ -100,13 +100,13 @@ public class RenderHelper
 
     public static ItemStack getStackAtCurrentTime(@NotNull List<ItemStack> items)
     {
-        int perm = (int)(System.currentTimeMillis() / 1000 % items.size());
+        int perm = (int)(Util.getMillis() / 1000 % items.size());
         return items.get(perm);
     }
 
     public static int animateArrow (int ticks)
     {
-        return (int) (System.currentTimeMillis() / ticks % 22);
+        return (int) (Util.getMillis() / ticks % 22);
     }
 
     public static void blit(
@@ -181,6 +181,32 @@ public class RenderHelper
         vertexconsumer.addVertex(matrix4f, x2, y2, 0.0F).setUv(maxU, maxV).setColor(color);
         vertexconsumer.addVertex(matrix4f, x2, y1, 0.0F).setUv(maxU, minV).setColor(color);
     }
+	
+	public static class Gui
+	{
+		private static final int BASE_WIDTH = 427;
+		private static final int BASE_HEIGHT = 240;
+		
+		public static int scaledWidthCoord(@NotNull Screen screen, int localWidth)
+		{
+			return (int) ((float)localWidth * screen.getMinecraft().getWindow().getGuiScaledWidth() / BASE_WIDTH);
+		}
+		
+		public static int scaledHeightCoord(@NotNull Screen screen, int localWidth)
+		{
+			return (int) ((float)localWidth * screen.getMinecraft().getWindow().getGuiScaledHeight() / BASE_HEIGHT);
+		}
+		
+		public static int getScreenWidth(@NotNull Screen screen, float percent)
+		{
+			return (int) (screen.width * percent);
+		}
+		
+		public static int getScreenHeight(@NotNull Screen screen, float percent)
+		{
+			return (int) (screen.height * percent);
+		}
+	}
 	
 	public static class GenomeRenderer
 	{

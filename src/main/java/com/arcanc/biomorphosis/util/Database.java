@@ -107,6 +107,11 @@ public class Database
 			public static final Function<MultiblockTurret.TargetMode, Component> targetModeTooltip = mode -> Component.translatable(rl(GUI + ".tooltip.turret_button.target_mode." + mode.name().toLowerCase()).toLanguageKey());
 			public static final Function<Boolean, Component> onOffTooltip = bool -> Component.translatable(rl(GUI + ".tooltip.turret_button.onoff." + (bool ? "enabled" : "disabled")).toLanguageKey());
 		}
+	    
+	    public static final class Chrysalis
+	    {
+		    public static final String PROGRESS_BAR = rl(GUI + ".label.chrysalis.progress_bar").toLanguageKey();
+	    }
 		
         public static final class InfoArea
         {
@@ -129,6 +134,25 @@ public class Database
                     public static final String ADVANCED_TOOLTIP_VISCOSITY = rl(GUI + ".tooltip.info.fluid.advanced.viscosity").toLanguageKey();
                 }
             }
+			
+			public static final class GenomeStabilityInfoArea
+			{
+				public static final String STABILITY = rl(GUI + ".label.info.genome.stability").toLanguageKey();
+				public static final String LOW_STABILITY = rl(GUI + ".label.info.genome.low_stability").toLanguageKey();
+				
+				public static final class Tooltip
+				{
+					public static final String STABILITY_TOOLTIP = rl(GUI + ".tooltip.info.genome.stability").toLanguageKey();
+				}
+			}
+			
+			public static final class ErrorInfoArea
+			{
+				public static final String UNKNOWN_GENE = rl (GUI + ".label.info.error.unknow_gene").toLanguageKey();
+				public static final String UNKNOWN_RARITY_DATA = rl (GUI + ".label.info.error.unknow_rarity_data").toLanguageKey();
+				public static final String INCOMPATIBLE_GENES = rl (GUI + ".label.info.error.incompatible_genes").toLanguageKey();
+				public static final String MORE_POWERFUL_GENE = rl (GUI + ".label.info.error.more_powerful_gene").toLanguageKey();
+			}
         }
 
         public static final class Textures
@@ -149,11 +173,14 @@ public class Database
 		{
 			public static final GeneInfo ACCURACY = new GeneInfo(Database.rl("accuracy"));
 			public static final GeneInfo BALANCE = new GeneInfo(Database.rl("balance"));
+			public static final GeneInfo SWIM_SPEED = new GeneInfo(Database.rl("swim_speed"));
+			public static final GeneInfo JUMP_STRENGTH = new GeneInfo(Database.rl("jump_strength"));
 			public static final GeneInfo DAMAGE = new GeneInfo(Database.rl("damage"));
 			public static final GeneInfo FOOD = new GeneInfo(Database.rl("food"));
 			public static final GeneInfo HEALTH = new GeneInfo(Database.rl("health"));
 			public static final GeneInfo PROTECTION = new GeneInfo(Database.rl("protection"));
 			public static final GeneInfo SPEED = new GeneInfo(Database.rl("speed"));
+			public static final GeneInfo VAMPIRISM = new GeneInfo(Database.rl("vampirism"));
 			
 			public static final class Translations
 			{
@@ -171,7 +198,7 @@ public class Database
 			{
 				public GeneInfo (ResourceLocation id)
 				{
-					this(id, id.withPrefix("textures/genome/"));
+					this(id, id.withPrefix("textures/genome/").withSuffix(".png"));
 				}
 			}
 		}
@@ -206,6 +233,7 @@ public class Database
 				public static final PageInfo V008 = new PageInfo(rl("v008"));
 	            public static final PageInfo V0081 = new PageInfo(rl("v0081"));
 	            public static final PageInfo V0082 = new PageInfo(rl("v0082"));
+				public static final PageInfo V261 = new PageInfo(rl("v261"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
@@ -218,6 +246,7 @@ public class Database
 				public static final PageInfo MANIPULATOR = new PageInfo(rl("manipulator"));
 				public static final PageInfo FLUID_TRANSMITTER = new PageInfo(rl("fluid_transmitter"));
 				public static final PageInfo TURRET = new PageInfo(rl("turret"));
+	            public static final PageInfo CHRYSALIS = new PageInfo(rl("chrysalis"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
                 {
@@ -244,6 +273,8 @@ public class Database
 
         public static final class Sounds
         {
+	        public static final String ADVANCEMENT_RECEIVE = Database.rl("sound.subtitle.advancement.receive").toLanguageKey();
+
             public static final String BLOCK_DESTROYED = Database.rl("sound.subtitle.block.destroyed").toLanguageKey();
             public static final String BLOCK_PLACED = Database.rl("sound.subtitle.block.placed").toLanguageKey();
             public static final String BLOCK_STEP_NORMAL = Database.rl("sound.subtitle.block.step.normal").toLanguageKey();
@@ -302,10 +333,15 @@ public class Database
 		{
 			public static final class Tooltip
 			{
-				public static final String START_FLUID_HANDLER = rl(GUI + ".tooltip.overlay.start_fluid_handler").toLanguageKey();
-				public static final String WRONG_FLUID_HANDLER = rl(GUI + ".tooltip.overlay.wrong_fluid_handler").toLanguageKey();
-				public static final String CHOOSE_SECOND_FLUID_HANDLER = rl(GUI + ".tooltip.overlay.choose_second_container").toLanguageKey();
-				public static final String CHOOSE_TRANSMITTER = rl(GUI + ".tooltip.overlay.choose_transmitter").toLanguageKey();
+				public static final String START_FLUID_HANDLER = rl(GUI + ".overlay.tooltip.start_fluid_handler").toLanguageKey();
+				public static final String WRONG_FLUID_HANDLER = rl(GUI + ".overlay.tooltip.wrong_fluid_handler").toLanguageKey();
+				public static final String CHOOSE_SECOND_FLUID_HANDLER = rl(GUI + ".overlay.tooltip.choose_second_container").toLanguageKey();
+				public static final String CHOOSE_TRANSMITTER = rl(GUI + ".overlay.tooltip.choose_transmitter").toLanguageKey();
+			}
+			
+			public static final class Advancements
+			{
+				public static final String RECEIVE_GENE = rl(GUI + ".overlay.advancement.receive_gene").toLanguageKey();
 			}
 		}
 		

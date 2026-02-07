@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
 import com.arcanc.biomorphosis.content.block.multiblock.*;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.*;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
 import com.arcanc.biomorphosis.content.block.norph.NorphStairs;
@@ -33,22 +34,14 @@ import com.arcanc.biomorphosis.content.entity.srf.Sergeant;
 import com.arcanc.biomorphosis.content.entity.srf.Soldier;
 import com.arcanc.biomorphosis.content.fluid.BioBaseFluid;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
-import com.arcanc.biomorphosis.content.gui.container_menu.BioContainerMenu;
-import com.arcanc.biomorphosis.content.gui.container_menu.ChamberMenu;
-import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
-import com.arcanc.biomorphosis.content.gui.container_menu.TurretMenu;
-import com.arcanc.biomorphosis.content.gui.screen.container.BioContainerScreen;
-import com.arcanc.biomorphosis.content.gui.screen.container.ChamberScreen;
-import com.arcanc.biomorphosis.content.gui.screen.container.ChestScreen;
-import com.arcanc.biomorphosis.content.gui.screen.container.TurretScreen;
+import com.arcanc.biomorphosis.content.gui.container_menu.*;
+import com.arcanc.biomorphosis.content.gui.screen.container.*;
 import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
+import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
-import com.arcanc.biomorphosis.content.mutations.types.BalanceEffectType;
-import com.arcanc.biomorphosis.content.mutations.types.HealthEffectType;
-import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
-import com.arcanc.biomorphosis.content.mutations.types.ProtectionEffectType;
+import com.arcanc.biomorphosis.content.mutations.types.*;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
@@ -97,6 +90,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.player.Inventory;
@@ -104,6 +98,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.item.crafting.display.RecipeDisplay;
 import net.minecraft.world.item.crafting.display.SlotDisplay;
@@ -183,6 +178,13 @@ public final class Registration
 				"genome",
 				() -> AttachmentType.builder(() -> GenomeInstance.EMPTY).
 						serialize(GenomeInstance.CODEC).
+						copyOnDeath().
+						build());
+		
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<UnlockedGenome>> UNLOCKED_GENOME = TYPES.register(
+				"unlocked_genome",
+				() -> AttachmentType.builder(() -> UnlockedGenome.EMPTY).
+						serialize(UnlockedGenome.CODEC).
 						copyOnDeath().
 						build());
 		
@@ -681,16 +683,31 @@ public final class Registration
 
         public static final DeferredBlock<MultiblockChamberBlock> MULTIBLOCK_CHAMBER = register("multiblock_chamber", MultiblockChamberBlock :: new,
                 properties -> baseProps.
-                        andThen(BlockBehaviour.Properties :: noOcclusion).
+                        andThen(props -> props.
+		                        noOcclusion().
+		                        dynamicShape()).
                         accept(properties),
                 MultiblockChamberBlockItem :: new,
                 ItemReg.baseProps.andThen(props -> props.
                         rarity(RarityExtension.BIO_RARE.getValue())),
                 false);
+		
+		public static final DeferredBlock<MultiblockChrysalisBlock> MULTIBLOCK_CHRYSALIS = register("multiblock_chrysalis",
+				MultiblockChrysalisBlock :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								noOcclusion().
+								dynamicShape()).
+						accept(properties),
+				MultiblockChrysalisBlockItem :: new,
+				ItemReg.baseProps.andThen(props -> props.rarity(RarityExtension.BIO_RARE.getValue())),
+				false);
 	    
 		public static final DeferredBlock<MultiblockTurretBlock> MULTIBLOCK_TURRET = register("multiblock_turret", MultiblockTurretBlock :: new,
 			    properties -> baseProps.
-					    andThen(BlockBehaviour.Properties :: noOcclusion).
+					    andThen(props -> props.
+					            noOcclusion().
+					            dynamicShape()).
 					    accept(properties),
 			    MultiblockTurretBlockItem :: new,
 			    ItemReg.baseProps.andThen(props -> props.
@@ -1191,6 +1208,14 @@ public final class Registration
                         MenuTypeReg.CHAMBER,
                         ChamberScreen :: new,
                         BlockReg.MULTIBLOCK_CHAMBER));
+		
+		public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChrysalis>> BE_MULTIBLOCK_CHRYSALIS = BLOCK_ENTITIES.register(
+				"multiblock_chrysalis",
+				makeType(MultiblockChrysalis :: new,
+						MultiblockChrysalisRenderer :: new,
+						MenuTypeReg.CHRYSALIS,
+						ChrysalisScreen :: new,
+						BlockReg.MULTIBLOCK_CHRYSALIS));
 	    
 	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockTurret>> BE_MULTIBLOCK_TURRET = BLOCK_ENTITIES.register(
 			    "multiblock_turret",
@@ -1311,7 +1336,20 @@ public final class Registration
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem ::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", BioBaseItem :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));
-
+		public static final DeferredItem<GeneInjector> INJECTOR = register("injector", GeneInjector :: new, properties -> properties.stacksTo(1).durability(100).attributes(ItemAttributeModifiers.builder().
+						add(
+								Attributes.ATTACK_DAMAGE,
+								new AttributeModifier(Item.BASE_ATTACK_DAMAGE_ID, 3, AttributeModifier.Operation.ADD_VALUE),
+								EquipmentSlotGroup.MAINHAND
+						).
+						add(
+								Attributes.ATTACK_SPEED,
+								new AttributeModifier(Item.BASE_ATTACK_SPEED_ID, -1.4d, AttributeModifier.Operation.ADD_VALUE),
+								EquipmentSlotGroup.MAINHAND
+						).
+						build()).
+						rarity(RarityExtension.BIO_COMMON.getValue()));
+				
         private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
         {
             Item.Properties props = setId(name, new Item.Properties().stacksTo(1), false);
@@ -1583,6 +1621,11 @@ public final class Registration
 			    "turret",
 			    TurretMenu :: makeServer,
 			    TurretMenu :: makeClient);
+	    
+	    public static final ArgContainer<MultiblockChrysalis, ChrysalisMenu> CHRYSALIS = registerArg(
+			    "chrysalis",
+			    ChrysalisMenu :: makeServer,
+			    ChrysalisMenu :: makeClient);
 
         public static final ArgContainer<BioChest, ChestMenu> CHEST = registerArg(
                 "chest",
@@ -1673,6 +1716,7 @@ public final class Registration
 	public static class DamageTypeReg
 	{
 		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
+		public static final ResourceKey<DamageType> IMPOSSIBLE_MUTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("impossible_mutation"));
 	}
 	
     public static class RecipeReg
@@ -1847,6 +1891,8 @@ public final class Registration
 
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_HIVE = variable("block_hive_deco");
 		
+		public static final DeferredHolder<SoundEvent, SoundEvent> ADVANCEMENT = variable("advancement");
+		
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
         private static @NotNull DeferredHolder<SoundEvent, SoundEvent> variable(String name)
@@ -1892,10 +1938,14 @@ public final class Registration
 		public static final DeferredRegister<IGeneEffectType<?>> EFFECT_TYPES = DeferredRegister.create(EFFECT_TYPE_KEY, Database.MOD_ID);
 		public static Registry<IGeneEffectType<?>> EFFECT_TYPE_REGISTRY;
 		
+		public static final DeferredHolder<IGeneEffectType<?>, BalanceEffectType> BALANCE = EFFECT_TYPES.register("balance", BalanceEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, DamageEffectType> DAMAGE = EFFECT_TYPES.register("damage", DamageEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, JumpStrengthEffectType> JUMP_STRENGTH = EFFECT_TYPES.register("jump_strength", JumpStrengthEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, HealthEffectType> HEALTH = EFFECT_TYPES.register("health", HealthEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, ProtectionEffectType> PROTECTION = EFFECT_TYPES.register("protection", ProtectionEffectType :: new);
-		public static final DeferredHolder<IGeneEffectType<?>, BalanceEffectType> BALANCE = EFFECT_TYPES.register("balance", BalanceEffectType :: new);
-		
+		public static final DeferredHolder<IGeneEffectType<?>, SpeedEffectType> SPEED = EFFECT_TYPES.register("speed", SpeedEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, SwimSpeedEffectType> SWIM_SPEED = EFFECT_TYPES.register("swim_speed", SwimSpeedEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, VampirismEffectType> VAMPIRISM = EFFECT_TYPES.register("vampirism", VampirismEffectType :: new);
 		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
 		{
 			event.dataPackRegistry(DEFINITION_KEY, GeneDefinition.CODEC, GeneDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));

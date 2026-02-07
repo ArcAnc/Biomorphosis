@@ -31,7 +31,7 @@ public class WrenchItem extends BioBaseItem
 {
     public WrenchItem(@NotNull Properties properties)
     {
-        super(properties.stacksTo(1));
+        super(properties);
     }
 
     @Override

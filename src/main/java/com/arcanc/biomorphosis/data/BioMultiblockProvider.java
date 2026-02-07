@@ -29,6 +29,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
@@ -54,7 +56,10 @@ public class BioMultiblockProvider
     protected void addMultiblocks()
     {
         addMultiblock(staticBuilder(Database.rl("chamber")).
-                addPart(new BlockPos(0, 0, 0), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
+                addPart(new BlockPos(0, 0, 0), Shapes.block(),
+		                IngredientWithSize.of(Registration.BlockReg.FLESH),
+		                IngredientWithSize.of(Items.EGG),
+		                IngredientWithSize.of(new ItemStack(Items.CLAY_BALL, 8))).
                 addPart(new BlockPos(1, 0, -1), Shapes.or(Shapes.box(0, 0, 0.5d, 0.5d, 0.5d, 1),
 				                                                   Shapes.box(0, 0.5d, 0, 0.5d, 1, 1),
 				                                                   Shapes.box(0.5d, 0.5d, 0.5d, 1, 1, 1),
@@ -115,6 +120,92 @@ public class BioMultiblockProvider
 				addPart(new BlockPos(0, 1, 0), Shapes.box(0.375d, 0, 0.375d, 0.625d, 1, 0.625d),
 						IngredientWithSize.of(Ingredient.of(tag(ItemTags.FENCES)))).
 				setPlacedBlock(Registration.BlockReg.MULTIBLOCK_TURRET.get().defaultBlockState()).
+				end());
+		
+		addMultiblock(staticBuilder(Database.rl("chrysalis")).
+				addPart(new BlockPos(0, 0, 0), Shapes.box(0, 0, 0, 1, 0.1d, 1),
+						IngredientWithSize.of(Registration.BlockReg.CATCHER),
+						IngredientWithSize.of(Registration.ItemReg.WRENCH)).
+				addPart(new BlockPos(0, 0, -1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																   Shapes.box(0, 0.1d, 0, 1, 1, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(0, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																  Shapes.box(0, 0.1d, 0.875d, 1, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(-1, 0, 0), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																   Shapes.box(0, 0.1d, 0, 0.125d, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(1, 0, 0), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																  Shapes.box(0.875d, 0.1d, 0, 1, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(-1, 0, -1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																	Shapes.box(0, 0.1d, 0, 0.125d, 1, 1),
+																	Shapes.box(0.125d, 0.1, 0, 1, 1, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(-1, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																   Shapes.box(0, 0.1d, 0, 0.125d, 1, 1),
+																   Shapes.box(0.125d, 0.1, 0.875d, 1, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 0, -1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																   Shapes.box(0.875d, 0.1d, 0, 1, 1, 1),
+																   Shapes.box(0, 0.1, 0, 0.875d, 1, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
+																  Shapes.box(0.875d, 0.1d, 0, 1, 1, 1),
+																  Shapes.box(0, 0.1, 0.875d, 0.875d, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(0, 1, -1), Shapes.box(0, 0, 0, 1, 1, 0.125d),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(0, 1, 1), Shapes.box(0, 0, 0.875d, 1, 1, 1),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(-1, 1, 0), Shapes.box(0, 0, 0, 0.125d, 1, 1),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(1, 1, 0), Shapes.box(0.875d, 0, 0, 1, 1, 1),
+						IngredientWithSize.of(Registration.BlockReg.FLESH)).
+				addPart(new BlockPos(-1, 1, -1), Shapes.or(Shapes.box(0, 0, 0, 0.125d, 1, 1),
+																	Shapes.box(0.125d, 0, 0, 1, 1, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(-1, 1, 1), Shapes.or(Shapes.box(0, 0, 0, 0.125d, 1, 1),
+																   Shapes.box(0.125d, 0, 0.875d, 1, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 1, -1), Shapes.or(Shapes.box(0.875d, 0, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0, 0.875d, 1, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 1, 1), Shapes.or(Shapes.box(0.875d, 0, 0, 1, 1, 1),
+																  Shapes.box(0, 0, 0.875d, 0.875d, 1, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(0, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0, 1, 0.875d, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(0, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0.875d, 1, 0.875d, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(-1, 2, 0), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0, 0.125d, 0.875d, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 2, 0), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																  Shapes.box(0.875d, 0, 0, 1, 0.875d, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(-1, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																	Shapes.box(0, 0, 0, 0.125d, 0.875d, 1),
+																	Shapes.box(0.125d, 0, 0, 1, 0.875d, 0.125d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(-1, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0, 0.125d, 0.875d, 1),
+																   Shapes.box(0.125d, 0, 0.875d, 1, 0.875d, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																   Shapes.box(0, 0, 0, 1, 0.875d, 0.125d),
+																   Shapes.box(0.875d, 0, 0.125d, 1, 0.875d, 1)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(1, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
+																  Shapes.box(0, 0, 0.875d, 1, 0.875d, 1),
+																  Shapes.box(0.875d, 0, 0, 1, 0.875d, 0.875d)),
+						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+				addPart(new BlockPos(0, 2, 0), Shapes.box(0, 0.875d, 0,1, 1, 1),
+						IngredientWithSize.of(Registration.BlockReg.FLESH),
+						IngredientWithSize.of(Registration.ItemReg.WRENCH)).
+				setPlacedBlock(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.get().defaultBlockState()).
 				end());
 		
         addMultiblock(dynamicBuilder(Database.rl("fluid_storage")).

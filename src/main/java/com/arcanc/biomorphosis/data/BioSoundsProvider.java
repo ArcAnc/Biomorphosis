@@ -27,6 +27,10 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 	@Override
 	public void registerSounds()
 	{
+		add(Registration.SoundReg.ADVANCEMENT, SoundDefinition.definition().
+				with(sound(Database.rl("advancement/0"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.ADVANCEMENT_RECEIVE));
+		
 		add(Registration.SoundReg.BLOCK_DESTROY, SoundDefinition.definition().
 				with(
 						sound(Database.rl("block/destroy_0"), SoundDefinition.SoundType.SOUND)).

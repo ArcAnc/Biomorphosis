@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:swim_speed",
+  "image": "biomorphosis:textures/genome/swim_speed.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 4,
+      "effects": [
+        {
+          "type": "biomorphosis:swim_speed",
+          "params": {
+            "modifier": 10
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 149,
+        "green": 158,
+        "red": 35
+      },
+      "secondary_color": {
+        "blue": 64,
+        "green": 42,
+        "red": 12
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 2,
+      "effects": [
+        {
+          "type": "biomorphosis:swim_speed",
+          "params": {
+            "modifier": 5
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 94,
+        "green": 100,
+        "red": 22
+      },
+      "secondary_color": {
+        "blue": 38,
+        "green": 25,
+        "red": 7
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 11,
+      "effects": [
+        {
+          "type": "biomorphosis:swim_speed",
+          "params": {
+            "modifier": 25
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 214,
+        "green": 226,
+        "red": 79
+      },
+      "secondary_color": {
+        "blue": 122,
+        "green": 84,
+        "red": 31
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 15,
+      "effects": [
+        {
+          "type": "biomorphosis:swim_speed",
+          "params": {
+            "modifier": 50
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 230,
+        "green": 241,
+        "red": 111
+      },
+      "secondary_color": {
+        "blue": 153,
+        "green": 109,
+        "red": 44
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 7,
+      "effects": [
+        {
+          "type": "biomorphosis:swim_speed",
+          "params": {
+            "modifier": 15
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 199,
+        "green": 211,
+        "red": 47
+      },
+      "secondary_color": {
+        "blue": 90,
+        "green": 59,
+        "red": 18
+      }
+    }
+  }
+}

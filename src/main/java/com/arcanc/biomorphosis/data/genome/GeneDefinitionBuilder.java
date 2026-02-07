@@ -99,11 +99,22 @@ public class GeneDefinitionBuilder
 			return this;
 		}
 		
+		public RarityDataBuilder setMainColor(int red, int green, int blue)
+		{
+			return this.setMainColor(new SerializableColor(red, green, blue));
+		}
+		
+		
 		public RarityDataBuilder setMainColor(SerializableColor mainColor)
 		{
 			Preconditions.checkNotNull(mainColor);
 			this.mainColor = mainColor;
 			return this;
+		}
+		
+		public RarityDataBuilder setSecondaryColor(int red, int green, int blue)
+		{
+			return this.setSecondaryColor(new SerializableColor(red, green, blue));
 		}
 		
 		public RarityDataBuilder setSecondaryColor(SerializableColor secondaryColor)

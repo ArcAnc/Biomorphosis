@@ -1,6 +1,6 @@
 {
   "id": "biomorphosis:balance",
-  "image": "biomorphosis:textures/genome/balance",
+  "image": "biomorphosis:textures/genome/balance.png",
   "rarity_data": {
     "grath": {
       "destabilization_amount": -15,

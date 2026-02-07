@@ -15,6 +15,10 @@ import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import org.jetbrains.annotations.NotNull;
 
 public class HealthEffectType implements IGeneEffectType<HealthEffectType>
 {
@@ -33,19 +37,32 @@ public class HealthEffectType implements IGeneEffectType<HealthEffectType>
 	}
 	
 	@Override
-	public void apply(LivingEntity entity, AttributeParams params)
+	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
-	
+		int healthAmount = params.getInt("amount", 0);
+		if (healthAmount == 0)
+			return;
+		AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
+		if (instance == null)
+			return;
+		instance.removeModifier(this.getId());
+		instance.addTransientModifier(new AttributeModifier(this.getId(), healthAmount, AttributeModifier.Operation.ADD_VALUE));
 	}
 	
 	@Override
-	public void remove(LivingEntity entity, AttributeParams params)
+	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
-	
+		int healthAmount = params.getInt("amount", 0);
+		if (healthAmount == 0)
+			return;
+		AttributeInstance instance = entity.getAttribute(Attributes.MAX_HEALTH);
+		if (instance == null)
+			return;
+		instance.removeModifier(this.getId());
 	}
 	
 	@Override
-	public void tick(LivingEntity entity, AttributeParams params)
+	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
 	{
 	
 	}

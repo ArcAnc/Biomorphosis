@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.util.model.obj;
 
 
-import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.google.common.base.Function;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;

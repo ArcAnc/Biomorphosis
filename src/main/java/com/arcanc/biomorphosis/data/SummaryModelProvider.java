@@ -574,17 +574,19 @@ public class SummaryModelProvider extends ModelProvider
 	    itemModels.generateSpawnEgg(Registration.EntityReg.MOB_BASE_BLACKSMITH.getEggHolder().get(), MathHelper.ColorHelper.color(193, 163, 134), MathHelper.ColorHelper.color(108, 47, 25));
 
         itemModels.generateFlatItem(Registration.ItemReg.FORGE_UPGRADE.get(), ModelTemplates.FLAT_ITEM);
+		itemModels.generateFlatItem(Registration.ItemReg.INJECTOR.get(), ModelTemplates.FLAT_ITEM);
 
         itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem(),
                 new SpecialModelWrapper.Unbaked(Database.rl("item/multiblock_chamber"),
                         new GeckolibSpecialRenderer.Unbaked()));
-
         itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem(),
                 new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_morpher"),
                         new MultiblockMorpherSpecialRenderer.Unbaked()));
-	    
 		itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_TURRET.asItem(),
 			    new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_turret"),
+					    new GeckolibSpecialRenderer.Unbaked()));
+	    itemModels.itemModelOutput.accept(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.asItem(),
+			    new SpecialModelWrapper.Unbaked(Database.rl( "item/multiblock_chrysalis"),
 					    new GeckolibSpecialRenderer.Unbaked()));
     }
 
@@ -615,6 +617,7 @@ public class SummaryModelProvider extends ModelProvider
         createMultiblockFluidStorage(blockModels);
         createMultiblockChamberModel(blockModels);
 	    createMultiblockTurretModel(blockModels);
+	    createMultiblockChrysalisModel(blockModels);
 
         blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_MORPHER.get());
 
@@ -3734,6 +3737,11 @@ public class SummaryModelProvider extends ModelProvider
         ResourceLocation model2Loc = new TexturedModel(mapping, template2.build()).create(prop_2.get(), blockModels.modelOutput);
         blockModels.blockStateOutput.accept(BlockModelGenerators.createSimpleBlock(prop_2.get(), model2Loc));
     }
+	
+	private void createMultiblockChrysalisModel(@NotNull BlockModelGenerators blockModels)
+	{
+		blockModels.createTrivialCube(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.get());
+	}
 	
 	private void createMultiblockTurretModel(@NotNull BlockModelGenerators blockModels)
 	{

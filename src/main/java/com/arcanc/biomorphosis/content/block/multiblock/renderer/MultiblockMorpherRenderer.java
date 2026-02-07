@@ -7,9 +7,10 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.block.multiblock;
+package com.arcanc.biomorphosis.content.block.multiblock.renderer;
 
 
+import com.arcanc.biomorphosis.content.block.multiblock.MultiblockMorpher;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
