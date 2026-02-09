@@ -14,9 +14,9 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.MasterRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.base.role.SlaveRoleBehavior;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ZoneHelper;

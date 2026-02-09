@@ -54,8 +54,7 @@ public class ErrorInfoArea extends InfoArea
 					(this.area.getX()),
 					this.area.getY() + this.area.getHeight() / 2 - stringsHeight / 2,
 					this.area.getWidth(),
-					-1,
-					false);
+					-1);
 		}
 	}
 	

@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.block.multiblock.renderer;
 
 
-import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPart;

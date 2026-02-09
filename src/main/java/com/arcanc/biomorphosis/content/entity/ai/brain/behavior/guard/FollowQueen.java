@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -31,13 +32,13 @@ public class FollowQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected boolean checkExtraStartConditions(ServerLevel level, QueenGuard owner)
+	protected boolean checkExtraStartConditions(@NotNull ServerLevel level, @NotNull QueenGuard owner)
 	{
 		return GuardBrain.getQueen(level, owner).isPresent();
 	}
 
 	@Override
-	protected void start(ServerLevel level, QueenGuard entity, long gameTime)
+	protected void start(@NotNull ServerLevel level, @NotNull QueenGuard entity, long gameTime)
 	{
 		GuardBrain.getQueen(level, entity).ifPresent(queen ->
 				entity.getNavigation().moveTo(queen, entity.getAttributeValue(

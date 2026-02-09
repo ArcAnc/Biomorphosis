@@ -21,7 +21,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
@@ -52,7 +51,7 @@ public class TitleBookPage extends AbstractBookPage
     @Override
     public void reCalcPositions()
     {
-        pages.clear();
+        this.pages.clear();
         int subPage = 0;
         List<AbstractBookPage> filteredPages = BookData.getInstance().getContent().get(chapter);
         Rect2i zone = AbstractBookChapter.getPageZones().getFirst();
@@ -107,7 +106,7 @@ public class TitleBookPage extends AbstractBookPage
     @Override
     protected void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
-        pages.forEach((integer, pageEntries) ->
+        this.pages.forEach((integer, pageEntries) ->
                 pageEntries.forEach(entry ->
                 {
                     boolean bool = integer == BookData.getInstance().getCurrentSubpage() ||
@@ -127,31 +126,31 @@ public class TitleBookPage extends AbstractBookPage
         {
             if (isAboveArrow(mouseX, mouseY, this.arrowLeft))
             {
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 26, 207, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 26, 207, 18, 10, 256, 256);
                 guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT), mouseX, mouseY);
             }
             else
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 3, 207, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 3, 207, 18, 10, 256, 256);
         }
         if (isArrowActive(this.arrowRight))
         {
             if (isAboveArrow(mouseX, mouseY, this.arrowRight))
             {
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 26, 194, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 26, 194, 18, 10, 256, 256);
                 guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT), mouseX, mouseY);
             }
             else
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 3, 194, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 3, 194, 18, 10, 256, 256);
         }
         if (isArrowActive(this.toTitle))
         {
             if (isAboveArrow(mouseX, mouseY, this.toTitle))
             {
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 207, 17, 9, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 207, 17, 9, 256, 256);
                 guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE), mouseX, mouseY);
             }
             else
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
         }
     }
 
@@ -204,7 +203,7 @@ public class TitleBookPage extends AbstractBookPage
     @Override
     public void onClick(double mouseX, double mouseY, int button)
     {
-        pages.forEach((integer, pageEntries) -> pageEntries.forEach(page -> page.mouseClicked(mouseX, mouseY, button)));
+        this.pages.forEach((integer, pageEntries) -> pageEntries.forEach(page -> page.mouseClicked(mouseX, mouseY, button)));
     }
 
     public void onArrowClick(double mouseX, double mouseY, int button)
@@ -247,8 +246,8 @@ public class TitleBookPage extends AbstractBookPage
             this.title = title;
 
             Rect2i zone = AbstractBookChapter.getPageZones().get(subPage % 2);
-            lines.addAll(RenderHelper.mc().font.split(Component.literal(title), zone.getWidth()));
-            this.setSize(zone.getWidth(), lines.size() * LINE_HEIGHT);
+            this.lines.addAll(RenderHelper.mc().font.split(Component.literal(title), zone.getWidth()));
+            this.setSize(zone.getWidth(), this.lines.size() * LINE_HEIGHT);
         }
 
         @Override
@@ -256,22 +255,22 @@ public class TitleBookPage extends AbstractBookPage
         {
             int yOffset = 0;
 
-            if (icon != null)
-                icon.render(guiGraphics, getX(), getY(), 9, 9);
+            if (this.icon != null)
+                this.icon.render(guiGraphics, getX(), getY(), 9, 9);
 
             guiGraphics.drawString(RenderHelper.mc().font, this.lines.getFirst(), getX() + (icon != null ? 11 : 0), getY() + yOffset, Color.black.getRGB(), false);
             yOffset += LINE_HEIGHT;
 
-            if (lines.size() > 1)
-                for (int q = 1; q < lines.size(); q++)
+            if (this.lines.size() > 1)
+                for (int q = 1; q < this.lines.size(); q++)
                 {
-                    FormattedCharSequence line = lines.get(q);
+                    FormattedCharSequence line = this.lines.get(q);
                     guiGraphics.drawString(RenderHelper.mc().font, line, getX(), getY() + yOffset, Color.black.getRGB(), false);
                     yOffset += LINE_HEIGHT;
                 }
 
             if (isMouseOver(mouseX, mouseY))
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, getX() - 3, getY() - 3, 209, 113, getWidth() + 3, getHeight() + 3, 47, 11, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, getX() - 3, getY() - 3, 209, 113, getWidth() + 3, getHeight() + 3, 47, 11, 256, 256);
         }
 
         @Override

@@ -39,7 +39,7 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
-public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInterfaces.IWrencheable
+public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWrencheable
 {
     public static final MapCodec<NorphOverlay> CODEC = simpleCodec(NorphOverlay :: new);
     private final NorphSpreadConfig CONFIG = new NorphSpreadConfig(this);
@@ -188,8 +188,9 @@ public class NorphOverlay extends MultifaceSpreadeableBlock implements BlockInte
 
     private Set<Direction> getPossibleDirections(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos)
     {
+        //FIXME: check if this Multifaceblock.canAttachTo is used in right way
         return Arrays.stream(Direction.values()).filter(direction -> !state.getValue(MultifaceBlock.getFaceProperty(direction)) &&
-                        MultifaceBlock.canAttachTo(level, pos, direction) &&
+                        MultifaceBlock.canAttachTo(level, direction, pos, state) &&
                         !level.getBlockState(pos.relative(direction)).
                                 is(BioBlockTags.NORPH_AVOID)).
                 collect(Collectors.toSet());

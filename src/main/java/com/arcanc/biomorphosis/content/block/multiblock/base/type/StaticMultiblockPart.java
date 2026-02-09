@@ -14,11 +14,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
-import com.arcanc.biomorphosis.util.helper.BlockHelper;
-import com.arcanc.biomorphosis.util.helper.DirectionHelper;
-import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
@@ -26,8 +22,6 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 

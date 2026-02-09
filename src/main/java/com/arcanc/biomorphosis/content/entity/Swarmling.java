@@ -16,7 +16,9 @@ import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -57,7 +59,7 @@ public class Swarmling extends Animal implements GeoEntity
 				5,
 				true,
 				true,
-				(entity, level) ->
+				entity ->
 						!entity.getType().is(BioEntityTags.SWARM) &&
 								!(entity instanceof Creeper)));
 		
@@ -86,9 +88,9 @@ public class Swarmling extends Animal implements GeoEntity
 	}
 	
 	@Override
-	public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent)
+	public @Nullable AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent)
 	{
-		return Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get().create(level, EntitySpawnReason.BREEDING);
+		return Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get().create(level);
 	}
 	
 	@Override

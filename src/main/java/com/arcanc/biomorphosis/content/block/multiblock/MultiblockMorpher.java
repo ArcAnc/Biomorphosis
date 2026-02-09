@@ -13,24 +13,24 @@ package com.arcanc.biomorphosis.content.block.multiblock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPart;
-import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.StaticMultiblockDefinition;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
-import com.arcanc.biomorphosis.util.helper.DirectionHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.mojang.datafixers.util.Pair;
-import net.minecraft.core.*;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.RegistryOps;
 import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -43,7 +43,9 @@ import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockEntity
@@ -139,7 +141,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
 					if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
-						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
+						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValue(BlockHelper.BlockProperties.HORIZONTAL_FACING));
 					level.setBlockAndUpdate(offsetPos, placedState);
 					BlockHelper.castTileEntity(level, offsetPos, StaticMultiblockPart.class).
 						ifPresent(part -> part.markAsPartOfMultiblock(getBlockPos()));
@@ -155,7 +157,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 					if (placedState.hasProperty(MultiblockPartBlock.STATE))
 						placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.FORMED);
 					if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
-						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
+						placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValue(BlockHelper.BlockProperties.HORIZONTAL_FACING));
 					level.setBlockAndUpdate(toPlacePos, placedState);
 					BlockHelper.castTileEntity(level, toPlacePos, StaticMultiblockPart.class).
 							ifPresent(part ->
@@ -184,14 +186,13 @@ public class MultiblockMorpher extends StaticMultiblockPart implements GeoBlockE
 		if (placedState.hasProperty(MultiblockPartBlock.STATE))
 			placedState = placedState.setValue(MultiblockPartBlock.STATE, MultiblockState.MORPHING);
 		if (placedState.hasProperty(BlockHelper.BlockProperties.HORIZONTAL_FACING))
-			placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH));
+			placedState = placedState.setValue(BlockHelper.BlockProperties.HORIZONTAL_FACING, this.getBlockState().getValue(BlockHelper.BlockProperties.HORIZONTAL_FACING));
 		level.setBlockAndUpdate(offsetPos, placedState);
 		BlockHelper.castTileEntity(level, offsetPos, StaticMultiblockPart.class).
 				ifPresent(part -> part.startMorphing(getBlockPos()));
 		this.morphProgress++;
 	}
-
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	protected void tryFormMultiblock(Level level)
 	{

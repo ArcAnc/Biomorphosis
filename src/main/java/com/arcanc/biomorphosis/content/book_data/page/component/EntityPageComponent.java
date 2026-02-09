@@ -17,7 +17,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.*;
@@ -39,8 +38,8 @@ public class EntityPageComponent extends AbstractPageComponent
     {
         super(0, 0, 0, 0, Component.empty());
 
-        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.getValue(location);
-        Entity ent = type.create(RenderHelper.mc().level, EntitySpawnReason.COMMAND);
+        EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(location);
+        Entity ent = type.create(RenderHelper.mc().level);
         if (ent instanceof LivingEntity)
             entity = (LivingEntity)ent;
         else

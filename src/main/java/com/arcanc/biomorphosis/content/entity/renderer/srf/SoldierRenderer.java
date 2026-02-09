@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.entity.renderer.srf;
 
 
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SoldierModel;
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.SoldierRenderState;
 import com.arcanc.biomorphosis.content.entity.srf.Soldier;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class SoldierRenderer extends LivingEntityRenderer<Soldier, SoldierRenderState, SoldierModel>
+public class SoldierRenderer extends LivingEntityRenderer<Soldier, SoldierModel>
 {
 	private static final ResourceLocation TEXTURE = Database.rl("textures/entity/srf/soldier.png");
 	
@@ -28,21 +27,16 @@ public class SoldierRenderer extends LivingEntityRenderer<Soldier, SoldierRender
 		super(context, new SoldierModel(context.bakeLayer(SoldierModel.LAYER_LOCATION)), 0.5f);
 	}
 	
+	
 	@Override
-	protected boolean shouldShowName(@NotNull Soldier mob, double distance)
+	protected boolean shouldShowName(@NotNull Soldier entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull SoldierRenderState renderState)
+	public @NotNull ResourceLocation getTextureLocation(@NotNull Soldier entity)
 	{
 		return TEXTURE;
-	}
-	
-	@Override
-	public @NotNull SoldierRenderState createRenderState()
-	{
-		return new SoldierRenderState();
 	}
 }

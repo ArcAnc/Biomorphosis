@@ -82,7 +82,7 @@ public class ProgressInfoArea extends InfoArea
         int current = this.info.current().get();
         int max = this.info.max().get();
 
-        guiGraphics.blit(RenderType :: guiTextured, this.progressTexture,
+        guiGraphics.blit(this.progressTexture,
                 this.area.getX(), this.area.getY(),
                 0, 0,
                 this.area.getWidth(), this.area.getHeight(),
@@ -97,13 +97,14 @@ public class ProgressInfoArea extends InfoArea
         float width = this.area.getWidth() * percent;
         float textureWidth = 22 * percent;
 
-        RenderHelper.blit(guiGraphics,
-                RenderType :: guiTextured,
+        RenderHelper.blit(
+                guiGraphics,
                 this.progressTexture,
                 this.area.getX(),
                 this.area.getY(),
                 0, 16,
                 width, this.area.getHeight(),
+                0,
                 textureWidth, 15,
                 32, 32);
     }

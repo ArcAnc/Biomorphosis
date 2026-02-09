@@ -20,7 +20,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
@@ -78,29 +77,29 @@ public class NormalBookPage extends AbstractBookPage
         {
             if (isAboveArrow(mouseX, mouseY, this.arrowLeft))
             {
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 26, 207, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 26, 207, 18, 10, 256, 256);
                 guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_LEFT), mouseX, mouseY);
             }
             else
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 3, 207, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowLeft.getX(), this.arrowLeft.getY(), 3, 207, 18, 10, 256, 256);
         }
         if (isArrowActive(this.arrowRight))
         {
             if (isAboveArrow(mouseX, mouseY, this.arrowRight))
             {
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 26, 194, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 26, 194, 18, 10, 256, 256);
                 guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_RIGHT), mouseX, mouseY);
             }
             else
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 3, 194, 18, 10, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, this.arrowRight.getX(), this.arrowRight.getY(), 3, 194, 18, 10, 256, 256);
         }
         if (isAboveArrow(mouseX, mouseY, this.toTitle))
         {
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 207, 17, 9, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 207, 17, 9, 256, 256);
             guiGraphics.renderTooltip(font, Component.translatable(Database.GUI.GuideBook.Pages.Components.ARROW_TO_TITLE), mouseX, mouseY);
         }
         else
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
     }
 
     private boolean isAboveArrow(double mouseX, double mouseY, @NotNull Vec3i arrow)

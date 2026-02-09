@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.gui.component.tooltip;
 
 import com.arcanc.biomorphosis.content.event.CustomEvents;
 import com.arcanc.biomorphosis.content.gui.component.animation.AnimationData;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -18,11 +19,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -33,7 +31,8 @@ public class TooltipBorderHandler
     public static void registerHandler()
     {
         NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipDisplayEvent);
-        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
+        //FIXME: отвечает за размеры подсказки, нужно прочекать и настроить. Отключено только ради компила
+        //NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
     }
 
     private static void tooltipDisplayEvent(final @NotNull CustomEvents.TooltipDisplayEvent event)
@@ -146,7 +145,8 @@ public class TooltipBorderHandler
                                                       int middleWidth,
                                                       int middleHeight,
                                                       int texWidth,
-                                                      int texHeight) {
+                                                      int texHeight)
+    {
         int currentFrame = animationData.getFrameByTime(player.tickCount).getFirst();
         int nextFrame = (currentFrame + 1) % animationData.totalLength();
 
@@ -154,28 +154,152 @@ public class TooltipBorderHandler
 
         float progress = (player.tickCount % 2) / 2f;
 
-        int baseColor = ARGB.colorFromFloat(1f, 1f, 1f, 1f);
-        int intColor = ARGB.colorFromFloat(progress, 1f, 1f, 1f);
+        int baseColor = MathHelper.ColorHelper.colorFromFloat(1f, 1f, 1f, 1f);
+        int intColor = MathHelper.ColorHelper.colorFromFloat(progress, 1f, 1f, 1f);
+        
+        //FIXME: wrong positions. Need recalc for all values
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x - cornerWidth / 2 - 3,
+                y - cornerHeight / 2 - 3,
+                0, offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                baseColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + width - cornerWidth / 2 + 3,
+                y - cornerHeight / 2 - 3,
+                patternWidth - cornerWidth, offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                baseColor);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x - cornerWidth / 2 - 3,
+                y + height - cornerHeight / 2 + 3,
+                0,
+                (patternHeight - cornerHeight) + offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                baseColor);
+       
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + width - cornerWidth / 2 + 3,
+                y + height - cornerHeight / 2 + 3,
+                patternWidth - cornerWidth,
+                (patternHeight - cornerHeight) + offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                baseColor);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, baseColor);
-
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight, baseColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight, baseColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + (width - middleWidth) / 2,
+                y - middleHeight + 1,
+                cornerWidth, offset,
+                middleWidth, middleHeight,
+                0,
+                middleWidth, middleHeight,
+                texWidth, texHeight,
+                baseColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + (width - middleWidth) / 2,
+                y + height - 1, cornerWidth,
+                middleHeight + offset,
+                middleWidth, middleHeight,
+                0,
+                middleWidth, middleHeight,
+                texWidth, texHeight,
+                baseColor);
 
         offset = patternHeight * nextFrame;
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x - cornerWidth / 2 - 3,
+                y - cornerHeight / 2 - 3,
+                0, offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + width - cornerWidth / 2 + 3,
+                y - cornerHeight / 2 - 3,
+                patternWidth - cornerWidth, offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                intColor);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight, intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x - cornerWidth / 2 - 3,
+                y + height - cornerHeight / 2 + 3,
+                0, (patternHeight - cornerHeight) + offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + width - cornerWidth / 2 + 3,
+                y + height - cornerHeight / 2 + 3,
+                patternWidth - cornerWidth,
+                (patternHeight - cornerHeight) + offset,
+                cornerWidth, cornerHeight,
+                0,
+                cornerWidth, cornerHeight,
+                texWidth, texHeight,
+                intColor);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight, intColor);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight, intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + (width - middleWidth) / 2,
+                y - middleHeight + 1,
+                cornerWidth, offset,
+                middleWidth, middleHeight, 0,
+                middleWidth, middleHeight,
+                texWidth, texHeight,
+                intColor);
+        RenderHelper.blit(
+                guiGraphics,
+                texture,
+                x + (width - middleWidth) / 2,
+                y + height - 1, cornerWidth,
+                middleHeight + offset,
+                middleWidth, middleHeight,
+                0,
+                middleWidth, middleHeight,
+                texWidth, texHeight,
+                intColor);
     }
 
     private static void renderNormalDecorations(@NotNull AnimationData animationData,
@@ -193,23 +317,25 @@ public class TooltipBorderHandler
                                                 int middleWidth,
                                                 int middleHeight,
                                                 int texWidth,
-                                                int texHeight) {
+                                                int texHeight)
+    {
         int frame = animationData.getFrameByTime(player.tickCount).getFirst();
         int offset = patternHeight * frame;
 
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
+        
+        // FIXME: check drawing, coords may be broken
+        guiGraphics.blit(texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight);
+        guiGraphics.blit(texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight);
+        guiGraphics.blit(texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
+        guiGraphics.blit(texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
 
-        guiGraphics.blit(RenderType::guiTextured, texture, x - cornerWidth / 2 - 3, y + height - cornerHeight / 2 + 3, 0, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + width - cornerWidth / 2 + 3, y + height - cornerHeight / 2 + 3, patternWidth - cornerWidth, (patternHeight - cornerHeight) + offset, cornerWidth, cornerHeight, texWidth, texHeight);
-
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight);
-        guiGraphics.blit(RenderType::guiTextured, texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight);
+        guiGraphics.blit(texture, x + (width - middleWidth) / 2, y - middleHeight + 1, cornerWidth, offset, middleWidth, middleHeight, texWidth, texHeight);
+        guiGraphics.blit(texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight);
     }
 
-    private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Texture event)
+    /*private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Color event)
     {
         if (!(event.getItemStack().getItem() instanceof ICustomTooltip tooltip))
             return;
@@ -220,5 +346,5 @@ public class TooltipBorderHandler
         TooltipData data = style.tooltip().apply(RenderHelper.clientPlayer(), event.getItemStack());
         if (data.isTextured())
             event.setTexture(data.background());
-    }
+    }*/
 }

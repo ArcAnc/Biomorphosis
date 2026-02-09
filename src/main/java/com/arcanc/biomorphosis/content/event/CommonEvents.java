@@ -23,12 +23,9 @@ import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
-import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.OnDatapackSyncEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -43,7 +40,6 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         FluidTransportHandler.registerHandler();
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
-        NeoForge.EVENT_BUS.addListener(CommonEvents :: sendRecipesToClient);
 	    GenomeHandler.register(modEventBus);
 		ChestMenu.registerEvents();
 	    Trades.register(modEventBus);
@@ -98,21 +94,5 @@ public class CommonEvents
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, Registration.BETypeReg.BE_CHEST.get(), BioChest :: getItemHandler);
 		event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_TURRET.get(), MultiblockTurret :: getFluidHandler);
 	    event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_CHRYSALIS.get(), MultiblockChrysalis :: getFluidHandler);
-		
-		
-		/*FIXME: нужно найти более правильный способ, чем фильтровать по типу. Мне не нравится,
-		   но моджанги сделали хуйню с переписыванием возвращаемого типа у EntityType*/
-	    /*BuiltInRegistries.ENTITY_TYPE.stream().
-			    filter(type -> type.getCategory() != MobCategory.MISC).
-	            forEach(type ->
-			    event.registerEntity(BioCapabilities.GENOME, type,
-					    (object, context) -> new GenomeHandler((LivingEntity) object)));*/
-    }
-
-    private static void sendRecipesToClient(final @NotNull OnDatapackSyncEvent event)
-    {
-        event.sendRecipes(Registration.RecipeReg.RECIPE_TYPES.getEntries().stream().
-                map(DeferredHolder::get).
-                toArray(RecipeType[]::new));
     }
 }

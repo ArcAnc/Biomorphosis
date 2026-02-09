@@ -74,21 +74,20 @@ public class QueenGuard extends Monster implements GeoEntity
                 5,
                 false,
                 true,
-                (entity, level) ->
+                entity ->
                 !entity.getType().is(BioEntityTags.SWARM) &&
                     !(entity instanceof Creeper)));
     }
-
+    
+    @SuppressWarnings("deprecation")
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
-                                                  DifficultyInstance difficulty,
-                                                  EntitySpawnReason spawnReason,
-                                                  @Nullable SpawnGroupData spawnGroupData)
+    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
+                                                  @NotNull DifficultyInstance difficulty,
+                                                  @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData)
     {
-
         this.patrolPos = this.blockPosition();
         //this.getBrain().setMemory(Registration.AIReg.QUEEN_GUARD_PATROL_POS.get(), this.blockPosition());
-        return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
     @Nullable

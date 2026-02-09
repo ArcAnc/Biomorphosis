@@ -18,8 +18,10 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
@@ -45,9 +47,9 @@ public class AbstractRecipeComponent extends AbstractPageComponent
         ClientPacketListener connection = RenderHelper.mc().getConnection();
         if (connection != null)
         {
-            RecipeType<?> type = connection.registryAccess().lookup(Registries.RECIPE_TYPE).
-                    map(registry -> registry.get(finalResourceLocation).orElseThrow()).
-                    orElseThrow().
+            RecipeType<?> type = connection.registryAccess().
+                    lookupOrThrow(Registries.RECIPE_TYPE).
+                    getOrThrow(ResourceKey.create(Registries.RECIPE_TYPE, finalResourceLocation)).
                     value();
             RecipeRenderCache.getRenderer(type).ifPresentOrElse(renderer ->
                             this.setSize(renderer.getWidth(), renderer.getHeight()),

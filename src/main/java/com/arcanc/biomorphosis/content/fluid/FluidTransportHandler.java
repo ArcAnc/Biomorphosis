@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.fluid;
 
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.S2CFluidTransportPacket;
+import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
@@ -18,7 +19,7 @@ import com.google.common.base.Preconditions;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.client.renderer.CoreShaders;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
@@ -258,7 +259,7 @@ public abstract class FluidTransportHandler
         Vec3 cameraPos = event.getCamera().getPosition();
         poseStack.pushPose();
         poseStack.translate(-cameraPos.x(), -cameraPos.y(), -cameraPos.z());
-        RenderSystem.setShader(CoreShaders.POSITION_TEX_COLOR);
+        RenderSystem.setShader(GameRenderer :: getPositionTexColorShader);
         RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_BLOCKS);
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder builder = tesselator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
@@ -320,19 +321,19 @@ public abstract class FluidTransportHandler
 
     public static class FluidTransport
     {
-        public static final StreamCodec<RegistryFriendlyByteBuf, FluidTransport> STREAM_CODEC = StreamCodec.composite(
+        public static final StreamCodec<RegistryFriendlyByteBuf, FluidTransport> STREAM_CODEC = BioCodecs.StreamCodecs.composite(
                 UUIDUtil.STREAM_CODEC,
                 FluidTransport :: getId,
-                Vec3.STREAM_CODEC,
+                BioCodecs.VEC_3_STREAM_CODEC,
                 FluidTransport :: getStartPos,
-                Vec3.STREAM_CODEC,
+                BioCodecs.VEC_3_STREAM_CODEC,
                 FluidTransport :: getTransmitterPos,
-                Vec3.STREAM_CODEC,
+                BioCodecs.VEC_3_STREAM_CODEC,
                 FluidTransport :: getFinishPos,
                 FluidStack.OPTIONAL_STREAM_CODEC,
                 FluidTransport :: getStack,
                 ByteBufCodecs.<ByteBuf, Vec3>list().
-                        apply(Vec3.STREAM_CODEC),
+                        apply(BioCodecs.VEC_3_STREAM_CODEC),
                 FluidTransport :: getRoute,
                 ByteBufCodecs.INT,
                 FluidTransport :: getStep,
@@ -489,7 +490,10 @@ public abstract class FluidTransportHandler
 
         private void lerpPos(float partialTick)
         {
-            this.prevPos = Mth.lerp(partialTick, this.prevPos, this.position);
+            double x = Mth.lerp(partialTick, this.prevPos.x(), this.position.x());
+            double y = Mth.lerp(partialTick, this.prevPos.y(), this.position.y());
+            double z = Mth.lerp(partialTick, this.prevPos.z(), this.position.z());
+            this.prevPos = new Vec3(x, y, z);
         }
 
         @Override

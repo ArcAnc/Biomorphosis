@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.entity.renderer.srf.model;
 
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.BlacksmithRenderState;
+import com.arcanc.biomorphosis.content.entity.srf.Blacksmith;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -19,7 +19,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 
-public class BlacksmithModel extends HumanoidModel<BlacksmithRenderState>
+public class BlacksmithModel extends HumanoidModel<Blacksmith>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Database.rl("blacksmith"), "main");
 	
@@ -116,8 +116,8 @@ public class BlacksmithModel extends HumanoidModel<BlacksmithRenderState>
 	}
 	
 	@Override
-	public void setupAnim(@NotNull BlacksmithRenderState state)
+	public void setupAnim(@NotNull Blacksmith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
-		super.setupAnim(state);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 }

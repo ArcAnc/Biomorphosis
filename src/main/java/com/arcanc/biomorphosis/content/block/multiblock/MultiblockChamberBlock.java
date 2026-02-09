@@ -11,16 +11,11 @@ package com.arcanc.biomorphosis.content.block.multiblock;
 
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPartBlock;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class MultiblockChamberBlock extends StaticMultiblockPartBlock<MultiblockChamber>
 {
-
     public MultiblockChamberBlock(Properties props)
     {
         super(Registration.BETypeReg.BE_MULTIBLOCK_CHAMBER, props);
     }
-	
 }

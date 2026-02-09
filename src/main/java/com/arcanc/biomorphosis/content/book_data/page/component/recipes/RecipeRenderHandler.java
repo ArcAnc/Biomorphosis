@@ -30,7 +30,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
@@ -111,7 +110,7 @@ public class RecipeRenderHandler
             ItemStack highlighted = ItemStack.EMPTY;
             ItemStack stack = ItemStack.EMPTY;
 
-            List<Ingredient> ingr = recipe.placementInfo().ingredients();
+            List<Ingredient> ingr = recipe.getIngredients();
             Minecraft mc = RenderHelper.mc();
             ItemStack result = recipe.assemble(CraftingInput.EMPTY, mc.level.registryAccess());
             for (int q = 0 ; q < ingr.size(); q++)
@@ -121,7 +120,7 @@ public class RecipeRenderHandler
 
                 guiGraphics.pose().pushPose();
 
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)positions.get(q).x - 1, (int)positions.get(q).y - 1, 217, 0, 18, 18, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, (int)positions.get(q).x - 1, (int)positions.get(q).y - 1, 217, 0, 18, 18, 256, 256);
                 guiGraphics.renderItem(stack, (int)positions.get(q).x, (int)positions.get(q).y);
                 guiGraphics.pose().popPose();
                 if (mouseX >= (int)positions.get(q).x && mouseY >= (int)positions.get(q).y && mouseX <= (int)positions.get(q).x + 16 && mouseY <= positions.get(q).y + 16)
@@ -130,10 +129,10 @@ public class RecipeRenderHandler
 
             guiGraphics.renderItem(result, (int)positions.get(9).x, (int)positions.get(9).y);
 
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y - 18, 234, 69, 22, 15, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y - 18, 234, 69, 22, 15, 256, 256);
 
             guiGraphics.pose().pushPose();
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y, 234, 53, 22, 15, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y, 234, 53, 22, 15, 256, 256);
 
             guiGraphics.pose().popPose();
 
@@ -166,7 +165,6 @@ public class RecipeRenderHandler
 
             List<IngredientWithSize> ingr = recipe.pattern.ingredients().
                     stream().
-                    map(ingredient -> ingredient.orElse(null)).
                     map(ingredient -> ingredient != null ? new IngredientWithSize(ingredient, 1) : null).
                     collect(Collectors.toList());
 			if (ingr.size() < 8)
@@ -182,7 +180,7 @@ public class RecipeRenderHandler
 
                 guiGraphics.pose().pushPose();
 
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)positions.get(q).x - 1, (int)positions.get(q).y - 1, 217, 0, 18, 18, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, (int)positions.get(q).x - 1, (int)positions.get(q).y - 1, 217, 0, 18, 18, 256, 256);
                 guiGraphics.renderItem(stack, (int)positions.get(q).x, (int)positions.get(q).y);
                 guiGraphics.pose().popPose();
                 if (mouseX >= (int)positions.get(q).x && mouseY >= (int)positions.get(q).y && mouseX <= (int)positions.get(q).x + 16 && mouseY <= positions.get(q).y + 16)
@@ -191,7 +189,7 @@ public class RecipeRenderHandler
 
 
             guiGraphics.pose().pushPose();
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y, 234, 53, 22, 15, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, (int)imagePos.x, (int)imagePos.y, 234, 53, 22, 15, 256, 256);
 
             guiGraphics.pose().popPose();
 
@@ -237,12 +235,12 @@ public class RecipeRenderHandler
             ItemStack stack = ItemStack.EMPTY;
 
             NonNullList<IngredientWithSize> ingr = NonNullList.create();
-            ingr.add(new IngredientWithSize(cookingRecipe.input(), 1));
+            ingr.add(new IngredientWithSize(cookingRecipe.getIngredients().getFirst(), 1));
             Minecraft mc = RenderHelper.mc();
             ItemStack result = cookingRecipe.assemble(new SingleRecipeInput(ItemStack.EMPTY), mc.level.registryAccess());
             ingr.add(new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
-            int time = cookingRecipe.cookingTime();
-            float exp = cookingRecipe.experience();
+            int time = cookingRecipe.getCookingTime();
+            float exp = cookingRecipe.getExperience();
 
 
             for (int q = 0; q < ingr.size(); q++)
@@ -254,7 +252,7 @@ public class RecipeRenderHandler
                 RenderSystem.enableDepthTest();
                 stack = RenderHelper.getStackAtCurrentTime(ingr.get(q));
 
-                guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)positions.get(q).x, (int)positions.get(q).y, 217, 0, 18, 18, 256, 256);
+                guiGraphics.blit(GuideScreen.TEXT, (int)positions.get(q).x, (int)positions.get(q).y, 217, 0, 18, 18, 256, 256);
                 guiGraphics.renderItem(stack, (int)positions.get(q).x, (int)positions.get(q).y);
                 if (mouseX >= (int)positions.get(q).x && mouseY >= (int)positions.get(q).y && mouseX <= (int)positions.get(q).x + 16 && mouseY <= positions.get(q).y + 16)
                     highlighted = stack;
@@ -262,12 +260,12 @@ public class RecipeRenderHandler
             }
             guiGraphics.pose().pushPose();
             //exp
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)expPos.x + 18, (int)expPos.y + 2, 234, 86, 11, 11, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, (int)expPos.x + 18, (int)expPos.y + 2, 234, 86, 11, 11, 256, 256);
             guiGraphics.pose().popPose();
 
             guiGraphics.pose().pushPose();
             //palochka
-            guiGraphics.blit(RenderType :: guiTextured, GuideScreen.TEXT, (int)arrowPos.x, (int)arrowPos.y, 234, 53, RenderHelper.animateArrow(time), 15, 256, 256);
+            guiGraphics.blit(GuideScreen.TEXT, (int)arrowPos.x, (int)arrowPos.y, 234, 53, RenderHelper.animateArrow(time), 15, 256, 256);
             guiGraphics.pose().popPose();
 
             if (!highlighted.isEmpty())
@@ -329,8 +327,8 @@ public class RecipeRenderHandler
                     IngredientWithSize ingredient = inputs.get(row * maxPerRow + col);
                     ItemStack stack = RenderHelper.getStackAtCurrentTime(ingredient);
 
-                    guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, x - 1, y - 1, 18, 18);
-                    guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+                    guiGraphics.blitSprite(BioSlot.FRAME, x - 1, y - 1, 18, 18);
+                    guiGraphics.blitSprite(BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
                     guiGraphics.renderItem(stack, x, y);
                     if (mouseX >= xPos + x && mouseY >= yPos + y && mouseX <= xPos + x + 16 && mouseY <= yPos + y + 16)
@@ -339,8 +337,8 @@ public class RecipeRenderHandler
                 drawn += squaresInRow;
             }
 
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 50, 74, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 50, 74, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 50, 74, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 50, 74, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
             guiGraphics.renderItem(result, 51, 75);
             if (mouseX >= xPos + 50 && mouseY >= yPos + 74 && mouseX <= xPos + 50 + 16 && mouseY <= yPos + 74 + 16)
@@ -354,7 +352,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.TIME, 10, 55, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 10, 55, 0, 0, 8, 8, 16, 16,16, 16);
             guiGraphics.drawString(mc.font, Component.literal(Integer.toString(chamberRecipe.getResources().time())), 20, 55, 0, false);
             guiGraphics.pose().popPose();
 
@@ -395,15 +393,15 @@ public class RecipeRenderHandler
             IngredientWithSize ingredient = crusherRecipe.input();
             ItemStack stack = RenderHelper.getStackAtCurrentTime(ingredient);
 
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
             guiGraphics.renderItem(stack, 42, 35);
             if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
                 highlighted = stack.copy();
 
             stack = crusherRecipe.result();
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 10 - 1, 80 - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 10 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 10 - 1, 80 - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 10 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
             guiGraphics.renderItem(stack, 10, 80);
             if (mouseX >= xPos + 10 && mouseY >= yPos + 80 && mouseX <= xPos + 10 + 16 && mouseY <= yPos + 80 + 16)
                 highlighted = stack.copy();
@@ -416,8 +414,8 @@ public class RecipeRenderHandler
                 stack = secondaryResult.stack();
                 int x = 60 + q % 2 * 19;
                 int y = 80 + q / 2 * 30;
-                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, x - 1, y - 1, 18, 18);
-                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+                guiGraphics.blitSprite(BioSlot.FRAME, x - 1, y - 1, 18, 18);
+                guiGraphics.blitSprite(BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
                 guiGraphics.renderItem(stack, x, y);
                 guiGraphics.drawString(mc.font, Component.literal(String.format("%.1f", secondaryResult.chance() * 100) + "%"), x - 2, y + 20, -1, false);
                 if (mouseX >= xPos + x && mouseY >= yPos + y && mouseX <= xPos + x + 16 && mouseY <= yPos + y + 16)
@@ -483,9 +481,9 @@ public class RecipeRenderHandler
                 guiGraphics.pose().popPose();
             }
 
-            guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
 
-            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, 5, 62, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 62, 0, 0, 8, 8, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(crusherRecipe.getResources().time())), 15, 62, 0, false);
 
             guiGraphics.pose().popPose();
@@ -529,16 +527,16 @@ public class RecipeRenderHandler
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(xPos, yPos, 0);
 
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
             ItemStack stack = RenderHelper.getStackAtCurrentTime(input);
             guiGraphics.renderItem(stack, 42, 35);
             if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
                 highlighted = stack.copy();
 
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 80 - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 80 - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
             stack = result;
             guiGraphics.renderItem(stack, 42, 80);
@@ -612,7 +610,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(forgeRecipe.getResources().time())), 5, 65, 0, false);
 
             guiGraphics.pose().popPose();
@@ -655,8 +653,8 @@ public class RecipeRenderHandler
 
             guiGraphics.pose().pushPose();
             guiGraphics.pose().translate(xPos, yPos, 0);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
             guiGraphics.renderItem(stack, 42, 35);
             if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
@@ -732,7 +730,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(stomachRecipe.getResources().time())), 5, 65, 0, false);
 
             guiGraphics.pose().popPose();
@@ -775,8 +773,8 @@ public class RecipeRenderHandler
 			
 			guiGraphics.pose().pushPose();
 			guiGraphics.pose().translate(xPos, yPos, 0);
-			guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
-			guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+			guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+			guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 			
 			guiGraphics.renderItem(stack, 42, 35);
 			if (mouseX >= xPos + 42 && mouseY >= yPos + 35 && mouseX <= xPos + 42 + 16 && mouseY <= yPos + 35 + 16)
@@ -843,7 +841,7 @@ public class RecipeRenderHandler
 			this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
 			guiGraphics.pose().popPose();
 			
-			guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+			guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
 			guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(squeezerRecipe.getResources().time())), 5, 65, 0, false);
 			
 			guiGraphics.pose().popPose();

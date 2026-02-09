@@ -43,7 +43,7 @@ public record C2SRecipeRequest(ResourceLocation recipeLocation) implements IPack
                 MinecraftServer server = serverPlayer.getServer();
                 if (server != null)
                     server.getRecipeManager().
-                            byKey(ResourceKey.create(Registries.RECIPE, recipeLocation())).
+                            byKey(recipeLocation()).
                             map(RecipeHolder :: value).
                             map(recipe -> (Recipe<?>)recipe).
                             ifPresent(recipe ->

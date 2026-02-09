@@ -12,17 +12,14 @@ package com.arcanc.biomorphosis.content.entity;
 import com.google.common.collect.ImmutableSet;
 import net.minecraft.Util;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.datafix.fixes.References;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
@@ -44,17 +41,14 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
                          float spawnDimensionsScale,
                          int clientTrackingRange,
                          int updateInterval,
-                         String descriptionId,
-                         Optional<ResourceKey<LootTable>> lootTable,
                          FeatureFlagSet requiredFeatures,
                          Predicate<EntityType<?>> trackDeltasSupplier,
                          ToIntFunction<EntityType<?>> trackingRangeSupplier,
                          ToIntFunction<EntityType<?>> updateIntervalSupplier,
-                         boolean onlyOpCanSetNbt,
                          EntityAttributeProvider attributeProvider,
                          EntityRendererProvider<T> rendererProvider)
     {
-        super(factory, category, serialize, summon, fireImmune, canSpawnFarFromPlayer, immuneTo, dimensions, spawnDimensionsScale, clientTrackingRange, updateInterval, descriptionId, lootTable, requiredFeatures, trackDeltasSupplier, trackingRangeSupplier, updateIntervalSupplier, onlyOpCanSetNbt);
+        super(factory, category, serialize, summon, fireImmune, canSpawnFarFromPlayer, immuneTo, dimensions, spawnDimensionsScale, clientTrackingRange, updateInterval, requiredFeatures, trackDeltasSupplier, trackingRangeSupplier, updateIntervalSupplier);
 		this.clazz = clazz;
         this.entityAttributeProvider = attributeProvider;
         this.rendererProvider = rendererProvider;
@@ -221,13 +215,6 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> noLootTable()
-        {
-            super.noLootTable();
-            return this;
-        }
-
-        @Override
         public @NotNull BioEntityType.BioTypeBuilder<T> setUpdateInterval(int interval)
         {
             super.setUpdateInterval(interval);
@@ -248,13 +235,6 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
             return this;
         }
 
-        @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> setOnlyOpCanSetNbt(boolean onlyOpCanSetNbt)
-        {
-            super.setOnlyOpCanSetNbt(onlyOpCanSetNbt);
-            return this;
-        }
-
         public @NotNull BioEntityType.BioTypeBuilder<T> attributeProvider(@NotNull EntityAttributeProvider attributeProvider)
         {
             this.attributeProvider = attributeProvider;
@@ -268,13 +248,11 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
         }
 
         @Override
-        public @NotNull BioEntityType<T> build(@NotNull ResourceKey<EntityType<?>> entityType)
+        public @NotNull BioEntityType<T> build(@NotNull String key)
         {
             if (this.serialize)
-                Util.fetchChoiceType(References.ENTITY_TREE, entityType.location().toString());
-
-            this.descriptionId = resourceKey -> resourceKey.location().getNamespace() + "." + "entity" + "." +  resourceKey.location().getPath().replace('/', '.');
-
+                Util.fetchChoiceType(References.ENTITY_TREE, key);
+            
             return new BioEntityType<>(
 					this.clazz,
                     this.factory,
@@ -288,13 +266,10 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
                     this.spawnDimensionsScale,
                     this.clientTrackingRange,
                     this.updateInterval,
-                    this.descriptionId.get(entityType),
-                    this.lootTable.get(entityType),
                     this.requiredFeatures,
                     this.velocityUpdateSupplier,
                     this.trackingRangeSupplier,
                     this.updateIntervalSupplier,
-                    this.onlyOpCanSetNbt,
                     this.attributeProvider,
                     this.rendererProvider
             );

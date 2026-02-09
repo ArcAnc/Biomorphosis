@@ -93,13 +93,13 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
                     {
                         BlockPos masterPos = interaction.getGuiMaster().getBlockPos();
                         serverPlayer.openMenu(interaction, byteBuf -> byteBuf.writeBlockPos(masterPos));
-                        return InteractionResult.SUCCESS_SERVER;
+                        return InteractionResult.CONSUME;
                     }
                 }
                 else
                 {
                     serverPlayer.openMenu(menuProvider);
-                    return InteractionResult.SUCCESS_SERVER;
+                    return InteractionResult.CONSUME;
                 }
             }
             return InteractionResult.SUCCESS;

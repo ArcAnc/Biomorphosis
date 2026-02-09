@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.block;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +19,6 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -65,24 +62,23 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
         }
         return state;
     }
-
+    
+    
     @Override
     protected @NotNull BlockState updateShape(@NotNull BlockState state,
-                                              @NotNull LevelReader level,
-                                              @NotNull ScheduledTickAccess scheduledTickAccess,
-                                              @NotNull BlockPos pos,
                                               @NotNull Direction direction,
-                                              @NotNull BlockPos neighborPos,
                                               @NotNull BlockState neighborState,
-                                              @NotNull RandomSource random)
+                                              @NotNull LevelAccessor level,
+                                              @NotNull BlockPos pos,
+                                              @NotNull BlockPos neighborPos)
     {
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED) && state.getValue(BlockHelper.BlockProperties.WATERLOGGED))
         {
-            scheduledTickAccess.getFluidTicks().schedule(new ScheduledTick<>(Fluids.WATER, pos, Fluids.WATER.getTickDelay(level), 0));
+            level.getFluidTicks().schedule(new ScheduledTick<>(Fluids.WATER, pos, Fluids.WATER.getTickDelay(level), 0));
         }
-        return super.updateShape(state, level, scheduledTickAccess, pos, direction, neighborPos, neighborState, random);
+        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
-
+    
     @Override
     public @NotNull FluidState getFluidState(@NotNull BlockState state)
     {

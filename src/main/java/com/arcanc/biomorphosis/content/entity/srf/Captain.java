@@ -22,12 +22,14 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.creaking.Creaking;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -55,7 +57,6 @@ public class Captain extends AbstractPalladin implements Merchant
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Creaking.class, 8.0F, 1.0, 1.2));
 		this.goalSelector.addGoal(2, new ReturnGoal(this, 1.2d));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2d, true));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 12.0f));
@@ -69,7 +70,7 @@ public class Captain extends AbstractPalladin implements Merchant
 						5,
 						true,
 						false,
-						(entity, level) ->
+						entity ->
 								!(entity instanceof Creeper) &&
 										!(entity instanceof AbstractVillager)
 				)
@@ -159,12 +160,6 @@ public class Captain extends AbstractPalladin implements Merchant
 	public boolean isClientSide()
 	{
 		return this.level().isClientSide();
-	}
-	
-	@Override
-	public boolean stillValid(@NotNull Player player)
-	{
-		return this.getTradingPlayer() == player && this.isAlive() && player.canInteractWithEntity(this, 4.0);
 	}
 	
 	@Override

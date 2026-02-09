@@ -17,7 +17,6 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.navigation.CommonInputs;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +55,7 @@ public class ChamberButtonStart extends Button
         {
             setTooltip(Tooltip.create(Component.translatable(Database.GUI.ChamberButton.PROCESS)));
 
-            guiGraphics.blit(RenderType :: guiTextured, OVERLAY,
+            guiGraphics.blit(OVERLAY,
                     this.getX(), this.getY(),
                     0,0,
                     this.getWidth(), this.getHeight(),

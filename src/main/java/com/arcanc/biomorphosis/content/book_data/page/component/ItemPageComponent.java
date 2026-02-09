@@ -26,7 +26,7 @@ public class ItemPageComponent extends AbstractPageComponent
     {
         super(0, 0, 18, 18, Component.empty());
 
-        this.item = new ItemStack(BuiltInRegistries.ITEM.getValue(location));
+        this.item = new ItemStack(BuiltInRegistries.ITEM.get(location));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class ItemPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
     {
 
     }

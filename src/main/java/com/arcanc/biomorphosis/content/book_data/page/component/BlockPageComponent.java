@@ -26,7 +26,7 @@ public class BlockPageComponent extends AbstractPageComponent
     {
         super(0, 0, 18, 18, Component.empty());
 
-        this.block = new ItemStack(BuiltInRegistries.BLOCK.getValue(location));
+        this.block = new ItemStack(BuiltInRegistries.BLOCK.get(location));
     }
 
     @Override

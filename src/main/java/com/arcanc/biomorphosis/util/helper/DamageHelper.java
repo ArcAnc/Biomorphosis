@@ -44,11 +44,11 @@ public class DamageHelper
 		return dealDamage(source, amount, target);
 	}
 	
-	private static boolean dealDamage(DamageSource source, int amount, @NotNull Entity target)
+	public static boolean dealDamage(DamageSource source, float amount, @NotNull Entity target)
 	{
 		Level level = target.level();
-		if (!(level instanceof ServerLevel serverLevel))
-			return target.hurtClient(source);
-		return target.hurtServer(serverLevel, source, amount);
+		//if (!(level instanceof ServerLevel serverLevel))
+		//	return target.hurt(source, amount);
+		return target.hurt(source, amount);
 	}
 }

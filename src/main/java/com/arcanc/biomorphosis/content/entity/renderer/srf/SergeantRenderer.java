@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.entity.renderer.srf;
 
 
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SergeantModel;
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.SergeantRenderState;
 import com.arcanc.biomorphosis.content.entity.srf.Sergeant;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class SergeantRenderer extends LivingEntityRenderer<Sergeant, SergeantRenderState, SergeantModel>
+public class SergeantRenderer extends LivingEntityRenderer<Sergeant, SergeantModel>
 {
 	private static final ResourceLocation TEXTURE = Database.rl("textures/entity/srf/sergeant.png");
 	
@@ -29,20 +28,14 @@ public class SergeantRenderer extends LivingEntityRenderer<Sergeant, SergeantRen
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Sergeant mob, double distance)
+	protected boolean shouldShowName(@NotNull Sergeant entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull SergeantRenderState renderState)
+	public @NotNull ResourceLocation getTextureLocation(@NotNull Sergeant entity)
 	{
 		return TEXTURE;
-	}
-	
-	@Override
-	public @NotNull SergeantRenderState createRenderState()
-	{
-		return new SergeantRenderState();
 	}
 }

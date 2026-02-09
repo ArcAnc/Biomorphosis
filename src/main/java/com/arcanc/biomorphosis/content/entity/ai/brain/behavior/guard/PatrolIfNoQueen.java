@@ -75,7 +75,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected boolean checkExtraStartConditions(ServerLevel level, QueenGuard owner)
+	protected boolean checkExtraStartConditions(@NotNull ServerLevel level, @NotNull QueenGuard owner)
 	{
 		if (this.remainingCooldown > 0)
 		{
@@ -104,7 +104,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected boolean canStillUse(ServerLevel level, QueenGuard entity, long gameTime)
+	protected boolean canStillUse(@NotNull ServerLevel level, @NotNull QueenGuard entity, long gameTime)
 	{
 		if (this.path != null && this.lastTargetPos != null)
 		{

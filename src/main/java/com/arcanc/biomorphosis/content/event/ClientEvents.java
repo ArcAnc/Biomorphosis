@@ -66,7 +66,6 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: registerRenderers);
         modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
         modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
-        modEventBus.addListener(ClientEvents :: setupItemColor);
         modEventBus.addListener(ClientEvents :: setupModels);
         modEventBus.addListener(ClientEvents :: registerMenuScreens);
         modEventBus.addListener(ClientEvents :: registerItemSpecialRenderers);
@@ -78,34 +77,34 @@ public final class ClientEvents
         NeoForge.EVENT_BUS.addListener(ClientEvents :: receiveRecipesEvent);
     }
 	
-	private static void receiveRecipesEvent(final @NotNull RecipesReceivedEvent event)
+	private static void receiveRecipesEvent(final @NotNull RecipesUpdatedEvent event)
     {
         ChamberRecipe.RECIPES.clear();
-        ChamberRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
+        ChamberRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());
 
         CrusherRecipe.RECIPES.clear();
-        CrusherRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get()).
+        CrusherRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());
 	    
 	    SqueezerRecipe.RECIPES.clear();
-	    SqueezerRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get()).
+	    SqueezerRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get()).
 			    stream().
 			    map(RecipeHolder :: value).
 			    toList());
 		
         StomachRecipe.RECIPES.clear();
-        StomachRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get()).
+        StomachRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());
 
         ForgeRecipe.RECIPES.clear();
-        ForgeRecipe.RECIPES.addAll(event.getRecipeMap().byType(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get()).
+        ForgeRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).
                 toList());
@@ -134,11 +133,6 @@ public final class ClientEvents
                             ItemBlockRenderTypes.setRenderLayer(fluid, RenderType.translucent())
                     );
         });
-    }
-
-    private static void setupItemColor(final @NotNull RegisterColorHandlersEvent.ItemTintSources event)
-    {
-
     }
 
     private static void registerRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
@@ -180,7 +174,7 @@ public final class ClientEvents
 		event.registerLayerDefinition(BlacksmithModel.LAYER_LOCATION, BlacksmithModel :: createMesh);
     }
 
-    private static void gatherData(final @NotNull GatherDataEvent.Client event)
+    private static void gatherData(final @NotNull GatherDataEvent event)
     {
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();

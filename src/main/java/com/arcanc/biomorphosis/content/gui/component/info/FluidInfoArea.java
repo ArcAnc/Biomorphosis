@@ -10,13 +10,13 @@
 package com.arcanc.biomorphosis.content.gui.component.info;
 
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
@@ -113,7 +113,7 @@ public class FluidInfoArea extends InfoArea
 
         guiGraphics.pose().pushPose();
 
-        guiGraphics.blit(RenderType :: guiTextured,
+        guiGraphics.blit(
                 this.overlayTexture,
                 this.area.getX(),
                 this.area.getY(),
@@ -129,11 +129,16 @@ public class FluidInfoArea extends InfoArea
             int color = renderProps.getTintColor();
             ResourceLocation texture = renderProps.getStillTexture();
             TextureAtlasSprite still = mc.getTextureAtlas(TextureAtlas.LOCATION_BLOCKS).apply(texture);
-
-            guiGraphics.blitSprite(RenderType :: guiTextured, still, this.area.getX(), (int)f, this.area.getWidth(), (int)f1, color);
+            
+            float red = MathHelper.ColorHelper.redFloat(color);
+            float green = MathHelper.ColorHelper.greenFloat(color);
+            float blue = MathHelper.ColorHelper.blueFloat(color);
+            float alpha = MathHelper.ColorHelper.alphaFloat(color);
+            
+            guiGraphics.blit(this.area.getX(), (int)f, 0, this.area.getWidth(), (int)f1, still, red, green, blue, alpha);
         }
 
-        guiGraphics.blit(RenderType :: guiTextured,
+        guiGraphics.blit(
                 this.overlayTexture,
                 this.area.getX(), this.area.getY(),
                 40, 0,

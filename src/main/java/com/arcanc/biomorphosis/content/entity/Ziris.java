@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
@@ -66,12 +65,6 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     }
 
     //Копипаста из ванилы
-
-    private boolean canAttack(ServerLevel level, LivingEntity entity, @NotNull TargetingConditions targetingConditions)
-    {
-        return targetingConditions.test(level, this, entity);
-    }
-
     private enum AttackPhase
     {
         CIRCLE,
@@ -86,7 +79,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
         public boolean canUse()
         {
             LivingEntity livingentity = Ziris.this.getTarget();
-            return livingentity != null && Ziris.this.canAttack(getServerLevel(Ziris.this.level()), livingentity, TargetingConditions.DEFAULT);
+            return livingentity != null && Ziris.this.canAttack(livingentity, TargetingConditions.DEFAULT);
         }
 
         @Override
@@ -193,13 +186,8 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
                 }
             }
         }
-
-        @Override
-        public void start()
-        {
-        }
-
-        @Override
+	    
+	    @Override
         public void stop()
         {
             Ziris.this.setTarget(null);
@@ -215,7 +203,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
                 Ziris.this.moveTargetPoint = new Vec3(livingentity.getX(), livingentity.getY(0.5), livingentity.getZ());
                 if (Ziris.this.getBoundingBox().inflate(0.2F).intersects(livingentity.getBoundingBox()))
                 {
-                    Ziris.this.doHurtTarget(getServerLevel(Ziris.this.level()), livingentity);
+                    Ziris.this.doHurtTarget(livingentity);
                     Ziris.this.attackPhase = Ziris.AttackPhase.CIRCLE;
                     if (!Ziris.this.isSilent())
                         Ziris.this.level().levelEvent(1039, Ziris.this.blockPosition(), 0);
@@ -315,14 +303,13 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
             else
             {
                 this.nextScanTick = reducedTickDelay(60);
-                ServerLevel serverlevel = getServerLevel(Ziris.this.level());
-                List<Player> list = serverlevel.getNearbyPlayers(this.attackTargeting, Ziris.this, Ziris.this.getBoundingBox().inflate(16.0, 64.0, 16.0));
+                List<Player> list = level().getNearbyPlayers(this.attackTargeting, Ziris.this, Ziris.this.getBoundingBox().inflate(16.0, 64.0, 16.0));
                 if (!list.isEmpty())
                 {
                     list.sort(Comparator.<Player, Double>comparing(Entity::getY).reversed());
 
                     for (Player player : list) {
-                        if (Ziris.this.canAttack(serverlevel, player, TargetingConditions.DEFAULT))
+                        if (Ziris.this.canAttack(player, TargetingConditions.DEFAULT))
                         {
                             Ziris.this.setTarget(player);
                             return true;
@@ -337,7 +324,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
         public boolean canContinueToUse()
         {
             LivingEntity livingentity = Ziris.this.getTarget();
-            return livingentity != null && Ziris.this.canAttack(getServerLevel(Ziris.this.level()), livingentity, TargetingConditions.DEFAULT);
+            return livingentity != null && Ziris.this.canAttack(livingentity, TargetingConditions.DEFAULT);
         }
     }
 
@@ -409,15 +396,15 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
         compound.putInt("AY", this.anchorPoint.getY());
         compound.putInt("AZ", this.anchorPoint.getZ());
     }
-
+    
+    @SuppressWarnings("deprecation")
     @Override
     public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
                                                   @NotNull DifficultyInstance difficulty,
-                                                  @NotNull EntitySpawnReason spawnReason,
-                                                  @Nullable SpawnGroupData spawnGroupData)
+                                                  @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData)
     {
         this.anchorPoint = this.blockPosition().above(5);
-        return super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
+        return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
     }
 
     @Override

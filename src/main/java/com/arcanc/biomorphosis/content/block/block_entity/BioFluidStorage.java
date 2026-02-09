@@ -98,7 +98,7 @@ public class BioFluidStorage extends BioSidedAccessBlockEntity
             {
                 Level level = ctx.getLevel();
                 if (level.isClientSide())
-                    return InteractionResult.CONSUME;
+                    return InteractionResult.SUCCESS;
 
                 List<Vec3> positions = stack.has(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
                         ? new ArrayList<>(stack.get(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA))
@@ -111,14 +111,14 @@ public class BioFluidStorage extends BioSidedAccessBlockEntity
                 else
 					positions.set(1, getBlockPos().getBottomCenter());
                 stack.set(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA, ImmutableList.copyOf(positions));
-                return InteractionResult.SUCCESS_SERVER;
+                return InteractionResult.CONSUME;
             }
             else
             {
                 if (!(dir == Direction.UP) && !(dir == Direction.DOWN))
                     return InteractionResult.PASS;
                 nextMode(dir);
-                return InteractionResult.SUCCESS;
+                return InteractionResult.sidedSuccess(ctx.getLevel().isClientSide());
             }
         }
         return InteractionResult.PASS;

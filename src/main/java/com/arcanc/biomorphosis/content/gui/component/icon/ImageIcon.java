@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.gui.component.icon;
 
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,6 +29,6 @@ public class ImageIcon implements Icon
     @Override
     public void render(@NotNull GuiGraphics graphics, int xPos, int yPos, int width, int height)
     {
-        graphics.blit(RenderType :: guiTextured, image, xPos, yPos, 0, 0, imgWidth, imgHeight, width, height, imgWidth, imgHeight);
+        graphics.blit(this.image, xPos, yPos, 0, 0, this.imgWidth, this.imgHeight, width, height, this.imgWidth, this.imgHeight);
     }
 }

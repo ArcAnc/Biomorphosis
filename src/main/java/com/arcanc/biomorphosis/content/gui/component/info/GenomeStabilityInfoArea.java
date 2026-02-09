@@ -26,6 +26,7 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -69,7 +70,10 @@ public class GenomeStabilityInfoArea extends InfoArea
 		RegistryAccess registries = listener.registryAccess();
 		for (GeneInstance gene : genome.geneInstances())
 		{
-			GeneDefinition geneDefinition = registries.lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).getValue(gene.id());
+			GeneDefinition geneDefinition = registries.
+					lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
+					getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, gene.id())).
+					value();
 			if (geneDefinition == null)
 				continue;
 			GeneDefinition.RarityData data = geneDefinition.rarityData().get(gene.rarity());

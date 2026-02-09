@@ -46,11 +46,11 @@ public interface Icon
                 switch (type)
                 {
                     case "item":
-                        Item item = BuiltInRegistries.ITEM.getValue(ResourceLocation.parse(data));
+                        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.parse(data));
                         result.add(new ItemIcon(item));
                         break;
                     case "block":
-                        Block block = BuiltInRegistries.BLOCK.getValue(ResourceLocation.parse(data));
+                        Block block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse(data));
                         result.add(new BlockIcon(block));
                         break;
                     case "image":

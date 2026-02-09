@@ -42,13 +42,12 @@ public class AbstractPalladin extends PathfinderMob
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public @Nullable SpawnGroupData finalizeSpawn(
-			@NotNull ServerLevelAccessor level,
-			@NotNull DifficultyInstance difficulty,
-			@NotNull EntitySpawnReason spawnReason,
-			@Nullable SpawnGroupData spawnGroupData)
+	public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
+	                                              @NotNull DifficultyInstance difficulty,
+	                                              @NotNull MobSpawnType spawnType,
+	                                              @Nullable SpawnGroupData spawnGroupData)
 	{
-		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnReason, spawnGroupData);
+		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
 		
 		if (this.guardPos == null)
 			this.guardPos = this.blockPosition();

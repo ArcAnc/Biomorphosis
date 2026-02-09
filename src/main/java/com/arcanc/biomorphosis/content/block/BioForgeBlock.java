@@ -23,6 +23,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -119,21 +120,21 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack,
-                                                   @NotNull BlockState state,
-                                                   @NotNull Level level,
-                                                   @NotNull BlockPos pos,
-                                                   @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult)
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
+                                                       @NotNull BlockState state,
+                                                       @NotNull Level level,
+                                                       @NotNull BlockPos pos,
+                                                       @NotNull Player player,
+                                                       @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult)
     {
         if (FluidHelper.isFluidHandler(stack))
         {
             if (level.isClientSide())
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             else
                 return FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection()) ?
-                        InteractionResult.SUCCESS_SERVER :
+                        ItemInteractionResult.CONSUME :
                         super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         }
         else if (stack.is(Registration.ItemReg.FORGE_UPGRADE))
@@ -147,12 +148,12 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
             level.setBlockAndUpdate(pos, state.setValue(DOUBLE, true));
             player.getItemInHand(hand).shrink(1);
             
-            return InteractionResult.SUCCESS;
+            return ItemInteractionResult.sidedSuccess(level.isClientSide());
         }
         else
         {
             if (level.isClientSide())
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             else
             {
                 ItemStack returnedStack = ItemHelper.getItemHandler(level, pos).map(handler ->
@@ -163,7 +164,7 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
                 else
                 {
                     player.setItemInHand(hand, returnedStack);
-                    return InteractionResult.SUCCESS_SERVER;
+                    return ItemInteractionResult.CONSUME;
                 }
 
             }
@@ -190,7 +191,7 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
                                 return extracted;
                             }).
                             orElse(ItemStack.EMPTY));
-                    return InteractionResult.SUCCESS_SERVER;
+                    return InteractionResult.CONSUME;
                 }
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);

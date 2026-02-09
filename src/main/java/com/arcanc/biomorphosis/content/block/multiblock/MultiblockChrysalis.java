@@ -34,7 +34,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.Mth;
 import net.minecraft.world.BossEvent;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -52,7 +51,6 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import java.util.List;
 import java.util.UUID;
 
 public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBlockEntity, BlockInterfaces.IInteractionObject<MultiblockChrysalis>
@@ -160,7 +158,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 		serverPlayer.removeEffect(MobEffects.WEAKNESS);
 		
 		BlockState state = this.getBlockState();
-		Direction facing = state.getValueOrElse(BlockHelper.BlockProperties.HORIZONTAL_FACING, Direction.NORTH);
+		Direction facing = state.getValue(BlockHelper.BlockProperties.HORIZONTAL_FACING);
 		BlockPos pos = this.getMasterPos().map(blockPos -> blockPos.relative(facing, 2)).
 				orElse(BlockPos.ZERO);
 		serverPlayer.teleportTo(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);

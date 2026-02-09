@@ -29,17 +29,17 @@ public class MoveToLureGoal extends Goal
     @Override
     public boolean canUse()
     {
-        return mob.getLurePos() != null;
+        return this.mob.getLurePos() != null;
     }
 
     @Override
     public void start()
     {
-        if (mob.getLurePos() != null)
-            if (!mob.isFindLure())
-                mob.getNavigation().moveTo(mob.getLurePos().getX(), mob.getLurePos().getY(), mob.getLurePos().getZ(), speed);
+        if (this.mob.getLurePos() != null)
+            if (!this.mob.isFindLure())
+                this.mob.getNavigation().moveTo(this.mob.getLurePos().getX(), this.mob.getLurePos().getY(), this.mob.getLurePos().getZ(), this.speed);
             else
-                mob.getNavigation().moveTo(mob.getSpawnPos().getX(), mob.getSpawnPos().getY(), mob.getSpawnPos().getZ(), speed * 1.2f);
+                this.mob.getNavigation().moveTo(this.mob.getSpawnPos().getX(), this.mob.getSpawnPos().getY(), this.mob.getSpawnPos().getZ(), this.speed * 1.2f);
     }
 
     @Override

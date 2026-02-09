@@ -34,7 +34,7 @@ public class ChamberProgressArea extends ProgressInfoArea
         int current = this.info.current().get();
         int max = this.info.max().get();
 
-        guiGraphics.blit(RenderType:: guiTextured, this.progressTexture,
+        guiGraphics.blit(this.progressTexture,
                 this.area.getX(), this.area.getY(),
                 0, 0,
                 this.area.getWidth(), this.area.getHeight(),
@@ -57,13 +57,14 @@ public class ChamberProgressArea extends ProgressInfoArea
         float xPosition = this.area.getX() + (2 + length) * scale.x();
         float yPosition = this.area.getY() + 3 * scale.y();
 
-        RenderHelper.blit(guiGraphics,
-                RenderType :: guiTextured,
+        RenderHelper.blit(
+                guiGraphics,
                 this.progressTexture,
                 xPosition,
                 yPosition,
                 41, 3,
                 scale.x() * 6, scale.y() * 6,
+                0,
                 6, 6,
                 64, 16,
                 color);

@@ -15,6 +15,7 @@ import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.LazyDataLoader;
+import com.arcanc.biomorphosis.util.helper.DamageHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
@@ -23,7 +24,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -148,7 +148,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             return;
         if (this.level.getGameTime() % TICK_PERIOD != 0)
             return;
-        this.entity.hurtServer((ServerLevel) this.level, this.level.damageSources().stalagmite(), 1.0f);
+        DamageHelper.dealDamage(this.level.damageSources().stalagmite(), 1.0f, this.entity);
         this.fluidHandler.fill(new FluidStack(Registration.FluidReg.ADRENALINE.still(), 5), IFluidHandler.FluidAction.EXECUTE);
         markDirty();
     }

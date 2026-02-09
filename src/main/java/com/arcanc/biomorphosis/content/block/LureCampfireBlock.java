@@ -18,6 +18,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,24 +48,27 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack,
-                                                   @NotNull BlockState state,
-                                                   @NotNull Level level,
-                                                   @NotNull BlockPos pos,
-                                                   @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult)
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
+                                                       @NotNull BlockState state,
+                                                       @NotNull Level level,
+                                                       @NotNull BlockPos pos,
+                                                       @NotNull Player player,
+                                                       @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult)
     {
         return BlockHelper.castTileEntity(level, pos, LureCampfireBE.class).
                 map(lureCampfireBE ->
                 {
                     if (!(level instanceof ServerLevel serverLevel))
-                        return InteractionResult.SUCCESS;
+                        return ItemInteractionResult.SUCCESS;
                     if (stack.is(Registration.BlockReg.FLESH.asItem()))
                     {
                         LureCampfireBE.UsingResult result = lureCampfireBE.addMeat(stack, player);
                         if (result.added())
-                            return InteractionResult.SUCCESS_SERVER.heldItemTransformedTo(result.stack());
+                        {
+                            player.setItemInHand(hand, result.stack());
+                            return ItemInteractionResult.CONSUME;
+                        }
                     }
                     else if (stack.is(Tags.Items.TOOLS_IGNITER))
                     {
@@ -73,7 +77,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
                         {
                             stack.hurtAndBreak(1, serverLevel, player, item -> {});
                             serverLevel.setBlockAndUpdate(pos, state.setValue(LIT, true));
-                            return InteractionResult.SUCCESS_SERVER;
+                            return ItemInteractionResult.CONSUME;
                         }
                     }
                     return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
@@ -90,7 +94,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
                 if (state.getValue(LIT))
                 {
                     level.setBlockAndUpdate(pos, state.setValue(LIT, false));
-                    return InteractionResult.SUCCESS.withoutItem();
+                    return InteractionResult.sidedSuccess(level.isClientSide());
                 }
                 return InteractionResult.PASS;
             }).

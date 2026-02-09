@@ -86,7 +86,7 @@ public class Worker extends Monster implements GeoEntity
 				5,
 				true,
 				true,
-				(entity, level) ->
+				entity ->
 						!entity.getType().is(BioEntityTags.SWARM) &&
 								!(entity instanceof Creeper)));
 	}

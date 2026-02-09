@@ -29,11 +29,12 @@ public class TextPageComponent extends AbstractPageComponent
     {
 		Component comp = getMessage().copy();//.withStyle(style -> style.withFont(GuideScreen.BIOFONT));
         if (!comp.getString().isBlank())
-            guiGraphics.drawWordWrap(RenderHelper.mc().font, comp, getX(), getY(), getWidth(), Color.black.getRGB(), false);
+            guiGraphics.drawWordWrap(RenderHelper.mc().font, comp, getX(), getY(), getWidth(), Color.black.getRGB());
     }
 
     @Override
-    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput) {
+    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    {
 
     }
 }

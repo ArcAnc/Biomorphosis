@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -23,14 +24,10 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.util.ARGB;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
@@ -132,8 +129,8 @@ public class OverlayRenderHandler
 			poseStack.pushPose();
 			poseStack.translate(currentPos.x(), currentPos.y(), 0);
 			
-			guiGraphics.blit(
-					RenderType :: guiTextured,
+			RenderHelper.blit(
+					guiGraphics,
 					ADVANCEMENT_BACKGROUND,
 					0, 0,
 					0, 0,
@@ -142,8 +139,8 @@ public class OverlayRenderHandler
 					256, 64,
 					color);
 			
-			guiGraphics.blit(
-					RenderType :: guiTextured,
+			RenderHelper.blit(
+					guiGraphics,
 					info.object.getImageLocation(),
 					17, 18,
 					0, 0,
@@ -162,7 +159,7 @@ public class OverlayRenderHandler
 			poseStack.translate(37, 28, 0);
 			poseStack.scale(0.5f, 0.5f, 0.5f);
 			//х2 because of scale
-			guiGraphics.drawWordWrap(font, info.object.getAdditionalInfo(), 0, 0, (int)(ADVANCEMENT_SIZE.x() - 21) * 2, color, false);
+			guiGraphics.drawWordWrap(font, info.object.getAdditionalInfo(), 0, 0, (int)(ADVANCEMENT_SIZE.x() - 21) * 2, color);
 			poseStack.popPose();
 			
 			poseStack.popPose();
@@ -205,9 +202,9 @@ public class OverlayRenderHandler
 		
 		private enum AdvancementRenderState
 		{
-			EMERGING (10, info -> ARGB.colorFromFloat(info.currentTimer / info.state.getTime(), 1f, 1f, 1f)),
+			EMERGING (10, info -> MathHelper.ColorHelper.colorFromFloat(info.currentTimer / info.state.getTime(), 1f, 1f, 1f)),
 			SHOWING (5 * 20, info -> -1),
-			HIDING(4 * 20, info -> ARGB.colorFromFloat(1 - (info.currentTimer / info.state.getTime()), 1f, 1f, 1f));
+			HIDING(4 * 20, info -> MathHelper.ColorHelper.colorFromFloat(1 - (info.currentTimer / info.state.getTime()), 1f, 1f, 1f));
 			
 			private final int time;
 			private final Function<AdvancementInfo<?>, Integer> color;
@@ -332,7 +329,7 @@ public class OverlayRenderHandler
 					
 					int textHeight = mc.font.split(str, scaledWidth).size() * mc.font.lineHeight;
 					
-					guiGraphics.drawWordWrap(mc.font, str, scaledWidth / 4, scaledHeight - textHeight - 20 - leftHeight(), scaledWidth / 2, -1, false);
+					guiGraphics.drawWordWrap(mc.font, str, scaledWidth / 4, scaledHeight - textHeight - 20 - leftHeight(), scaledWidth / 2, -1);
 				}
 			}
 			else
@@ -368,7 +365,7 @@ public class OverlayRenderHandler
 					}
 					
 					int textHeight = mc.font.split(str, scaledWidth).size() * mc.font.lineHeight;
-					guiGraphics.drawWordWrap(mc.font, str, scaledWidth / 4, scaledHeight - textHeight - 20 - leftHeight(), scaledWidth / 2, -1, false);
+					guiGraphics.drawWordWrap(mc.font, str, scaledWidth / 4, scaledHeight - textHeight - 20 - leftHeight(), scaledWidth / 2, -1);
 					
 				}
 			}

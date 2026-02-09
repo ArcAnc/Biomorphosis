@@ -32,7 +32,7 @@ public class ItemIcon implements Icon
         graphics.pose().pushPose();
         graphics.pose().translate(xPos, yPos, 0.f);
         graphics.pose().scale(scaleX, scaleY, 1.f);
-        graphics.renderItem(item, 0,0);
+        graphics.renderItem(this.item, 0,0);
         graphics.pose().popPose();
     }
 }

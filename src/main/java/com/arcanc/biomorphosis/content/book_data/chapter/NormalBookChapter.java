@@ -14,12 +14,11 @@ import com.arcanc.biomorphosis.content.book_data.BookData;
 import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.content.gui.component.icon.Icon;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class NormalBookChapter extends AbstractBookChapter
     @Override
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-        guiGraphics.blit(RenderType :: guiTextured,
+        guiGraphics.blit(
                 GuideScreen.TEXT,
                 this.getX(),
                 this.getY(),
@@ -58,7 +57,7 @@ public class NormalBookChapter extends AbstractBookChapter
                 this.getHeight(),
                 256,
                 256,
-                ARGB.color(isActive() ? 255 : (int)(255 * 0.55f), isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f)));
+                MathHelper.ColorHelper.color(isActive() ? 255 : (int)(255 * 0.55f), isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f)));
 
         if (icon != null)
             icon.render(guiGraphics, this.getX() + 1, this.getY() + 1, 18, 18);

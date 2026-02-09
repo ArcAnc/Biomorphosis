@@ -10,9 +10,9 @@
 package com.arcanc.biomorphosis.content.fluid;
 
 import com.arcanc.biomorphosis.util.helper.MathHelper;
+import com.mojang.blaze3d.shaders.FogShape;
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.FogRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -20,6 +20,7 @@ import net.neoforged.neoforge.fluids.FluidType;
 import org.apache.commons.lang3.function.TriFunction;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 public class BioFluidType extends FluidType
@@ -31,9 +32,9 @@ public class BioFluidType extends FluidType
     protected final FogOptionsGetter fogOptions;
     protected final ColorParams colorParams;
 
-    public BioFluidType(final ResourceLocation stillTexture,
-                        final ResourceLocation flowingTexture,
-                        final ResourceLocation overlayTexture,
+    public BioFluidType(final @NotNull ResourceLocation stillTexture,
+                        final @NotNull ResourceLocation flowingTexture,
+                        final @NotNull ResourceLocation overlayTexture,
                         final ColorParams colorGetter,
                         final BioFluidType.FogGetter fogColor,
                         final FogOptionsGetter fogParameters,
@@ -76,59 +77,61 @@ public class BioFluidType extends FluidType
             {
                 return colorParams.getColor();
             }
-
+            
             @Override
-            public @NotNull Vector4f modifyFogColor(@NotNull Camera camera,
+            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera,
                                                     float partialTick,
                                                     @NotNull ClientLevel level,
                                                     int renderDistance,
                                                     float darkenWorldAmount,
-                                                    @NotNull Vector4f fluidFogColor)
+                                                    @NotNull Vector3f fluidFogColor)
 
             {
                 return fogColor.getFog(camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams);
             }
-
+            
             @Override
-            public @NotNull FogParameters modifyFogRender(@NotNull Camera camera,
-                                                          FogRenderer.@NotNull FogMode mode,
-                                                          float renderDistance,
-                                                          float partialTick,
-                                                          @NotNull FogParameters fogParameters)
+            public void modifyFogRender(@NotNull Camera camera,
+                                        FogRenderer.@NotNull FogMode mode,
+                                        float renderDistance,
+                                        float partialTick,
+                                        float nearDistance,
+                                        float farDistance,
+                                        @NotNull FogShape shape)
             {
-                return fogOptions.getFogParameters(camera, mode, renderDistance, partialTick, fogParameters, colorParams);
+                fogOptions.getFogParameters(camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams);
             }
         };
     }
 
     public ResourceLocation getStillTexture()
     {
-        return stillTexture;
+        return this.stillTexture;
     }
 
     public ResourceLocation getFlowingTexture()
     {
-        return flowingTexture;
+        return this.flowingTexture;
     }
 
     public int getTintColor()
     {
-        return colorParams.getColor();
+        return this.colorParams.getColor();
     }
 
     public ResourceLocation getOverlayTexture()
     {
-        return overlayTexture;
+        return this.overlayTexture;
     }
 
     public BioFluidType.FogGetter getFogColor()
     {
-        return fogColor;
+        return this.fogColor;
     }
 
     public interface FogGetter
     {
-        Vector4f getFog(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector4f fluidFogColor, ColorParams colorParams);
+        Vector3f getFog(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor, ColorParams colorParams);
 
         static Vector4f interColor(Vector4f curColor, @NotNull Vector4f targetColor, float delta)
         {
@@ -146,11 +149,13 @@ public class BioFluidType extends FluidType
 
     public interface FogOptionsGetter
     {
-        FogParameters getFogParameters(@NotNull Camera camera,
+        void getFogParameters(@NotNull Camera camera,
                                        FogRenderer.@NotNull FogMode mode,
                                        float renderDistance,
                                        float partialTick,
-                                       @NotNull FogParameters fogParameters,
+                                       float nearDistance,
+                                       float farDistance,
+                                       @NotNull FogShape shape,
                                        @NotNull ColorParams colorParams);
     }
 

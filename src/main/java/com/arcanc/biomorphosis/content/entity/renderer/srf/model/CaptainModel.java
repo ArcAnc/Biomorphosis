@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.entity.renderer.srf.model;
 
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.CaptainRenderState;
+import com.arcanc.biomorphosis.content.entity.srf.Captain;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -19,7 +19,7 @@ import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
 import org.jetbrains.annotations.NotNull;
 
-public class CaptainModel extends HumanoidModel<CaptainRenderState>
+public class CaptainModel extends HumanoidModel<Captain>
 {
 	public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(Database.rl("captain"), "main");
 
@@ -118,8 +118,8 @@ public class CaptainModel extends HumanoidModel<CaptainRenderState>
 	}
 	
 	@Override
-	public void setupAnim(@NotNull CaptainRenderState state)
+	public void setupAnim(@NotNull Captain entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
-		super.setupAnim(state);
+		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}
 }

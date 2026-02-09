@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.redstone.Orientation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,17 +48,17 @@ public class BioNorphDependentBlock<T extends BioBaseBlockEntity> extends BioBas
         if (!isConnectedToNorph(level, pos, state))
             dropBlock(level, pos);
     }
-
+    
     @Override
     protected void neighborChanged(@NotNull BlockState state,
                                    @NotNull Level level,
                                    @NotNull BlockPos pos,
                                    @NotNull Block neighborBlock,
-                                   @Nullable Orientation orientation,
-                                   boolean movedByPiston)
+                                   @NotNull BlockPos neighborPos, boolean movedByPiston)
     {
         if (!isConnectedToNorph(level, pos, state))
             dropBlock(level, pos);
+        super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }
 
     public boolean isConnectedToNorph(@NotNull Level level,

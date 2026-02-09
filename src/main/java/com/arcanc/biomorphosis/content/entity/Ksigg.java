@@ -17,7 +17,10 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Pose;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -63,7 +66,8 @@ public class Ksigg extends Animal implements GeoEntity
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand)
+    {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(Items.BUCKET) && !this.isBaby())
         {
@@ -71,7 +75,9 @@ public class Ksigg extends Animal implements GeoEntity
             ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MILK_BUCKET.getDefaultInstance());
             player.setItemInHand(hand, itemstack1);
             return InteractionResult.SUCCESS;
-        } else {
+        }
+        else
+        {
             return super.mobInteract(player, hand);
         }
     }
@@ -113,7 +119,7 @@ public class Ksigg extends Animal implements GeoEntity
     @Override
     public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent)
     {
-        return Registration.EntityReg.MOB_KSIGG.getEntityHolder().get().create(level, EntitySpawnReason.BREEDING);
+        return Registration.EntityReg.MOB_KSIGG.getEntityHolder().get().create(level);
     }
 
     @Override

@@ -14,11 +14,13 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreader;
 import org.jetbrains.annotations.NotNull;
 
 public class GlowMossBlock extends MultifaceBlock implements BlockInterfaces.IWrencheable
 {
     public static final MapCodec<GlowMossBlock> CODEC = simpleCodec(GlowMossBlock :: new);
+    private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public GlowMossBlock(Properties props)
     {
@@ -35,5 +37,11 @@ public class GlowMossBlock extends MultifaceBlock implements BlockInterfaces.IWr
     protected @NotNull MapCodec<GlowMossBlock> codec()
     {
         return CODEC;
+    }
+    
+    @Override
+    public @NotNull MultifaceSpreader getSpreader()
+    {
+        return this.spreader;
     }
 }

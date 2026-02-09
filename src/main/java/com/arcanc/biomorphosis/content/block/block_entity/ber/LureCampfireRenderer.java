@@ -24,7 +24,9 @@ import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
@@ -52,11 +54,12 @@ public class LureCampfireRenderer extends GeoBlockRenderer<LureCampfireBE>
             {
                 poseStack.pushPose();
                 Direction dir = animatable.getBlockState().getValue(LureCampfireBlock.HORIZONTAL_FACING);
-                poseStack.mulPose(Axis.YP.rotationDegrees(Direction.getYRot(dir)));
+                poseStack.mulPose(Axis.YP.rotationDegrees(dir.toYRot()));
                 poseStack.translate(dir.getStepZ() * (-0.3f + (q * 0.15f)), 0.9f, dir.getStepX() * (-0.3f + (q * 0.15f)));
                 poseStack.scale(0.4f, 0.4f, 0.4f);
-
-                poseStack.mulPose(Axis.of(dir.getCounterClockWise().getUnitVec3().toVector3f()).rotation(model.getBone("shaft").map(GeoBone :: getRotX).orElse(0f)));
+                
+                Vector3f vec = Vec3.atLowerCornerOf(dir.getCounterClockWise().getNormal()).toVector3f();
+                poseStack.mulPose(Axis.of(vec).rotation(model.getBone("shaft").map(GeoBone :: getRotX).orElse(0f)));
                 poseStack.translate(0.0f, -0.179f, 0.0f);
 
                 RenderHelper.renderItem().renderStatic(stack, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, animatable.getLevel(), 0);

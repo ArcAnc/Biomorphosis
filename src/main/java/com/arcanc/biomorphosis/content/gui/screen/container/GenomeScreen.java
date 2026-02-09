@@ -120,11 +120,11 @@ public class GenomeScreen extends Screen
 		super.renderMenuBackground(guiGraphics, x, y, width, height);
 		
 		RenderHelper.blit(guiGraphics,
-				RenderType :: guiTextured,
 				BioContainerScreen.BACKGROUND,
 				x, y,
 				0, 0,
 				width, height,
+				0,
 				256, 256,
 				256, 256);
 	}

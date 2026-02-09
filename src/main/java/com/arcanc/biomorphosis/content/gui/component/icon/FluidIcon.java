@@ -9,9 +9,9 @@
 
 package com.arcanc.biomorphosis.content.gui.component.icon;
 
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
@@ -34,7 +34,13 @@ public class FluidIcon implements Icon
 
         ResourceLocation stillTex = renderProps.getStillTexture();
         TextureAtlasSprite still = RenderHelper.getTexture(stillTex);
-
-        graphics.blitSprite(RenderType :: guiTextured, still, xPos, yPos, width, height, renderProps.getTintColor());
+        
+        int color = renderProps.getTintColor();
+        float red = MathHelper.ColorHelper.redFloat(color);
+        float green = MathHelper.ColorHelper.greenFloat(color);
+        float blue = MathHelper.ColorHelper.blueFloat(color);
+        float alpha = MathHelper.ColorHelper.alphaFloat(color);
+        
+        graphics.blit(xPos, yPos, 0, width, height, still, red, green, blue, alpha);
     }
 }

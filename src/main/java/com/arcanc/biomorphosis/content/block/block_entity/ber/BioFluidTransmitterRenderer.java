@@ -47,7 +47,8 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
                        int packedOverlay)
     {
         poseStack.pushPose();
-        poseStack.translate(Vec3.atLowerCornerOf(blockEntity.getBlockPos().multiply(-1)));
+        Vec3 vec = Vec3.atLowerCornerOf(blockEntity.getBlockPos().multiply(-1));
+        poseStack.translate(vec.x(), vec.y(), vec.z());
 
         for (BioFluidTransmitter.PathData data : blockEntity.getPathData())
             renderTube(data.edgePath(), poseStack, bufferSource, packedLight, packedOverlay);
@@ -104,10 +105,10 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
 
     private void addQuad(@NotNull VertexConsumer vertexConsumer, @NotNull PoseStack matrix, int segment, @NotNull Vector3f v0, @NotNull Vector3f v1, @NotNull Vector3f v2, @NotNull Vector3f v3, Vector3f normalCur, Vector3f normalNext, int packedLight, int packedOverlay)
     {
-        vertexConsumer.addVertex(matrix.last().pose(), v0.x(), v0.y(), v0.z()).setColor(33, 12, 12, 175).setUv(0, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur);
-        vertexConsumer.addVertex(matrix.last().pose(), v1.x(), v1.y(), v1.z()).setColor(33, 12, 12,175).setUv(0, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
-        vertexConsumer.addVertex(matrix.last().pose(), v2.x(), v2.y(), v2.z()).setColor(33, 12, 12, 175).setUv(1, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext);
-        vertexConsumer.addVertex(matrix.last().pose(), v3.x(), v3.y(), v3.z()).setColor(33, 12, 12, 175).setUv(1, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur);
+        vertexConsumer.addVertex(matrix.last().pose(), v0.x(), v0.y(), v0.z()).setColor(33, 12, 12, 175).setUv(0, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur.x(), normalCur.y(), normalNext.z());
+        vertexConsumer.addVertex(matrix.last().pose(), v1.x(), v1.y(), v1.z()).setColor(33, 12, 12,175).setUv(0, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext.x(), normalNext.y(), normalNext.z());
+        vertexConsumer.addVertex(matrix.last().pose(), v2.x(), v2.y(), v2.z()).setColor(33, 12, 12, 175).setUv(1, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext.x(), normalNext.y(), normalNext.z());
+        vertexConsumer.addVertex(matrix.last().pose(), v3.x(), v3.y(), v3.z()).setColor(33, 12, 12, 175).setUv(1, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur.x(), normalNext.y(), normalNext.z());
     }
 
     @Override

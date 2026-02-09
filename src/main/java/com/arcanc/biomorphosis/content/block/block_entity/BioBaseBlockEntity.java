@@ -129,7 +129,7 @@ public abstract class BioBaseBlockEntity extends BlockEntity
         if (this.level != null && this.level.hasChunkAt(getBlockPos()))
         {
             level.sendBlockUpdated(getBlockPos(), getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
-            this.level.getChunkAt(getBlockPos()).markUnsaved();
+            this.level.getChunkAt(getBlockPos()).setUnsaved(true);
         }
     }
 

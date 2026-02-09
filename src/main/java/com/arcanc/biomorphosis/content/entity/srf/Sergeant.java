@@ -13,12 +13,14 @@ package com.arcanc.biomorphosis.content.entity.srf;
 import com.arcanc.biomorphosis.content.entity.ai.goals.ReturnGoal;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.goal.*;
+import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.monster.creaking.Creaking;
 import net.minecraft.world.entity.npc.AbstractVillager;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -34,7 +36,6 @@ public class Sergeant extends AbstractPalladin
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new AvoidEntityGoal<>(this, Creaking.class, 8.0F, 1.0, 1.2));
 		this.goalSelector.addGoal(2, new ReturnGoal(this, 1.2d));
 		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2d, true));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 12.0f));
@@ -48,7 +49,7 @@ public class Sergeant extends AbstractPalladin
 						5,
 						true,
 						false,
-						(entity, level) ->
+						entity ->
 								!(entity instanceof Creeper) &&
 								!(entity instanceof AbstractVillager)
 				)

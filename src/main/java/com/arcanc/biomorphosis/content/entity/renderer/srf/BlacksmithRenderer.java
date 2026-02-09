@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.entity.renderer.srf;
 
 
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.BlacksmithModel;
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.BlacksmithRenderState;
 import com.arcanc.biomorphosis.content.entity.srf.Blacksmith;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class BlacksmithRenderer extends LivingEntityRenderer<Blacksmith, BlacksmithRenderState, BlacksmithModel>
+public class BlacksmithRenderer extends LivingEntityRenderer<Blacksmith, BlacksmithModel>
 {
 	private static final ResourceLocation TEXTURE = Database.rl("textures/entity/srf/blacksmith.png");
 	
@@ -29,19 +28,14 @@ public class BlacksmithRenderer extends LivingEntityRenderer<Blacksmith, Blacksm
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Blacksmith mob, double distance)
+	protected boolean shouldShowName(@NotNull Blacksmith entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull BlacksmithRenderState renderState)
+	public @NotNull ResourceLocation getTextureLocation(@NotNull Blacksmith entity)
 	{
 		return TEXTURE;
 	}
-	
-	@Override
-	public @NotNull BlacksmithRenderState createRenderState()
-	{
-		return new BlacksmithRenderState();
-	}}
+}

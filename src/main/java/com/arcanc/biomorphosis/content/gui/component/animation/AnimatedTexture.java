@@ -9,13 +9,12 @@
 
 package com.arcanc.biomorphosis.content.gui.component.animation;
 
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
@@ -50,23 +49,29 @@ public class AnimatedTexture
 
         float progress = (mc.level.getGameTime() % this.frameTime) / (float)this.frameTime;
 
-        int baseColor = ARGB.colorFromFloat(1f, 1f, 1f, 1f);
-        int intColor = ARGB.colorFromFloat(progress, 1f, 1f, 1f);
+        int baseColor = MathHelper.ColorHelper.colorFromFloat(1f, 1f, 1f, 1f);
+        int intColor = MathHelper.ColorHelper.colorFromFloat(progress, 1f, 1f, 1f);
 
-        guiGraphics.blit(RenderType:: guiTextured, this.texture,
+        RenderHelper.blit(
+                guiGraphics,
+                this.texture,
                 area.getX(), area.getY(),
                 0, offset,
                 area.getWidth(), area.getHeight(),
+                0,
                 this.patternWidth, this.patternHeight,
                 this.textureWidth, this.textureHeight,
                 baseColor);
 
         offset = nextFrame * 16;
 
-        guiGraphics.blit(RenderType :: guiTextured, this.texture,
+        RenderHelper.blit(
+                guiGraphics,
+                this.texture,
                 area.getX(), area.getY(),
                 0, offset,
                 area.getWidth(), area.getHeight(),
+                0,
                 this.patternWidth, this.patternHeight,
                 this.textureWidth, this.textureHeight,
                 intColor);

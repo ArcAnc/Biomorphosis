@@ -9,14 +9,21 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
+import com.mojang.datafixers.util.*;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
+import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.doubles.DoubleArrayList;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -76,5 +83,99 @@ public class BioCodecs
 				
 				return DataResult.success(list);
 			});
-
+	
+	//FIXME: replace with Vec3#STREAM_CODEC in new version
+	public static final StreamCodec<ByteBuf, Vec3> VEC_3_STREAM_CODEC = StreamCodec.composite(
+			ByteBufCodecs.DOUBLE,
+			Vec3 :: x,
+			ByteBufCodecs.DOUBLE,
+			Vec3 :: y,
+			ByteBufCodecs.DOUBLE,
+			Vec3 :: z,
+			Vec3 :: new);
+	
+	public static class StreamCodecs
+	{
+		public static <B, C, T1, T2, T3, T4, T5, T6, T7> @NotNull StreamCodec<B, C> composite(final StreamCodec<? super B, T1> codec1, final Function<C, T1> getter1, final StreamCodec<? super B, T2> codec2, final Function<C, T2> getter2, final StreamCodec<? super B, T3> codec3, final Function<C, T3> getter3, final StreamCodec<? super B, T4> codec4, final Function<C, T4> getter4, final StreamCodec<? super B, T5> codec5, final Function<C, T5> getter5, final StreamCodec<? super B, T6> codec6, final Function<C, T6> getter6, final StreamCodec<? super B, T7> codec7, final Function<C, T7> getter7, final Function7<T1, T2, T3, T4, T5, T6, T7, C> factory)
+		{
+			return new StreamCodec<B, C>()
+			{
+				@Override
+				public @NotNull C decode(@NotNull B buffer)
+				{
+					T1 t1 = codec1.decode(buffer);
+					T2 t2 = codec2.decode(buffer);
+					T3 t3 = codec3.decode(buffer);
+					T4 t4 = codec4.decode(buffer);
+					T5 t5 = codec5.decode(buffer);
+					T6 t6 = codec6.decode(buffer);
+					T7 t7 = codec7.decode(buffer);
+					return factory.apply(t1, t2, t3, t4, t5, t6, t7);
+				}
+				
+				@Override
+				public void encode(@NotNull B buffer, @NotNull C data)
+				{
+					codec1.encode(buffer, getter1.apply(data));
+					codec2.encode(buffer, getter2.apply(data));
+					codec3.encode(buffer, getter3.apply(data));
+					codec4.encode(buffer, getter4.apply(data));
+					codec5.encode(buffer, getter5.apply(data));
+					codec6.encode(buffer, getter6.apply(data));
+					codec7.encode(buffer, getter7.apply(data));
+				}
+			};
+		}
+		
+		public static <B, C, T1, T2, T3, T4, T5, T6, T7, T8> @NotNull StreamCodec<B, C> composite(
+				final StreamCodec<? super B, T1> codec1,
+				final Function<C, T1> getter1,
+				final StreamCodec<? super B, T2> codec2,
+				final Function<C, T2> getter2,
+				final StreamCodec<? super B, T3> codec3,
+				final Function<C, T3> getter3,
+				final StreamCodec<? super B, T4> codec4,
+				final Function<C, T4> getter4,
+				final StreamCodec<? super B, T5> codec5,
+				final Function<C, T5> getter5,
+				final StreamCodec<? super B, T6> codec6,
+				final Function<C, T6> getter6,
+				final StreamCodec<? super B, T7> codec7,
+				final Function<C, T7> getter7,
+				final StreamCodec<? super B, T8> codec8,
+				final Function<C, T8> getter8,
+				final Function8<T1, T2, T3, T4, T5, T6, T7, T8, C> factory
+		)
+		{
+			return new StreamCodec<B, C>()
+			{
+				@Override
+				public @NotNull C decode(@NotNull B buffer)
+				{
+					T1 t1 = codec1.decode(buffer);
+					T2 t2 = codec2.decode(buffer);
+					T3 t3 = codec3.decode(buffer);
+					T4 t4 = codec4.decode(buffer);
+					T5 t5 = codec5.decode(buffer);
+					T6 t6 = codec6.decode(buffer);
+					T7 t7 = codec7.decode(buffer);
+					T8 t8 = codec8.decode(buffer);
+					return factory.apply(t1, t2, t3, t4, t5, t6, t7, t8);
+				}
+				
+				@Override
+				public void encode(@NotNull B buffer, @NotNull C data)
+				{
+					codec1.encode(buffer, getter1.apply(data));
+					codec2.encode(buffer, getter2.apply(data));
+					codec3.encode(buffer, getter3.apply(data));
+					codec4.encode(buffer, getter4.apply(data));
+					codec5.encode(buffer, getter5.apply(data));
+					codec6.encode(buffer, getter6.apply(data));
+					codec7.encode(buffer, getter7.apply(data));
+					codec8.encode(buffer, getter8.apply(data));
+				}
+			};
+		}
+	}
 }

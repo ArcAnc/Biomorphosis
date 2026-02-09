@@ -18,6 +18,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +40,8 @@ public class MultiblockPageComponent extends AbstractPageComponent
 		Minecraft mc = RenderHelper.mc();
 		this.definition = mc.getConnection().registryAccess().
 				lookupOrThrow(Registration.MultiblockReg.DEFINITION_KEY).
-				getValue(this.multiblockAddress);
+				getOrThrow(ResourceKey.create(Registration.MultiblockReg.DEFINITION_KEY, this.multiblockAddress)).
+				value();
 		
 		if (this.definition == null)
 			return;

@@ -21,6 +21,7 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,7 @@ public class AttackEnemiesNearQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected void tick(ServerLevel level, QueenGuard owner, long gameTime)
+	protected void tick(@NotNull ServerLevel level, @NotNull QueenGuard owner, long gameTime)
 	{
 		GuardBrain.getQueen(level, owner).ifPresentOrElse(queen ->
 		{

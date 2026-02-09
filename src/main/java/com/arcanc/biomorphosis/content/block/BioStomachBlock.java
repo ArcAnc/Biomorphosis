@@ -21,6 +21,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -102,36 +103,36 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
     }
 
     @Override
-    protected @NotNull InteractionResult useItemOn(@NotNull ItemStack stack,
-                                                   @NotNull BlockState state,
-                                                   @NotNull Level level,
-                                                   @NotNull BlockPos pos,
-                                                   @NotNull Player player,
-                                                   @NotNull InteractionHand hand,
-                                                   @NotNull BlockHitResult hitResult)
+    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
+                                                       @NotNull BlockState state,
+                                                       @NotNull Level level,
+                                                       @NotNull BlockPos pos,
+                                                       @NotNull Player player,
+                                                       @NotNull InteractionHand hand,
+                                                       @NotNull BlockHitResult hitResult)
     {
         if (stack.isEmpty())
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
         if (!FluidHelper.isFluidHandler(stack))
         {
             if (level.isClientSide())
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             else
                 ItemHelper.getItemHandler(level, pos).map(handler ->
                 {
                     ItemStack returned = ItemHandlerHelper.insertItemStacked(handler, stack, false);
                     player.setItemInHand(hand, returned);
-                    return InteractionResult.SUCCESS_SERVER;
+                    return ItemInteractionResult.CONSUME;
                 });
         }
         else
         {
             if (level.isClientSide())
-                return InteractionResult.SUCCESS;
+                return ItemInteractionResult.SUCCESS;
             else
                 return FluidUtil.interactWithFluidHandler(player, hand, level, pos, hitResult.getDirection()) ?
-                        InteractionResult.SUCCESS_SERVER :
-                        InteractionResult.TRY_WITH_EMPTY_HAND;
+                        ItemInteractionResult.CONSUME :
+                        ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         }
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
     }
@@ -153,7 +154,7 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
                     player.addItem(ItemHelper.getItemHandler(level, pos).
                             map(handler -> handler.extractItem(0, Integer.MAX_VALUE, false)).
                             orElse(ItemStack.EMPTY));
-                    return InteractionResult.SUCCESS_SERVER;
+                    return InteractionResult.CONSUME;
                 }
         }
         return super.useWithoutItem(state, level, pos, player, hitResult);

@@ -18,8 +18,8 @@ import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.model.obj.BioGeneModel;
 import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
@@ -27,11 +27,12 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -41,8 +42,8 @@ import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.Function;
 
 public class RenderHelper
 {
@@ -83,19 +84,21 @@ public class RenderHelper
 
     public static ItemStack getStackAtCurrentTime(@NotNull IngredientWithSize ingredient)
     {
-        return getStackAtCurrentTime(ingredient.ingredient().getValues().stream().
-                map(itemHolder -> new ItemStack(itemHolder, ingredient.amount())).toList());
+        return getStackAtCurrentTime(ingredient.
+		        getItems().
+		        peek(stack -> stack.
+		                setCount(ingredient.amount())).
+		        toList());
     }
 
     public static ItemStack getStackAtCurrentTime(@NotNull SizedIngredient ingredient)
     {
-        return getStackAtCurrentTime(ingredient.ingredient().getValues().stream().
-                map(itemHolder -> new ItemStack(itemHolder, ingredient.count())).toList());
+        return getStackAtCurrentTime(Arrays.stream(ingredient.getItems()).toList());
     }
 
     public static ItemStack getStackAtCurrentTime(@NotNull Ingredient ingredient)
     {
-        return getStackAtCurrentTime(ingredient.getValues().stream().map(ItemStack::new).toList());
+        return getStackAtCurrentTime(List.of(ingredient.getItems()));
     }
 
     public static ItemStack getStackAtCurrentTime(@NotNull List<ItemStack> items)
@@ -111,7 +114,6 @@ public class RenderHelper
 
     public static void blit(
             @NotNull GuiGraphics guiGraphics,
-            @NotNull Function<ResourceLocation, RenderType> renderTypeGetter,
             @NotNull ResourceLocation atlasLocation,
             float x,
             float y,
@@ -119,18 +121,18 @@ public class RenderHelper
             float vOffset,
             float width,
             float height,
+			float blitOffset,
             float uWidth,
             float vHeight,
             int textureWidth,
             int textureHeight
     )
     {
-        RenderHelper.blit(guiGraphics, renderTypeGetter, atlasLocation, x, y, uOffset, vOffset, width, height, uWidth, vHeight, textureWidth, textureHeight,-1);
+        RenderHelper.blit(guiGraphics, atlasLocation, x, y, uOffset, vOffset, width, height, blitOffset, uWidth, vHeight, textureWidth, textureHeight,-1);
     }
 
     public static void blit(
             @NotNull GuiGraphics guiGraphics,
-            @NotNull Function<ResourceLocation, RenderType> renderTypeGetter,
             @NotNull ResourceLocation atlasLocation,
             float x,
             float y,
@@ -138,6 +140,7 @@ public class RenderHelper
             float vOffset,
             float width,
             float height,
+			float blitOffset,
             float uWidth,
             float vHeight,
             int textureWidth,
@@ -146,12 +149,12 @@ public class RenderHelper
     ) {
         RenderHelper.blit(
                 guiGraphics,
-                renderTypeGetter,
                 atlasLocation,
                 x,
                 x + width,
                 y,
                 y + height,
+				blitOffset,
                 uOffset / (float)textureWidth,
                 (uOffset + uWidth) / (float)textureWidth,
                 vOffset / (float)textureHeight,
@@ -161,25 +164,42 @@ public class RenderHelper
     }
 
     public static void blit (@NotNull GuiGraphics guiGraphics,
-                             @NotNull Function<ResourceLocation, RenderType> renderTypeGetter,
                              @NotNull ResourceLocation atlasLocation,
                              float x1,
                              float x2,
                              float y1,
                              float y2,
+							 float blitOffset,
                              float minU,
                              float maxU,
                              float minV,
                              float maxV,
                              int color)
     {
-        RenderType rendertype = renderTypeGetter.apply(atlasLocation);
-        Matrix4f matrix4f = guiGraphics.pose().last().pose();
-        VertexConsumer vertexconsumer = guiGraphics.bufferSource.getBuffer(rendertype);
-        vertexconsumer.addVertex(matrix4f, x1, y1, 0.0F).setUv(minU, minV).setColor(color);
-        vertexconsumer.addVertex(matrix4f, x1, y2, 0.0F).setUv(minU, maxV).setColor(color);
-        vertexconsumer.addVertex(matrix4f, x2, y2, 0.0F).setUv(maxU, maxV).setColor(color);
-        vertexconsumer.addVertex(matrix4f, x2, y1, 0.0F).setUv(maxU, minV).setColor(color);
+	    RenderSystem.setShaderTexture(0, atlasLocation);
+	    RenderSystem.setShader(GameRenderer ::getPositionTexColorShader);
+	    RenderSystem.enableBlend();
+	    Matrix4f matrix4f = guiGraphics.pose().last().pose();
+		float red = MathHelper.ColorHelper.redFloat(color);
+		float green = MathHelper.ColorHelper.greenFloat(color);
+		float blue = MathHelper.ColorHelper.blueFloat(color);
+		float alpha = MathHelper.ColorHelper.alphaFloat(color);
+		
+	    BufferBuilder bufferbuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
+	    bufferbuilder.addVertex(matrix4f, x1, y1, blitOffset).
+					    setUv(minU, minV).
+			            setColor(red, green, blue, alpha);
+	    bufferbuilder.addVertex(matrix4f, x1, y2, blitOffset).
+					    setUv(minU, maxV).
+			            setColor(red, green, blue, alpha);
+	    bufferbuilder.addVertex(matrix4f, x2, y2, blitOffset).
+					    setUv(maxU, maxV).
+			            setColor(red, green, blue, alpha);
+	    bufferbuilder.addVertex(matrix4f, x2, y1, blitOffset).
+					    setUv(maxU, minV).
+			            setColor(red, green, blue, alpha);
+	    BufferUploader.drawWithShader(bufferbuilder.buildOrThrow());
+	    RenderSystem.disableBlend();
     }
 	
 	public static class Gui
@@ -222,7 +242,9 @@ public class RenderHelper
 				return;
 			GeneDefinition definition = listener.registryAccess().
 					lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-					getValue(gene.id());
+					get(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, gene.id())).
+					orElseThrow().
+					value();
 			if (definition == null)
 				return;
 			
@@ -245,15 +267,14 @@ public class RenderHelper
 				poseStack.scale(geneSize, geneSize, geneSize);
 				poseStack.mulPose(Axis.XP.rotationDegrees(rotation + q * 36));
 				
-				guiGraphics.drawSpecial(multiBufferSource ->
-						GENE_MODEL.renderModel(
-								poseStack,
-								ObjRenderTypes :: trianglesSolid,
-								multiBufferSource,
-								OverlayTexture.NO_OVERLAY,
-								15728880,
-								data.mainColor().color(),
-								data.secondaryColor().color()));
+				GENE_MODEL.renderModel(
+						poseStack,
+						ObjRenderTypes :: trianglesSolid,
+						guiGraphics.bufferSource(),
+						OverlayTexture.NO_OVERLAY,
+						15728880,
+						data.mainColor().color(),
+						data.secondaryColor().color());
 				
 				poseStack.popPose();
 			}

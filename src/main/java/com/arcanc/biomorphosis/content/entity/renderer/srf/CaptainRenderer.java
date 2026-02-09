@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.entity.renderer.srf;
 
 
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.CaptainModel;
-import com.arcanc.biomorphosis.content.entity.renderer.srf.model.renderState.CaptainRenderState;
 import com.arcanc.biomorphosis.content.entity.srf.Captain;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -19,7 +18,7 @@ import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-public class CaptainRenderer extends LivingEntityRenderer<Captain, CaptainRenderState, CaptainModel>
+public class CaptainRenderer extends LivingEntityRenderer<Captain, CaptainModel>
 {
 	private static final ResourceLocation TEXTURE = Database.rl("textures/entity/srf/captain.png");
 	
@@ -29,20 +28,14 @@ public class CaptainRenderer extends LivingEntityRenderer<Captain, CaptainRender
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Captain mob, double distance)
+	protected boolean shouldShowName(@NotNull Captain entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull CaptainRenderState renderState)
+	public @NotNull ResourceLocation getTextureLocation(@NotNull Captain entity)
 	{
 		return TEXTURE;
-	}
-	
-	@Override
-	public @NotNull CaptainRenderState createRenderState()
-	{
-		return new CaptainRenderState();
 	}
 }
