@@ -47,7 +47,7 @@ public class WrenchItem extends BioBaseItem
                             if (FluidHelper.isFluidHandler(blockEntity))
                             {
                                 if (level.isClientSide())
-                                    return InteractionResult.CONSUME;
+                                    return InteractionResult.SUCCESS;
 
                                 List<Vec3> positions = stack.has(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA)
                                         ? new ArrayList<>(stack.get(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA))
@@ -62,7 +62,7 @@ public class WrenchItem extends BioBaseItem
 	                                positions.set(1, pos.getBottomCenter());
 	                            stack.set(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA, ImmutableList.copyOf(positions));
 
-	                            return InteractionResult.SUCCESS_SERVER;
+	                            return InteractionResult.CONSUME;
                             }
                             return super.onItemUseFirst(stack, context);
                         })

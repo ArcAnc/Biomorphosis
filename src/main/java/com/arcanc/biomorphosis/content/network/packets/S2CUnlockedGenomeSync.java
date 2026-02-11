@@ -24,6 +24,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
@@ -60,7 +61,10 @@ public record S2CUnlockedGenomeSync(UnlockedGenome unlockedGenome, List<GeneInst
 			if (!this.newGenes.isEmpty())
 				this.newGenes.forEach(geneInstance ->
 					{
-						GeneDefinition definition = level.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).getValue(geneInstance.id());
+						GeneDefinition definition = level.registryAccess().
+								lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
+								getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, geneInstance.id())).
+								value();
 						if(definition == null)
 							return;
 						

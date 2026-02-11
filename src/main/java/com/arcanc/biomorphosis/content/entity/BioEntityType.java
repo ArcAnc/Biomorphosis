@@ -28,6 +28,8 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
     private final EntityAttributeProvider entityAttributeProvider;
     private final EntityRendererProvider<T> rendererProvider;
 	private final Class<T> clazz;
+    private final int backgroundSpawnEggColor;
+    private final int highlightSpawnEggColor;
 	
     public BioEntityType(Class<T> clazz,
 						 EntityFactory<T> factory,
@@ -46,12 +48,16 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
                          ToIntFunction<EntityType<?>> trackingRangeSupplier,
                          ToIntFunction<EntityType<?>> updateIntervalSupplier,
                          EntityAttributeProvider attributeProvider,
-                         EntityRendererProvider<T> rendererProvider)
+                         EntityRendererProvider<T> rendererProvider,
+                         int backgroundSpawnEggColor,
+                         int highlightSpawnEggColor)
     {
         super(factory, category, serialize, summon, fireImmune, canSpawnFarFromPlayer, immuneTo, dimensions, spawnDimensionsScale, clientTrackingRange, updateInterval, requiredFeatures, trackDeltasSupplier, trackingRangeSupplier, updateIntervalSupplier);
 		this.clazz = clazz;
         this.entityAttributeProvider = attributeProvider;
         this.rendererProvider = rendererProvider;
+        this.backgroundSpawnEggColor = backgroundSpawnEggColor;
+        this.highlightSpawnEggColor = highlightSpawnEggColor;
     }
 	
 	@Override
@@ -69,13 +75,24 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
     {
         return rendererProvider;
     }
-
+    
+    public int getBackgroundSpawnEggColor()
+    {
+        return this.backgroundSpawnEggColor;
+    }
+    
+    public int getHighlightSpawnEggColor()
+    {
+        return this.highlightSpawnEggColor;
+    }
+    
     public static class BioTypeBuilder<T extends Entity> extends Builder<T>
     {
-
 		private final Class<T> clazz;
         private EntityAttributeProvider attributeProvider;
         private EntityRendererProvider<T> rendererProvider;
+        private int backgroundSpawnEggColor;
+        private int highlightSpawnEggColor;
 
         protected BioTypeBuilder(Class<T> entityClass, EntityFactory<T> factory, MobCategory category)
         {
@@ -246,7 +263,19 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
             this.rendererProvider = rendererProvider;
             return this;
         }
-
+        
+        public @NotNull BioEntityType.BioTypeBuilder<T> backgroundSpawnEggColor(int backgroundSpawnEggColor)
+        {
+            this.backgroundSpawnEggColor = backgroundSpawnEggColor;
+            return this;
+        }
+        
+        public @NotNull BioEntityType.BioTypeBuilder<T> highlightSpawnEggColor(int highlightSpawnEggColor)
+        {
+            this.highlightSpawnEggColor = highlightSpawnEggColor;
+            return this;
+        }
+        
         @Override
         public @NotNull BioEntityType<T> build(@NotNull String key)
         {
@@ -271,7 +300,9 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
                     this.trackingRangeSupplier,
                     this.updateIntervalSupplier,
                     this.attributeProvider,
-                    this.rendererProvider
+                    this.rendererProvider,
+                    this.backgroundSpawnEggColor,
+                    this.highlightSpawnEggColor
             );
         }
     }

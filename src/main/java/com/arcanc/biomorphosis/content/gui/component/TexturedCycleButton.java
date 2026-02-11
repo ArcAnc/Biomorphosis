@@ -17,7 +17,6 @@ import net.minecraft.client.OptionInstance;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
@@ -56,7 +55,7 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 	@Override
 	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
-		guiGraphics.blit(RenderType :: guiTextured,
+		guiGraphics.blit(
 				this.textureProvider.apply(this.getValue()),
 				this.getX(), this.getY(),
 				0, 0,
@@ -188,7 +187,6 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 	
 	public static final class TurretOnOffButton extends TexturedCycleButton<Boolean>
 	{
-		
 		private static final ResourceLocation TEXTURE = Database.rl("textures/gui/elements/chamber/button.png");
 		private static final ResourceLocation OVERLAY = Database.rl("textures/gui/elements/chamber/button_overlay.png");
 		
@@ -207,7 +205,8 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 			
 			if (this.getValue())
 				return;
-			guiGraphics.blit(RenderType :: guiTextured, OVERLAY,
+			guiGraphics.blit(
+					OVERLAY,
 					this.getX(), this.getY(),
 					0,0,
 					this.getWidth(), this.getHeight(),

@@ -15,6 +15,7 @@ import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeEffectsHolder;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
@@ -47,7 +48,7 @@ public class GenomeEffectsHolderMixin implements GenomeEffectsHolder
 			biomorphosis$getGeneEffects().forEach(entry -> entry.type().remove(entity, entry.params()));
 			
 		
-		GenomeInstance genome = entity.getData(Registration.DataAttachmentsReg.GENOME);
+		GenomeInstance genome = GenomeHelper.getGenome(entity);
 		
 		if (genome == null || genome.geneInstances().isEmpty())
 		{

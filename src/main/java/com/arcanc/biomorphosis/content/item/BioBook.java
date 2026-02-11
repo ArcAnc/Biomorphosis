@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
@@ -25,16 +26,15 @@ public class BioBook extends BioBaseItem
     {
         super(properties);
     }
-
+    
     @Override
-    public @NotNull InteractionResult use(@NotNull Level level,
-                                          @NotNull Player player,
-                                          @NotNull InteractionHand hand)
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand)
     {
         if (level.isClientSide())
             RenderHelper.openGuideScreen();
+        ItemStack stack = player.getItemInHand(usedHand);
         player.awardStat(Stats.ITEM_USED.get(this));
-        return InteractionResult.SUCCESS;
+        return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
     }
 
     @Override

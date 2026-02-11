@@ -18,7 +18,8 @@ import com.arcanc.biomorphosis.content.mutations.templates.GenomeDataDefinition;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.mojang.serialization.Dynamic;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,12 +33,13 @@ import java.util.Map;
 
 public class GenomeHelper
 {
-	public static <T extends LivingEntity> @Nullable GenomeTemplate getTemplateByEntity(@NotNull T entity)
+	public static <T extends LivingEntity> @NotNull GenomeTemplate getTemplateByEntity(@NotNull T entity)
 	{
 		return entity.
 				registryAccess().
 				lookupOrThrow(Registration.GenomeReg.GENOME_TEMPLATES_KEY).
-				getValue(EntityType.getKey(entity.getType()));
+				getOrThrow(ResourceKey.create(Registration.GenomeReg.GENOME_TEMPLATES_KEY, EntityType.getKey(entity.getType()))).
+				value();
 	}
 	
 	public static UnlockedGenome getUnlockedGenome(@NotNull Player player)
@@ -60,11 +62,12 @@ public class GenomeHelper
 		if (genome == null || genome.isEmpty())
 			return 0;
 		
-		Registry<GeneDefinition> registry = level.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
+		HolderLookup.RegistryLookup<GeneDefinition> registry = level.registryAccess().
+				lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
 		int result = 0;
 		for (GeneInstance geneInstance : genome.geneInstances())
 		{
-			GeneDefinition def = registry.getValue(geneInstance.id());
+			GeneDefinition def = registry.getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, geneInstance.id())).value();
 			if (def == null)
 				continue;
 			GeneDefinition.RarityData data = def.rarityData().get(geneInstance.rarity());
@@ -85,16 +88,15 @@ public class GenomeHelper
 		{
 			Level level = entity.level();
 			
-			instance = entity.
-					registryAccess().
-					lookupOrThrow(Registration.GenomeReg.GENOME_TEMPLATES_KEY).
-					getOptional(EntityType.getKey(entity.getType())).
-					flatMap(genomeTemplate ->
-							genomeTemplate.
+			GenomeTemplate template = getTemplateByEntity(entity);
+			if (template == null)
+				instance = GenomeInstance.EMPTY;
+			else
+				instance = template.
 									genomes().
 									getRandom(level.getRandom()).
-							map(GenomeDataDefinition :: genomeData)).
-					orElse(GenomeInstance.EMPTY);
+									map(GenomeDataDefinition :: genomeData).
+									orElse(GenomeInstance.EMPTY);
 			
 			entity.setData(Registration.DataAttachmentsReg.GENOME, instance);
 		}

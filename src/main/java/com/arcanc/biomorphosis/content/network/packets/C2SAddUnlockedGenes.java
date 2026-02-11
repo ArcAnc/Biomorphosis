@@ -17,6 +17,7 @@ import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
@@ -55,7 +56,7 @@ public record C2SAddUnlockedGenes(UUID playerUUID, GenomeInstance genome) implem
 			if (targetPlayer == null)
 				return;
 			
-			UnlockedGenome unlockedGenome = targetPlayer.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+			UnlockedGenome unlockedGenome = GenomeHelper.getUnlockedGenome(targetPlayer);
 			
 			for (GeneInstance gene : genome().geneInstances())
 				if (unlockedGenome.hasGene(gene))

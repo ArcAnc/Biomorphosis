@@ -64,9 +64,9 @@ public class BioSlot extends SlotItemHandler
     }
 
     @Override
-    public @NotNull Slot setBackground(@NotNull ResourceLocation sprite)
+    public @NotNull Slot setBackground(@NotNull ResourceLocation atlas, @NotNull ResourceLocation sprite)
     {
-        return super.setBackground(sprite);
+        return super.setBackground(atlas, sprite);
     }
 
     @Override

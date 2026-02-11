@@ -48,26 +48,23 @@ import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorP
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
 import com.arcanc.biomorphosis.data.recipe.*;
-import com.arcanc.biomorphosis.data.recipe.display.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.*;
-import com.arcanc.biomorphosis.data.recipe.slot_display.ItemStackWithChanceDisplay;
-import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
 import com.arcanc.biomorphosis.mixin.FluidTypeRarityAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
+import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.shaders.FogShape;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.client.renderer.FogParameters;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -76,10 +73,8 @@ import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.codec.ByteBufCodecs;
-import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -99,17 +94,18 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeInput;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.FuelValues;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -140,6 +136,7 @@ import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector3f;
 import org.joml.Vector4f;
 
 import java.util.*;
@@ -162,7 +159,7 @@ public final class Registration
                             sizeLimitedListOf(2)).
                         networkSynchronized(ByteBufCodecs.
                                 <ByteBuf, Vec3>list(2).
-                                apply(Vec3.STREAM_CODEC)));
+                                apply(BioCodecs.VEC_3_STREAM_CODEC)));
 
         private static void init (@NotNull final IEventBus bus)
         {
@@ -299,8 +296,7 @@ public final class Registration
                                 add(Attributes.MAX_HEALTH, 30).
                                 add(Attributes.ATTACK_DAMAGE, 8).
                                 add(Attributes.FOLLOW_RANGE, 12).
-                                add(Attributes.MOVEMENT_SPEED, 0.15f).
-                                add(Attributes.TEMPT_RANGE, 10.0f)).
+                                add(Attributes.MOVEMENT_SPEED, 0.15f)).
                         rendererProvider(KsiggRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
@@ -395,7 +391,6 @@ public final class Registration
 				TurretProjectile::new,
 				MobCategory.MISC,
 				builder -> builder.
-						noLootTable().
 						sized(0.5f, 0.5f).
 						eyeHeight(0.13f).
 						clientTrackingRange(4).
@@ -499,13 +494,26 @@ public final class Registration
                                UnaryOperator<BioEntityType.BioTypeBuilder<T>> typeBuilder,
                                Consumer<Item.Properties> additionalProperties)
             {
-                this.entityHolder = ENTITY_TYPES.register(name, key -> typeBuilder.apply(BioEntityType.BioTypeBuilder.of(entityClass, factory, category)).build(ResourceKey.create(Registries.ENTITY_TYPE, key)));
-                this.eggHolder = Mob.class.isAssignableFrom(entityClass) ?
-                        Registration.ItemReg.register("spawning_egg_" + name, properties -> new BioSpawnEgg((EntityType<? extends Mob>) entityHolder.get(), properties), additionalProperties) :
-                        null;
-				this.sounds = Mob.class.isAssignableFrom(entityClass) ?
-						new EntitySoundEntry(name) :
-						null;
+                this.entityHolder = ENTITY_TYPES.register(name, key -> typeBuilder.apply(BioEntityType.BioTypeBuilder.of(entityClass, factory, category)).build(key.toString()));
+				if (Mob.class.isAssignableFrom(entityClass))
+				{
+					Supplier<EntityType<? extends Mob>> mobTypeSupplier =
+							(Supplier<EntityType<? extends Mob>>) (Supplier<?>) entityHolder;
+					this.eggHolder = Registration.ItemReg.register(
+							"spawning_egg_" + name,
+							properties -> new BioSpawnEgg(
+									mobTypeSupplier,
+									((BioEntityType<T>)entityHolder.get()).getBackgroundSpawnEggColor(),
+									((BioEntityType<T>)entityHolder.get()).getHighlightSpawnEggColor(),
+									properties),
+							additionalProperties);
+					this.sounds = new EntitySoundEntry(name);
+				}
+				else
+				{
+					this.eggHolder = null;
+					this.sounds = null;
+				}
             }
 
             public DeferredHolder<EntityType<?>, EntityType<T>> getEntityHolder()
@@ -796,34 +804,29 @@ public final class Registration
                     accept(properties),
                 ItemReg.baseProps);
 
-        public static final DeferredBlock<HangingMossBlock> HANGING_MOSS = register("moss_hanging",
-                properties -> new HangingMossBlock(properties)
+        public static final DeferredBlock<BioBaseBlock> HANGING_MOSS = register("moss_hanging",
+                properties -> new BioBaseBlock(properties)
                 {
                     @Override
                     protected boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos)
                     {
                         return this.canStayAtPosition(level, pos);
                     }
+	                
+	                @Override
+	                protected @NotNull BlockState updateShape(@NotNull BlockState state,
+	                                                          @NotNull Direction direction,
+	                                                          @NotNull BlockState neighborState,
+	                                                          @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos)
+	                {
+		                if (!this.canStayAtPosition(level, pos))
+			                level.scheduleTick(pos, this, 1);
+		                
+		                return state.setValue(TIP, !level.getBlockState(pos.below()).is(this));
+	                }
 
                     @Override
-                    protected @NotNull BlockState updateShape(
-                            @NotNull BlockState state,
-                            @NotNull LevelReader level,
-                            @NotNull ScheduledTickAccess tickAccess,
-                            @NotNull BlockPos pos,
-                            @NotNull Direction dir,
-                            @NotNull BlockPos updateSource,
-                            @NotNull BlockState updateState,
-                            @NotNull RandomSource random
-                    ) {
-                        if (!this.canStayAtPosition(level, pos))
-                            tickAccess.scheduleTick(pos, this, 1);
-
-                        return state.setValue(TIP, !level.getBlockState(pos.below()).is(this));
-                    }
-
-                    @Override
-                    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
+                    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
                     {
                         if (!this.canStayAtPosition(level, pos))
                             level.destroyBlock(pos, true);
@@ -932,7 +935,7 @@ public final class Registration
                         BlockPos targetPos = pos.above();
                         BlockState targetState = levelReader.getBlockState(targetPos);
                         boolean sturdy = targetState.isFaceSturdy(levelReader, pos, Direction.DOWN);
-                        return LightEngine.getLightBlockInto(state, targetState, Direction.UP, targetState.getLightBlock()) < 15 && !sturdy;
+                        return LightEngine.getLightBlockInto(levelReader, state, pos, targetState, targetPos, Direction.UP, targetState.getLightBlock(levelReader, targetPos)) < 15 && !sturdy;
                     }
                 },
                 properties -> baseProps.
@@ -1107,10 +1110,12 @@ public final class Registration
             return blockGetter;
         }
 
+		//FIXME: those method are not needed in 1.21.1. Should be removed. But it's still required in newest versions
+	    @Deprecated(since = "1.21.1", forRemoval = true)
         private static BlockBehaviour.@NotNull Properties setId(String id, BlockBehaviour.@NotNull Properties props)
         {
-            ResourceKey<Block> resourceKey = ResourceKey.create(Registries.BLOCK, Database.rl(id));
-            return props.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix("block.").toLanguageKey().replace(':', '.').replace('/', '.'));
+            //ResourceKey<Block> resourceKey = ResourceKey.create(Registries.BLOCK, Database.rl(id));
+            return props;//.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix("block.").toLanguageKey().replace(':', '.').replace('/', '.'));
         }
 
         private static BlockBehaviour.@NotNull Properties props (Consumer<BlockBehaviour.Properties> additionalProps)
@@ -1284,14 +1289,14 @@ public final class Registration
             private final MenuTypeReg.ArgContainer<T, C> menuProvider;
             private final MenuScreens.ScreenConstructor<C, S> screenConstructor;
 
-            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
+            /*public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
             {
                 this(factory, provider, menuProvider, screenConstructor, validBlocks, false);
             }
-
-            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks, boolean onlyOpsNbtAccess)
+			*/
+            public BioBlockEntityType(BlockEntitySupplier<? extends T> factory, BlockEntityRendererProvider<T> provider, MenuTypeReg.ArgContainer<T, C> menuProvider, MenuScreens.ScreenConstructor<C, S> screenConstructor, Set<Block> validBlocks)
             {
-                super(factory, validBlocks, onlyOpsNbtAccess);
+                super(factory, validBlocks, null);
                 this.renderer = provider;
                 this.menuProvider = menuProvider;
                 this.screenConstructor = screenConstructor;
@@ -1362,10 +1367,12 @@ public final class Registration
             return ITEMS.register(name, ()-> item.apply(props));
         }
 
-        private static Item.@NotNull Properties setId(String id, Item.@NotNull Properties props, boolean blockItem)
+		//FIXME: this method is missed in 1.21.1 mc version, but present in newest. Remove here
+        @Deprecated(since = "1.21.1")
+		private static Item.@NotNull Properties setId(String id, Item.@NotNull Properties props, boolean blockItem)
         {
-            ResourceKey<Item> resourceKey = ResourceKey.create(Registries.ITEM, Database.rl(id));
-            return props.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix(blockItem ? "block." : "item." ).toLanguageKey().replace(':', '.').replace('/', '.'));
+            //ResourceKey<Item> resourceKey = ResourceKey.create(Registries.ITEM, Database.rl(id));
+            return props;//.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix(blockItem ? "block." : "item." ).toLanguageKey().replace(':', '.').replace('/', '.'));
         }
 		
         private static Item.@NotNull Properties props (Consumer<Item.Properties> additionalProps)
@@ -1387,14 +1394,14 @@ public final class Registration
         public static final FluidEntry BIOMASS = FluidEntry.make("biomass",
                 new BioFluidType.ColorParams(new Vector4f(112, 15, 37, 255), new Vector4f(97, 21, 10, 255), 80, (minColor, maxColor, maxTime) ->
                 {
-                    Vector4f minimumColor = minColor.div(255f, new Vector4f());
-                    Vector4f maximumColor = maxColor.div(255f, new Vector4f());
+                    Vector3f minimumColor = new Vector3f(minColor.x(), minColor.y(), minColor.z()).div(255f);
+                    Vector3f maximumColor = new Vector3f(maxColor.x(), maxColor.y(), maxColor.z()).div(255f);
                     Minecraft mc = RenderHelper.mc();
                     Level level = mc.level;
                     if (level == null)
                         return -1;
                     long levelTime = level.getGameTime();
-                    float partialTicks = mc.getDeltaTracker().getGameTimeDeltaPartialTick(false);
+                    float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
                     float halfTime = maxTime / 2f;
 
                     float time = (levelTime + partialTicks) % maxTime;
@@ -1404,11 +1411,13 @@ public final class Registration
                         return MathHelper.ColorHelper.lerp((time - halfTime) / halfTime, MathHelper.ColorHelper.color(minimumColor), MathHelper.ColorHelper.color(maximumColor));
                 }),
                 (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
                     {
-                        Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                        return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+	                    RenderSystem.setShaderFogStart(1.0f);
+						RenderSystem.setShaderFogEnd(6.0f);
+						//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                        //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
                     },
                 props -> props.slopeFindDistance(2).
                         levelDecreasePerBlock(2).
@@ -1426,11 +1435,13 @@ public final class Registration
         public static final FluidEntry ACID = FluidEntry.make("acid",
                 BioFluidType.ColorParams.constantColor(new Vector4f(230, 255, 200, 255)),
                 (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
                 {
-                    Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                    return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+	                RenderSystem.setShaderFogStart(1.0f);
+	                RenderSystem.setShaderFogEnd(6.0f);
+					//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                    //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
                 },
                 props -> props.slopeFindDistance(3).
                         levelDecreasePerBlock(1).
@@ -1448,11 +1459,13 @@ public final class Registration
         public static final FluidEntry ADRENALINE = FluidEntry.make("adrenaline",
                 BioFluidType.ColorParams.constantColor(new Vector4f(173, 216, 230, 255)),
                 (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, fogParameters, colorParams) ->
+                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
+                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
                 {
-                    Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                    return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
+	                RenderSystem.setShaderFogStart(1.0f);
+	                RenderSystem.setShaderFogEnd(6.0f);
+					//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
+                    //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
                 },
                 props -> props.slopeFindDistance(4).
                         levelDecreasePerBlock(1).
@@ -1590,10 +1603,9 @@ public final class Registration
                         craftRemainder(Items.BUCKET),
                         false))
                 {
-                    @Override
+	                @Override
                     public int getBurnTime(@NotNull ItemStack itemStack,
-                                           @Nullable RecipeType<?> recipeType,
-                                           @NotNull FuelValues fuelValues)
+                                           @Nullable RecipeType<?> recipeType)
                     {
                         return burnTime;
                     }
@@ -1721,28 +1733,22 @@ public final class Registration
 	
     public static class RecipeReg
     {
-        public static final DeferredRegister<RecipeBookCategory> CATEGORIES = DeferredRegister.create(BuiltInRegistries.RECIPE_BOOK_CATEGORY, Database.MOD_ID);
-        public static final DeferredRegister<RecipeDisplay.Type<?>> RECIPE_DISPLAY_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_DISPLAY, Database.MOD_ID);
         public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Database.MOD_ID);
         public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(BuiltInRegistries.RECIPE_SERIALIZER, Database.MOD_ID);
 
-        public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput, CrusherRecipeDisplay> CRUSHER_RECIPE = new RecipeEntry<>("crusher", RecipeBookCategory :: new, CrusherRecipeDisplay.CODEC, CrusherRecipeDisplay.STREAM_CODEC, CrusherRecipe.CrusherRecipeSerializer :: new);
-        public static final RecipeEntry<StomachRecipe, StomachRecipeInput, StomachRecipeDisplay> STOMACH_RECIPE = new RecipeEntry<>("stomach", RecipeBookCategory :: new, StomachRecipeDisplay.CODEC, StomachRecipeDisplay.STREAM_CODEC, StomachRecipe.StomachRecipeSerializer :: new);
-        public static final RecipeEntry<ForgeRecipe, ForgeRecipeInput, ForgeRecipeDisplay> FORGE_RECIPE = new RecipeEntry<>("forge", RecipeBookCategory :: new, ForgeRecipeDisplay.CODEC, ForgeRecipeDisplay.STREAM_CODEC, ForgeRecipe.ForgeRecipeSerializer :: new);
-        public static final RecipeEntry<ChamberRecipe, ChamberRecipeInput, ChamberRecipeDisplay> CHAMBER_RECIPE = new RecipeEntry<>("chamber", RecipeBookCategory :: new, ChamberRecipeDisplay.CODEC, ChamberRecipeDisplay.STREAM_CODEC, ChamberRecipe.ChamberRecipeSerializer :: new);
-	    public static final RecipeEntry<SqueezerRecipe, SqueezerRecipeInput, SqueezerRecipeDisplay> SQUEEZER_RECIPE = new RecipeEntry<>("squeezer", RecipeBookCategory :: new, SqueezerRecipeDisplay.CODEC, SqueezerRecipeDisplay.STREAM_CODEC, SqueezerRecipe.SqueezerRecipeSerializer :: new);
+        public static final RecipeEntry<CrusherRecipe, CrusherRecipeInput> CRUSHER_RECIPE = new RecipeEntry<>("crusher", CrusherRecipe.CrusherRecipeSerializer :: new);
+        public static final RecipeEntry<StomachRecipe, StomachRecipeInput> STOMACH_RECIPE = new RecipeEntry<>("stomach", StomachRecipe.StomachRecipeSerializer :: new);
+        public static final RecipeEntry<ForgeRecipe, ForgeRecipeInput> FORGE_RECIPE = new RecipeEntry<>("forge", ForgeRecipe.ForgeRecipeSerializer :: new);
+        public static final RecipeEntry<ChamberRecipe, ChamberRecipeInput> CHAMBER_RECIPE = new RecipeEntry<>("chamber", ChamberRecipe.ChamberRecipeSerializer :: new);
+	    public static final RecipeEntry<SqueezerRecipe, SqueezerRecipeInput> SQUEEZER_RECIPE = new RecipeEntry<>("squeezer", SqueezerRecipe.SqueezerRecipeSerializer :: new);
 
-        public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput, D extends RecipeDisplay>
+        public static class RecipeEntry<R extends Recipe<I>, I extends RecipeInput>
         {
-            private final DeferredHolder<RecipeBookCategory, RecipeBookCategory> category;
-            private final DeferredHolder<RecipeDisplay.Type<?>, RecipeDisplay.Type<D>> display;
             private final DeferredHolder<RecipeType<?>, RecipeType<R>> recipeType;
             private final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<R>> serializer;
 
-            public RecipeEntry(String name, Supplier<RecipeBookCategory> categorySupplier, MapCodec<D> displayCodec, StreamCodec<RegistryFriendlyByteBuf, D> displayStreamCodec, Supplier<RecipeSerializer<R>> serializer)
+            public RecipeEntry(String name, Supplier<RecipeSerializer<R>> serializer)
             {
-                this.category = CATEGORIES.register(name, categorySupplier);
-                this.display = RECIPE_DISPLAY_TYPES.register(name, () -> new RecipeDisplay.Type<>(displayCodec, displayStreamCodec));
                 this.recipeType = RECIPE_TYPES.register(name, () -> new RecipeType<>()
                 {
                     @Override
@@ -1754,31 +1760,19 @@ public final class Registration
                 this.serializer = RECIPE_SERIALIZERS.register(name, serializer);
             }
 
-            public DeferredHolder<RecipeBookCategory, RecipeBookCategory> getCategory()
-            {
-                return category;
-            }
-
-            public DeferredHolder<RecipeDisplay.Type<?>, RecipeDisplay.Type<D>> getDisplay()
-            {
-                return display;
-            }
-
             public DeferredHolder<RecipeType<?>, RecipeType<R>> getRecipeType()
             {
-                return recipeType;
+                return this.recipeType;
             }
 
             public DeferredHolder<RecipeSerializer<?>, RecipeSerializer<R>> getSerializer()
             {
-                return serializer;
+                return this.serializer;
             }
         }
 
         private static void init(IEventBus bus)
         {
-            CATEGORIES.register(bus);
-            RECIPE_DISPLAY_TYPES.register(bus);
             RECIPE_TYPES.register(bus);
             RECIPE_SERIALIZERS.register(bus);
         }
@@ -1795,24 +1789,6 @@ public final class Registration
         private static void init (IEventBus bus)
         {
             INGREDIENT_TYPES.register(bus);
-        }
-    }
-
-    public static class SlotDisplayReg
-    {
-        public static final DeferredRegister<SlotDisplay.Type<?>> SLOT_DISPLAY_TYPES = DeferredRegister.create(Registries.SLOT_DISPLAY, Database.MOD_ID);
-
-        public static final DeferredHolder<SlotDisplay.Type<?>, SlotDisplay.Type<ItemStackWithChanceDisplay>> ITEM_STACK_WITH_CHANCE = SLOT_DISPLAY_TYPES.register(
-                "stack_with_chance",
-                () -> new SlotDisplay.Type<>(ItemStackWithChanceDisplay.CODEC, ItemStackWithChanceDisplay.STREAM_CODEC));
-
-        public static final DeferredHolder<SlotDisplay.Type<?>, SlotDisplay.Type<ResourcesDisplay>> RESOURCES = SLOT_DISPLAY_TYPES.register(
-                "resources",
-                () -> new SlotDisplay.Type<>(ResourcesDisplay.CODEC, ResourcesDisplay.STREAM_CODEC));
-
-        private static void init(IEventBus bus)
-        {
-            SLOT_DISPLAY_TYPES.register(bus);
         }
     }
 
@@ -2010,7 +1986,6 @@ public final class Registration
 	    GlobalLootModifiersReg.init(bus);
 	    DataAttachmentsReg.init(bus);
         DataComponentsReg.init(bus);
-		SlotDisplayReg.init(bus);
         IngredientReg.init(bus);
         MultiblockReg.init(bus);
         BookDataReg.init(bus);

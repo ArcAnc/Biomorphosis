@@ -12,14 +12,14 @@ package com.arcanc.biomorphosis.content.gui.component;
 
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.gui.components.AbstractTextAreaWidget;
+import net.minecraft.client.gui.components.AbstractScrollWidget;
 import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
-public class FittingMultiLineText extends AbstractTextAreaWidget
+public class FittingMultiLineText extends AbstractScrollWidget
 {
 	private final MultiLineTextWidget multilineWidget;
 	
@@ -65,7 +65,7 @@ public class FittingMultiLineText extends AbstractTextAreaWidget
 	protected void renderContents(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		guiGraphics.pose().pushPose();
-		guiGraphics.pose().translate(this.getInnerLeft(), this.getInnerTop(), 0.0F);
+		guiGraphics.pose().translate(this.getX() + this.innerPadding(), this.getY() + this.innerPadding(), 0.0F);
 		this.multilineWidget.render(guiGraphics, mouseX, mouseY, partialTick);
 		guiGraphics.pose().popPose();
 	}

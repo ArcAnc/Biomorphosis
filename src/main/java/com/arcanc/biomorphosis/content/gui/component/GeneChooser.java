@@ -26,6 +26,7 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
@@ -50,7 +51,7 @@ public class GeneChooser extends AbstractWidget
 		super(x, y, width, height, Component.empty());
 		this.error = errorInfoArea;
 		this.livingEntity = entity;
-		this.genome = new GenomeInstance(new ArrayList<>(entity.getData(Registration.DataAttachmentsReg.GENOME).geneInstances()));
+		this.genome = new GenomeInstance(new ArrayList<>(GenomeHelper.getGenome(entity).geneInstances()));
 		
 		int textWidth = (int) (width * 0.75f);
 		int textHeight = (int) (height * 0.35f);
@@ -115,14 +116,15 @@ public class GeneChooser extends AbstractWidget
 		
 		mc.getConnection().registryAccess().
 				lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-				getOptional(gene.id()).
+				get(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, gene.id())).
 				ifPresent(geneDefinition ->
 				{
-					GeneDefinition.RarityData data = geneDefinition.rarityData().get(gene.rarity());
+					GeneDefinition definition = geneDefinition.value();
+					GeneDefinition.RarityData data = definition.rarityData().get(gene.rarity());
 					MutableComponent component = Component.empty();
 					
 					component.append(Component.translatable(Database.GUI.Genome.Translations.GENE_NAME.
-									apply(geneDefinition.id())).
+									apply(definition.id())).
 							withColor(gene.rarity().getColor())).
 							append(":").
 							append("\n").
@@ -203,7 +205,7 @@ public class GeneChooser extends AbstractWidget
 	{
 		Minecraft mc = RenderHelper.mc();
 		GeneDefinition inputDefinition = mc.getConnection().registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-				getValue(geneInstance.id());
+				getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, geneInstance.id())).value();
 		
 		if (inputDefinition == null)
 		{
@@ -230,7 +232,7 @@ public class GeneChooser extends AbstractWidget
 		{
 			GeneInstance checkGene = this.genome.geneInstances().get(q);
 			GeneDefinition checkGeneDefinition = mc.getConnection().registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-					getValue(checkGene.id());
+					getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, checkGene.id())).value();
 			if (checkGeneDefinition == null)
 			{
 				canBeAdded = false;

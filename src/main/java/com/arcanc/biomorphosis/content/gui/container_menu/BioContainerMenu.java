@@ -56,9 +56,11 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         this.isValid = ctx.isValid;
     }
 
+    
+    
     public ContextType getContextType()
     {
-        return contextType;
+        return this.contextType;
     }
 
     @Override
@@ -126,7 +128,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
                 if(!this.moveItemStackTo(itemstack1, this.ownSlotCount, this.slots.size(), true))
                     return ItemStack.EMPTY;
             }
-            else if(!this.moveItemStackToWithMayPlace(itemstack1, 0, ownSlotCount))
+            else if(!this.moveItemStackToWithMayPlace(itemstack1, 0, this.ownSlotCount))
                 return ItemStack.EMPTY;
 
             if(itemstack1.isEmpty())
@@ -222,7 +224,18 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         return new MenuContext(pMenuType, pContainerId, type, () -> {
         }, $ -> true);
     }
-
+    
+    //FIXME: check positions
+    protected void addStandardInventorySlots(@NotNull Inventory playerInventory, int x, int y)
+    {
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 9; j++)
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, x + j * 18, y + i * 18));
+        
+        for (int k = 0; k < 9; k++)
+            this.addSlot(new Slot(playerInventory, k, x + k * 18, y));
+    }
+    
     protected record MenuContext(
             MenuType<?> type, int id, ContextType contextType, Runnable setChanged, Predicate<Player> isValid
     )

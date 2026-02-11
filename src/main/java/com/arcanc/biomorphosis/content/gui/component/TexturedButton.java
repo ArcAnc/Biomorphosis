@@ -34,7 +34,7 @@ public class TexturedButton extends Button
 	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
 		ResourceLocation resourcelocation = this.sprites.get(this.isActive(), this.isHoveredOrFocused());
-		guiGraphics.blit(RenderType :: guiTextured,
+		guiGraphics.blit(
 				resourcelocation,
 				this.getX(), this.getY(),
 				0, 0,

@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.base.Preconditions;
+import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
@@ -62,18 +63,18 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         if (resultedTooltip.isEmpty())
             renderTooltip(guiGraphics, mouseX, mouseY);
         else
-            guiGraphics.renderTooltip(getFont(), resultedTooltip, Optional.empty(), mouseX, mouseY);
+            guiGraphics.renderTooltip(font, resultedTooltip, Optional.empty(), mouseX, mouseY);
     }
 
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
     {
         RenderHelper.blit(guiGraphics,
-                RenderType :: guiTextured,
                 BACKGROUND,
                 this.getGuiLeft(), this.getGuiTop(),
                 0, 0,
                 getXSize(), getYSize(),
+                0,
                 256, 256,
                 256, 256);
     }
@@ -126,22 +127,22 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
 
         if (slot instanceof BioSlot bioSlot)
         {
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, i - 1, j - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(bioSlot.getSlotColor().div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, i - 1, j - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(bioSlot.getSlotColor().div(255f, new Vector4f())));
         }
         else
         {
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, i - 1, j - 1, 18, 18);
-            guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+            guiGraphics.blitSprite(BioSlot.FRAME, i - 1, j - 1, 18, 18);
+            guiGraphics.blitSprite(BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
         }
 
         guiGraphics.pose().translate(0.0F, 0.0F, 100.0F);
         if (itemstack.isEmpty() && slot.isActive())
         {
-            ResourceLocation resourcelocation = slot.getNoItemIcon();
+            Pair<ResourceLocation, ResourceLocation> resourcelocation = slot.getNoItemIcon();
             if (resourcelocation != null)
             {
-                guiGraphics.blitSprite(RenderType::guiTextured, resourcelocation, i, j, 16, 16);
+                guiGraphics.blitSprite(resourcelocation.getSecond(), i, j, 16, 16);
                 flag1 = true;
             }
         }

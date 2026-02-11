@@ -15,9 +15,11 @@ import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipData;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.item.SpawnEggItem;
+import net.neoforged.neoforge.common.DeferredSpawnEggItem;
 
-public class BioSpawnEgg extends SpawnEggItem implements ItemInterfaces.IMustAddToCreativeTab, ICustomTooltip
+import java.util.function.Supplier;
+
+public class BioSpawnEgg extends DeferredSpawnEggItem implements ItemInterfaces.IMustAddToCreativeTab, ICustomTooltip
 {
     private final StyleData style = new StyleData(true, (player, stack) -> new TooltipData(
             true,
@@ -25,9 +27,9 @@ public class BioSpawnEgg extends SpawnEggItem implements ItemInterfaces.IMustAdd
             Database.GUI.Textures.Tooltip.TOOLTIP_DECORATIONS,
             true));
 
-    public BioSpawnEgg(EntityType<? extends Mob> defaultType, Properties properties)
+    public BioSpawnEgg(Supplier<EntityType<? extends Mob>> defaultType, int backgroundColor, int highlightColor, Properties properties)
     {
-        super(defaultType, properties);
+        super(defaultType, backgroundColor, highlightColor, properties);
     }
 
     @Override

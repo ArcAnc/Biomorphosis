@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.content.book_data.page.AbstractBookPage;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -191,11 +190,11 @@ public class GuideScreen extends Screen
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.pose().pushPose();
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, this.guiLeft + this.xSize / 2, this.guiTop - 8, 16, 1, 153, 188, 256, 256);
+        guiGraphics.blit(TEXT, this.guiLeft + this.xSize / 2, this.guiTop - 8, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
 
-        guiGraphics.blit(RenderType :: guiTextured, TEXT, -this.guiLeft - this.xSize / 2, -this.guiTop - this.ySize, 16, 1, 153, 188, 256, 256);
+        guiGraphics.blit(TEXT, -this.guiLeft - this.xSize / 2, -this.guiTop - this.ySize, 16, 1, 153, 188, 256, 256);
 
         guiGraphics.pose().scale(-1f, -1f, 1f);
         guiGraphics.pose().popPose();

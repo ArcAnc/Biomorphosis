@@ -17,26 +17,23 @@ import com.arcanc.biomorphosis.content.gui.component.info.ErrorInfoArea;
 import com.arcanc.biomorphosis.content.gui.component.info.GenomeStabilityInfoArea;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
-import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.C2SAddUnlockedGenes;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
-import com.google.common.base.Enums;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.apache.commons.lang3.mutable.Mutable;
-import org.apache.commons.lang3.mutable.MutableObject;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class GenomeScreen extends Screen
 {
@@ -63,7 +60,7 @@ public class GenomeScreen extends Screen
 		this.stabilityInfoArea = new GenomeStabilityInfoArea(new Rect2i(20, 8, 60, 10), this.chooser);
 		addRenderableWidget(this.ownedRarityList = new OwnedRarityList(minecraft, 355, 20, 50, 150, 20));
 		this.ownedGeneList = new OwnedGeneList(this.minecraft, 275, 20, 75, 150, 40, this.ownedRarityList);
-		this.ownedGeneList.setSelectedIndex(0);
+		this.ownedGeneList.setSelected(this.ownedGeneList.getFirstElement());
 		addRenderableWidget(this.ownedGeneList);
 		
 		addRenderableWidget(Button.builder(Component.literal("Add"), button ->

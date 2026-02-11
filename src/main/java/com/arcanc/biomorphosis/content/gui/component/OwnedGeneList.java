@@ -12,8 +12,8 @@ package com.arcanc.biomorphosis.content.gui.component;
 
 import com.arcanc.biomorphosis.content.mutations.GeneRarity;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
-import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -43,7 +43,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 		if (player == null)
 			return;
 		
-		UnlockedGenome unlockedGenome = player.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+		UnlockedGenome unlockedGenome = GenomeHelper.getUnlockedGenome(player);
 		
 		if (unlockedGenome.unlockedGenes().isEmpty())
 			return;
@@ -53,7 +53,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 		
 		if (this.children().isEmpty())
 			return;
-		this.setSelectedIndex(0);
+		this.setSelected(this.getFirstElement());
 		updateBoundedRarities(this.getSelected().getValue());
 	}
 	
@@ -66,13 +66,13 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 			return;
 		}
 		
-		UnlockedGenome genome = player.getData(Registration.DataAttachmentsReg.UNLOCKED_GENOME);
+		UnlockedGenome genome = GenomeHelper.getUnlockedGenome(player);
 		Set<GeneRarity> rarities = genome.getRaritiesById(id);
 		this.rarityList.updateValues(rarities);
 		
 		if (rarities.isEmpty())
 			return;
-		this.rarityList.setSelectedIndex(0);
+		this.rarityList.setSelected(this.rarityList.getFirstElement());
 	}
 	
 	@Override
@@ -94,7 +94,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	}
 	
 	@Override
-	protected int scrollBarX()
+	protected int getScrollbarPosition()
 	{
 		return this.getRowLeft() + this.getRowWidth();
 	}
@@ -110,7 +110,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	{
 		int left = this.getRowLeft();
 		int right = this.getRowRight();
-		int i1 = Mth.floor(mouseY - (double)this.getY()) - this.headerHeight + (int)this.scrollAmount() - 4;
+		int i1 = Mth.floor(mouseY - (double)this.getY()) - this.headerHeight + (int)this.getScrollAmount() - 4;
 		int j1 = i1 / this.itemHeight;
 		return mouseX >= (double)left && mouseX <= (double)right && j1 >= 0 && i1 >= 0 && j1 < this.getItemCount() ? this.children().get(j1) : null;
 	}
@@ -161,8 +161,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 					0,
 					0,
 					(int) (width + width * 0.3f),
-					-1,
-					false);
+					-1);
 			guiGraphics.pose().popPose();
 		}
 		

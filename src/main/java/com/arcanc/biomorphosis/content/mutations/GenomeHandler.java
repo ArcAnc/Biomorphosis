@@ -19,6 +19,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -147,7 +148,8 @@ public class GenomeHandler
 				{
 					GeneDefinition definition = serverLevel.registryAccess().
 							lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-							getValue(geneInstance.id());
+							getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, geneInstance.id())).
+							value();
 					
 					if (definition == null)
 						return;
