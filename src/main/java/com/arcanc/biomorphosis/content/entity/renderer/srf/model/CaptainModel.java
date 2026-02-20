@@ -68,7 +68,7 @@ public class CaptainModel extends HumanoidModel<Captain>
 				texOffs(0, 41).
 				addBox(0.0F, -5.0F, -5.0F, 0.0F, 5.0F, 10.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(0.0F, -8.6F, 3.25F, -1.309F, 0.0F, 0.0F));
 		
-		PartDefinition hatBone = headBone.addOrReplaceChild("hat", CubeListBuilder.create().
+		PartDefinition hatBone = rootBone.addOrReplaceChild("hat", CubeListBuilder.create().
 				texOffs(32, 0).
 				addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE.extend(0.5F)), PartPose.ZERO);
 		

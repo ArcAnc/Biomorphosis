@@ -61,7 +61,7 @@ public class BlacksmithModel extends HumanoidModel<Blacksmith>
 				texOffs(36, 16).
 				addBox(-1.5F, -6.5F, -1.5F, 3.0F, 6.0F, 3.0F, new CubeDeformation(0.0F)), PartPose.offsetAndRotation(-7.5F, -1.5F, 0.5F, 0.0F, -1.5708F, 0.0F));
 		
-		PartDefinition hatBone = headBone.addOrReplaceChild("hat", CubeListBuilder.create().
+		PartDefinition hatBone = rootBone.addOrReplaceChild("hat", CubeListBuilder.create().
 				texOffs(32, 0).
 				addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE.extend(0.5F)), PartPose.ZERO);
 		

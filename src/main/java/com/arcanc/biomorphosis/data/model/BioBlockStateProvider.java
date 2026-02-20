@@ -5045,7 +5045,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
 				renderType(RenderType.translucent().name).
-				texture("particle", blockTexture(block)).
+				texture("particle", fluid.still().getId()).
 				guiLight(BlockModel.GuiLight.SIDE);
 		
 		registerModels(block, model);

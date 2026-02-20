@@ -48,7 +48,7 @@ public class SergeantModel extends HumanoidModel<Sergeant>
 						texOffs(0, 0).
 						addBox(-4.0F, -7.5F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.0F)), PartPose.offset(0.0F, -1.0F, 0.0F));
 		
-		PartDefinition hatBone = headBone.addOrReplaceChild("hat", CubeListBuilder.create().
+		PartDefinition hatBone = rootBone.addOrReplaceChild("hat", CubeListBuilder.create().
 				texOffs(32, 0).
 				addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, CubeDeformation.NONE.extend(0.5F)), PartPose.ZERO);
 		

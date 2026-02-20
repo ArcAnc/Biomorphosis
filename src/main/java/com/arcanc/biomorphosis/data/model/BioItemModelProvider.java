@@ -16,6 +16,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -86,7 +87,8 @@ public class BioItemModelProvider extends ItemModelProvider
 	
 	private void createMultiblockItemModel(Item itemHolder)
 	{
-		withExistingParent(itemPrefix(itemHolder), Database.mineRl("builtin/entity"));
+		ModelFile model = getBuilder(Database.mineRl("builtin/entity").toString());
+		getBuilder(itemPrefix(itemHolder)).parent(model);
 	}
 	
 	private @NotNull String itemPrefix(@NotNull Item itemHolder)
