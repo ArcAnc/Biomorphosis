@@ -37,7 +37,7 @@ public class SqueezerRecipeBuilder extends BioBaseRecipeBuilder<SqueezerRecipeBu
 	@Override
 	protected SqueezerRecipe getRecipe()
 	{
-		return new SqueezerRecipe(this.input, this.info, this.result);
+		return new SqueezerRecipe(this.group, this.input, this.info, this.result);
 	}
 	
 	public SqueezerRecipeBuilder setInput(@NotNull IngredientWithSize input)

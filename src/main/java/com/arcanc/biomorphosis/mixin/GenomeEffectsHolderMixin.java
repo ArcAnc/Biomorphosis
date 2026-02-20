@@ -16,7 +16,8 @@ import com.arcanc.biomorphosis.content.mutations.GenomeEffectsHolder;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.GenomeHelper;
-import net.minecraft.core.Registry;
+import net.minecraft.core.HolderLookup;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -57,11 +58,11 @@ public class GenomeEffectsHolderMixin implements GenomeEffectsHolder
 		}
 		
 		List<GeneDefinition.GeneEffectEntry> effects = new ArrayList<>();
-		Registry<GeneDefinition> registry = serverLevel.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
+		HolderLookup.RegistryLookup<GeneDefinition> registry = serverLevel.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
 		
 		for (GeneInstance gene : genome.geneInstances())
 		{
-			GeneDefinition definition = registry.getValue(gene.id());
+			GeneDefinition definition = registry.getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, gene.id())).value();
 			if (definition == null)
 				continue;
 			GeneDefinition.RarityData data = definition.rarityData().get(gene.rarity());

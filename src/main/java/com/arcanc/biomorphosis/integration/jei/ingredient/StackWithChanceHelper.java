@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.integration.jei.ingredient;
 
 import com.arcanc.biomorphosis.integration.jei.BioIngredientTypes;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
@@ -32,7 +33,14 @@ public class StackWithChanceHelper implements IIngredientHelper<StackWithChance>
     {
         return ingredient.stack().getDisplayName().getString();
     }
-
+    
+    //FIXME: idk is this right way to make string for those method
+    @Override
+    public String getUniqueId(@NotNull StackWithChance ingredient, UidContext context)
+    {
+        return ingredient.stack().getDisplayName().getString();
+    }
+    
     @Override
     public @NotNull String getUid(@NotNull StackWithChance ingredient, @NotNull UidContext context)
     {

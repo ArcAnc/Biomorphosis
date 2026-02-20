@@ -36,7 +36,7 @@ public class StomachRecipeBuilder extends BioBaseRecipeBuilder<StomachRecipeBuil
     @Override
     protected StomachRecipe getRecipe()
     {
-        return new StomachRecipe(this.input, this.info, this.result);
+        return new StomachRecipe(this.group, this.input, this.info, this.result);
     }
 
     public StomachRecipeBuilder setInput(@NotNull IngredientWithSize input)

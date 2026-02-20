@@ -35,7 +35,7 @@ public class ForgeRecipeBuilder extends BioBaseRecipeBuilder<ForgeRecipeBuilder,
     @Override
     protected ForgeRecipe getRecipe()
     {
-        return new ForgeRecipe(this.input, this.info, this.result);
+        return new ForgeRecipe(this.group, this.input, this.info, this.result);
     }
 
     public ForgeRecipeBuilder setInput(@NotNull IngredientWithSize input)

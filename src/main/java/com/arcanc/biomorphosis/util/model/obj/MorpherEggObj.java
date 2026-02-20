@@ -781,7 +781,7 @@ public class MorpherEggObj extends BioObjModel
 
 		Minecraft mc = RenderHelper.mc();
 		this.usedIndexes.clear();
-		float time = mc.level.getGameTime() % 360 + mc.getDeltaTracker().getRealtimeDeltaTicks();
+		float time = mc.level.getGameTime() % 360 + mc.getTimer().getRealtimeDeltaTicks();
 
 		for (BioObjModel.Face face : this.faces)
 		{

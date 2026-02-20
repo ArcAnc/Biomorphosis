@@ -25,7 +25,6 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -72,13 +71,13 @@ public class BioJeiPlugin implements IModPlugin
     @Override
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration)
     {
-        registration.addCraftingStation(ChamberRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER));
-        registration.addCraftingStation(CrusherRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.CRUSHER));
-	    registration.addCraftingStation(SqueezerRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.SQUEEZER));
-        registration.addCraftingStation(StomachRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.STOMACH));
-        registration.addCraftingStation(ForgeRecipeCategory.RECIPE_TYPE, new ItemStack(Registration.BlockReg.FORGE));
+        registration.addRecipeCatalyst(Registration.BlockReg.MULTIBLOCK_CHAMBER, ChamberRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(Registration.BlockReg.CRUSHER, CrusherRecipeCategory.RECIPE_TYPE);
+	    registration.addRecipeCatalyst(Registration.BlockReg.SQUEEZER, SqueezerRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(Registration.BlockReg.STOMACH, StomachRecipeCategory.RECIPE_TYPE);
+        registration.addRecipeCatalyst(Registration.BlockReg.FORGE, ForgeRecipeCategory.RECIPE_TYPE);
     }
-
+    
     @Override
     public @NotNull ResourceLocation getPluginUid()
     {

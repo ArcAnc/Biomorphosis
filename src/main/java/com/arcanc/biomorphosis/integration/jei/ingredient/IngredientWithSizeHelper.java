@@ -17,7 +17,6 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,7 +33,14 @@ public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWit
     {
         return RenderHelper.getStackAtCurrentTime(ingredient).getDisplayName().getString();
     }
-
+    
+    //FIXME: idk is this right way to make string for those method
+    @Override
+    public String getUniqueId(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
+    {
+        return RenderHelper.getStackAtCurrentTime(ingredient).getDescriptionId();
+    }
+    
     @Override
     public @NotNull Object getUid(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
     {
@@ -50,7 +56,7 @@ public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWit
     @Override
     public @NotNull IngredientWithSize copyIngredient(@NotNull IngredientWithSize ingredient)
     {
-        return new IngredientWithSize(Ingredient.of(ingredient.ingredient().getValues()), ingredient.amount());
+        return new IngredientWithSize(ingredient.ingredient(), ingredient.amount());
     }
 
     @Override
