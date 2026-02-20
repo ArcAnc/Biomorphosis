@@ -26,7 +26,6 @@ import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 
-import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;

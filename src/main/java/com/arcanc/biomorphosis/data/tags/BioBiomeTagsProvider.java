@@ -16,15 +16,16 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BioBiomeTagsProvider extends BiomeTagsProvider
 {
-	public BioBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider)
+	public BioBiomeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper existingFileHelper)
 	{
-		super(output, provider, Database.MOD_ID);
+		super(output, provider, Database.MOD_ID, existingFileHelper);
 	}
 	
 	@Override

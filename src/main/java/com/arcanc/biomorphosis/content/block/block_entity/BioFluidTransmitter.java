@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
@@ -136,12 +137,12 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                 return InteractionResult.SUCCESS;
             List<Vec3> positions = stack.get(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA);
             if (positions == null)
-                return InteractionResult.TRY_WITH_EMPTY_HAND;
+                return InteractionResult.PASS;
 
             Vec3 start = positions.getFirst();
             Vec3 end = positions.get(1);
             if (start.equals(Vec3.ZERO) || end.equals(Vec3.ZERO))
-                return InteractionResult.TRY_WITH_EMPTY_HAND;
+                return InteractionResult.PASS;
             List<BlockPos> path = PathFinder.findPath(BlockPos.containing(start), getBlockPos(), BlockPos.containing(end), level);
 	        //FIXME: переписать алгоритм поиска пути
 			//Database.LOGGER.warn("PATH:");
@@ -157,7 +158,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             this.markDirty();
             return InteractionResult.SUCCESS;
         }
-        return InteractionResult.TRY_WITH_EMPTY_HAND;
+        return InteractionResult.PASS;
     }
 
     private static class PathFinder
@@ -554,7 +555,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                         apply(BlockPos.STREAM_CODEC),
                 PathData :: blockPath,
                 ByteBufCodecs.<ByteBuf, Vec3>list().
-                        apply(Vec3.STREAM_CODEC),
+                        apply(BioCodecs.VEC_3_STREAM_CODEC),
                 PathData :: edgePath,
                 PathData :: new);
 

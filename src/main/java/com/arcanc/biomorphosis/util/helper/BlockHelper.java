@@ -33,6 +33,7 @@ public class BlockHelper
     {
         public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
         public static final BooleanProperty LIT = BlockStateProperties.LIT;
+        public static final BooleanProperty TIP = BooleanProperty.create("tip");
 
         public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockStateProperties.HORIZONTAL_FACING;
         public static final EnumProperty<Direction> FACING = BlockStateProperties.FACING;

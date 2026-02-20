@@ -59,12 +59,12 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
     @Override
     public @NotNull MultifaceSpreader getSpreader()
     {
-        return SPREADER;
+        return this.SPREADER;
     }
 
     public NorphSpreadConfig getSpreaderConfig()
     {
-        return CONFIG;
+        return this.CONFIG;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
     {
         if (!level.isAreaLoaded(pos, 1))
             return;
-        if (CONFIG.getSourcePos(level, pos) == null)
+        if (this.CONFIG.getSourcePos(level, pos) == null)
         {
             Set<BlockState> nearbyBlocks = Arrays.stream(Direction.values()).map(direction -> level.getBlockState(pos.relative(direction))).
                     filter(checkState -> checkState.is(BioBlockTags.NORPH) || checkState.is(BioBlockTags.NORPH_SOURCE)).
@@ -120,7 +120,7 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
         if (!hasFace(state, Direction.DOWN))
             return;
         BlockPos checkPos = pos.below();
-        if (CONFIG.getSourcePos(level, checkPos) == null)
+        if (this.CONFIG.getSourcePos(level, checkPos) == null)
             return;
         BlockState checkState = level.getBlockState(checkPos);
         if (    !checkState.isAir() &&

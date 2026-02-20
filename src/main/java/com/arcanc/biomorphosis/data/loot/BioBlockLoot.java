@@ -14,6 +14,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
@@ -45,7 +46,7 @@ public class BioBlockLoot extends BlockLootSubProvider
                         noneMatch(deferred -> deferred.getId().equals(block.getId()))).
                 map(DeferredHolder :: get).
                 map(block -> (Block)block).
-                filter(block -> block.getLootTable().isPresent()).
+                filter(block -> block.getLootTable() == BuiltInLootTables.EMPTY).
                 toList();
     }
 }

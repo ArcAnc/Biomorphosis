@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
-import com.arcanc.biomorphosis.util.Database;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;

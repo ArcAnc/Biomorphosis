@@ -26,8 +26,8 @@ import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.client.renderer.RenderType;
@@ -42,7 +42,7 @@ import java.util.List;
 
 public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
 {
-    public static final IRecipeType<ChamberRecipe> RECIPE_TYPE = IRecipeType.create(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().getId(), ChamberRecipe.class);
+    public static final RecipeType<ChamberRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().getId().getPath(), ChamberRecipe.class);
     private final IDrawable icon;
 
     private int progress;
@@ -59,7 +59,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     }
 
     @Override
-    public @NotNull IRecipeType<ChamberRecipe> getRecipeType()
+    public @NotNull RecipeType<ChamberRecipe> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -102,13 +102,13 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
             drawn += squaresInRow;
         }
 
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 70).add(recipe.result().copy());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 70).addItemStack(recipe.result().copy());
     }
 
     private void addInputSlot (@NotNull IRecipeLayoutBuilder builder, int x, int y, IngredientWithSize ingredient)
     {
         IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
-        slotBuilder.add(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, ingredient);
+        slotBuilder.addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, ingredient);
     }
 
     @Override
@@ -129,14 +129,14 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
             {
                 int x = startX + col * 19;
                 int y = this.startY + row * 19;
-                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, x - 1, y - 1, 18, 18);
-                guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+                guiGraphics.blitSprite(BioSlot.FRAME, x - 1, y - 1, 18, 18);
+                guiGraphics.blitSprite(BioSlot.MASK, x - 1, y - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
             }
             drawn += squaresInRow;
         }
 
-        guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 49, 69, 18, 18);
-        guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 49, 69, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+        guiGraphics.blitSprite(BioSlot.FRAME, 49, 69, 18, 18);
+        guiGraphics.blitSprite(BioSlot.MASK, 49, 69, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
         this.maxTime = recipe.getResources().time();
         this.progress = (int)(System.currentTimeMillis() / 10 % maxTime);
@@ -146,7 +146,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
         this.progressArrow.render(guiGraphics, (int)mouseX, (int)mouseY, 0.33f);
         guiGraphics.pose().popPose();
 
-        guiGraphics.blit(RenderType :: guiTextured, Database.GUI.Textures.JEI.TIME, 5, 77, 0, 0, 8, 8, 16, 16,16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 77, 0, 0, 8, 8, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 77, 0, false);
     }
 

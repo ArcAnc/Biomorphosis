@@ -11,10 +11,8 @@ package com.arcanc.biomorphosis.data.recipe;
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.recipe.display.ChamberRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.ChamberRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
 import com.google.common.base.Preconditions;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -24,9 +22,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,12 +38,11 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
 
     private final List<IngredientWithSize> input = new ArrayList<>();
     private final ItemStack result;
-
-    private PlacementInfo placementInfo;
-
-    public ChamberRecipe(List<IngredientWithSize> inputs, int time, ItemStack result)
+    
+    public ChamberRecipe(String group, List<IngredientWithSize> inputs, int time, ItemStack result)
     {
-        this(   inputs,
+        this(group,
+                inputs,
                 new ResourcesInfo(
                     new BiomassInfo(false, 0),
                         Optional.empty(),
@@ -55,9 +51,9 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
                 result);
     }
 
-    public ChamberRecipe(List<IngredientWithSize> inputs, @NotNull ResourcesInfo resources, ItemStack result)
+    public ChamberRecipe(String group, List<IngredientWithSize> inputs, @NotNull ResourcesInfo resources, ItemStack result)
     {
-        super(resources);
+        super(group, resources);
         Preconditions.checkNotNull(inputs);
         Preconditions.checkState(inputs.size() < MultiblockChamber.MAX_SLOT_AMOUNT);
         this.input.addAll(inputs);
@@ -105,13 +101,19 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
 
         return true;
     }
-
+    
+    @Override
+    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    {
+        return this.result();
+    }
+    
     @Override
     public @NotNull ItemStack assemble(@NotNull ChamberRecipeInput input, HolderLookup.@NotNull Provider registries)
     {
         return this.result.copy();
     }
-
+    
     @Override
     public @NotNull RecipeSerializer<ChamberRecipe> getSerializer()
     {
@@ -124,45 +126,19 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
         return Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get();
     }
 
-    @Override
-    public @NotNull PlacementInfo placementInfo()
-    {
-        if (this.placementInfo == null)
-        {
-            List<Optional<Ingredient>> list = new ArrayList<>();
-            this.input.forEach(ingredientWithSize -> list.add(Optional.of(ingredientWithSize.toVanilla())));
-
-            this.placementInfo = PlacementInfo.createFromOptionals(list);
-        }
-        return this.placementInfo;
-    }
-
-    @Override
-    public @NotNull List<RecipeDisplay> display()
-    {
-        return List.of(new ChamberRecipeDisplay(
-            new SlotDisplay.Composite(this.input.stream().map(IngredientWithSize :: display).toList()),
-            new ResourcesDisplay(this.getResources()),
-            new SlotDisplay.ItemStackSlotDisplay(this.result),
-            new SlotDisplay.ItemStackSlotDisplay(new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()))));
-    }
-
-    @Override
-    public @NotNull RecipeBookCategory recipeBookCategory()
-    {
-        return Registration.RecipeReg.CHAMBER_RECIPE.getCategory().get();
-    }
-
     public static class ChamberRecipeSerializer implements RecipeSerializer<ChamberRecipe>
     {
         public static final MapCodec<ChamberRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.
                 group(
+                        Codec.STRING.fieldOf("id").forGetter(ChamberRecipe :: getGroup),
                         Codec.list(IngredientWithSize.CODEC.codec()).fieldOf("input").forGetter(ChamberRecipe :: input),
                         ResourcesInfo.CODEC.fieldOf("resources").forGetter(ChamberRecipe :: getResources),
                         ItemStack.OPTIONAL_CODEC.fieldOf("result").forGetter(ChamberRecipe :: result)).
                 apply(instance, ChamberRecipe :: new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ChamberRecipe> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.STRING_UTF8,
+                ChamberRecipe :: getGroup,
                 ByteBufCodecs.<RegistryFriendlyByteBuf, IngredientWithSize>list().
                         apply(IngredientWithSize.STREAM_CODEC),
                 ChamberRecipe :: input,

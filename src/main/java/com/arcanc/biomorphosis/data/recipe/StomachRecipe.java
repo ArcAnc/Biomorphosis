@@ -10,27 +10,24 @@
 package com.arcanc.biomorphosis.data.recipe;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.recipe.display.StomachRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.crafting.display.FluidStackSlotDisplay;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class StomachRecipe extends BioBaseRecipe<StomachRecipeInput>
 {
@@ -39,11 +36,9 @@ public class StomachRecipe extends BioBaseRecipe<StomachRecipeInput>
     private final IngredientWithSize input;
     private final FluidStack result;
 
-    private PlacementInfo placementInfo;
-
-    public StomachRecipe(IngredientWithSize input, @NotNull ResourcesInfo resources, FluidStack result)
+    public StomachRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resources, FluidStack result)
     {
-        super(resources);
+        super(id, resources);
         this.input = input;
         this.result = result;
     }
@@ -64,7 +59,13 @@ public class StomachRecipe extends BioBaseRecipe<StomachRecipeInput>
     {
         return result;
     }
-
+    
+    @Override
+    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    {
+        return ItemStack.EMPTY;
+    }
+    
     @Override
     public @NotNull ItemStack assemble(@NotNull StomachRecipeInput input, HolderLookup.@NotNull Provider registries)
     {
@@ -83,46 +84,20 @@ public class StomachRecipe extends BioBaseRecipe<StomachRecipeInput>
         return Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get();
     }
 
-    @Override
-    public @NotNull PlacementInfo placementInfo()
-    {
-        if (this.placementInfo == null)
-        {
-            List<Optional<Ingredient>> list = new ArrayList<>();
-            list.add(Optional.of(this.input.toVanilla()));
-
-            this.placementInfo = PlacementInfo.createFromOptionals(list);
-        }
-        return this.placementInfo;
-    }
-
-    @Override
-    public @NotNull RecipeBookCategory recipeBookCategory()
-    {
-        return Registration.RecipeReg.STOMACH_RECIPE.getCategory().get();
-    }
-
-    @Override
-    public @NotNull List<RecipeDisplay> display()
-    {
-        return List.of(new StomachRecipeDisplay(
-                this.input.display(),
-                new ResourcesDisplay(this.getResources()),
-                new FluidStackSlotDisplay(this.result),
-                new SlotDisplay.ItemStackSlotDisplay(new ItemStack(Registration.BlockReg.STOMACH.get()))));
-    }
-
     public static class StomachRecipeSerializer implements RecipeSerializer<StomachRecipe>
     {
 
         public static final MapCodec<StomachRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.
                 group(
+                        Codec.STRING.fieldOf("id").forGetter(StomachRecipe :: getGroup),
                         IngredientWithSize.CODEC.fieldOf("input").forGetter(StomachRecipe :: input),
                         ResourcesInfo.CODEC.fieldOf("resources").forGetter(StomachRecipe :: getResources),
                         FluidStack.OPTIONAL_CODEC.fieldOf("result").forGetter(StomachRecipe :: result)).
                 apply(instance, StomachRecipe :: new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, StomachRecipe> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.STRING_UTF8,
+                StomachRecipe :: getGroup,
                 IngredientWithSize.STREAM_CODEC,
                 StomachRecipe :: input,
                 ResourcesInfo.STREAM_CODEC,

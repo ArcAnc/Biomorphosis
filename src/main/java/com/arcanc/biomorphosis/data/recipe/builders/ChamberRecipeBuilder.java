@@ -23,7 +23,7 @@ import java.util.Optional;
 
 public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuilder, ChamberRecipe, ChamberRecipeInput>
 {
-    private List<IngredientWithSize> inputs = new ArrayList<>();
+    private final List<IngredientWithSize> inputs = new ArrayList<>();
     private ItemStack result;
 
     public static @NotNull ChamberRecipeBuilder newBuilder(int time)
@@ -57,7 +57,7 @@ public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuil
     @Override
     protected ChamberRecipe getRecipe()
     {
-        return new ChamberRecipe(this.inputs, this.info.time(), this.result);
+        return new ChamberRecipe(this.group, this.inputs, this.info.time(), this.result);
     }
 
     @Override

@@ -11,51 +11,30 @@ package com.arcanc.biomorphosis.content.item.renderer;
 
 import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockMorpherRenderer;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.serialization.MapCodec;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.special.SpecialModelRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class MultiblockMorpherSpecialRenderer implements BlockEntityWithoutLevelRenderer<Void>
+public class MultiblockMorpherSpecialRenderer extends BlockEntityWithoutLevelRenderer
 {
-
-    @Override
-    public void render(@Nullable Void patterns,
-                       @NotNull ItemDisplayContext displayContext,
-                       @NotNull PoseStack poseStack,
-                       @NotNull MultiBufferSource bufferSource,
-                       int packedLight,
-                       int packedOverlay,
-                       boolean hasFoilType)
+    
+    public MultiblockMorpherSpecialRenderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher, EntityModelSet entityModelSet)
     {
-        MultiblockMorpherRenderer.renderItem(displayContext, poseStack, bufferSource, packedLight, packedOverlay, hasFoilType);
+        super(blockEntityRenderDispatcher, entityModelSet);
     }
-
+    
     @Override
-    public @NotNull Void extractArgument(@NotNull ItemStack stack)
+    public void renderByItem(@NotNull ItemStack stack,
+                             @NotNull ItemDisplayContext displayContext,
+                             @NotNull PoseStack poseStack,
+                             @NotNull MultiBufferSource buffer,
+                             int packedLight,
+                             int packedOverlay)
     {
-        return null;
-    }
-
-    public static class Unbaked implements SpecialModelRenderer.Unbaked
-    {
-        public static final MapCodec<Unbaked> MAP_CODEC = MapCodec.unit(MultiblockMorpherSpecialRenderer.Unbaked::new);
-
-        @Override
-        public @NotNull MapCodec<MultiblockMorpherSpecialRenderer.Unbaked> type()
-        {
-            return MAP_CODEC;
-        }
-
-        @Override
-        public @NotNull SpecialModelRenderer<?> bake(@NotNull EntityModelSet modelSet)
-        {
-            return new MultiblockMorpherSpecialRenderer();
-        }
+        MultiblockMorpherRenderer.renderItem(displayContext, poseStack, buffer, packedLight, packedOverlay);
     }
 }

@@ -16,12 +16,9 @@ import net.minecraft.advancements.AdvancementRequirements;
 import net.minecraft.advancements.AdvancementRewards;
 import net.minecraft.advancements.Criterion;
 import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.crafting.Recipe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -32,6 +29,7 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
 {
     protected final Map<String, Criterion<?>> criteria = new LinkedHashMap<>();
 
+    protected String group;
     protected final BioBaseRecipe.ResourcesInfo info;
 
     protected BioBaseRecipeBuilder(BioBaseRecipe.ResourcesInfo info)
@@ -57,19 +55,20 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
     @Override
     public @NotNull T group(@Nullable String groupName)
     {
+        this.group = groupName;
         return getSelf();
     }
-
+    
     @Override
-    public void save(@NotNull RecipeOutput output, @NotNull ResourceKey<Recipe<?>> key)
+    public void save(@NotNull RecipeOutput output, @NotNull ResourceLocation loc)
     {
-        Advancement.Builder advancement = output.advancement()
-                .addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(key))
-                .rewards(AdvancementRewards.Builder.recipe(key))
-                .requirements(AdvancementRequirements.Strategy.OR);
+        Advancement.Builder advancement = output.advancement().
+                        addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(loc)).
+                        rewards(AdvancementRewards.Builder.recipe(loc)).
+                requirements(AdvancementRequirements.Strategy.OR);
         this.criteria.forEach(advancement::addCriterion);
         R recipe = getRecipe();
-        output.accept(key, recipe, advancement.build(key.location().withPrefix("recipes/")));
+        output.accept(loc, recipe, advancement.build(loc.withPrefix("recipes/")));
     }
 
     @Override
@@ -82,7 +81,7 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
         else
         {
             R recipe = getRecipe();
-            this.save(recipeOutput, ResourceKey.create(Registries.RECIPE, resourcelocation1.withPrefix(recipe.group() + "/")));
+            this.save(recipeOutput, resourcelocation1.withPrefix(recipe.getGroup() + "/"));
         }
     }
 }

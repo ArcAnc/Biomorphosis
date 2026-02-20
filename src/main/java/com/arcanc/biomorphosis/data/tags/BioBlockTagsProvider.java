@@ -17,6 +17,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -24,9 +25,9 @@ import java.util.concurrent.CompletableFuture;
 public class BioBlockTagsProvider extends BlockTagsProvider
 {
 
-    public BioBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
+    public BioBlockTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper)
     {
-        super(output, lookupProvider, Database.MOD_ID);
+        super(output, lookupProvider, Database.MOD_ID, existingFileHelper);
     }
 
     @Override

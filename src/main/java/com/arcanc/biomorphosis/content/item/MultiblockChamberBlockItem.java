@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.item;
 
 import com.arcanc.biomorphosis.util.Database;
+import com.google.common.base.Suppliers;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
@@ -28,6 +29,7 @@ import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoItem
 {
@@ -44,14 +46,12 @@ public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoI
     {
         consumer.accept(new GeoRenderProvider()
         {
-            private Renderer renderer = null;
+            private final Supplier<Renderer> renderer = Suppliers.memoize(Renderer :: new);
 
             @Override
             public @NotNull GeoItemRenderer<MultiblockChamberBlockItem> getGeoItemRenderer()
             {
-                if (this.renderer == null)
-                    this.renderer = new Renderer();
-                return this.renderer;
+                return this.renderer.get();
             }
         });
     }

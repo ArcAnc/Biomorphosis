@@ -24,12 +24,11 @@ import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.neoforge.NeoForgeTypes;
 import mezz.jei.api.recipe.IFocusGroup;
 import mezz.jei.api.recipe.RecipeIngredientRole;
+import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
-import mezz.jei.api.recipe.types.IRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
@@ -39,7 +38,7 @@ import org.joml.Vector4f;
 
 public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
 {
-    public static final IRecipeType<ForgeRecipe> RECIPE_TYPE = IRecipeType.create(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().getId(), ForgeRecipe.class);
+    public static final RecipeType<ForgeRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.FORGE_RECIPE.getRecipeType().getId().getPath(), ForgeRecipe.class);
     private final IDrawable icon;
     private final IDrawable arrow;
 
@@ -50,7 +49,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
     }
 
     @Override
-    public @NotNull IRecipeType<ForgeRecipe> getRecipeType()
+    public @NotNull RecipeType<ForgeRecipe> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -82,13 +81,13 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
     @Override
     public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull ForgeRecipe recipe, @NotNull IFocusGroup focuses)
     {
-        builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).add(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).add(recipe.result());
+        builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).addItemStack(recipe.result().copy());
 
         int biomassAmount = (int) (recipe.getResources().time() * recipe.getResources().biomass().perSecond());
         builder.addSlot(RecipeIngredientRole.INPUT, 10, 10).
                 setFluidRenderer(biomassAmount,false,20,10).
-                add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassAmount));
+                addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.BIOMASS.still(), biomassAmount));
 
         recipe.getResources().adrenaline().ifPresent(info ->
         {
@@ -96,7 +95,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
 
             builder.addSlot(RecipeIngredientRole.INPUT, 40, 10).
                     setFluidRenderer(amount, false, 20, 10).
-                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ADRENALINE.still(), amount));
+                    addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ADRENALINE.still(), amount));
         });
 
         recipe.getResources().acid().ifPresent(info ->
@@ -105,7 +104,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
 
             builder.addSlot(RecipeIngredientRole.INPUT, 70, 10).
                     setFluidRenderer(amount, false, 20, 10).
-                    add(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount));
+                    addIngredient(NeoForgeTypes.FLUID_STACK, new FluidStack(Registration.FluidReg.ACID.still(), amount));
         });
     }
 
@@ -120,11 +119,11 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
         Font font = mc.font;
         boolean shift = GuideScreen.hasShiftDown();
 
-        guiGraphics.blitSprite(RenderType:: guiTextured, BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
-        guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+        guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
+        guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
-        guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.FRAME, 42 - 1, 80 - 1, 18, 18);
-        guiGraphics.blitSprite(RenderType :: guiTextured, BioSlot.MASK, 42 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+        guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 80 - 1, 18, 18);
+        guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
         if (!shift)
         {
@@ -176,7 +175,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
         this.arrow.draw(guiGraphics);
         guiGraphics.pose().popPose();
 
-        guiGraphics.blit(RenderType:: guiTextured, Database.GUI.Textures.JEI.TIME, 5, 55, 0, 0, 8, 8, 16, 16,16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 0, 0, 8, 8, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 55, 0, false);
     }
 }

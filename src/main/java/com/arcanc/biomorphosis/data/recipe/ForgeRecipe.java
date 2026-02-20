@@ -10,25 +10,23 @@
 package com.arcanc.biomorphosis.data.recipe;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.recipe.display.ForgeRecipeDisplay;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.ForgeRecipeInput;
-import com.arcanc.biomorphosis.data.recipe.slot_display.ResourcesDisplay;
+import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.network.RegistryFriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.*;
-import net.minecraft.world.item.crafting.display.RecipeDisplay;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
 {
@@ -37,11 +35,9 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
     private final IngredientWithSize input;
     private final ItemStack result;
 
-    private PlacementInfo placementInfo;
-
-    public ForgeRecipe(IngredientWithSize input, @NotNull ResourcesInfo resources, ItemStack result)
+    public ForgeRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resources, ItemStack result)
     {
-        super(resources);
+        super(id, resources);
         this.input = input;
         this.result = result;
     }
@@ -62,7 +58,13 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
     {
         return this.result;
     }
-
+    
+    @Override
+    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    {
+        return this.result();
+    }
+    
     @Override
     public @NotNull ItemStack assemble(@NotNull ForgeRecipeInput input, HolderLookup.@NotNull Provider registries)
     {
@@ -81,46 +83,20 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
         return Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get();
     }
 
-    @Override
-    public @NotNull PlacementInfo placementInfo()
-    {
-        if (this.placementInfo == null)
-        {
-            List<Optional<Ingredient>> list = new ArrayList<>();
-            list.add(Optional.of(this.input.toVanilla()));
-
-            this.placementInfo = PlacementInfo.createFromOptionals(list);
-        }
-        return this.placementInfo;
-    }
-
-    @Override
-    public @NotNull RecipeBookCategory recipeBookCategory()
-    {
-        return Registration.RecipeReg.FORGE_RECIPE.getCategory().get();
-    }
-
-    @Override
-    public @NotNull List<RecipeDisplay> display()
-    {
-        return List.of(new ForgeRecipeDisplay(
-                this.input.display(),
-                new ResourcesDisplay(this.getResources()),
-                new SlotDisplay.ItemStackSlotDisplay(this.result),
-                new SlotDisplay.ItemStackSlotDisplay(new ItemStack(Registration.BlockReg.FORGE.get()))));
-    }
-
     public static class ForgeRecipeSerializer implements RecipeSerializer<ForgeRecipe>
     {
 
         public static final MapCodec<ForgeRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance.
                 group(
+                        Codec.STRING.fieldOf("id").forGetter(ForgeRecipe :: getGroup),
                         IngredientWithSize.CODEC.fieldOf("input").forGetter(ForgeRecipe :: input),
                         ResourcesInfo.CODEC.fieldOf("resources").forGetter(ForgeRecipe :: getResources),
                         ItemStack.OPTIONAL_CODEC.fieldOf("result").forGetter(ForgeRecipe :: result)).
                 apply(instance, ForgeRecipe :: new));
 
         public static final StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> STREAM_CODEC = StreamCodec.composite(
+                ByteBufCodecs.STRING_UTF8,
+                ForgeRecipe :: getGroup,
                 IngredientWithSize.STREAM_CODEC,
                 ForgeRecipe :: input,
                 ResourcesInfo.STREAM_CODEC,

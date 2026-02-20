@@ -16,10 +16,10 @@ import com.arcanc.biomorphosis.util.inventory.SidedConfig;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.resources.model.BakedModel;
-import net.minecraft.client.resources.model.DelegateBakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.QuadTransformers;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ import org.joml.Vector4f;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BioFluidStorageBakedModel extends DelegateBakedModel
+public class BioFluidStorageBakedModel extends BakedModelWrapper<BakedModel>
 {
     private static final BakedQuad[][] CACHED_QUADS = new BakedQuad[Direction.values().length][BasicSidedStorage.FaceMode.values().length];
 
@@ -45,7 +45,7 @@ public class BioFluidStorageBakedModel extends DelegateBakedModel
                                              @NotNull ModelData modelData,
                                              @Nullable RenderType renderType)
     {
-        LinkedList<BakedQuad> quads = new LinkedList<>(parent.getQuads(state, direction, random, modelData, renderType));
+        LinkedList<BakedQuad> quads = new LinkedList<>(this.originalModel.getQuads(state, direction, random, modelData, renderType));
         if (direction == null || quads.isEmpty())
             return quads;
         if (!modelData.has(BioSidedAccessBlockEntity.ACCESS_PROPERTIES))
@@ -71,7 +71,6 @@ public class BioFluidStorageBakedModel extends DelegateBakedModel
                 break;
             }
         }
-
         return quads;
     }
 }

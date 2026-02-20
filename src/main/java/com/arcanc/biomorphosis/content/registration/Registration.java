@@ -100,9 +100,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.ScheduledTickAccess;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -221,6 +219,8 @@ public final class Registration
                         eyeHeight(2.05f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(12654873).
+		                highlightSpawnEggColor(7475473).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 100).
                                 add(Attributes.ATTACK_DAMAGE, 15).
@@ -245,6 +245,8 @@ public final class Registration
                         sized(1.3f, 2.2f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(3).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(0, 40, 2)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(43, 3, 99)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 150).
                                 add(Attributes.ATTACK_DAMAGE, 20).
@@ -270,6 +272,8 @@ public final class Registration
                         sized(0.8f, 1.65f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(5).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(34, 97, 13)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(33, 26, 93)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 40).
                                 add(Attributes.ATTACK_DAMAGE, 6).
@@ -292,6 +296,8 @@ public final class Registration
                         sized(1.4f, 1.3f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(42, 34, 23)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(14, 71, 20)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 30).
                                 add(Attributes.ATTACK_DAMAGE, 8).
@@ -312,6 +318,8 @@ public final class Registration
                         sized(0.5f, 0.3f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(81, 39, 6)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(237, 159, 1)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 6).
                                 add(Attributes.ATTACK_DAMAGE, 2).
@@ -334,13 +342,15 @@ public final class Registration
                         sized(0.5f, 1.2f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(38, 29, 12)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(76, 89, 34)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 40).
                                 add(Attributes.ATTACK_DAMAGE, 8).
                                 add(Attributes.FLYING_SPEED, 0.4f).
                                 add(Attributes.MOVEMENT_SPEED, 0.4f).
                                 add(Attributes.FOLLOW_RANGE, 16f)).
-                rendererProvider(ZirisRenderer :: new),
+                        rendererProvider(ZirisRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         public static final EntityEntry<Infestor> MOB_INFESTOR = makeEntityType(
@@ -355,12 +365,14 @@ public final class Registration
                         sized(1.2f, 1.6f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(19, 54, 34)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(64, 94, 14)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                        add(Attributes.MAX_HEALTH, 30).
-                        add(Attributes.ATTACK_DAMAGE, 8).
-                        add(Attributes.MOVEMENT_SPEED, 0.2f).
-                        add(Attributes.FOLLOW_RANGE, 16).
-                        add(Attributes.ARMOR, 2)).
+                                add(Attributes.MAX_HEALTH, 30).
+                                add(Attributes.ATTACK_DAMAGE, 8).
+                                add(Attributes.MOVEMENT_SPEED, 0.2f).
+                                add(Attributes.FOLLOW_RANGE, 16).
+                                add(Attributes.ARMOR, 2)).
                         rendererProvider(InfestorRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
@@ -376,12 +388,14 @@ public final class Registration
                         sized(0.6f, 0.6f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
+		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(17, 91, 23)).
+		                highlightSpawnEggColor(MathHelper.ColorHelper.color(42, 92, 77)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                        add(Attributes.MAX_HEALTH, 30).
-                        add(Attributes.ATTACK_DAMAGE, 8).
-                        add(Attributes.MOVEMENT_SPEED, 0.3f).
-                        add(Attributes.FOLLOW_RANGE, 16).
-                        add(Attributes.ARMOR, 2)).
+                                add(Attributes.MAX_HEALTH, 30).
+                                add(Attributes.ATTACK_DAMAGE, 8).
+                                add(Attributes.MOVEMENT_SPEED, 0.3f).
+                                add(Attributes.FOLLOW_RANGE, 16).
+                                add(Attributes.ARMOR, 2)).
                         rendererProvider(SwarmlingRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 		
@@ -408,6 +422,8 @@ public final class Registration
 						clientTrackingRange(4).
 						eyeHeight(1.62f).
 						sized(0.6f, 1.95f).
+						backgroundSpawnEggColor(MathHelper.ColorHelper.color(193, 163, 134)).
+						highlightSpawnEggColor(MathHelper.ColorHelper.color(119, 119, 119)).
 						attributeProvider(() -> PathfinderMob.createMobAttributes().
 								add(Attributes.MAX_HEALTH, 30).
 								add(Attributes.ATTACK_DAMAGE, 8).
@@ -426,6 +442,8 @@ public final class Registration
 					    clientTrackingRange(4).
 					    eyeHeight(1.62f).
 					    sized(0.6f, 1.95f).
+					    backgroundSpawnEggColor(MathHelper.ColorHelper.color(193, 163, 134)).
+					    highlightSpawnEggColor(MathHelper.ColorHelper.color(249, 179, 5)).
 					    attributeProvider(() -> PathfinderMob.createMobAttributes().
 					            add(Attributes.MAX_HEALTH, 40).
 					            add(Attributes.ATTACK_DAMAGE, 10).
@@ -444,6 +462,8 @@ public final class Registration
 					    clientTrackingRange(4).
 					    eyeHeight(1.62f).
 					    sized(0.6f, 1.95f).
+					    backgroundSpawnEggColor(MathHelper.ColorHelper.color(193, 163, 134)).
+					    highlightSpawnEggColor(MathHelper.ColorHelper.color(68, 219, 224)).
 					    attributeProvider(() -> PathfinderMob.createMobAttributes().
 					            add(Attributes.MAX_HEALTH, 50).
 					            add(Attributes.ATTACK_DAMAGE, 12).
@@ -462,6 +482,8 @@ public final class Registration
 					    clientTrackingRange(4).
 					    eyeHeight(1.62f).
 					    sized(0.6f, 1.95f).
+					    backgroundSpawnEggColor(MathHelper.ColorHelper.color(193, 163, 134)).
+					    highlightSpawnEggColor(MathHelper.ColorHelper.color(108, 47, 25)).
 					    attributeProvider(() -> PathfinderMob.createMobAttributes().
 					            add(Attributes.MAX_HEALTH, 30).
 					            add(Attributes.ATTACK_DAMAGE, 8).
@@ -726,8 +748,10 @@ public final class Registration
                 properties -> baseProps.
                         andThen(BlockBehaviour.Properties :: noOcclusion).
                         accept(properties),
+				MultiblockMorpherBlockItem :: new,
                 ItemReg.baseProps.andThen(props -> props.
-                        rarity(RarityExtension.BIO_RARE.getValue())));
+                        rarity(RarityExtension.BIO_RARE.getValue())),
+		        true);
 
         public static final DeferredBlock<BioBaseBlock> PROP_0 = register("prop_0",
                 properties -> new BioBaseBlock(properties)
@@ -804,41 +828,8 @@ public final class Registration
                     accept(properties),
                 ItemReg.baseProps);
 
-        public static final DeferredBlock<BioBaseBlock> HANGING_MOSS = register("moss_hanging",
-                properties -> new BioBaseBlock(properties)
-                {
-                    @Override
-                    protected boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos)
-                    {
-                        return this.canStayAtPosition(level, pos);
-                    }
-	                
-	                @Override
-	                protected @NotNull BlockState updateShape(@NotNull BlockState state,
-	                                                          @NotNull Direction direction,
-	                                                          @NotNull BlockState neighborState,
-	                                                          @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos)
-	                {
-		                if (!this.canStayAtPosition(level, pos))
-			                level.scheduleTick(pos, this, 1);
-		                
-		                return state.setValue(TIP, !level.getBlockState(pos.below()).is(this));
-	                }
-
-                    @Override
-                    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
-                    {
-                        if (!this.canStayAtPosition(level, pos))
-                            level.destroyBlock(pos, true);
-                    }
-
-                    private boolean canStayAtPosition(@NotNull BlockGetter level, @NotNull BlockPos pos)
-                    {
-                        BlockPos blockpos = pos.relative(Direction.UP);
-                        BlockState blockstate = level.getBlockState(blockpos);
-                        return MultifaceBlock.canAttachTo(level, Direction.UP, blockpos, blockstate) || blockstate.is(BlockReg.HANGING_MOSS);
-                    }
-                },
+        public static final DeferredBlock<BioHangingMossBlock> HANGING_MOSS = register("moss_hanging",
+		        BioHangingMossBlock :: new,
                 properties -> baseProps.
                         andThen(props -> props.
                         ignitedByLava().

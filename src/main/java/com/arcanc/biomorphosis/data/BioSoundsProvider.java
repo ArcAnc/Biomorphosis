@@ -13,15 +13,16 @@ package com.arcanc.biomorphosis.data;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.data.PackOutput;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 import org.jetbrains.annotations.NotNull;
 
 public class BioSoundsProvider extends SoundDefinitionsProvider
 {
- 	public BioSoundsProvider(PackOutput output)
+ 	public BioSoundsProvider(PackOutput output, ExistingFileHelper existingFileHelper)
 	{
-		super(output, Database.MOD_ID);
+		super(output, Database.MOD_ID, existingFileHelper);
 	}
 
 	@Override

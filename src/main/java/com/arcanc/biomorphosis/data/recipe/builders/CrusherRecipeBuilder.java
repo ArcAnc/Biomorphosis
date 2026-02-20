@@ -40,7 +40,7 @@ public class CrusherRecipeBuilder extends BioBaseRecipeBuilder<CrusherRecipeBuil
     @Override
     protected CrusherRecipe getRecipe()
     {
-        return new CrusherRecipe(this.input, this.info, this.result, this.secondaryResults);
+        return new CrusherRecipe(this.group, this.input, this.info, this.result, this.secondaryResults);
     }
 
     public CrusherRecipeBuilder setInput(@NotNull IngredientWithSize input)

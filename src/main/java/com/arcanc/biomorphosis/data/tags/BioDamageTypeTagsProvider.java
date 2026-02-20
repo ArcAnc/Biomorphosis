@@ -17,15 +17,16 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BioDamageTypeTagsProvider extends DamageTypeTagsProvider
 {
-	public BioDamageTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider)
+	public BioDamageTypeTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper)
 	{
-		super(output, lookupProvider, Database.MOD_ID);
+		super(output, lookupProvider, Database.MOD_ID, existingFileHelper);
 	}
 	
 	@Override

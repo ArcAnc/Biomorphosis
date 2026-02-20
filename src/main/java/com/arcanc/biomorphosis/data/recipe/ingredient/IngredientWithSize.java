@@ -12,20 +12,18 @@ package com.arcanc.biomorphosis.data.recipe.ingredient;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.core.Holder;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.ExtraCodecs;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.display.SlotDisplay;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 public record IngredientWithSize(Ingredient ingredient, int amount) implements ICustomIngredient
@@ -55,9 +53,9 @@ public record IngredientWithSize(Ingredient ingredient, int amount) implements I
     }
 
     @Override
-    public @NotNull Stream<Holder<Item>> items()
+    public @NotNull Stream<ItemStack> getItems()
     {
-        return this.ingredient.items();
+        return Arrays.stream(this.ingredient.getItems()).map(stack -> stack.copyWithCount(this.amount));
     }
 
     @Override
@@ -70,16 +68,6 @@ public record IngredientWithSize(Ingredient ingredient, int amount) implements I
     public @NotNull IngredientType<?> getType()
     {
         return Registration.IngredientReg.SIZED_INGREDIENT.get();
-    }
-
-    @Override
-    public @NotNull SlotDisplay display()
-    {
-        return this.ingredient.getValues().
-                unwrap().
-                map(SlotDisplay.TagSlotDisplay::new, list -> new SlotDisplay.Composite(list.stream().
-                        map(itemHolder -> new SlotDisplay.ItemStackSlotDisplay(new ItemStack(itemHolder, this.amount))).
-                        map(itemStackSlotDisplay -> (SlotDisplay) itemStackSlotDisplay).toList()));
     }
 	
 	public static @NotNull IngredientWithSize of (@NotNull ItemStack stack)

@@ -15,15 +15,16 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BioEntityTagsProvider extends EntityTypeTagsProvider
 {
-    public BioEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider)
+    public BioEntityTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> provider, ExistingFileHelper existingFileHelper)
     {
-        super(output, provider, Database.MOD_ID);
+        super(output, provider, Database.MOD_ID, existingFileHelper);
     }
 
     @Override

@@ -39,10 +39,10 @@ public class FleshLootModifier extends LootModifier
 	@Override
 	protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context)
 	{
-		if (!context.hasParameter(LootContextParams.THIS_ENTITY) || !context.hasParameter(LootContextParams.LAST_DAMAGE_PLAYER))
+		if (!context.hasParam(LootContextParams.THIS_ENTITY) || !context.hasParam(LootContextParams.LAST_DAMAGE_PLAYER))
 			return generatedLoot;
 		
-		Entity killed = context.getOptionalParameter(LootContextParams.THIS_ENTITY);
+		Entity killed = context.getParam(LootContextParams.THIS_ENTITY);
 		
 		RandomSource random = context.getRandom();
 		ItemStack flesh = new ItemStack(Registration.ItemReg.FLESH_PIECE.get(), random.nextInt(3));

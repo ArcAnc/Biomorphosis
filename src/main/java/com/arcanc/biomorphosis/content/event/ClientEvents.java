@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SoldierModel;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
+import com.arcanc.biomorphosis.content.item.MultiblockMorpherBlockItem;
 import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
@@ -26,6 +27,8 @@ import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
 import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
 import com.arcanc.biomorphosis.data.loot.BioGlobalLootModifier;
 import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
+import com.arcanc.biomorphosis.data.model.BioBlockStateProvider;
+import com.arcanc.biomorphosis.data.model.BioItemModelProvider;
 import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.*;
@@ -44,11 +47,15 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.*;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
+import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import org.jetbrains.annotations.NotNull;
@@ -65,10 +72,9 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerRenderers);
         modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
-        modEventBus.addListener(ClientEvents :: registerFluidTypesExtensions);
+        modEventBus.addListener(ClientEvents :: registerClientExtensions);
         modEventBus.addListener(ClientEvents :: setupModels);
         modEventBus.addListener(ClientEvents :: registerMenuScreens);
-        modEventBus.addListener(ClientEvents :: registerItemSpecialRenderers);
 		modEventBus.addListener(OverlayRenderHandler :: registerGuiLayers);
 
         TooltipBorderHandler.registerHandler();
@@ -110,7 +116,7 @@ public final class ClientEvents
                 toList());
     }
 
-    private static void registerFluidTypesExtensions(final RegisterClientExtensionsEvent event)
+    private static void registerClientExtensions(final @NotNull RegisterClientExtensionsEvent event)
     {
         Registration.FluidReg.FLUID_TYPES.getEntries().
             stream().
@@ -119,6 +125,9 @@ public final class ClientEvents
             map(fluidType -> (BioFluidType)fluidType).
             forEach(fluidType ->
             event.registerFluidType(fluidType.registerClientExtensions(), fluidType));
+	    
+	    MultiblockMorpherBlockItem morpherBlockItem = ((MultiblockMorpherBlockItem)Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());
+		event.registerItem(morpherBlockItem.registerMorpherExtension(), morpherBlockItem);
     }
 
     private static void clientSetup (final @NotNull FMLClientSetupEvent event)
@@ -160,12 +169,6 @@ public final class ClientEvents
                 forEach(type -> event.register(type.getMenuProvider().getType(), type.getScreenConstructor()));
     }
 
-    private static void registerItemSpecialRenderers(final @NotNull RegisterSpecialModelRendererEvent event)
-    {
-        event.register(Database.rl("multiblock_morpher_item"),
-                MultiblockMorpherSpecialRenderer.Unbaked.MAP_CODEC);
-    }
-
     private static void registerLayerDefinitions(final EntityRenderersEvent.@NotNull RegisterLayerDefinitions event)
     {
 		event.registerLayerDefinition(SoldierModel.LAYER_LOCATION, SoldierModel :: createMesh);
@@ -179,14 +182,16 @@ public final class ClientEvents
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
         CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
-        gen.addProvider(true, new SummaryModelProvider(packOutput));
-        BlockTagsProvider btp = new BioBlockTagsProvider(packOutput, lookupProvider);
+	    ExistingFileHelper ext = event.getExistingFileHelper();
+        gen.addProvider(true, new BioItemModelProvider(packOutput, ext));
+		gen.addProvider(true, new BioBlockStateProvider(packOutput, ext));
+        BlockTagsProvider btp = new BioBlockTagsProvider(packOutput, lookupProvider, ext);
         gen.addProvider(true, btp);
-        gen.addProvider(true, new BioItemTagsProvider(packOutput, lookupProvider, btp));
-        gen.addProvider(true, new BioEntityTagsProvider(packOutput, lookupProvider));
-		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, lookupProvider));
-        gen.addProvider(true, new BioRecipeProvider.Runner(packOutput, lookupProvider));
-        gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider));
+        gen.addProvider(true, new BioItemTagsProvider(packOutput, lookupProvider, btp, ext));
+        gen.addProvider(true, new BioEntityTagsProvider(packOutput, lookupProvider, ext));
+		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, lookupProvider, ext));
+        gen.addProvider(true, new BioRecipeProvider(packOutput, lookupProvider));
+        gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider, ext));
 	    gen.addProvider(true, new BioMultiblockProvider.Runner(packOutput, lookupProvider));
 		gen.addProvider(true, new BioGenomeTemplatesProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, BioLootTableProvider.create(
@@ -212,18 +217,18 @@ public final class ClientEvents
 	    
 	    gen.addProvider(true, new EnUsProvider(packOutput, entries.getRegistryProvider()));
 	    
-		gen.addProvider(true, new BioDamageTypeTagsProvider(packOutput, entries.getRegistryProvider()));
+		gen.addProvider(true, new BioDamageTypeTagsProvider(packOutput, entries.getRegistryProvider(), ext));
 	    
 	    BioRegistryData.clear();
 
-        gen.addProvider(true, new BioSoundsProvider(packOutput));
+        gen.addProvider(true, new BioSoundsProvider(packOutput, ext));
 		
 		event.createProvider(BioGlobalLootModifier :: new);
     }
 
     private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)
     {
-        event.getBakingResult().blockStateModels().computeIfPresent(
+        event.getModels().computeIfPresent(
                 BlockModelShaper.stateToModelLocation(Registration.BlockReg.FLUID_STORAGE.get().defaultBlockState()),
                 (location, bakedModel) -> new BioFluidStorageBakedModel(bakedModel));
     }

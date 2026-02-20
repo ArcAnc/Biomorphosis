@@ -16,31 +16,24 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.multiblock.DynamicMultiblockBuilder;
 import com.arcanc.biomorphosis.data.multiblock.StaticMultiblockBuilder;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
-import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.util.Database;
-import com.google.common.base.Preconditions;
-import net.minecraft.core.*;
-import net.minecraft.core.registries.Registries;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tags.TagKey;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.shapes.Shapes;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 public class BioMultiblockProvider
@@ -118,7 +111,7 @@ public class BioMultiblockProvider
 		addMultiblock(staticBuilder(Database.rl("turret")).
 				addPart(new BlockPos(0,0,0), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
 				addPart(new BlockPos(0, 1, 0), Shapes.box(0.375d, 0, 0.375d, 0.625d, 1, 0.625d),
-						IngredientWithSize.of(Ingredient.of(tag(ItemTags.FENCES)))).
+						IngredientWithSize.of(Ingredient.of(ItemTags.FENCES))).
 				setPlacedBlock(Registration.BlockReg.MULTIBLOCK_TURRET.get().defaultBlockState()).
 				end());
 		
@@ -215,11 +208,14 @@ public class BioMultiblockProvider
                 end());
     }
 
+	
+	/*
+	FIXME: seems those method no needed on 1.21.1
 	private @NotNull HolderSet<Item> tag(@NotNull TagKey<Item> tag)
 	{
 		return this.registries.lookupOrThrow(Registries.ITEM).getOrThrow(tag);
 	}
-	
+	*/
     private @NotNull StaticMultiblockBuilder staticBuilder(ResourceLocation location)
     {
         return new StaticMultiblockBuilder(location);

@@ -39,7 +39,7 @@ import software.bernie.geckolib.renderer.GeoBlockRenderer;
 public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorpher>
 {
 
-	private static final MorpherBaseObj baseModel = new MorpherBaseObj(Database.rl("textures/block/morpher.png"));
+	private static final MorpherBaseObj BASE_MODEL = new MorpherBaseObj(Database.rl("textures/block/morpher.png"));
 	private static final SphereObj sphereModel = new SphereObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
 	private static final SphereGreenObj sphereGreenModel = new SphereGreenObj(Database.rl("textures/block/multiblock_chamber/sphere.png"));
 
@@ -57,7 +57,7 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 
 		poseStack.pushPose();
 
-		baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
+		BASE_MODEL.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, renderColor);
 
 		if ((state.getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING &&
 			animatable.isPreparationPhase()) ||
@@ -101,13 +101,12 @@ public class MultiblockMorpherRenderer extends GeoBlockRenderer<MultiblockMorphe
 								  @NotNull PoseStack poseStack,
 								  @NotNull MultiBufferSource bufferSource,
 								  int packedLight,
-								  int packedOverlay,
-								  boolean hasFoilType)
+								  int packedOverlay)
 	{
 		poseStack.pushPose();
 		poseStack.translate(0.5f, 0f, 0.5f);
 		poseStack.scale(0.85f, 0.85f, 0.85f);
-		baseModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, -1);
+		BASE_MODEL.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, -1);
 		poseStack.popPose();
 	}
 }
