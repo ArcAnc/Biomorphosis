@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:clay"
+    "ingredient": {
+      "item": "minecraft:clay"
+    }
   },
   "resources": {
     "adrenaline": {

@@ -7,7 +7,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:norphed_dirt_stair_0"
+            "ingredient": {
+              "item": "biomorphosis:norphed_dirt_stair_0"
+            }
           }
         ],
         "shape": [
@@ -53,7 +55,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:norphed_dirt_stair_0"
+            "ingredient": {
+              "item": "biomorphosis:norphed_dirt_stair_0"
+            }
           }
         ],
         "shape": [
@@ -99,7 +103,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -115,7 +121,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -131,7 +139,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -147,7 +157,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -163,7 +175,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -179,7 +193,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -195,7 +211,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -211,7 +229,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -227,15 +247,21 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           },
           {
             "amount": 1,
-            "ingredient": "minecraft:egg"
+            "ingredient": {
+              "item": "minecraft:egg"
+            }
           },
           {
             "amount": 8,
-            "ingredient": "minecraft:clay_ball"
+            "ingredient": {
+              "item": "minecraft:clay_ball"
+            }
           }
         ],
         "shape": [
@@ -251,7 +277,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -267,7 +295,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -283,7 +313,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -299,7 +331,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -315,7 +349,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:norphed_dirt_stair_0"
+            "ingredient": {
+              "item": "biomorphosis:norphed_dirt_stair_0"
+            }
           }
         ],
         "shape": [
@@ -361,7 +397,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:norphed_dirt_stair_0"
+            "ingredient": {
+              "item": "biomorphosis:norphed_dirt_stair_0"
+            }
           }
         ],
         "shape": [
@@ -407,7 +445,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -423,7 +463,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -439,7 +481,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -455,7 +499,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -471,7 +517,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -487,7 +535,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -503,7 +553,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -519,7 +571,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [

@@ -2,8 +2,12 @@
   "type": "minecraft:crafting_shapeless",
   "category": "misc",
   "ingredients": [
-    "biomorphosis:queens_brain",
-    "minecraft:writable_book"
+    {
+      "item": "biomorphosis:queens_brain"
+    },
+    {
+      "item": "minecraft:writable_book"
+    }
   ],
   "result": {
     "count": 1,

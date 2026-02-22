@@ -270,7 +270,18 @@ public class TitleBookPage extends AbstractBookPage
                 }
 
             if (isMouseOver(mouseX, mouseY))
-                guiGraphics.blit(GuideScreen.TEXT, getX() - 3, getY() - 3, 209, 113, getWidth() + 3, getHeight() + 3, 47, 11, 256, 256);
+                guiGraphics.blit(
+                        GuideScreen.TEXT,
+                        getX() - 3,
+                        getY() - 3,
+                        getWidth() + 3,
+                        getHeight() + 3,
+                        209,
+                        113,
+                        47,
+                        11,
+                        256,
+                        256);
         }
 
         @Override

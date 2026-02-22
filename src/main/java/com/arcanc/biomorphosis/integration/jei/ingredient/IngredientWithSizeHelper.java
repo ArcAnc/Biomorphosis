@@ -38,7 +38,7 @@ public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWit
     @Override
     public String getUniqueId(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
     {
-        return RenderHelper.getStackAtCurrentTime(ingredient).getDescriptionId();
+        return "IngredientWithSize";
     }
     
     @Override

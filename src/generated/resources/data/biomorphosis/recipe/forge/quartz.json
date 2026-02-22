@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:nether_quartz_ore"
+    "ingredient": {
+      "item": "minecraft:nether_quartz_ore"
+    }
   },
   "resources": {
     "adrenaline": {

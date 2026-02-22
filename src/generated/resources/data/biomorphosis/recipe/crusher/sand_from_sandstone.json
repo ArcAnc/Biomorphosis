@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "#c:sandstone/uncolored_blocks"
+    "ingredient": {
+      "tag": "c:sandstone/uncolored_blocks"
+    }
   },
   "resources": {
     "acid": {

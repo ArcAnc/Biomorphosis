@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:smooth_quartz_stairs"
+    "ingredient": {
+      "item": "minecraft:smooth_quartz_stairs"
+    }
   },
   "resources": {
     "acid": {

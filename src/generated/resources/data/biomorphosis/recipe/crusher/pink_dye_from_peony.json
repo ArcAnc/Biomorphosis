@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:peony"
+    "ingredient": {
+      "item": "minecraft:peony"
+    }
   },
   "resources": {
     "acid": {

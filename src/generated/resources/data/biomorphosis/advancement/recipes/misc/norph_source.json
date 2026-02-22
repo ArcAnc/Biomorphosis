@@ -1,11 +1,11 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_creaking_heart": {
+    "has_clay_ball": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:creaking_heart"
+            "items": "minecraft:clay"
           }
         ]
       },
@@ -21,11 +21,11 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_resin_brick": {
+    "has_golden_apple": {
       "conditions": {
         "items": [
           {
-            "items": "#c:bricks/resin"
+            "items": "minecraft:golden_apple"
           }
         ]
       },
@@ -52,8 +52,8 @@
     [
       "has_the_recipe",
       "has_flesh",
-      "has_creaking_heart",
-      "has_resin_brick",
+      "has_golden_apple",
+      "has_clay_ball",
       "has_stone"
     ]
   ],

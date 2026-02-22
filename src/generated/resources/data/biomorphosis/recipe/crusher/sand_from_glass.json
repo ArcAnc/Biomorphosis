@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:glass"
+    "ingredient": {
+      "item": "minecraft:glass"
+    }
   },
   "resources": {
     "acid": {

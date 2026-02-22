@@ -90,7 +90,7 @@ public class BioRecipeProvider extends RecipeProvider
                 setInput(new IngredientWithSize(Ingredient.of(Tags.Items.FOODS))).
                 setResult(new FluidStack(Registration.FluidReg.ACID.still(), 700)).
                 unlockedBy("has_food", has(Tags.Items.FOODS)).
-		        group(Database.rlStr("stomach")).
+		        group("stomach").
                 save(output, Database.rlStr("acid_from_foods"));
 	    
 	    SqueezerRecipeBuilder.newBuilder(
@@ -102,7 +102,7 @@ public class BioRecipeProvider extends RecipeProvider
 			    setInput(new IngredientWithSize(Ingredient.of(Tags.Items.FOODS))).
 			    setResult(new FluidStack(Registration.FluidReg.BIOMASS.still(), 700)).
 			    unlockedBy("has_food", has(Tags.Items.FOODS)).
-			    group(Database.rlStr("squeezer")).
+			    group("squeezer").
 			    save(output, Database.rlStr("biomass_from_foods"));
 
        
@@ -125,7 +125,7 @@ public class BioRecipeProvider extends RecipeProvider
 	
 	private void generateChamberRecipes(RecipeOutput output)
 	{
-		String group = Database.rlStr("chamber");
+		String group = "chamber";
 		ChamberRecipeBuilder.newBuilder(400).
 				addInput(new IngredientWithSize(Ingredient.of(Items.BUCKET))).
 				addInput(new IngredientWithSize(Ingredient.of(Tags.Items.BARRELS_WOODEN))).
@@ -427,7 +427,7 @@ public class BioRecipeProvider extends RecipeProvider
 	
 	private void generateBioForgeVanillaEnhancedRecipes(RecipeOutput output)
     {
-        String group = Database.rlStr("forge");
+        String group = "forge";
 		Path path = FMLPaths.GAMEDIR.get().resolve("vanilla_recipes");
 
         try(Stream<Path> paths = Files.walk(path))
@@ -488,7 +488,7 @@ public class BioRecipeProvider extends RecipeProvider
 				200)).
 				setInput(new IngredientWithSize(Ingredient.of(input.getItem()), input.getCount())).
 				setResult(result).
-				group(Database.rlStr("crusher")).
+				group("crusher").
 				unlockedBy(getHasName(input.getItem()), has(input.getItem()));
 		for (StackWithChance stackWithChance : additionalOutput)
 			builder.addSecondaryOutput(stackWithChance);
@@ -504,7 +504,7 @@ public class BioRecipeProvider extends RecipeProvider
 				200)).
 				setInput(new IngredientWithSize(Ingredient.of(input), inputAmount)).
 				setResult(result).
-				group(Database.rlStr("crusher")).
+				group("crusher").
 				unlockedBy("has_" + input.location().getPath(), has(input));
 		for (StackWithChance stackWithChance : additionalOutput)
 			builder.addSecondaryOutput(stackWithChance);

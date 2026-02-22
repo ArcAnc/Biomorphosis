@@ -18,6 +18,7 @@ import com.arcanc.biomorphosis.content.mutations.templates.GenomeDataDefinition;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.mojang.serialization.Dynamic;
+import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
@@ -33,13 +34,13 @@ import java.util.Map;
 
 public class GenomeHelper
 {
-	public static <T extends LivingEntity> @NotNull GenomeTemplate getTemplateByEntity(@NotNull T entity)
+	public static <T extends LivingEntity> @Nullable GenomeTemplate getTemplateByEntity(@NotNull T entity)
 	{
 		return entity.
 				registryAccess().
 				lookupOrThrow(Registration.GenomeReg.GENOME_TEMPLATES_KEY).
-				getOrThrow(ResourceKey.create(Registration.GenomeReg.GENOME_TEMPLATES_KEY, EntityType.getKey(entity.getType()))).
-				value();
+				get(ResourceKey.create(Registration.GenomeReg.GENOME_TEMPLATES_KEY, EntityType.getKey(entity.getType()))).
+				map(Holder.Reference :: value).orElse(null);
 	}
 	
 	public static UnlockedGenome getUnlockedGenome(@NotNull Player player)

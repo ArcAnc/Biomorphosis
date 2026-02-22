@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:nether_brick_stairs"
+    "ingredient": {
+      "item": "minecraft:nether_brick_stairs"
+    }
   },
   "resources": {
     "acid": {

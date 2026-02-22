@@ -1,6 +1,8 @@
 {
   "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/trampled_dirt"
+    "all": "biomorphosis:block/trampled_dirt",
+    "particle": "biomorphosis:block/trampled_dirt"
   }
 }

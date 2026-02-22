@@ -135,6 +135,7 @@ public class OverlayRenderHandler
 					0, 0,
 					0, 0,
 					(int) ADVANCEMENT_SIZE.x(), (int)ADVANCEMENT_SIZE.y(),
+					0,
 					130, 52,
 					256, 64,
 					color);
@@ -145,6 +146,7 @@ public class OverlayRenderHandler
 					17, 18,
 					0, 0,
 					16, 16,
+					0,
 					16, 16,
 					16,16,
 					color);

@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "#c:rods/blaze"
+    "ingredient": {
+      "tag": "c:rods/blaze"
+    }
   },
   "resources": {
     "acid": {

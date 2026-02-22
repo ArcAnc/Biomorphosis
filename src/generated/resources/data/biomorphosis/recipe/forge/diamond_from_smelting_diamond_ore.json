@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:diamond_ore"
+    "ingredient": {
+      "item": "minecraft:diamond_ore"
+    }
   },
   "resources": {
     "adrenaline": {

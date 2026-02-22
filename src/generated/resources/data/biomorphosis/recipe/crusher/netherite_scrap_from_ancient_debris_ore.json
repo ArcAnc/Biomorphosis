@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "#c:ores/netherite_scrap"
+    "ingredient": {
+      "tag": "c:ores/netherite_scrap"
+    }
   },
   "resources": {
     "acid": {

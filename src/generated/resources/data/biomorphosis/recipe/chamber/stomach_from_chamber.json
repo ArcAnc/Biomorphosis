@@ -1,25 +1,36 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:stone"
+      "ingredient": {
+        "item": "minecraft:stone"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:chest"
+      "ingredient": {
+        "item": "minecraft:chest"
+      }
     }
   ],
   "resources": {

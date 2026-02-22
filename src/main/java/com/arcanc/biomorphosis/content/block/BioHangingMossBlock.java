@@ -74,7 +74,7 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	{
 		BlockPos blockpos = pos.relative(Direction.UP);
 		BlockState blockstate = level.getBlockState(blockpos);
-		return MultifaceBlock.canAttachTo(level, Direction.UP, blockpos, blockstate);
+		return MultifaceBlock.canAttachTo(level, Direction.UP, blockpos, blockstate) || blockstate.is(this);
 	}
 	
 	@Override
@@ -89,6 +89,12 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 			level.scheduleTick(pos, this, 1);
 		
 		return state.setValue(TIP, !level.getBlockState(pos.below()).is(this));
+	}
+	
+	@Override
+	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
+	{
+		super.randomTick(state, level, pos, random);
 	}
 	
 	@Override

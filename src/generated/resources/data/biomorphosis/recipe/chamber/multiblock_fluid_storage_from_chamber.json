@@ -1,25 +1,36 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:fluid_storage"
+      "ingredient": {
+        "item": "biomorphosis:fluid_storage"
+      }
     }
   ],
   "resources": {

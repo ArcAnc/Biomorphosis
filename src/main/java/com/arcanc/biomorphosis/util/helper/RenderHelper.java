@@ -267,15 +267,16 @@ public class RenderHelper
 				poseStack.scale(geneSize, geneSize, geneSize);
 				poseStack.mulPose(Axis.XP.rotationDegrees(rotation + q * 36));
 				
-				GENE_MODEL.renderModel(
-						poseStack,
-						ObjRenderTypes :: trianglesSolid,
-						guiGraphics.bufferSource(),
-						OverlayTexture.NO_OVERLAY,
-						15728880,
-						data.mainColor().color(),
-						data.secondaryColor().color());
-				
+				guiGraphics.drawManaged(() ->
+						GENE_MODEL.renderModel(
+								poseStack,
+								ObjRenderTypes :: trianglesSolid,
+								guiGraphics.bufferSource(),
+								OverlayTexture.NO_OVERLAY,
+								15728880,
+								data.mainColor().color(),
+								data.secondaryColor().color()));
+
 				poseStack.popPose();
 			}
 		}

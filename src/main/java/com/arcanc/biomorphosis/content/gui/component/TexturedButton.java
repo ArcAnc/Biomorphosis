@@ -37,8 +37,8 @@ public class TexturedButton extends Button
 		guiGraphics.blit(
 				resourcelocation,
 				this.getX(), this.getY(),
-				0, 0,
 				this.width, this.height,
+				0, 0,
 				16, 16,
 				16, 16);
 	}

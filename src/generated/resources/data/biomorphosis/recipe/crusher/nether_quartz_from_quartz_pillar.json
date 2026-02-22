@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:quartz_pillar"
+    "ingredient": {
+      "item": "minecraft:quartz_pillar"
+    }
   },
   "resources": {
     "acid": {

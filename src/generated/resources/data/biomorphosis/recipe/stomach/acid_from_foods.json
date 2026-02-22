@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:stomach",
+  "id": "stomach",
   "input": {
     "amount": 1,
-    "ingredient": "#c:foods"
+    "ingredient": {
+      "tag": "c:foods"
+    }
   },
   "resources": {
     "acid": {

@@ -233,7 +233,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
                 this.addSlot(new Slot(playerInventory, j + i * 9 + 9, x + j * 18, y + i * 18));
         
         for (int k = 0; k < 9; k++)
-            this.addSlot(new Slot(playerInventory, k, x + k * 18, y));
+            this.addSlot(new Slot(playerInventory, k, x + k * 18, y + 57));
     }
     
     protected record MenuContext(

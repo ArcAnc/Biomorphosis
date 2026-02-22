@@ -1,33 +1,48 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "#biomorphosis:wrench"
+      "ingredient": {
+        "tag": "biomorphosis:wrench"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:glass_panes"
+      "ingredient": {
+        "tag": "c:glass_panes"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:glass_panes"
+      "ingredient": {
+        "tag": "c:glass_panes"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     }
   ],
   "resources": {

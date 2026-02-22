@@ -10,14 +10,12 @@
     },
     {
       "apply": {
-        "model": "biomorphosis:block/moss"
+        "model": "biomorphosis:block/moss",
+        "uvlock": true,
+        "x": 270
       },
       "when": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
-        "up": "false",
-        "west": "false"
+        "up": "true"
       }
     },
     {
@@ -34,44 +32,6 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 90
-      },
-      "when": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
-        "up": "false",
-        "west": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "south": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
-        "y": 180
-      },
-      "when": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
-        "up": "false",
-        "west": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
         "y": 270
       },
       "when": {
@@ -82,38 +42,10 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 270
+        "y": 180
       },
       "when": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
-        "up": "false",
-        "west": "false"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "up": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "east": "false",
-        "north": "false",
-        "south": "false",
-        "up": "false",
-        "west": "false"
+        "south": "true"
       }
     }
   ]

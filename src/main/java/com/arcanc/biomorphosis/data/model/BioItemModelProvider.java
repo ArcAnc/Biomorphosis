@@ -50,10 +50,10 @@ public class BioItemModelProvider extends ItemModelProvider
 		createBucket(Registration.FluidReg.ACID);
 		createBucket(Registration.FluidReg.ADRENALINE);
 		
-		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem());
+		/*createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_TURRET.asItem());
-		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());
+		*/createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());
 		
 		spawnEggItem(Registration.EntityReg.MOB_QUEEN.getEggHolder().get());
 		spawnEggItem(Registration.EntityReg.MOB_KSIGG.getEggHolder().get());
@@ -87,7 +87,8 @@ public class BioItemModelProvider extends ItemModelProvider
 	
 	private void createMultiblockItemModel(Item itemHolder)
 	{
-		ModelFile model = getBuilder(Database.mineRl("builtin/entity").toString());
+		//Shulker box used coz this is block model with right rotations, but still have parent builtin/entity
+		ModelFile model = getExistingFile(mcLoc("template_shulker_box"));
 		getBuilder(itemPrefix(itemHolder)).parent(model);
 	}
 	

@@ -84,13 +84,13 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
         RenderSystem.setShader(GameRenderer :: getPositionTexColorShader);
         Tesselator tessellator = Tesselator.getInstance();
         BufferBuilder builder = tessellator.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-        RenderSystem.enableDepthTest();
 
         PoseStack.Pose matrix = pose.last();
 
         if (height < 1)
             drawTop(builder, matrix, height, still, color, gas);
         drawSides(builder, matrix, height, flow, color, gas);
+        RenderSystem.enableDepthTest();
         BufferUploader.drawWithShader(builder.buildOrThrow());
         RenderSystem.disableDepthTest();
         pose.popPose();

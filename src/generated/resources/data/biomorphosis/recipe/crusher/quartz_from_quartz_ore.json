@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "#c:ores/quartz"
+    "ingredient": {
+      "tag": "c:ores/quartz"
+    }
   },
   "resources": {
     "acid": {

@@ -143,7 +143,7 @@ public class BioEntityLoot extends EntityLootSubProvider
         return Registration.EntityReg.ENTITY_TYPES.getEntries().
                 stream().
                 map(DeferredHolder :: get).
-		        filter(entityType -> entityType.getDefaultLootTable() == BuiltInLootTables.EMPTY).
+		        filter(entityType -> entityType.getDefaultLootTable() != BuiltInLootTables.EMPTY).
 		        map(entityType -> (EntityType<?>) entityType);
     }
 }

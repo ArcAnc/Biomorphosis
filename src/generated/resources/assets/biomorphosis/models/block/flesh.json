@@ -1,6 +1,8 @@
 {
   "parent": "minecraft:block/cube_all",
+  "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/flesh"
+    "all": "biomorphosis:block/flesh",
+    "particle": "biomorphosis:block/flesh"
   }
 }

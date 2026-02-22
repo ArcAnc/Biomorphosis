@@ -21,6 +21,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
@@ -31,8 +32,7 @@ public class TooltipBorderHandler
     public static void registerHandler()
     {
         NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipDisplayEvent);
-        //FIXME: отвечает за размеры подсказки, нужно прочекать и настроить. Отключено только ради компила
-        //NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
+        NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
     }
 
     private static void tooltipDisplayEvent(final @NotNull CustomEvents.TooltipDisplayEvent event)
@@ -156,8 +156,7 @@ public class TooltipBorderHandler
 
         int baseColor = MathHelper.ColorHelper.colorFromFloat(1f, 1f, 1f, 1f);
         int intColor = MathHelper.ColorHelper.colorFromFloat(progress, 1f, 1f, 1f);
-        
-        //FIXME: wrong positions. Need recalc for all values
+
         RenderHelper.blit(
                 guiGraphics,
                 texture,
@@ -324,7 +323,6 @@ public class TooltipBorderHandler
 
         RenderSystem.setShaderColor(1F, 1F, 1F, 1F);
         
-        // FIXME: check drawing, coords may be broken
         guiGraphics.blit(texture, x - cornerWidth / 2 - 3, y - cornerHeight / 2 - 3, 0, offset, cornerWidth, cornerHeight, texWidth, texHeight);
         guiGraphics.blit(texture, x + width - cornerWidth / 2 + 3, y - cornerHeight / 2 - 3, patternWidth - cornerWidth, offset, cornerWidth, cornerHeight, texWidth, texHeight);
 
@@ -335,7 +333,7 @@ public class TooltipBorderHandler
         guiGraphics.blit(texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight);
     }
 
-    /*private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Color event)
+    private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Color event)
     {
         if (!(event.getItemStack().getItem() instanceof ICustomTooltip tooltip))
             return;
@@ -344,7 +342,11 @@ public class TooltipBorderHandler
         if (!style.isCustom())
             return;
         TooltipData data = style.tooltip().apply(RenderHelper.clientPlayer(), event.getItemStack());
-        if (data.isTextured())
-            event.setTexture(data.background());
-    }*/
+        
+        event.setBackground(MathHelper.ColorHelper.color(240, 50, 29, 27));
+        event.setBorderStart(MathHelper.ColorHelper.color(80, 255, 0, 5));
+        event.setBorderEnd(MathHelper.ColorHelper.color(80, 127, 0, 2));
+        //if (data.isTextured())
+            //event.setTexture(data.background());
+    }
 }

@@ -46,7 +46,7 @@ public class BioBlockLoot extends BlockLootSubProvider
                         noneMatch(deferred -> deferred.getId().equals(block.getId()))).
                 map(DeferredHolder :: get).
                 map(block -> (Block)block).
-                filter(block -> block.getLootTable() == BuiltInLootTables.EMPTY).
+                filter(block -> block.getLootTable() != BuiltInLootTables.EMPTY).
                 toList();
     }
 }

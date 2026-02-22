@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.C2SGuiData;
+import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -21,8 +22,11 @@ import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.texture.TextureAtlas;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -128,13 +132,35 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         if (slot instanceof BioSlot bioSlot)
         {
             guiGraphics.blitSprite(BioSlot.FRAME, i - 1, j - 1, 18, 18);
-            guiGraphics.blitSprite(BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(bioSlot.getSlotColor().div(255f, new Vector4f())));
+            
+            Vector4f color = bioSlot.getSlotColor().div(255f, new Vector4f());
+            GuiSpriteManager atlas = minecraft.getGuiSprites();
+            TextureAtlasSprite sprite = atlas.getSprite(BioSlot.MASK);
+            guiGraphics.blit(
+                    i - 1, j - 1,
+                    0,
+                    18, 18,
+                    sprite,
+                    color.x(),
+                    color.y(),
+                    color.z(),
+                    color.w());
         }
         else
         {
             guiGraphics.blitSprite(BioSlot.FRAME, i - 1, j - 1, 18, 18);
-            guiGraphics.blitSprite(BioSlot.MASK, i - 1, j - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
-        }
+            Vector4f color = BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f());
+            GuiSpriteManager atlas = minecraft.getGuiSprites();
+            TextureAtlasSprite sprite = atlas.getSprite(BioSlot.MASK);
+            guiGraphics.blit(
+                    i - 1, j - 1,
+                    0,
+                    18, 18,
+                    sprite,
+                    color.x(),
+                    color.y(),
+                    color.z(),
+                    color.w());        }
 
         guiGraphics.pose().translate(0.0F, 0.0F, 100.0F);
         if (itemstack.isEmpty() && slot.isActive())

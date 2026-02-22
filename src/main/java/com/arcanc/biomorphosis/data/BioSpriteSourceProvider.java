@@ -41,7 +41,7 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/tooltip/special_frame"), Optional.of(Database.rl("tooltip/special_frame"))));
 
         //-------------------------------------------------------------------------------
-        // TOOLTIPS
+        // SLOTS
         //-------------------------------------------------------------------------------
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/frame"), Optional.of(BioSlot.FRAME)));
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/mask"), Optional.of(BioSlot.MASK)));

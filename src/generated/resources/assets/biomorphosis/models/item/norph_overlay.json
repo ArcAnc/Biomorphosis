@@ -1,6 +1,3 @@
 {
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "biomorphosis:block/norph_overlay_0"
-  }
+  "parent": "biomorphosis:block/norph_overlay_0"
 }

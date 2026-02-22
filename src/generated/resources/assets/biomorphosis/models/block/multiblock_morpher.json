@@ -1,6 +1,6 @@
 {
-  "parent": "minecraft:block/cube_all",
+  "parent": "minecraft:block/water",
   "textures": {
-    "all": "biomorphosis:block/multiblock_morpher"
+    "particle": "biomorphosis:block/morpher"
   }
 }

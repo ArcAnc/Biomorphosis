@@ -18,6 +18,8 @@ import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SoldierModel;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
+import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.item.MultiblockChamberBlockItem;
 import com.arcanc.biomorphosis.content.item.MultiblockMorpherBlockItem;
 import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -34,6 +36,8 @@ import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
+import net.minecraft.client.color.item.ItemColor;
+import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -47,11 +51,9 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.event.EntityRenderersEvent;
-import net.neoforged.neoforge.client.event.ModelEvent;
-import net.neoforged.neoforge.client.event.RecipesUpdatedEvent;
-import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
+import net.neoforged.neoforge.client.event.*;
 import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsEvent;
+import net.neoforged.neoforge.client.model.DynamicFluidContainerModel;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
@@ -71,6 +73,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: clientSetup);
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerRenderers);
+		modEventBus.addListener(ClientEvents :: registerItemColors);
         modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
         modEventBus.addListener(ClientEvents :: registerClientExtensions);
         modEventBus.addListener(ClientEvents :: setupModels);
@@ -115,7 +118,17 @@ public final class ClientEvents
                 map(RecipeHolder :: value).
                 toList());
     }
-
+	
+	private static void registerItemColors(final @NotNull RegisterColorHandlersEvent.Item event)
+	{
+		Registration.ItemReg.ITEMS.getEntries().
+				stream().
+				map(DeferredHolder :: get).
+				filter(item -> item instanceof BioBucketItem).
+				forEach(item ->
+				event.register(new DynamicFluidContainerModel.Colors(), item));
+	}
+	
     private static void registerClientExtensions(final @NotNull RegisterClientExtensionsEvent event)
     {
         Registration.FluidReg.FLUID_TYPES.getEntries().
@@ -196,8 +209,8 @@ public final class ClientEvents
 		gen.addProvider(true, new BioGenomeTemplatesProvider.Runner(packOutput, lookupProvider));
         gen.addProvider(true, BioLootTableProvider.create(
                 List.of(
-                        new LootTableProvider.SubProviderEntry(BioBlockLoot ::new, LootContextParamSets.BLOCK),
-                        new LootTableProvider.SubProviderEntry(BioEntityLoot ::new, LootContextParamSets.ENTITY)),
+                        new LootTableProvider.SubProviderEntry(BioBlockLoot :: new, LootContextParamSets.BLOCK),
+                        new LootTableProvider.SubProviderEntry(BioEntityLoot :: new, LootContextParamSets.ENTITY)),
                 packOutput,
                 lookupProvider));
 

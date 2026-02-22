@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:polished_blackstone_bricks"
+    "ingredient": {
+      "item": "minecraft:polished_blackstone_bricks"
+    }
   },
   "resources": {
     "adrenaline": {

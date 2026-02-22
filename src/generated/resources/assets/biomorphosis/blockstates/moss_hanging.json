@@ -4,7 +4,7 @@
       "model": "biomorphosis:block/moss_hanging"
     },
     "tip=true": {
-      "model": "biomorphosis:block/moss_hanging_tip"
+      "model": "biomorphosis:block/moss_hanging"
     }
   }
 }

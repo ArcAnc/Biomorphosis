@@ -1,37 +1,54 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "#c:rods/wooden"
+      "ingredient": {
+        "tag": "c:rods/wooden"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:rods/wooden"
+      "ingredient": {
+        "tag": "c:rods/wooden"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:rods/wooden"
+      "ingredient": {
+        "tag": "c:rods/wooden"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:rods/wooden"
+      "ingredient": {
+        "tag": "c:rods/wooden"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:rods/wooden"
+      "ingredient": {
+        "tag": "c:rods/wooden"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh_piece"
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
     }
   ],
   "resources": {

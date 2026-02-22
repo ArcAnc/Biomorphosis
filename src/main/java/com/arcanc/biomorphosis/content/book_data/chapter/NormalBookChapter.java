@@ -47,7 +47,8 @@ public class NormalBookChapter extends AbstractBookChapter
     @Override
     protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-        guiGraphics.blit(
+        RenderHelper.blit(
+                guiGraphics,
                 GuideScreen.TEXT,
                 this.getX(),
                 this.getY(),
@@ -55,6 +56,9 @@ public class NormalBookChapter extends AbstractBookChapter
                 isNative ? 0 : 26,
                 this.getWidth(),
                 this.getHeight(),
+                0,
+                20,
+                26,
                 256,
                 256,
                 MathHelper.ColorHelper.color(isActive() ? 255 : (int)(255 * 0.55f), isActive() ? 255 : (int)(255 * 0.75f), isActive() ? 255 : (int)(255 * 0.75f)));

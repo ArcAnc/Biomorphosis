@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:ancient_debris"
+    "ingredient": {
+      "item": "minecraft:ancient_debris"
+    }
   },
   "resources": {
     "adrenaline": {

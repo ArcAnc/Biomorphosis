@@ -1,0 +1,26 @@
+{
+  "type": "biomorphosis:forge",
+  "id": "forge",
+  "input": {
+    "amount": 1,
+    "ingredient": {
+      "tag": "minecraft:logs_that_burn"
+    }
+  },
+  "resources": {
+    "adrenaline": {
+      "modifier": 0.5,
+      "per_second": 0.25,
+      "required": false
+    },
+    "biomass": {
+      "per_second": 0.5,
+      "required": true
+    },
+    "time": 200
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:charcoal"
+  }
+}

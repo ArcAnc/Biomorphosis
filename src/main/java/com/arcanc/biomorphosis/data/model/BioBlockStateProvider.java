@@ -101,15 +101,28 @@ public class BioBlockStateProvider extends BlockStateProvider
 				texture("particle", blockTexture).
 				guiLight(BlockModel.GuiLight.SIDE).
 				element().
-				from(10f, 5f, 10f).
-				to(13f, 8f, 13f).
-				face(Direction.NORTH).uvs(6.375f, 5.125f, 6.75f, 5.5f).end().
-				face(Direction.EAST).uvs(6f, 5.125f, 6.375f, 5.5f).end().
-				face(Direction.SOUTH).uvs(7.125f, 5.125f, 7.5f, 5.5f).end().
-				face(Direction.WEST).uvs(6.75f, 5.125f, 7.125f, 5.5f).end().
-				face(Direction.UP).uvs(6.75f, 5.125f, 6.375f, 4.75f).end().
-				face(Direction.DOWN).uvs(7.125f, 4.75f, 6.75f, 5.125f).end().
-				texture("#all").end().
+						from(10f, 5f, 10f).
+						to(13f, 8f, 13f).
+						face(Direction.NORTH).
+								uvs(6.375f, 5.125f, 6.75f, 5.5f).
+						end().
+						face(Direction.EAST).
+								uvs(6f, 5.125f, 6.375f, 5.5f).
+						end().
+						face(Direction.SOUTH).
+								uvs(7.125f, 5.125f, 7.5f, 5.5f).
+						end().
+						face(Direction.WEST).
+								uvs(6.75f, 5.125f, 7.125f, 5.5f).
+						end().
+						face(Direction.UP).
+								uvs(6.75f, 5.125f, 6.375f, 4.75f).
+						end().
+						face(Direction.DOWN).
+								uvs(7.125f, 4.75f, 6.75f, 5.125f).
+						end().
+						texture("#all").
+				end().
 				element().
 				from(7f, 5f, 11f).
 				to(10f, 8f, 14f).
@@ -1298,9 +1311,9 @@ public class BioBlockStateProvider extends BlockStateProvider
 		StairBlock stair = Registration.BlockReg.ROOF_STAIRS.get();
 		blockTexture = blockTexture(stair.base);
 		
-		ModelFile modelInner = models().stairsInner(blockPrefix(name(stair)) + "_inner", blockTexture, blockTexture, blockTexture);
-		ModelFile modelStraight = models().stairs(blockPrefix(name(stair)), blockTexture, blockTexture, blockTexture);
-		ModelFile modelOuter = models().stairsOuter(blockPrefix(name(stair)) + "_outer", blockTexture, blockTexture, blockTexture);
+		ModelFile modelInner = models().stairsInner(blockPrefix(name(stair)) + "_inner", blockTexture.withSuffix("_middle"), blockTexture.withSuffix("_bot"), blockTexture.withSuffix("_top"));
+		ModelFile modelStraight = models().stairs(blockPrefix(name(stair)), blockTexture.withSuffix("_middle"), blockTexture.withSuffix("_bot"), blockTexture.withSuffix("_top"));
+		ModelFile modelOuter = models().stairsOuter(blockPrefix(name(stair)) + "_outer", blockTexture.withSuffix("_middle"), blockTexture.withSuffix("_bot"), blockTexture.withSuffix("_top"));
 
 		stairsBlock(stair, modelStraight, modelInner, modelOuter);
 		itemModels().getBuilder(itemPrefix(name(stair))).
@@ -1312,6 +1325,8 @@ public class BioBlockStateProvider extends BlockStateProvider
 		ModelFile top = models().slabTop(blockPrefix(name(slab)) + "_top", blockTexture.withSuffix("_middle"), blockTexture.withSuffix("_bot"), blockTexture.withSuffix("_top"));
 		
 		slabBlock(slab, bottom, top, blockModel);
+		itemModels().getBuilder(itemPrefix(name(slab))).
+				parent(bottom);
 	}
 	
 	private void createNorphedDirt()
@@ -1583,7 +1598,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 				forEach((dir, value) -> builder.part().
 						modelFile(model).
 						rotationX(dir == Direction.DOWN ? 90 : dir == Direction.UP ? 270 : 0).
-						rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot())) % 360).
+						rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot() + 180) % 360).
 						uvLock(dir != Direction.NORTH).
 						addModel().
 						condition(value, true));
@@ -1609,11 +1624,11 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		MultiPartBlockStateBuilder mossBuilder = getMultipartBuilder(moss);
 		
-		PipeBlock.PROPERTY_BY_DIRECTION.
+		VineBlock.PROPERTY_BY_DIRECTION.
 				forEach((dir, value) -> mossBuilder.part().
 						modelFile(mossModel).
 						rotationX(dir == Direction.DOWN ? 90 : dir == Direction.UP ? 270 : 0).
-						rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot())) % 360).
+						rotationY(dir.getAxis().isVertical() ? 0 : ((int) dir.toYRot() + 180) % 360).
 						uvLock(dir != Direction.NORTH).
 						addModel().
 						condition(value, true));
@@ -2566,7 +2581,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockTexture(block));
+				texture("particle", blockPrefix("morpher"));
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2578,7 +2593,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockTexture(block));
+				texture("particle", blockPrefix("chrysalis"));
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2590,7 +2605,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockTexture(block));
+				texture("particle", blockPrefix("turret"));
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2602,7 +2617,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockTexture(block));
+				texture("particle", blockPrefix("chamber"));
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -4781,7 +4796,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 						face(Direction.WEST).uvs(14.5f, 5, 16, 8).end().
 						face(Direction.UP).uvs(14, 11, 12.5f, 8).end().
 						face(Direction.DOWN).uvs(16, 8, 14.5f, 11).end().
-						texture("#end").
+						texture("#all").
 				end().
 				element().
 						from(3, 1, 9).
@@ -5045,7 +5060,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
 				renderType(RenderType.translucent().name).
-				texture("particle", fluid.still().getId()).
+				texture("particle", fluid.still().getId().withPrefix("block/")).
 				guiLight(BlockModel.GuiLight.SIDE);
 		
 		registerModels(block, model);
@@ -5144,7 +5159,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 						builder.part().
 								modelFile(models[q]).
 								rotationX(dir == Direction.DOWN ? 90 : dir == Direction.UP ? 270 : 0).
-								rotationY(dir.getAxis().isVertical() ? 0 : (((int) dir.toYRot())) % 360).
+								rotationY(dir.getAxis().isVertical() ? 0 : ((int)dir.toYRot() + 180)  % 360).
 								uvLock(dir != Direction.NORTH).
 								addModel().condition(value, true);
 					}

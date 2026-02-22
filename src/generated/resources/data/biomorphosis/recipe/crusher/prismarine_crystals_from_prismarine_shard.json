@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:prismarine_shard"
+    "ingredient": {
+      "item": "minecraft:prismarine_shard"
+    }
   },
   "resources": {
     "acid": {

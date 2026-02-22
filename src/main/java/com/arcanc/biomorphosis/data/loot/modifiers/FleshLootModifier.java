@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class FleshLootModifier extends LootModifier
 {
 	public static final MapCodec<FleshLootModifier> CODEC = RecordCodecBuilder.mapCodec(instance ->
-			LootModifier.codecStart(instance).apply(instance, FleshLootModifier::new));
+			LootModifier.codecStart(instance).apply(instance, FleshLootModifier :: new));
 	
 	public FleshLootModifier(LootItemCondition[] conditions)
 	{

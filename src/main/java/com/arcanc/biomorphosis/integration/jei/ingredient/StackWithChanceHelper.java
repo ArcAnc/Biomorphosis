@@ -38,7 +38,7 @@ public class StackWithChanceHelper implements IIngredientHelper<StackWithChance>
     @Override
     public String getUniqueId(@NotNull StackWithChance ingredient, UidContext context)
     {
-        return ingredient.stack().getDisplayName().getString();
+        return "StackWithChance";
     }
     
     @Override

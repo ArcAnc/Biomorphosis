@@ -1,19 +1,34 @@
 {
   "variants": {
-    "facing=east": {
+    "facing=east,lit=false": {
       "model": "biomorphosis:block/lure_campfire",
-      "y": 270
+      "y": 90
     },
-    "facing=north": {
+    "facing=east,lit=true": {
+      "model": "biomorphosis:block/lure_campfire",
+      "y": 90
+    },
+    "facing=north,lit=false": {
+      "model": "biomorphosis:block/lure_campfire"
+    },
+    "facing=north,lit=true": {
+      "model": "biomorphosis:block/lure_campfire"
+    },
+    "facing=south,lit=false": {
       "model": "biomorphosis:block/lure_campfire",
       "y": 180
     },
-    "facing=south": {
-      "model": "biomorphosis:block/lure_campfire"
-    },
-    "facing=west": {
+    "facing=south,lit=true": {
       "model": "biomorphosis:block/lure_campfire",
-      "y": 90
+      "y": 180
+    },
+    "facing=west,lit=false": {
+      "model": "biomorphosis:block/lure_campfire",
+      "y": 270
+    },
+    "facing=west,lit=true": {
+      "model": "biomorphosis:block/lure_campfire",
+      "y": 270
     }
   }
 }

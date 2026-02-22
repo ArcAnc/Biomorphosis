@@ -1,7 +1,19 @@
 {
   "variants": {
-    "": {
+    "facing=east": {
+      "model": "biomorphosis:block/squeezer",
+      "y": 90
+    },
+    "facing=north": {
       "model": "biomorphosis:block/squeezer"
+    },
+    "facing=south": {
+      "model": "biomorphosis:block/squeezer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "biomorphosis:block/squeezer",
+      "y": 270
     }
   }
 }

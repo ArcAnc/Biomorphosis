@@ -1,25 +1,36 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:slime_balls"
+      "ingredient": {
+        "tag": "c:slime_balls"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "#c:ender_pearls"
+      "ingredient": {
+        "tag": "c:ender_pearls"
+      }
     }
   ],
   "resources": {

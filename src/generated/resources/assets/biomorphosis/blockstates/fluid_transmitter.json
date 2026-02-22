@@ -10,8 +10,7 @@
     },
     "facing=north": {
       "model": "biomorphosis:block/fluid_transmitter",
-      "x": 270,
-      "y": 0
+      "x": 270
     },
     "facing=south": {
       "model": "biomorphosis:block/fluid_transmitter",

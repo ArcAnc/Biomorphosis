@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:azure_bluet"
+    "ingredient": {
+      "item": "minecraft:azure_bluet"
+    }
   },
   "resources": {
     "acid": {

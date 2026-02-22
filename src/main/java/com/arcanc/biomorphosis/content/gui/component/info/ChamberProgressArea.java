@@ -36,8 +36,8 @@ public class ChamberProgressArea extends ProgressInfoArea
 
         guiGraphics.blit(this.progressTexture,
                 this.area.getX(), this.area.getY(),
-                0, 0,
                 this.area.getWidth(), this.area.getHeight(),
+                0, 0,
                 40, 12,
                 64, 16);
 

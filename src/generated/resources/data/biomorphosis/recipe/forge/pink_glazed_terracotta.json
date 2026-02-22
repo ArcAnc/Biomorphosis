@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:pink_terracotta"
+    "ingredient": {
+      "item": "minecraft:pink_terracotta"
+    }
   },
   "resources": {
     "adrenaline": {

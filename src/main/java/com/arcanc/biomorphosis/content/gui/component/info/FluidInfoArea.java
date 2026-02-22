@@ -117,9 +117,9 @@ public class FluidInfoArea extends InfoArea
                 this.overlayTexture,
                 this.area.getX(),
                 this.area.getY(),
-                0, 0,
                 this.area.getWidth(),
                 this.area.getHeight(),
+                0, 0,
                 18, 42,
                 64, 64);
 
@@ -141,8 +141,8 @@ public class FluidInfoArea extends InfoArea
         guiGraphics.blit(
                 this.overlayTexture,
                 this.area.getX(), this.area.getY(),
-                40, 0,
                 this.area.getWidth(), this.area.getHeight(),
+                40, 0,
                 18, 42,
                 64, 64);
         guiGraphics.pose().popPose();

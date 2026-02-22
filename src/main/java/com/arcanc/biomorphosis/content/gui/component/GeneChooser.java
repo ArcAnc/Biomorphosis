@@ -93,7 +93,6 @@ public class GeneChooser extends AbstractWidget
 		float startX = this.getX() + (availableWidth - totalGeneWidth) / 2;
 		float centerY = this.getY() + availableHeight / 2;
 		this.genePositions.clear();
-		
 		for (int q = 0; q < geneAmount; q++)
 		{
 			GeneInstance gene = genome.geneInstances().get(q);

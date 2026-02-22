@@ -7,7 +7,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "biomorphosis:flesh"
+            "ingredient": {
+              "item": "biomorphosis:flesh"
+            }
           }
         ],
         "shape": [
@@ -23,7 +25,9 @@
         "ingredients": [
           {
             "amount": 1,
-            "ingredient": "#minecraft:fences"
+            "ingredient": {
+              "tag": "minecraft:fences"
+            }
           }
         ],
         "shape": [

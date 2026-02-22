@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:crusher",
+  "id": "crusher",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:light_blue_concrete"
+    "ingredient": {
+      "item": "minecraft:light_blue_concrete"
+    }
   },
   "resources": {
     "acid": {

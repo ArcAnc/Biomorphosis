@@ -34,6 +34,4 @@ public class BioBucketItem extends BucketItem implements ItemInterfaces.IMustAdd
     {
         return style;
     }
-
-
 }

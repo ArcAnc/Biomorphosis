@@ -1,8 +1,11 @@
 {
   "type": "biomorphosis:forge",
+  "id": "forge",
   "input": {
     "amount": 1,
-    "ingredient": "minecraft:deepslate_tiles"
+    "ingredient": {
+      "item": "minecraft:deepslate_tiles"
+    }
   },
   "resources": {
     "adrenaline": {

@@ -58,8 +58,8 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 		guiGraphics.blit(
 				this.textureProvider.apply(this.getValue()),
 				this.getX(), this.getY(),
-				0, 0,
 				this.getWidth(), this.getHeight(),
+				0, 0,
 				16, 16,
 				16, 16);
 	}

@@ -2,7 +2,9 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "#": "biomorphosis:flesh_piece"
+    "#": {
+      "item": "biomorphosis:flesh_piece"
+    }
   },
   "pattern": [
     "###",

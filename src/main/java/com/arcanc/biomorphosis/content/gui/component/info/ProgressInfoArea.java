@@ -84,8 +84,8 @@ public class ProgressInfoArea extends InfoArea
 
         guiGraphics.blit(this.progressTexture,
                 this.area.getX(), this.area.getY(),
-                0, 0,
                 this.area.getWidth(), this.area.getHeight(),
+                0, 0,
                 22, 15,
                 32, 32);
 

@@ -1,21 +1,30 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "#c:chests"
+      "ingredient": {
+        "tag": "c:chests"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     }
   ],
   "resources": {

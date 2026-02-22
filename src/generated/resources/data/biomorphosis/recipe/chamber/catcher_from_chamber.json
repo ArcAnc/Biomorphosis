@@ -1,37 +1,54 @@
 {
   "type": "biomorphosis:chamber",
+  "id": "chamber",
   "input": [
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "biomorphosis:flesh"
+      "ingredient": {
+        "item": "biomorphosis:flesh"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:iron_bars"
+      "ingredient": {
+        "item": "minecraft:iron_bars"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:iron_bars"
+      "ingredient": {
+        "item": "minecraft:iron_bars"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:iron_bars"
+      "ingredient": {
+        "item": "minecraft:iron_bars"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:iron_bars"
+      "ingredient": {
+        "item": "minecraft:iron_bars"
+      }
     },
     {
       "amount": 1,
-      "ingredient": "minecraft:comparator"
+      "ingredient": {
+        "item": "minecraft:comparator"
+      }
     }
   ],
   "resources": {
