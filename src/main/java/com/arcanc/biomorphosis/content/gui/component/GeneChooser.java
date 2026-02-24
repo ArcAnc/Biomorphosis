@@ -314,6 +314,12 @@ public class GeneChooser extends AbstractWidget
 	}
 	
 	@Override
+	protected boolean clicked(double mouseX, double mouseY)
+	{
+		return isMouseOver(mouseX, mouseY);
+	}
+	
+	@Override
 	public boolean isMouseOver(double mouseX, double mouseY)
 	{
 		if (this.genePositions.isEmpty())

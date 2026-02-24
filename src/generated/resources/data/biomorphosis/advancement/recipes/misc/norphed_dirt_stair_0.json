@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flesh": {
+      "conditions": {
+        "items": [
+          {
+            "items": "biomorphosis:flesh"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_stairs": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#minecraft:stairs"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomorphosis:norphed_dirt_stair_0"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_flesh",
+      "has_stairs"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomorphosis:norphed_dirt_stair_0"
+    ]
+  }
+}

@@ -63,5 +63,9 @@ public class BioBlockTagsProvider extends BlockTagsProvider
         this.tag(BlockTags.CLIMBABLE).
                 add(Registration.BlockReg.GLOW_MOSS.get()).
                 add(Registration.BlockReg.MOSS.get());
+		
+		this.tag(BioBlockTags.NORPHED_STAIRS).
+				add(Registration.BlockReg.NORPHED_DIRT_STAIR_0.get()).
+				add(Registration.BlockReg.NORPHED_DIRT_STAIR_1.get());
     }
 }

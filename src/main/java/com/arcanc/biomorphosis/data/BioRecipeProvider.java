@@ -26,6 +26,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -66,7 +67,23 @@ public class BioRecipeProvider extends RecipeProvider
                 requires(Registration.ItemReg.QUEENS_BRAIN).
                 requires(Items.WRITABLE_BOOK).
                 save(output);
-
+	    
+	    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.NORPHED_DIRT_STAIR_0).
+			    pattern("FS").
+			    define('F', Registration.BlockReg.FLESH).
+			    define('S', Ingredient.of(ItemTags.STAIRS)).
+			    unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+			    unlockedBy("has_" + ItemTags.STAIRS.location().getPath(), has(ItemTags.STAIRS)).
+			    save(output);
+	    
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.NORPHED_DIRT_STAIR_1).
+			    pattern("SF").
+			    define('F', Registration.BlockReg.FLESH).
+			    define('S', Ingredient.of(ItemTags.STAIRS)).
+			    unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+				unlockedBy("has_" + ItemTags.STAIRS.location().getPath(), has(ItemTags.STAIRS)).
+			    save(output);
+		
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.NORPH_SOURCE).
                 pattern(" R ").
                 pattern("FHF").

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "biomorphosis:flesh"
+    },
+    "S": {
+      "tag": "minecraft:stairs"
+    }
+  },
+  "pattern": [
+    " SF"
+  ],
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:norphed_dirt_stair_1"
+  }
+}

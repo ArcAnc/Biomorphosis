@@ -20,6 +20,7 @@ public class BioBlockTags
     public static final TagKey<Block> NORPH = create("norph");
     public static final TagKey<Block> NORPH_AVOID = create("norph_avoid");
     public static final TagKey<Block> NORPH_SOURCE = create("norph_source");
+    public static final TagKey<Block> NORPHED_STAIRS = create("norphed_stairs");
 
     private static @NotNull TagKey<Block> create(String name)
     {

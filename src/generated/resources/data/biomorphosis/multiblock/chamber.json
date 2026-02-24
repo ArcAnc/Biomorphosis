@@ -8,7 +8,7 @@
           {
             "amount": 1,
             "ingredient": {
-              "item": "biomorphosis:norphed_dirt_stair_0"
+              "tag": "biomorphosis:norphed_stairs"
             }
           }
         ],
@@ -56,7 +56,7 @@
           {
             "amount": 1,
             "ingredient": {
-              "item": "biomorphosis:norphed_dirt_stair_0"
+              "tag": "biomorphosis:norphed_stairs"
             }
           }
         ],
@@ -350,7 +350,7 @@
           {
             "amount": 1,
             "ingredient": {
-              "item": "biomorphosis:norphed_dirt_stair_0"
+              "tag": "biomorphosis:norphed_stairs"
             }
           }
         ],
@@ -398,7 +398,7 @@
           {
             "amount": 1,
             "ingredient": {
-              "item": "biomorphosis:norphed_dirt_stair_0"
+              "tag": "biomorphosis:norphed_stairs"
             }
           }
         ],

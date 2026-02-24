@@ -16,6 +16,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.multiblock.DynamicMultiblockBuilder;
 import com.arcanc.biomorphosis.data.multiblock.StaticMultiblockBuilder;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
@@ -59,28 +60,28 @@ public class BioMultiblockProvider
 				                                                   Shapes.box(0.75d, 0.5d, 0.375d, 0.875d, 1, 0.5d),
 				                                                   Shapes.box(0.5d, 0.5d, 0.125d, 0.625d, 1, 0.25d),
 				                                                   Shapes.box(0.5d, 0.5d, 0.25d, 0.75d, 1, 0.5d)),
-		        IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+		        IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
                 addPart(new BlockPos(-1, 0, -1), Shapes.or(Shapes.box(0.5d, 0, 0.5d, 1, 0.5d, 1),
 				                                                    Shapes.box(0, 0.5d, 0.5d, 1, 1, 1),
 				                                                    Shapes.box(0.5d, 0.5d, 0, 1, 1, 0.5d),
 				                                                    Shapes.box(0.375d, 0.5d, 0.125d, 0.5d, 1, 0.25d),
 				                                                    Shapes.box(0.125d, 0.5d, 0.375d, 0.25d, 1, 0.5d),
 				                                                    Shapes.box(0.25d, 0.5d, 0.25d, 0.5d, 1, 0.5d)),
-		        IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+		        IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
                 addPart(new BlockPos(1, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 0.5d, 0.5d, 0.5d),
 				                                                  Shapes.box(0, 0.5d, 0, 1, 1, 0.5d),
 				                                                  Shapes.box(0, 0.5d, 0.5d, 0.5d, 1, 1),
 				                                                  Shapes.box(0.5d, 0.5d, 0.75d, 0.625d, 1, 0.875d),
 				                                                  Shapes.box(0.75d, 0.5d, 0.5d, 0.875d, 1, 0.625d),
 				                                                  Shapes.box(0.5d, 0.5d, 0.5d, 0.75d, 1, 0.75d)),
-		        IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+		        IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
                 addPart(new BlockPos(-1, 0, 1), Shapes.or(Shapes.box(0.5d, 0, 0, 1, 0.5d, 0.5d),
 				                                                   Shapes.box(0.5d, 0.5d, 0, 1, 1, 1),
 				                                                   Shapes.box(0, 0.5d, 0, 0.5d, 1, 0.5d),
 				                                                   Shapes.box(0.125d, 0.5d, 0.5d, 0.25d, 1, 0.625d),
 				                                                   Shapes.box(0.375d, 0.5d, 0.75d, 0.5d, 1, 0.875d),
 				                                                   Shapes.box(0.25d, 0.5d, 0.5d, 0.5d, 1, 0.75d)),
-		        IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+		        IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
                 addPart(new BlockPos(1, 1, -1), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
                 addPart(new BlockPos(-1, 1, -1), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
                 addPart(new BlockPos(1, 1, 1), Shapes.block(), IngredientWithSize.of(Registration.BlockReg.FLESH)).
@@ -134,19 +135,19 @@ public class BioMultiblockProvider
 				addPart(new BlockPos(-1, 0, -1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
 																	Shapes.box(0, 0.1d, 0, 0.125d, 1, 1),
 																	Shapes.box(0.125d, 0.1, 0, 1, 1, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(-1, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
 																   Shapes.box(0, 0.1d, 0, 0.125d, 1, 1),
 																   Shapes.box(0.125d, 0.1, 0.875d, 1, 1, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 0, -1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
 																   Shapes.box(0.875d, 0.1d, 0, 1, 1, 1),
 																   Shapes.box(0, 0.1, 0, 0.875d, 1, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 0, 1), Shapes.or(Shapes.box(0, 0, 0, 1, 0.1d, 1),
 																  Shapes.box(0.875d, 0.1d, 0, 1, 1, 1),
 																  Shapes.box(0, 0.1, 0.875d, 0.875d, 1, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(0, 1, -1), Shapes.box(0, 0, 0, 1, 1, 0.125d),
 						IngredientWithSize.of(Registration.BlockReg.FLESH)).
 				addPart(new BlockPos(0, 1, 1), Shapes.box(0, 0, 0.875d, 1, 1, 1),
@@ -157,44 +158,44 @@ public class BioMultiblockProvider
 						IngredientWithSize.of(Registration.BlockReg.FLESH)).
 				addPart(new BlockPos(-1, 1, -1), Shapes.or(Shapes.box(0, 0, 0, 0.125d, 1, 1),
 																	Shapes.box(0.125d, 0, 0, 1, 1, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(-1, 1, 1), Shapes.or(Shapes.box(0, 0, 0, 0.125d, 1, 1),
 																   Shapes.box(0.125d, 0, 0.875d, 1, 1, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 1, -1), Shapes.or(Shapes.box(0.875d, 0, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 0.875d, 1, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 1, 1), Shapes.or(Shapes.box(0.875d, 0, 0, 1, 1, 1),
 																  Shapes.box(0, 0, 0.875d, 0.875d, 1, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(0, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 1, 0.875d, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(0, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0.875d, 1, 0.875d, 1)),
 						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
 				addPart(new BlockPos(-1, 2, 0), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 0.125d, 0.875d, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 2, 0), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																  Shapes.box(0.875d, 0, 0, 1, 0.875d, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(-1, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																	Shapes.box(0, 0, 0, 0.125d, 0.875d, 1),
 																	Shapes.box(0.125d, 0, 0, 1, 0.875d, 0.125d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(-1, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 0.125d, 0.875d, 1),
 																   Shapes.box(0.125d, 0, 0.875d, 1, 0.875d, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 2, -1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 1, 0.875d, 0.125d),
 																   Shapes.box(0.875d, 0, 0.125d, 1, 0.875d, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(1, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																  Shapes.box(0, 0, 0.875d, 1, 0.875d, 1),
 																  Shapes.box(0.875d, 0, 0, 1, 0.875d, 0.875d)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(0, 2, 0), Shapes.box(0, 0.875d, 0,1, 1, 1),
 						IngredientWithSize.of(Registration.BlockReg.FLESH),
 						IngredientWithSize.of(Registration.ItemReg.WRENCH)).
@@ -207,15 +208,7 @@ public class BioMultiblockProvider
                 setAllowedBlockType(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get().defaultBlockState()).
                 end());
     }
-
 	
-	/*
-	FIXME: seems those method no needed on 1.21.1
-	private @NotNull HolderSet<Item> tag(@NotNull TagKey<Item> tag)
-	{
-		return this.registries.lookupOrThrow(Registries.ITEM).getOrThrow(tag);
-	}
-	*/
     private @NotNull StaticMultiblockBuilder staticBuilder(ResourceLocation location)
     {
         return new StaticMultiblockBuilder(location);

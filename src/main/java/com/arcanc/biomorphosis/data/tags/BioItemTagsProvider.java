@@ -34,6 +34,7 @@ public class BioItemTagsProvider extends ItemTagsProvider
     protected void addTags(HolderLookup.@NotNull Provider provider)
     {
         copy(BioBlockTags.NORPH, BioItemTags.NORPH);
+        copy(BioBlockTags.NORPHED_STAIRS, BioItemTags.NORPHED_STAIRS);
         //copy(BioBlockTags.NORPH_AVOID, BioItemTags.NORPH_AVOID);
         /*this.tag(BioItemTags.NORPH_AVOID).
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem()).

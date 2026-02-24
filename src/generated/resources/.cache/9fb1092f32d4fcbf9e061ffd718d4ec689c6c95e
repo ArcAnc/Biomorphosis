@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-21T00:30:47.900617045	Recipes
+// 1.21.1	2026-02-24T02:28:21.258328672	Recipes
 6dfcf11c8f97763260ef1883cd57b5be205a4f01 data/biomorphosis/advancement/recipes/chamber/catcher_from_chamber.json
 c0996fd1f6a2894208af7f1fea8c3a6d7853ae04 data/biomorphosis/advancement/recipes/chamber/chest_from_chamber.json
 07bbe973e530fc89f141bbea49db03d56d1b6034 data/biomorphosis/advancement/recipes/chamber/crusher_from_chamber.json
@@ -179,6 +179,8 @@ adb2260bfe9e44d92a8ca4a471317dd1e85dc873 data/biomorphosis/advancement/recipes/f
 acc3ad6f4948aff2a119782f9185c6466f79861e data/biomorphosis/advancement/recipes/misc/book.json
 b90212332c1286ba81fbec6c67029ba5a0f1e1ef data/biomorphosis/advancement/recipes/misc/multiblock_morpher.json
 83f79427053ecdedf89ffae37a75b5ed685b19a4 data/biomorphosis/advancement/recipes/misc/norph_source.json
+e15e5658f3ac6dc9fe2af6101158013ff4762371 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_0.json
+47bcbdeec3ae4257024cecc332e4d47a50330476 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_1.json
 fb0b56c49daa5a65d612507630b061258171f679 data/biomorphosis/advancement/recipes/squeezer/biomass_from_foods.json
 6457914bd17668ae2165e48ec2ddf49a10d410f7 data/biomorphosis/advancement/recipes/stomach/acid_from_foods.json
 4cd388a40fc14f8fdf7dd5891f0e05ea703856b3 data/biomorphosis/recipe/book.json
@@ -361,6 +363,8 @@ f45737fb576a0d20931e526bdaeea633828e422b data/biomorphosis/recipe/forge/stone.js
 46a1644fa17669658e1be6f5866f64adce3b96a9 data/biomorphosis/recipe/forge/yellow_glazed_terracotta.json
 b805682101987fbf2861d4049cb9ab77848904d5 data/biomorphosis/recipe/multiblock_morpher.json
 b1071e94dbbb260cd4513782e63e52a19983e77e data/biomorphosis/recipe/norph_source.json
+fded50df6b7f71279d23065d88184f4474710265 data/biomorphosis/recipe/norphed_dirt_stair_0.json
+f5812b6d5fac3e90d1de77e929d0be8c35e58d66 data/biomorphosis/recipe/norphed_dirt_stair_1.json
 13403afacb1faa07050024d5ae33094c8dd24ec2 data/biomorphosis/recipe/squeezer/biomass_from_foods.json
 2a2be4797eada62d37006649512e89fcf79d7df8 data/biomorphosis/recipe/stomach/acid_from_foods.json
 71adc7a523c1d3e0c7972f42459cde543915eda2 data/minecraft/advancement/recipes/misc/flesh.json

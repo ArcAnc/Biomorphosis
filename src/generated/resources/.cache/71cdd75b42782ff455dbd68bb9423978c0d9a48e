@@ -1,5 +1,6 @@
-// 1.21.1	2026-02-21T00:30:47.903135605	Tags for minecraft:block mod id biomorphosis
+// 1.21.1	2026-02-24T02:28:21.260582025	Tags for minecraft:block mod id biomorphosis
 08867b0d329451b1ddd7cebf3e1e5576748e34f3 data/biomorphosis/tags/block/norph.json
 899197d19e62fe2eb7d8da71eca4ab48b622eeed data/biomorphosis/tags/block/norph_avoid.json
 9d842c4dc0b0ff676fa8409a04dfb4e6ff32d7fe data/biomorphosis/tags/block/norph_source.json
+cffdbb63095b8462551e781e68853782fc6c062c data/biomorphosis/tags/block/norphed_stairs.json
 04555d9fa4c8f17a0607bab2d8b2abceaaf6bb9d data/minecraft/tags/block/climbable.json

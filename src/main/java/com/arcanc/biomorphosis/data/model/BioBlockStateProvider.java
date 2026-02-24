@@ -5133,7 +5133,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 			ModelFile model = models().withExistingParent(blockPrefix(name(block)) + "_" + q, mcLoc(blockPrefix("block"))).
 					texture("all", localTexture).
 					texture("particle", localTexture).
-					renderType(RenderType.solid().name).
+					renderType(RenderType.translucent().name).
 					guiLight(BlockModel.GuiLight.SIDE).
 					element().
 							from(0f,0f,0.1f).
@@ -5154,15 +5154,18 @@ public class BioBlockStateProvider extends BlockStateProvider
 		PipeBlock.PROPERTY_BY_DIRECTION.
 				forEach((dir, value) ->
 				{
+					ConfiguredModel.Builder<MultiPartBlockStateBuilder.PartBuilder> modelBuilder = builder.part();
 					for (int q = 0; q < 8; q++)
 					{
-						builder.part().
+						modelBuilder.
 								modelFile(models[q]).
 								rotationX(dir == Direction.DOWN ? 90 : dir == Direction.UP ? 270 : 0).
 								rotationY(dir.getAxis().isVertical() ? 0 : ((int)dir.toYRot() + 180)  % 360).
-								uvLock(dir != Direction.NORTH).
-								addModel().condition(value, true);
+								uvLock(dir != Direction.NORTH);
+						if (q != 7)
+							modelBuilder = modelBuilder.nextModel();
 					}
+					modelBuilder.addModel().condition(value, true);
 				});
 		
 		itemModels().getBuilder(itemPrefix(name(block))).
