@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-24T02:28:21.256988821	Biomorphosis Block Models
+// 1.21.1	2026-02-24T02:37:09.170916623	Biomorphosis Block Models
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 db53942552aaf8d9e76ec3345b5388f01647fd86 assets/biomorphosis/blockstates/crusher.json
@@ -14,7 +14,7 @@ db53942552aaf8d9e76ec3345b5388f01647fd86 assets/biomorphosis/blockstates/crusher
 f3cc81c0bca10ce751c8c2c7aaa77c32d1b76e3b assets/biomorphosis/blockstates/hive_deco.json
 78f5ebdefd70f134488885615085f299923f6c6d assets/biomorphosis/blockstates/inner.json
 7881f033ec4d3767a62533236a5de6db3da854c6 assets/biomorphosis/blockstates/lure_campfire.json
-fd2c5a3e12ee84ac0cfd712c58e2af112d0c293f assets/biomorphosis/blockstates/moss.json
+a0cc7dd3b094713a0b4ca6621bfaccc472365d69 assets/biomorphosis/blockstates/moss.json
 07bd57da61fb8d7e2a02b0fe8abede2269c0277f assets/biomorphosis/blockstates/moss_hanging.json
 409acdc015f7b003b96d56be35a9616fae9055fb assets/biomorphosis/blockstates/multiblock_chamber.json
 adbba2c502e200999cd4a021f96b67639cd34f4b assets/biomorphosis/blockstates/multiblock_chrysalis.json

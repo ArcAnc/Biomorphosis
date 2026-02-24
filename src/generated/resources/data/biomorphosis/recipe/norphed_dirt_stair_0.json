@@ -10,7 +10,7 @@
     }
   },
   "pattern": [
-    "FS "
+    "FS"
   ],
   "result": {
     "count": 1,
