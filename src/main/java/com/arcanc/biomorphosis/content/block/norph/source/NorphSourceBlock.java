@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -71,11 +70,11 @@ public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState state,
+    public void setPlacedBy(Level level,
+                            BlockPos pos,
+                            BlockState state,
                             @Nullable LivingEntity placer,
-                            @NotNull ItemStack stack)
+                            ItemStack stack)
     {
         super.setPlacedBy(level, pos, state, placer, stack);
         if (!(level instanceof ServerLevel serverLevel))
@@ -100,10 +99,10 @@ public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
     }
 
     @Override
-    protected void randomTick(@NotNull BlockState state,
-                              @NotNull ServerLevel level,
-                              @NotNull BlockPos pos,
-                              @NotNull RandomSource random)
+    protected void randomTick(BlockState state,
+                              ServerLevel level,
+                              BlockPos pos,
+                              RandomSource random)
     {
         boolean flag = false;
         for(Direction dir : Direction.values())
@@ -136,44 +135,44 @@ public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return super.getStateForPlacement(context).setValue(HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    public @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rot)
+    public BlockState rotate(BlockState state, Rotation rot)
     {
         return state.setValue(HORIZONTAL_FACING, rot.rotate(state.getValue(HORIZONTAL_FACING)));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
+    public BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
     {
         return BY_DIRECTION.get(state.getValue(HORIZONTAL_FACING));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(HORIZONTAL_FACING);
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    protected @NotNull MapCodec<NorphSourceBlock> codec()
+    protected MapCodec<NorphSourceBlock> codec()
     {
         return CODEC;
     }

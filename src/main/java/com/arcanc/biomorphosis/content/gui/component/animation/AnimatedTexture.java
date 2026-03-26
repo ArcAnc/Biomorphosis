@@ -15,7 +15,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 public class AnimatedTexture
@@ -28,7 +27,7 @@ public class AnimatedTexture
     private final int patternHeight;
     private final int frameTime;
 
-    public AnimatedTexture (@NotNull Vector2i textureSize, @NotNull Vector2i patternSize, int frameTime, ResourceLocation texture)
+    public AnimatedTexture (Vector2i textureSize, Vector2i patternSize, int frameTime, ResourceLocation texture)
     {
         this.data = AnimationData.construct(textureSize.y(), patternSize.y(), frameTime);
         this.texture = texture;
@@ -39,7 +38,7 @@ public class AnimatedTexture
         this.frameTime = frameTime;
     }
 
-    public void render (@NotNull GuiGraphics guiGraphics, @NotNull Rect2i area)
+    public void render (GuiGraphics guiGraphics, Rect2i area)
     {
         Minecraft mc = RenderHelper.mc();
 

@@ -21,7 +21,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -101,7 +100,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             this.executor = executor;
         }
 
-        private static @NotNull Map<BlockPos, PartsMap.MultiblockPart> dfs(BlockGetter level, @NotNull Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static Map<BlockPos, PartsMap.MultiblockPart> dfs(BlockGetter level, Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             if (visited.containsKey(startPos))
                 return visited;
@@ -121,7 +120,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             return visited;
         }
 
-        private static @NotNull Map<BlockPos, PartsMap.MultiblockPart> bfs(BlockGetter level, @NotNull Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
+        private static Map<BlockPos, PartsMap.MultiblockPart> bfs(BlockGetter level, Map<BlockPos, PartsMap.MultiblockPart> visited, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             Queue<BlockPos> queue = new ArrayDeque<>();
             queue.add(startPos);
@@ -153,21 +152,21 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
             return visited;
         }
 
-        private static boolean isValidBlock(BlockPos pos, @NotNull BlockGetter level, @NotNull BlockState allowedBlockType)
+        private static boolean isValidBlock(BlockPos pos, BlockGetter level, BlockState allowedBlockType)
         {
             BlockState state = level.getBlockState(pos);
             Block block = allowedBlockType.getBlock();
             return state.is(block);
         }
 
-        private static boolean withinBounds(@NotNull BlockPos pos, @NotNull BlockPos origin, @NotNull BlockPos maxSize)
+        private static boolean withinBounds(BlockPos pos, BlockPos origin, BlockPos maxSize)
         {
             return Math.abs(pos.getX() - origin.getX()) <= maxSize.getX()
                     && Math.abs(pos.getY() - origin.getY()) <= maxSize.getY()
                     && Math.abs(pos.getZ() - origin.getZ()) <= maxSize.getZ();
         }
 
-        public @NotNull PartsMap getStructure(BlockGetter level, BlockPos startPos, DynamicMultiblockDefinition definition)
+        public PartsMap getStructure(BlockGetter level, BlockPos startPos, DynamicMultiblockDefinition definition)
         {
             Map<BlockPos, PartsMap.MultiblockPart> globalMap = this.executor.findStructure(level, new HashMap<>(), startPos, definition);
 
@@ -179,7 +178,7 @@ public class DynamicMultiblockDefinition implements IMultiblockDefinition
         }
 
         @Override
-        public @NotNull String getSerializedName()
+        public String getSerializedName()
         {
             return this.name;
         }

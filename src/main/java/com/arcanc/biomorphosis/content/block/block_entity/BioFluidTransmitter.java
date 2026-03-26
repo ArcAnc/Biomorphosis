@@ -36,7 +36,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -107,7 +106,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         pathData.clear();
         ListTag list = tag.getList("path_data", Tag.TAG_COMPOUND);
@@ -119,7 +118,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         ListTag list = new ListTag();
         for (PathData data : this.pathData)
@@ -128,7 +127,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
+    public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         Level level = ctx.getLevel();
         if (stack.has(Registration.DataComponentsReg.FLUID_TRANSMIT_DATA))
@@ -163,7 +162,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
 
     private static class PathFinder
     {
-        public static @NotNull List<BlockPos> findPath(BlockPos start, BlockPos middle, BlockPos end, Level level)
+        public static List<BlockPos> findPath(BlockPos start, BlockPos middle, BlockPos end, Level level)
         {
             List<BlockPos> path1 = findPathSegment(start, middle, level);
             List<BlockPos> path2 = findPathSegment(middle, end, level);
@@ -216,7 +215,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return null; // Путь не найден
         }
 
-        private static @NotNull List<BlockPos> reconstructPath(Node node)
+        private static List<BlockPos> reconstructPath(Node node)
         {
             List<BlockPos> path = new ArrayList<>();
             while (node != null)
@@ -228,7 +227,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return path;
         }
 
-        private static @NotNull List<BlockPos> getNeighbors(@NotNull BlockPos pos, Level level)
+        private static List<BlockPos> getNeighbors(BlockPos pos, Level level)
         {
             List<BlockPos> neighbors = new ArrayList<>();
             BlockPos[] offsets =
@@ -244,14 +243,14 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return neighbors;
         }
 
-        private static boolean isPassable(BlockPos pos, @NotNull Level level)
+        private static boolean isPassable(BlockPos pos, Level level)
         {
             BlockState state = level.getBlockState(pos);
             VoxelShape shape = state.getCollisionShape(level, pos);
             return !state.isEmpty() && !shape.isEmpty();
         }
 
-        private static double heuristic(@NotNull BlockPos a, @NotNull BlockPos b)
+        private static double heuristic(BlockPos a, BlockPos b)
         {
             return a.distSqr(b);
         }
@@ -276,7 +275,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
     private static class EdgePathFinder
     {
 
-        public static @NotNull List<Vec3> findEdgePath(@NotNull List<BlockPos> blockPath, Level level)
+        public static List<Vec3> findEdgePath(List<BlockPos> blockPath, Level level)
         {
             List<Vec3> edgePath = new ArrayList<>();
 
@@ -378,7 +377,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return path;
         }
 
-        private static @NotNull List<Vec3> getEdgePoints(BlockPos pos, @NotNull Level level)
+        private static List<Vec3> getEdgePoints(BlockPos pos, Level level)
         {
             BlockState state = level.getBlockState(pos);
             VoxelShape shape = state.getCollisionShape(level, pos);
@@ -419,7 +418,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return edges;
         }
 
-        private static @NotNull List<Vec3> getConnectedEdges(Vec3 current, BlockPos startPos, @NotNull Level level)
+        private static List<Vec3> getConnectedEdges(Vec3 current, BlockPos startPos, Level level)
         {
             BlockState state = level.getBlockState(startPos);
             VoxelShape shape = state.getCollisionShape(level, startPos);
@@ -438,7 +437,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return connectedEdges;
         }
 
-        private static @NotNull List<Pair<Vec3, Vec3>> getShapeEdges(@NotNull VoxelShape shape, BlockPos pos)
+        private static List<Pair<Vec3, Vec3>> getShapeEdges(VoxelShape shape, BlockPos pos)
         {
             List<Pair<Vec3, Vec3>> edges = new ArrayList<>();
 
@@ -494,7 +493,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
             return edges;
         }
 
-        private static boolean onSameLine(@NotNull Vec3 a, @NotNull Pair<Vec3, Vec3> edge)
+        private static boolean onSameLine(Vec3 a, Pair<Vec3, Vec3> edge)
         {
             Vec3 edgeVec = edge.getFirst().vectorTo(edge.getSecond());
             Vec3 pointVec = edge.getFirst().vectorTo(a);
@@ -505,7 +504,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                     Math.abs(cross.z()) < 1e-9;
         }
 
-        private static double heuristic(Vec3 a, @NotNull List<Vec3> goalEdges)
+        private static double heuristic(Vec3 a, List<Vec3> goalEdges)
         {
             double minDist = Double.MAX_VALUE;
             for (Vec3 goal : goalEdges)
@@ -518,7 +517,7 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
     {
         private static final int MAX_STEPS_AMOUNT = 5;
 
-        public static @NotNull List<Vec3> interpolatePath(@NotNull List<Vec3> edgePath)
+        public static List<Vec3> interpolatePath(List<Vec3> edgePath)
         {
             List<Vec3> resultedPath = new ArrayList<>();
             resultedPath.add(edgePath.getFirst());

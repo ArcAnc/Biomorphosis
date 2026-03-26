@@ -38,7 +38,6 @@ import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Blacksmith extends AbstractPalladin implements Merchant
@@ -90,7 +89,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public @NotNull MerchantOffers getOffers()
+	public MerchantOffers getOffers()
 	{
 		if (this.level().isClientSide)
 		{
@@ -118,11 +117,11 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public void overrideOffers(@NotNull MerchantOffers offers)
+	public void overrideOffers(MerchantOffers offers)
 	{ }
 	
 	@Override
-	public void notifyTrade(@NotNull MerchantOffer offer)
+	public void notifyTrade(MerchantOffer offer)
 	{
 		offer.increaseUses();
 		this.ambientSoundTime = -this.getAmbientSoundInterval();
@@ -130,7 +129,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public void notifyTradeUpdated(@NotNull ItemStack stack)
+	public void notifyTradeUpdated(ItemStack stack)
 	{ }
 	
 	@Override
@@ -151,7 +150,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public @NotNull SoundEvent getNotifyTradeSound()
+	public SoundEvent getNotifyTradeSound()
 	{
 		return SoundEvents.VILLAGER_YES;
 	}
@@ -163,7 +162,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	protected @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand)
+	protected InteractionResult mobInteract(Player player, InteractionHand hand)
 	{
 		if (this.tradingPlayer != null)
 			return super.mobInteract(player, hand);
@@ -182,7 +181,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public void addAdditionalSaveData(@NotNull CompoundTag compound)
+	public void addAdditionalSaveData(CompoundTag compound)
 	{
 		super.addAdditionalSaveData(compound);
 		if (this.level().isClientSide())
@@ -194,7 +193,7 @@ public class Blacksmith extends AbstractPalladin implements Merchant
 	}
 	
 	@Override
-	public void readAdditionalSaveData(@NotNull CompoundTag compound)
+	public void readAdditionalSaveData(CompoundTag compound)
 	{
 		super.readAdditionalSaveData(compound);
 		if (compound.contains("offers"))

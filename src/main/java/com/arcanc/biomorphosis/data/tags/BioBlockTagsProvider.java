@@ -18,7 +18,6 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -31,7 +30,7 @@ public class BioBlockTagsProvider extends BlockTagsProvider
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider)
+    protected void addTags(HolderLookup.Provider provider)
     {
         this.tag(BioBlockTags.NORPH).add(Registration.BlockReg.NORPH.get()).
                 add(Registration.BlockReg.NORPH_OVERLAY.get()).

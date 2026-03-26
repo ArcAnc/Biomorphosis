@@ -17,50 +17,49 @@ import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class IngredientWithSizeHelper implements IIngredientHelper<IngredientWithSize>
 {
     @Override
-    public @NotNull IIngredientType<IngredientWithSize> getIngredientType()
+    public IIngredientType<IngredientWithSize> getIngredientType()
     {
         return BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE;
     }
 
     @Override
-    public @NotNull String getDisplayName(@NotNull IngredientWithSize ingredient)
+    public String getDisplayName(IngredientWithSize ingredient)
     {
         return RenderHelper.getStackAtCurrentTime(ingredient).getDisplayName().getString();
     }
     
     //FIXME: idk is this right way to make string for those method
     @Override
-    public String getUniqueId(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
+    public String getUniqueId(IngredientWithSize ingredient, UidContext context)
     {
         return "IngredientWithSize";
     }
     
     @Override
-    public @NotNull Object getUid(@NotNull IngredientWithSize ingredient, @NotNull UidContext context)
+    public Object getUid(IngredientWithSize ingredient, UidContext context)
     {
         return RenderHelper.getStackAtCurrentTime(ingredient);
     }
 
     @Override
-    public @NotNull ResourceLocation getResourceLocation(@NotNull IngredientWithSize ingredient)
+    public ResourceLocation getResourceLocation(IngredientWithSize ingredient)
     {
         return Database.rl("ingredient_with_size");
     }
 
     @Override
-    public @NotNull IngredientWithSize copyIngredient(@NotNull IngredientWithSize ingredient)
+    public IngredientWithSize copyIngredient(IngredientWithSize ingredient)
     {
         return new IngredientWithSize(ingredient.ingredient(), ingredient.amount());
     }
 
     @Override
-    public @NotNull String getErrorInfo(@Nullable IngredientWithSize ingredient) {
+    public String getErrorInfo(@Nullable IngredientWithSize ingredient) {
         return "";
     }
 }

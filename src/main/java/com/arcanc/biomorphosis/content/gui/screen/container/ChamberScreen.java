@@ -20,7 +20,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 public class ChamberScreen extends BioContainerScreen<ChamberMenu>
 {
@@ -52,7 +51,7 @@ public class ChamberScreen extends BioContainerScreen<ChamberMenu>
     }
 
     @Override
-    protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY)
+    protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
     {
     }
 }

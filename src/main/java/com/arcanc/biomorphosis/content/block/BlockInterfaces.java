@@ -20,14 +20,13 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BlockInterfaces
 {
     public interface IWrencheable
     {
-        InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx);
+        InteractionResult onUsed(ItemStack stack, UseOnContext ctx);
     }
 
     public interface IInteractionObject<T extends BlockEntity & IInteractionObject<T>> extends MenuProvider
@@ -45,7 +44,7 @@ public class BlockInterfaces
         }
 
         @Override
-        default AbstractContainerMenu createMenu(int id, @NotNull Inventory playerInventory, @NotNull Player playerEntity)
+        default AbstractContainerMenu createMenu(int id, Inventory playerInventory, Player playerEntity)
         {
             T master = getGuiMaster();
             Preconditions.checkNotNull(master);
@@ -54,7 +53,7 @@ public class BlockInterfaces
         }
 
         @Override
-        default @NotNull Component getDisplayName()
+        default Component getDisplayName()
         {
             return Component.empty();
         }

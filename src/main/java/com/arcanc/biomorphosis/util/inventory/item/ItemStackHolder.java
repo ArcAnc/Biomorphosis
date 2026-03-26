@@ -15,7 +15,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -47,7 +46,7 @@ public class ItemStackHolder implements IItemHolder
         update();
     }
 
-    public void setStack(@NotNull ItemStack stack)
+    public void setStack(ItemStack stack)
     {
         this.stack = new ItemStack(stack.getItem(), Mth.clamp(stack.getCount(), 0, this.capacity));
         update();
@@ -77,7 +76,7 @@ public class ItemStackHolder implements IItemHolder
     }
 
     @Override
-    public ItemStack insertItem(@NotNull ItemStack stack, boolean simulate)
+    public ItemStack insertItem(ItemStack stack, boolean simulate)
     {
         if (stack.isEmpty())
             return ItemStack.EMPTY;
@@ -160,7 +159,7 @@ public class ItemStackHolder implements IItemHolder
         return tag;
     }
 
-    public void deserializeNBT(HolderLookup.Provider registries, @NotNull CompoundTag tag)
+    public void deserializeNBT(HolderLookup.Provider registries, CompoundTag tag)
     {
         this.capacity = tag.getInt(Database.Capabilities.Items.Holder.CAPACITY);
         this.stack = ItemStack.parseOptional(registries, tag.getCompound(Database.Capabilities.Items.Holder.ITEM));
@@ -171,7 +170,7 @@ public class ItemStackHolder implements IItemHolder
         return this.stack.isEmpty() || this.stack.getCount() == 0;
     }
 
-    public static @NotNull ItemStackHolder.Builder newBuilder()
+    public static ItemStackHolder.Builder newBuilder()
     {
         return new ItemStackHolder.Builder();
     }
@@ -210,7 +209,7 @@ public class ItemStackHolder implements IItemHolder
             return this;
         }
 
-        public @NotNull ItemStackHolder build()
+        public ItemStackHolder build()
         {
             return new ItemStackHolder(this.stack, this.capacity, this.validator, this.callback);
         }

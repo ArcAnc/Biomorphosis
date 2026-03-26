@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -54,7 +53,7 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
 
     @Nullable
     @Override
-    public BlockEntity newBlockEntity(@NotNull BlockPos pos, @NotNull BlockState state)
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state)
     {
         return makeEntity.apply(pos, state);
     }
@@ -62,24 +61,24 @@ public class BioBaseEntityBlock<T extends BlockEntity> extends BioBaseBlock impl
     @Nullable
     @Override
     public <T2 extends BlockEntity>
-    BlockEntityTicker<T2> getTicker(@NotNull Level world, @NotNull BlockState state, @NotNull BlockEntityType<T2> type)
+    BlockEntityTicker<T2> getTicker(Level world, BlockState state, BlockEntityType<T2> type)
     {
         return getClassData().makeBaseTicker(world.isClientSide());
     }
 
     @Override
-    public boolean triggerEvent(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, int eventID, int eventParam)
+    public boolean triggerEvent(BlockState state, Level level, BlockPos pos, int eventID, int eventParam)
     {
         super.triggerEvent(state, level, pos, eventID, eventParam);
         return BlockHelper.getTileEntity(level, pos).map(blockEntity -> blockEntity.triggerEvent(eventID, eventParam)).orElse(false);
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state,
-                                                        @NotNull Level level,
-                                                        @NotNull BlockPos pos,
-                                                        @NotNull Player player,
-                                                        @NotNull BlockHitResult hitResult)
+    protected InteractionResult useWithoutItem(BlockState state,
+                                                        Level level,
+                                                        BlockPos pos,
+                                                        Player player,
+                                                        BlockHitResult hitResult)
     {
         BlockEntity tile = level.getBlockEntity(pos);
         if(tile instanceof MenuProvider menuProvider && !player.isShiftKeyDown())

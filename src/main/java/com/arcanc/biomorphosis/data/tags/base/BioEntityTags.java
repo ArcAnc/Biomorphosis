@@ -13,13 +13,12 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 public class BioEntityTags
 {
     public static final TagKey<EntityType<?>> SWARM = create("swarm");
 
-    private static @NotNull TagKey<EntityType<?>> create(String name)
+    private static TagKey<EntityType<?>> create(String name)
     {
         return TagKey.create(Registries.ENTITY_TYPE, Database.rl(name));
     }

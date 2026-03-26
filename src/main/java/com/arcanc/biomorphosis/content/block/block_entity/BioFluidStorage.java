@@ -27,7 +27,6 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -67,27 +66,27 @@ public class BioFluidStorage extends BioSidedAccessBlockEntity
         super.setRemoved();
     }
 
-    public static @Nullable FluidSidedStorage getHandler(@NotNull BioFluidStorage be, Direction ctx)
+    public static @Nullable FluidSidedStorage getHandler(BioFluidStorage be, @Nullable Direction ctx)
     {
         return ctx == null ? be.handler : be.isAccessible(ctx) ? be.handler : null;
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         this.handler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.handler.serializeNBT(registries));
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
+    public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         Direction dir = ctx.getClickedFace();
         Player player = ctx.getPlayer();

@@ -12,24 +12,26 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Worker;
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class WorkerRenderer extends GeoEntityRenderer<Worker>
+public class WorkerRenderer extends PEntityRenderer<Worker>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("entity/worker/0");
+	
 	public WorkerRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultedEntityGeoModel<>(Database.rl("worker"), true));
+		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("worker")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
-
-	@Override
-	public @Nullable RenderType getRenderType(Worker animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
 	{
-		return RenderType.entityCutout(texture);
+		event.addTextureLocation(TEXTURE);
 	}
 }

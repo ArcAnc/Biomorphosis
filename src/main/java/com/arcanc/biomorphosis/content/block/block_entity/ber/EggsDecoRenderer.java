@@ -12,24 +12,26 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.block_entity.EggsDeco;
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class EggsDecoRenderer extends GeoBlockRenderer<EggsDeco>
+public class EggsDecoRenderer extends PBlockRenderer<EggsDeco>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("block/egges/0");
+	
 	public EggsDecoRenderer(final BlockEntityRendererProvider.Context ctx)
 	{
-		super(new DefaultedBlockGeoModel<>(Database.rl("eggs")));
+		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("eggs")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesTranslucent);
 	}
-
-	@Override
-	public @Nullable RenderType getRenderType(EggsDeco animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
 	{
-		return RenderType.entityTranslucent(texture);
+		event.addTextureLocation(TEXTURE);
 	}
 }

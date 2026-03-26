@@ -12,24 +12,25 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.QueenGuard;
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class QueenGuardRenderer extends GeoEntityRenderer<QueenGuard>
+public class QueenGuardRenderer extends PEntityRenderer<QueenGuard>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("entity/guard/0");
 	public QueenGuardRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultedEntityGeoModel<>(Database.rl("guard"), true));
+		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("guard")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesCutout);
 	}
-
-	@Override
-	public @Nullable RenderType getRenderType(QueenGuard animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
 	{
-		return RenderType.entityCutout(texture);
+		event.addTextureLocation(TEXTURE);
 	}
 }

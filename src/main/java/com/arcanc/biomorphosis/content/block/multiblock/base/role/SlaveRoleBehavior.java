@@ -25,7 +25,7 @@ public class SlaveRoleBehavior implements IMultiblockRoleBehavior
 {
 
     private final BioMultiblockPart part;
-    private BlockPos masterPos;
+    private @Nullable BlockPos masterPos;
 
     public SlaveRoleBehavior(BioMultiblockPart part)
     {
@@ -71,7 +71,7 @@ public class SlaveRoleBehavior implements IMultiblockRoleBehavior
     }
 
     @Override
-    public <T, C> @Nullable T getCapability(BlockCapability<T, C> capability, C context)
+    public <T, C> @Nullable T getCapability(BlockCapability<T, C> capability, @Nullable C context)
     {
         Level level = this.part.getLevel();
         if (level == null)

@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.network.packets;
 
 
-import com.arcanc.biomorphosis.content.gui.sync.IScreenMessageReceiver;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
@@ -25,7 +24,6 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -42,7 +40,7 @@ public record C2SAddUnlockedGenes(UUID playerUUID, GenomeInstance genome) implem
 			C2SAddUnlockedGenes :: new);
 	
 	@Override
-	public void process(@NotNull IPayloadContext context)
+	public void process(IPayloadContext context)
 	{
 		Player player = context.player();
 		if (!(player instanceof ServerPlayer serverPlayer))
@@ -69,7 +67,7 @@ public record C2SAddUnlockedGenes(UUID playerUUID, GenomeInstance genome) implem
 	}
 	
 	@Override
-	public @NotNull Type<C2SAddUnlockedGenes> type()
+	public Type<C2SAddUnlockedGenes> type()
 	{
 		return TYPE;
 	}

@@ -37,7 +37,7 @@ import java.util.UUID;
 
 public class GuardBrain
 {
-	public static @NotNull Brain<QueenGuard> makeBrain(Dynamic<?> ops)
+	public static Brain<QueenGuard> makeBrain(Dynamic<?> ops)
 	{
 		Brain.Provider<QueenGuard> provider = Brain.provider(
 				List.of(
@@ -89,7 +89,7 @@ public class GuardBrain
 		return brain;
 	}
 
-	public static Optional<Queen> getQueen(ServerLevel level, @NotNull QueenGuard guard)
+	public static Optional<Queen> getQueen(ServerLevel level, QueenGuard guard)
 	{
 		UUID uuid = guard.getBrain().getMemory(Registration.AIReg.QUEEN_GUARD_QUEEN_UUID.get()).orElse(null);
 		if (uuid == null)

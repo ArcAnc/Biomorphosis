@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.gui.component.animation;
 
 import com.mojang.datafixers.util.Pair;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +37,7 @@ public record AnimationData(List<Pair<Integer, Integer>> frames, int totalLength
         return frames.getFirst();
     }
 
-    public static @NotNull AnimationData construct(int texHeight, int patternHeight, int frameTime)
+    public static AnimationData construct(int texHeight, int patternHeight, int frameTime)
     {
         if (texHeight <= 0 || patternHeight <= 0 || frameTime <= 0)
             throw new IllegalArgumentException("Input values must be positive");

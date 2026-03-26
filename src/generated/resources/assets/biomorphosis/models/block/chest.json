@@ -2052,7 +2052,7 @@
   ],
   "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/swarm_chest",
-    "particle": "biomorphosis:block/swarm_chest"
+    "all": "biomorphosis:block/swarm_chest/0",
+    "particle": "biomorphosis:block/swarm_chest/0"
   }
 }

@@ -132,7 +132,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
 import org.apache.commons.lang3.mutable.MutableObject;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -159,7 +158,7 @@ public final class Registration
                                 <ByteBuf, Vec3>list(2).
                                 apply(BioCodecs.VEC_3_STREAM_CODEC)));
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             TYPES.register(bus);
         }
@@ -183,7 +182,7 @@ public final class Registration
 						copyOnDeath().
 						build());
 		
-		private static void init (@NotNull final IEventBus bus)
+		private static void init (final IEventBus bus)
 		{
 			TYPES.register(bus);
 		}
@@ -196,7 +195,7 @@ public final class Registration
 		public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<FleshLootModifier>> FLESH_MODIFIER = MODIFIERS.register(
 				"flesh_modifier", () -> FleshLootModifier.CODEC);
 		
-		private static void init (@NotNull final IEventBus bus)
+		private static void init (final IEventBus bus)
 		{
 			MODIFIERS.register(bus);
 		}
@@ -492,7 +491,7 @@ public final class Registration
 					    rendererProvider(BlacksmithRenderer :: new),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 				
-        private static <T extends Entity> @NotNull EntityEntry<T> makeEntityType(String name,
+        private static <T extends Entity> EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
                                                                       EntityType.EntityFactory<T> factory,
                                                                       MobCategory category,
@@ -549,7 +548,7 @@ public final class Registration
                 return this.eggHolder;
             }
 	        
-	        public @NotNull EntitySoundEntry getSounds()
+	        public EntitySoundEntry getSounds()
 	        {
 		        return this.sounds;
 	        }
@@ -759,7 +758,7 @@ public final class Registration
                     private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
 
                     @Override
-                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
                     {
                         return SHAPE;
                     }
@@ -775,7 +774,7 @@ public final class Registration
                     private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
 
                     @Override
-                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
                     {
                         return SHAPE;
                     }
@@ -791,7 +790,7 @@ public final class Registration
                     private static final VoxelShape SHAPE = Block.box(0,0,0, 16, 8, 16);
 
                     @Override
-                    protected @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context)
+                    protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context)
                     {
                         return SHAPE;
                     }
@@ -816,10 +815,10 @@ public final class Registration
                 properties -> new VineBlock(properties)
                 {
                     @Override
-                    protected void randomTick(@NotNull BlockState state,
-                                              @NotNull ServerLevel level,
-                                              @NotNull BlockPos pos,
-                                              @NotNull RandomSource randomSource)
+                    protected void randomTick(BlockState state,
+                                              ServerLevel level,
+                                              BlockPos pos,
+                                              RandomSource randomSource)
                     {
                     }
                 },
@@ -896,10 +895,10 @@ public final class Registration
                 properties -> new BioBaseBlock(properties)
                 {
                     @Override
-                    protected void randomTick(@NotNull BlockState state,
-                                              @NotNull ServerLevel level,
-                                              @NotNull BlockPos pos,
-                                              @NotNull RandomSource random)
+                    protected void randomTick(BlockState state,
+                                              ServerLevel level,
+                                              BlockPos pos,
+                                              RandomSource random)
                     {
                         if (!level.isAreaLoaded(pos, 3))
                             return;
@@ -919,9 +918,9 @@ public final class Registration
                         }
                     }
 
-                    private boolean canBeGrass(@NotNull BlockState state,
-                                               @NotNull LevelReader levelReader,
-                                               @NotNull BlockPos pos)
+                    private boolean canBeGrass(BlockState state,
+                                               LevelReader levelReader,
+                                               BlockPos pos)
                     {
                         BlockPos targetPos = pos.above();
                         BlockState targetState = levelReader.getBlockState(targetPos);
@@ -957,10 +956,10 @@ public final class Registration
                 properties -> new BioBaseEntityBlock<>(HiveDeco :: new, properties)
                 {
                     @Override
-                    public void animateTick(@NotNull BlockState state,
-                                            @NotNull Level level,
-                                            @NotNull BlockPos pos,
-                                            @NotNull RandomSource random)
+                    public void animateTick(BlockState state,
+                                            Level level,
+                                            BlockPos pos,
+                                            RandomSource random)
                     {
                         if (random.nextInt(25) == 0)
                             level.playLocalSound(
@@ -975,7 +974,7 @@ public final class Registration
                     }
 
                     @Override
-                    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+                    protected RenderShape getRenderShape(BlockState state)
                     {
                         return RenderShape.INVISIBLE;
                     }
@@ -1053,22 +1052,22 @@ public final class Registration
 
 
                     @Override
-                    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+                    protected RenderShape getRenderShape(BlockState state)
                     {
                         return RenderShape.INVISIBLE;
                     }
 
                     @Override
-                    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                                           @NotNull BlockGetter level,
-                                                           @NotNull BlockPos pos,
-                                                           @NotNull CollisionContext context)
+                    protected VoxelShape getShape(BlockState state,
+                                                           BlockGetter level,
+                                                           BlockPos pos,
+                                                           CollisionContext context)
                     {
                         return SHAPE;
                     }
 
                     @Override
-                    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+                    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
                     {
                         builder.add(BlockStateProperties.WATERLOGGED);
                     }
@@ -1078,12 +1077,12 @@ public final class Registration
                         accept(properties),
                 ItemReg.baseProps);
 
-        private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
+        private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
             return register(name, block, additionalProps, itemAddProps, true);
         }
 
-        private static <B extends Block> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
+        private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
             Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
@@ -1092,7 +1091,7 @@ public final class Registration
             return blockGetter;
         }
 
-        private static <B extends Block, I extends BioBaseBlockItem> @NotNull DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, @NotNull BlockItemFactory<I> itemFactory, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
+        private static <B extends Block, I extends BioBaseBlockItem> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, BlockItemFactory<I> itemFactory, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
         {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
             Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
@@ -1103,13 +1102,13 @@ public final class Registration
 
 		//FIXME: those method are not needed in 1.21.1. Should be removed. But it's still required in newest versions
 	    @Deprecated(since = "1.21.1", forRemoval = true)
-        private static BlockBehaviour.@NotNull Properties setId(String id, BlockBehaviour.@NotNull Properties props)
+        private static BlockBehaviour.Properties setId(String id, BlockBehaviour.Properties props)
         {
             //ResourceKey<Block> resourceKey = ResourceKey.create(Registries.BLOCK, Database.rl(id));
             return props;//.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix("block.").toLanguageKey().replace(':', '.').replace('/', '.'));
         }
 
-        private static BlockBehaviour.@NotNull Properties props (Consumer<BlockBehaviour.Properties> additionalProps)
+        private static BlockBehaviour.Properties props (Consumer<BlockBehaviour.Properties> additionalProps)
         {
             return Util.make(BlockBehaviour.Properties.of(), additionalProps);
         }
@@ -1120,7 +1119,7 @@ public final class Registration
             ITEM create(Block block, Item.Properties itemProps, boolean addToCreative);
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             BLOCKS.register(bus);
         }
@@ -1241,7 +1240,7 @@ public final class Registration
                         ChestScreen:: new,
                         BlockReg.CHEST));
 
-        public static <T extends BlockEntity,  C extends BioContainerMenu, S extends BioContainerScreen<C>> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
+        public static <T extends BlockEntity,  C extends BioContainerMenu, S extends BioContainerScreen<C>> Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                                                                                            BlockEntityRendererProvider<T> provider,
                                                                                                                                                            MenuTypeReg.ArgContainer<T, C> menuProvider,
                                                                                                                                                            MenuScreens.ScreenConstructor<C, S> screenConstructor,
@@ -1249,19 +1248,19 @@ public final class Registration
         {
             return makeTypeMultipleBlocks(create, provider, menuProvider, screenConstructor, ImmutableSet.of(valid));
         }
-        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
+        public static <T extends BlockEntity> Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
                                                                                              BlockEntityRendererProvider<T> provider,
                                                                                              Supplier<? extends Block> valid)
         {
             return makeTypeMultipleBlocks(create, provider, null, null, ImmutableSet.of(valid));
         }
 
-        public static <T extends BlockEntity> @NotNull Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
+        public static <T extends BlockEntity> Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create, Supplier<? extends Block> valid)
         {
             return makeTypeMultipleBlocks(create, null, null, null, ImmutableSet.of(valid));
         }
 
-        public static <T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> @NotNull Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
+        public static <T extends BlockEntity, C extends BioContainerMenu, S extends BioContainerScreen<C>> Supplier<BlockEntityType<T>> makeTypeMultipleBlocks(
                 BlockEntityType.BlockEntitySupplier<T> create,
                 BlockEntityRendererProvider<T> rendererProvider,
                 MenuTypeReg.ArgContainer<T, C> menuProvider,
@@ -1346,13 +1345,13 @@ public final class Registration
 						build()).
 						rarity(RarityExtension.BIO_COMMON.getValue()));
 				
-        private static @NotNull DeferredItem<BioIconItem> registerIcon(String name)
+        private static DeferredItem<BioIconItem> registerIcon(String name)
         {
             Item.Properties props = setId(name, new Item.Properties().stacksTo(1), false);
             return ITEMS.register(name, ()-> new BioIconItem(props));
         }
 
-        private static <I extends Item> @NotNull DeferredItem<I> register(String name, Function<Item.Properties, I> item, Consumer<Item.Properties> additionalProps)
+        private static <I extends Item> DeferredItem<I> register(String name, Function<Item.Properties, I> item, Consumer<Item.Properties> additionalProps)
         {
             Item.Properties props = setId(name, props(additionalProps), false);
             return ITEMS.register(name, ()-> item.apply(props));
@@ -1360,18 +1359,18 @@ public final class Registration
 
 		//FIXME: this method is missed in 1.21.1 mc version, but present in newest. Remove here
         @Deprecated(since = "1.21.1")
-		private static Item.@NotNull Properties setId(String id, Item.@NotNull Properties props, boolean blockItem)
+		private static Item.Properties setId(String id, Item.Properties props, boolean blockItem)
         {
             //ResourceKey<Item> resourceKey = ResourceKey.create(Registries.ITEM, Database.rl(id));
             return props;//.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix(blockItem ? "block." : "item." ).toLanguageKey().replace(':', '.').replace('/', '.'));
         }
 		
-        private static Item.@NotNull Properties props (Consumer<Item.Properties> additionalProps)
+        private static Item.Properties props (Consumer<Item.Properties> additionalProps)
         {
             return Util.make(new Item.Properties(), additionalProps);
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             ITEMS.register(bus);
         }
@@ -1478,39 +1477,39 @@ public final class Registration
                                   DeferredHolder<FluidType, BioFluidType> type,
                                   List<Property<?>> properties)
         {
-            private static @NotNull FluidEntry make(String name, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            private static FluidEntry make(String name, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
             {
                 return make(name, new BioFluidType.ColorParams(new Vector4f(0,0,0,0), new Vector4f(0,0,0,0), 1, (vector4f, vector4f2, integer) -> 0xffffffff), fogColor, fogOptions, props);
             }
 
-            private static @NotNull FluidEntry make(String name, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            private static FluidEntry make(String name, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
             {
                 return make(name, 0, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props);
             }
 
-            private static @NotNull FluidEntry make(String name, int burnTime, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            private static FluidEntry make(String name, int burnTime, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
             {
                 return make(name, burnTime, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props);
             }
 
-            private static @NotNull FluidEntry make(String name, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            private static FluidEntry make(String name, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
             {
                 return make(name, 0, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props);
             }
 
-            private static @NotNull FluidEntry make(
+            private static FluidEntry make(
 		            String name, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props, Consumer<FluidType.Properties> buildAttributes
             )
             {
                 return make(name, 0, Database.FluidInfo.getStillLoc(name), Database.FluidInfo.getFlowLoc(name), Database.FluidInfo.getOverlayLoc(name), colorParams, fogColor, fogOptions, props, buildAttributes);
             }
 
-            private static @NotNull FluidEntry make(String name, int burnTime, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
+            private static FluidEntry make(String name, int burnTime, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions, Consumer<BaseFlowingFluid.Properties> props)
             {
                 return make(name, burnTime, stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props, null);
             }
 
-            private static @NotNull FluidEntry make(
+            private static FluidEntry make(
                     String name, int burnTime,
                     ResourceLocation stillTex,
                     ResourceLocation flowingTex,
@@ -1528,7 +1527,7 @@ public final class Registration
                 );
             }
 
-            private static @NotNull FluidEntry make(
+            private static FluidEntry make(
                     String name,
                     int burnTime,
                     ResourceLocation stillTex,
@@ -1581,12 +1580,12 @@ public final class Registration
                 return entry;
             }
 
-            private static @NotNull BioFluidType makeTypeWithTextures(FluidType.Properties props, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions)
+            private static BioFluidType makeTypeWithTextures(FluidType.Properties props, ResourceLocation stillTex, ResourceLocation flowingTex, ResourceLocation overlayTex, BioFluidType.ColorParams colorParams, BioFluidType.FogGetter fogColor, BioFluidType.FogOptionsGetter fogOptions)
             {
                 return new BioFluidType(stillTex, flowingTex, overlayTex, colorParams, fogColor, fogOptions, props);
             }
 
-            private static @NotNull BucketItem makeBucket (@NotNull ResourceLocation id, @NotNull DeferredHolder<Fluid, BioBaseFluid> still, FluidType.@NotNull Properties props, int burnTime)
+            private static BucketItem makeBucket (ResourceLocation id, DeferredHolder<Fluid, BioBaseFluid> still, FluidType.Properties props, int burnTime)
             {
                 return new BioBucketItem(still.get(), ItemReg.setId(id.getPath(), new Item.Properties().
                         stacksTo(1).
@@ -1595,7 +1594,7 @@ public final class Registration
                         false))
                 {
 	                @Override
-                    public int getBurnTime(@NotNull ItemStack itemStack,
+                    public int getBurnTime(ItemStack itemStack,
                                            @Nullable RecipeType<?> recipeType)
                     {
                         return burnTime;
@@ -1604,7 +1603,7 @@ public final class Registration
             }
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             FLUIDS.register(bus);
             FLUID_TYPES.register(bus);
@@ -1636,7 +1635,7 @@ public final class Registration
                 ChestMenu :: makeClient);
 
         public static <T, C extends BioContainerMenu>
-        @NotNull ArgContainer<T, C> registerArg(
+        ArgContainer<T, C> registerArg(
                 String name, ArgContainerConstructor<T, C> container, ClientContainerConstructor<C> client
         )
         {
@@ -1645,7 +1644,7 @@ public final class Registration
         }
 
         private static <C extends BioContainerMenu>
-        @NotNull DeferredHolder<MenuType<?>, MenuType<C>> registerType(String name, ClientContainerConstructor<C> client)
+        DeferredHolder<MenuType<?>, MenuType<C>> registerType(String name, ClientContainerConstructor<C> client)
         {
             return MENU_TYPES.register(
                     name, () -> {
@@ -1678,7 +1677,7 @@ public final class Registration
                 return new MenuProvider()
                 {
                     @Override
-                    public @NotNull Component getDisplayName()
+                    public Component getDisplayName()
                     {
                         return Component.empty();
                     }
@@ -1686,7 +1685,7 @@ public final class Registration
                     @Nullable
                     @Override
                     public AbstractContainerMenu createMenu(
-                            int containerId, @NotNull Inventory inventory, @NotNull Player player
+                            int containerId, Inventory inventory, Player player
                     )
                     {
                         return create(containerId, inventory, arg);
@@ -1710,7 +1709,7 @@ public final class Registration
             C construct(MenuType<C> type, int windowId, Inventory inventoryPlayer, BlockPos pos);
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             MENU_TYPES.register(bus);
         }
@@ -1805,7 +1804,7 @@ public final class Registration
             }
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             CREATIVE_MODE_TABS.register(bus);
         }
@@ -1816,13 +1815,13 @@ public final class Registration
         public static final ResourceKey<Registry<BookPageData>> PAGE_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("book/page"));
         public static final ResourceKey<Registry<BookChapterData>> CHAPTER_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("book/chapter"));
 
-        private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+        private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
         {
             event.dataPackRegistry(PAGE_KEY, BookPageData.CODEC, BookPageData.CODEC, regBuilder -> makeRegistry(regBuilder, PAGE_KEY));
             event.dataPackRegistry(CHAPTER_KEY, BookChapterData.CODEC, BookChapterData.CODEC, regBuilder -> makeRegistry(regBuilder, CHAPTER_KEY));
         }
 
-        public static void init (@NotNull final IEventBus modEventBus)
+        public static void init (final IEventBus modEventBus)
         {
             modEventBus.addListener(BookDataReg :: registerDataPackRegister);
         }
@@ -1832,12 +1831,12 @@ public final class Registration
     {
         public static final ResourceKey<Registry<IMultiblockDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("multiblock"));
 
-        private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+        private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
         {
             event.dataPackRegistry(DEFINITION_KEY, IMultiblockDefinition.CODEC, IMultiblockDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
         }
 
-        public static void init(@NotNull final IEventBus modEventBus)
+        public static void init(final IEventBus modEventBus)
         {
             modEventBus.addListener(MultiblockReg :: registerDataPackRegister);
         }
@@ -1862,17 +1861,17 @@ public final class Registration
 		
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
-        private static @NotNull DeferredHolder<SoundEvent, SoundEvent> variable(String name)
+        private static DeferredHolder<SoundEvent, SoundEvent> variable(String name)
         {
             return SOUNDS.register(name, () -> SoundEvent.createVariableRangeEvent(Database.rl(name)));
         }
 
-        private static @NotNull DeferredHolder<SoundEvent, SoundEvent> fixed(String name, float range)
+        private static DeferredHolder<SoundEvent, SoundEvent> fixed(String name, float range)
         {
             return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(Database.rl(name), range));
         }
 			
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             SOUNDS.register(bus);
         }
@@ -1885,12 +1884,12 @@ public final class Registration
         public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<UUID>> QUEEN_GUARD_QUEEN_UUID = register("queen_uuid", UUIDUtil.CODEC);
         public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> QUEEN_GUARD_PATROL_POS = register("patrol_pos", BlockPos.CODEC);
 
-        private static <T> @NotNull DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String name, Codec<T> codec)
+        private static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String name, Codec<T> codec)
         {
             return MEMORY_MODULES.register(name, () -> new MemoryModuleType<>(Optional.ofNullable(codec)));
         }
 
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             MEMORY_MODULES.register(bus);
         }
@@ -1913,13 +1912,13 @@ public final class Registration
 		public static final DeferredHolder<IGeneEffectType<?>, SpeedEffectType> SPEED = EFFECT_TYPES.register("speed", SpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, SwimSpeedEffectType> SWIM_SPEED = EFFECT_TYPES.register("swim_speed", SwimSpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, VampirismEffectType> VAMPIRISM = EFFECT_TYPES.register("vampirism", VampirismEffectType :: new);
-		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{
 			event.dataPackRegistry(DEFINITION_KEY, GeneDefinition.CODEC, GeneDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
 			event.dataPackRegistry(GENOME_TEMPLATES_KEY, GenomeTemplate.CODEC, GenomeTemplate.CODEC, regBuilder -> makeRegistry(regBuilder, GENOME_TEMPLATES_KEY));
 		}
 		
-		public static void init(@NotNull final IEventBus modEventBus)
+		public static void init(final IEventBus modEventBus)
 		{
 			EFFECT_TYPE_REGISTRY = EFFECT_TYPES.makeRegistry(builder -> makeRegistry(builder, EFFECT_TYPE_KEY));
 			EFFECT_TYPES.register(modEventBus);
@@ -1937,7 +1936,7 @@ public final class Registration
 		public static final DeferredHolder<StructureType<?>, StructureType<SRFHeadquarters>> SRF_HEADQUARTERS = STRUCTURE_TYPES.register("srf_headquarters",
 				() -> () -> SRFHeadquarters.CODEC);
 		
-		private static void init (@NotNull final IEventBus bus)
+		private static void init (final IEventBus bus)
 		{
 			STRUCTURE_TYPES.register(bus);
 		}
@@ -1950,7 +1949,7 @@ public final class Registration
         public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SwarmVillageFloorProcessor>> VILLAGE_FLOOR_REPLACE = STRUCTURE_PROCESSOR_TYPES.register("void_replacer",
                 () -> () -> SwarmVillageFloorProcessor.CODEC);
         
-        private static void init (@NotNull final IEventBus bus)
+        private static void init (final IEventBus bus)
         {
             STRUCTURE_PROCESSOR_TYPES.register(bus);
         }
@@ -1960,19 +1959,19 @@ public final class Registration
 	{
 		public static final ResourceKey<Registry<PalladinOrder>> ORDER_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("palladin_order"));
 		
-		private static void registerDataPackRegister(final DataPackRegistryEvent.@NotNull NewRegistry event)
+		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{
 			event.dataPackRegistry(ORDER_KEY, PalladinOrder.CODEC, PalladinOrder.CODEC, regBuilder -> makeRegistry(regBuilder, ORDER_KEY));
 		}
 		
-		public static void init(@NotNull final IEventBus modEventBus)
+		public static void init(final IEventBus modEventBus)
 		{
 			modEventBus.addListener(PalladinOrderReg :: registerDataPackRegister);
 		}
 		
 	}
 	
-    public static void init(@NotNull final IEventBus bus)
+    public static void init(final IEventBus bus)
     {
 	    GlobalLootModifiersReg.init(bus);
 	    DataAttachmentsReg.init(bus);
@@ -1996,7 +1995,7 @@ public final class Registration
         //StructureProcessorTypeReg.init(bus);
     }
 
-    private static <T> void makeRegistry(@NotNull RegistryBuilder<T> registryBuilder, @NotNull ResourceKey<? extends Registry<T>> key)
+    private static <T> void makeRegistry(RegistryBuilder<T> registryBuilder, ResourceKey<? extends Registry<T>> key)
     {
         registryBuilder.defaultKey(key.location()).maxId(Integer.MAX_VALUE - 1).sync(true);
     }

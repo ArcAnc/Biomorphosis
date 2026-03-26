@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.util.inventory;
 
 import com.google.common.base.Preconditions;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
 import java.util.*;
@@ -42,7 +43,7 @@ public abstract class BasicSidedStorage<STORAGE, HOLDER, UNIT>
 
     public abstract STORAGE getStorage();
 
-    public List<HOLDER> getHoldersForAccess(FaceMode mode)
+    public List<HOLDER> getHoldersForAccess(@Nullable FaceMode mode)
     {
         if (mode == FaceMode.BLOCKED)
             return List.of();
@@ -51,7 +52,7 @@ public abstract class BasicSidedStorage<STORAGE, HOLDER, UNIT>
         return BY_SIDE.get(mode).stream().map(this.holders :: get).toList();
     }
 
-    public Optional<HOLDER> getHolderAt(FaceMode mode, int id)
+    public Optional<HOLDER> getHolderAt(@Nullable FaceMode mode, int id)
     {
         if (mode == FaceMode.BLOCKED)
             return Optional.empty();

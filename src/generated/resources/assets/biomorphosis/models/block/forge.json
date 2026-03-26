@@ -1618,7 +1618,7 @@
   "gui_light": "side",
   "render_type": "minecraft:translucent",
   "textures": {
-    "all": "biomorphosis:block/forge",
-    "particle": "biomorphosis:block/forge"
+    "all": "biomorphosis:block/forge/0",
+    "particle": "biomorphosis:block/forge/0"
   }
 }

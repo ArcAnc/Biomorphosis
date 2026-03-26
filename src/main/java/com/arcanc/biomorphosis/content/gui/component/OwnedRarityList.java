@@ -18,7 +18,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSelectionList;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -36,13 +35,13 @@ public class OwnedRarityList extends AbstractSelectionList<OwnedRarityList.Owned
 		return (int)(this.getWidth() - this.getWidth() * 0.05f);
 	}
 
-	public void updateValues(@NotNull Set<GeneRarity> availableRarities)
+	public void updateValues(Set<GeneRarity> availableRarities)
 	{
 		replaceEntries(availableRarities.stream().map(OwnedRarityEntry :: new).toList());
 	}
 	
 	@Override
-	protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+	protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
 	{
 	
 	}
@@ -65,7 +64,7 @@ public class OwnedRarityList extends AbstractSelectionList<OwnedRarityList.Owned
 		}
 		
 		@Override
-		public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick)
+		public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick)
 		{
 			Minecraft mc = RenderHelper.mc();
 			Font font = mc.font;

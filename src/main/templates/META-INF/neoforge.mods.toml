@@ -38,9 +38,9 @@ file="META-INF/accesstransformer.cfg"
     side="BOTH"
 
 [[dependencies.${ mod_id }]]
-    modId="geckolib"
+    modId="pulselib"
     type="required"
-    versionRange = "${geckolib_version}"
+    versionRange = "${pulselib_version}"
     ordering = "AFTER"
     side = "BOTH"
 [[dependencies.${ mod_id }]]

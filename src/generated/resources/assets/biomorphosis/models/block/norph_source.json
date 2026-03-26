@@ -771,7 +771,7 @@
   "gui_light": "side",
   "render_type": "minecraft:translucent",
   "textures": {
-    "all": "biomorphosis:block/norph_source",
-    "particle": "biomorphosis:block/norph_source"
+    "all": "biomorphosis:block/norph_source/main",
+    "particle": "biomorphosis:block/norph_source/main"
   }
 }

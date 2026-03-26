@@ -40,7 +40,6 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -48,7 +47,7 @@ public class SwarmResistanceForces
 {
 	private static final Set<OrderData> ORDER_DATA = new HashSet<>();
 	
-	public static void structures(@NotNull BootstrapContext<Structure> context)
+	public static void structures(BootstrapContext<Structure> context)
 	{
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
@@ -108,7 +107,7 @@ public class SwarmResistanceForces
 		
 	}
 	
-	public static void structureSets(@NotNull BootstrapContext<StructureSet> context)
+	public static void structureSets(BootstrapContext<StructureSet> context)
 	{
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 		
@@ -140,7 +139,7 @@ public class SwarmResistanceForces
 		});
 	}
 	
-	public static void templatePools(@NotNull BootstrapContext<StructureTemplatePool> context)
+	public static void templatePools(BootstrapContext<StructureTemplatePool> context)
 	{
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 		Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
@@ -205,7 +204,7 @@ public class SwarmResistanceForces
 	
 	private record StructureInfo(ResourceKey<Structure> structure, ResourceKey<StructureSet> structureSet)
 	{
-		StructureInfo(@NotNull StructureType structureType, @NotNull ResourceLocation location)
+		StructureInfo(StructureType structureType, ResourceLocation location)
 		{
 			this(ResourceKey.create(Registries.STRUCTURE, location.withPrefix("srf/orders/").withSuffix("/" + structureType.name().toLowerCase())),
 					ResourceKey.create(Registries.STRUCTURE_SET, location.withPrefix("srf/orders/").withSuffix("/" + structureType.name().toLowerCase())));

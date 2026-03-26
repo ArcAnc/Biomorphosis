@@ -16,7 +16,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.codec.NeoForgeStreamCodecs;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -54,17 +53,17 @@ public record UnlockedGenome(Map<ResourceLocation, Set<GeneRarity>> unlockedGene
 					)).
 			map(UnlockedGenome :: new, UnlockedGenome :: unlockedGenes);
 	
-	public boolean hasGene(@NotNull GeneInstance gene)
+	public boolean hasGene(GeneInstance gene)
 	{
 		return this.unlockedGenes.containsKey(gene.id());
 	}
 	
-	public @NotNull Set<GeneRarity> getRaritiesById(@NotNull ResourceLocation id)
+	public Set<GeneRarity> getRaritiesById(ResourceLocation id)
 	{
 		return this.unlockedGenes.getOrDefault(id, Set.of());
 	}
 	
-	public @NotNull Set<ResourceLocation> getGeneNames()
+	public Set<ResourceLocation> getGeneNames()
 	{
 		return this.unlockedGenes.keySet();
 	}

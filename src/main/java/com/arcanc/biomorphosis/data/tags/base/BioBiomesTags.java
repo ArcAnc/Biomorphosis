@@ -14,7 +14,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
-import org.jetbrains.annotations.NotNull;
 
 public class BioBiomesTags
 {
@@ -22,7 +21,7 @@ public class BioBiomesTags
 	public static final TagKey<Biome> HAS_SRF_HEADQUARTERS = create("has_structure/srf_headquarters");
 	public static final TagKey<Biome> HAS_SRF_TOWER = create("has_structure/srf_tower");
 	
-	private static @NotNull TagKey<Biome> create(String name)
+	private static TagKey<Biome> create(String name)
 	{
 		return TagKey.create(Registries.BIOME, Database.rl(name));
 	}

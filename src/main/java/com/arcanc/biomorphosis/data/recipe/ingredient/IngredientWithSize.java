@@ -21,7 +21,6 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
 import net.neoforged.neoforge.common.crafting.ICustomIngredient;
 import net.neoforged.neoforge.common.crafting.IngredientType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -47,13 +46,13 @@ public record IngredientWithSize(Ingredient ingredient, int amount) implements I
     }
 
     @Override
-    public boolean test(@NotNull ItemStack stack)
+    public boolean test(ItemStack stack)
     {
         return this.ingredient.test(stack) && stack.getCount() >= this.amount;
     }
 
     @Override
-    public @NotNull Stream<ItemStack> getItems()
+    public Stream<ItemStack> getItems()
     {
         return Arrays.stream(this.ingredient.getItems()).map(stack -> stack.copyWithCount(this.amount));
     }
@@ -65,22 +64,22 @@ public record IngredientWithSize(Ingredient ingredient, int amount) implements I
     }
 
     @Override
-    public @NotNull IngredientType<?> getType()
+    public IngredientType<?> getType()
     {
         return Registration.IngredientReg.SIZED_INGREDIENT.get();
     }
 	
-	public static @NotNull IngredientWithSize of (@NotNull ItemStack stack)
+	public static IngredientWithSize of (ItemStack stack)
 	{
 		return new IngredientWithSize(Ingredient.of(stack.getItem()), stack.getCount());
 	}
 	
-	public static @NotNull IngredientWithSize of (@NotNull ItemLike item)
+	public static IngredientWithSize of (ItemLike item)
 	{
 		return new IngredientWithSize(Ingredient.of(item));
 	}
 	
-	public static @NotNull IngredientWithSize of (@NotNull Ingredient ingredient)
+	public static IngredientWithSize of (Ingredient ingredient)
 	{
 		return new IngredientWithSize(ingredient);
 	}

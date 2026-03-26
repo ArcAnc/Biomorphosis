@@ -17,7 +17,6 @@ import com.arcanc.biomorphosis.content.mutations.types.IGeneEffectType;
 import com.arcanc.biomorphosis.util.SerializableColor;
 import com.google.common.base.Preconditions;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -30,7 +29,7 @@ public class GeneDefinitionBuilder
 	private ResourceLocation image;
 	private final Map<GeneRarity, GeneDefinition.RarityData> rarityInfo = new EnumMap<>(GeneRarity.class);
 	
-	public static @NotNull GeneDefinitionBuilder builder(ResourceLocation id)
+	public static GeneDefinitionBuilder builder(ResourceLocation id)
 	{
 		return new GeneDefinitionBuilder(id);
 	}

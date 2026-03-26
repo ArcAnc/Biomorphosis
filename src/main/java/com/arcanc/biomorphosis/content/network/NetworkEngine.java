@@ -21,14 +21,13 @@ import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.network.PacketDistributor;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 import net.neoforged.neoforge.network.registration.PayloadRegistrar;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public class NetworkEngine
 {
-    public static void setupMessages(final @NotNull RegisterPayloadHandlersEvent event)
+    public static void setupMessages(final RegisterPayloadHandlersEvent event)
     {
         final PayloadRegistrar registrar = event.registrar(Database.MOD_ID);
 
@@ -50,7 +49,7 @@ public class NetworkEngine
     }
 
     private static <T extends IPacket> void registerMessage(
-            PayloadRegistrar registrar, StreamCodec<? super RegistryFriendlyByteBuf,T> reader, CustomPacketPayload.Type<T> type, @NotNull PacketFlow direction
+            PayloadRegistrar registrar, StreamCodec<? super RegistryFriendlyByteBuf,T> reader, CustomPacketPayload.Type<T> type, PacketFlow direction
     )
     {
         registerMessage(registrar, reader, type, Optional.of(direction));
@@ -58,7 +57,7 @@ public class NetworkEngine
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private static <T extends IPacket> void registerMessage(
-            PayloadRegistrar registrar, StreamCodec<? super RegistryFriendlyByteBuf, T> reader, CustomPacketPayload.Type<T> type, @NotNull Optional<PacketFlow> direction
+            PayloadRegistrar registrar, StreamCodec<? super RegistryFriendlyByteBuf, T> reader, CustomPacketPayload.Type<T> type, Optional<PacketFlow> direction
     )
     {
         if(direction.isPresent())
@@ -71,22 +70,22 @@ public class NetworkEngine
 
     }
 
-    public static void sendToServer(@NotNull final IPacket packet)
+    public static void sendToServer(final IPacket packet)
     {
         PacketDistributor.sendToServer(packet);
     }
 
-    public static void sendToAllClients(@NotNull final IPacket packet)
+    public static void sendToAllClients(final IPacket packet)
     {
         PacketDistributor.sendToAllPlayers(packet);
     }
 
-    public static void sendToPlayer(@NotNull ServerPlayer player, @NotNull final IPacket packet)
+    public static void sendToPlayer(ServerPlayer player, final IPacket packet)
     {
         PacketDistributor.sendToPlayer(player, packet);
     }
 
-    public static void sendToPlayerNear(@NotNull ServerLevel level, @Nullable ServerPlayer exclude, @NotNull Vec3 position, double radius, @NotNull IPacket packet)
+    public static void sendToPlayerNear(ServerLevel level, @Nullable ServerPlayer exclude, Vec3 position, double radius, IPacket packet)
     {
         PacketDistributor.sendToPlayersNear(level, exclude, position.x(), position.y(), position.z(), radius, packet);
     }

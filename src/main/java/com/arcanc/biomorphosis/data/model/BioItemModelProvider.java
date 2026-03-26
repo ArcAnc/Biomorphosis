@@ -21,7 +21,6 @@ import net.neoforged.neoforge.client.model.generators.ModelProvider;
 import net.neoforged.neoforge.client.model.generators.loaders.DynamicFluidContainerModelBuilder;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 public class BioItemModelProvider extends ItemModelProvider
 {
@@ -71,12 +70,12 @@ public class BioItemModelProvider extends ItemModelProvider
 	}
 	
 	@Override
-	public @NotNull String getName()
+	public String getName()
 	{
 		return Database.MOD_NAME + " Item Models";
 	}
 	
-	private void createBucket(Registration.FluidReg.@NotNull FluidEntry entry)
+	private void createBucket(Registration.FluidReg.FluidEntry entry)
 	{
 		withExistingParent(itemPrefix(entry.bucket()), Database.neoRl(itemPrefix("bucket_drip"))).
 				customLoader(DynamicFluidContainerModelBuilder :: begin).
@@ -92,17 +91,17 @@ public class BioItemModelProvider extends ItemModelProvider
 		getBuilder(itemPrefix(itemHolder)).parent(model);
 	}
 	
-	private @NotNull String itemPrefix(@NotNull Item itemHolder)
+	private String itemPrefix(Item itemHolder)
 	{
 		return itemPrefix(BuiltInRegistries.ITEM.getKey(itemHolder).getPath());
 	}
 	
-	private @NotNull String itemPrefix(@NotNull DeferredHolder<Item, ? extends Item> itemHolder)
+	private String itemPrefix(DeferredHolder<Item, ? extends Item> itemHolder)
 	{
 		return itemPrefix(itemHolder.get());
 	}
 	
-	private @NotNull String itemPrefix(String name)
+	private String itemPrefix(String name)
 	{
 		return ModelProvider.ITEM_FOLDER + "/" + name;
 	}

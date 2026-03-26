@@ -15,7 +15,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.util.random.Weight;
 import net.minecraft.util.random.WeightedEntry;
-import org.jetbrains.annotations.NotNull;
 
 public record GenomeDataDefinition(Weight weight, GenomeInstance genomeData) implements WeightedEntry
 {
@@ -31,7 +30,7 @@ public record GenomeDataDefinition(Weight weight, GenomeInstance genomeData) imp
 	}
 	
 	@Override
-	public @NotNull Weight getWeight()
+	public Weight getWeight()
 	{
 		return this.weight;
 	}

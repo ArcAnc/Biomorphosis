@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.ChamberRecipeInput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +25,7 @@ public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuil
     private final List<IngredientWithSize> inputs = new ArrayList<>();
     private ItemStack result;
 
-    public static @NotNull ChamberRecipeBuilder newBuilder(int time)
+    public static ChamberRecipeBuilder newBuilder(int time)
     {
         return new ChamberRecipeBuilder(new BioBaseRecipe.ResourcesInfo(
                 new BioBaseRecipe.BiomassInfo(false, 0),
@@ -35,7 +34,7 @@ public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuil
                 time));
     }
 
-    private ChamberRecipeBuilder(@NotNull BioBaseRecipe.ResourcesInfo info)
+    private ChamberRecipeBuilder(BioBaseRecipe.ResourcesInfo info)
     {
         super(info);
     }
@@ -47,7 +46,7 @@ public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuil
         return this;
     }
 
-    public ChamberRecipeBuilder setResult(@NotNull ItemStack result)
+    public ChamberRecipeBuilder setResult(ItemStack result)
     {
         this.result = result;
         return this;
@@ -61,7 +60,7 @@ public class ChamberRecipeBuilder extends BioBaseRecipeBuilder<ChamberRecipeBuil
     }
 
     @Override
-    public @NotNull Item getResult()
+    public Item getResult()
     {
         return this.result.getItem();
     }

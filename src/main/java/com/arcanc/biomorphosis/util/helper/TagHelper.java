@@ -13,16 +13,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 public class TagHelper
 {
-    public static @NotNull Vec2 readVec2(@NotNull CompoundTag compound)
+    public static Vec2 readVec2(CompoundTag compound)
     {
         return new Vec2(compound.getFloat("x"), compound.getFloat("y"));
     }
 
-    public static @NotNull Vec2 readVec2(@NotNull CompoundTag compound, @NotNull String address)
+    public static Vec2 readVec2(CompoundTag compound, String address)
     {
         Vec2 vec = Vec2.ZERO;
         if (compound.contains(address))
@@ -33,12 +32,12 @@ public class TagHelper
         return vec;
     }
 
-    public static @NotNull Vec3 readVec3(@NotNull CompoundTag compound)
+    public static Vec3 readVec3(CompoundTag compound)
     {
         return new Vec3(compound.getDouble("x"), compound.getDouble("y"), compound.getDouble("z"));
     }
 
-    public static @NotNull Vec3 readVec3(@NotNull CompoundTag compound, @NotNull String address)
+    public static Vec3 readVec3(CompoundTag compound, String address)
     {
         Vec3 vec = Vec3.ZERO;
         if (compound.contains(address))
@@ -49,7 +48,7 @@ public class TagHelper
         return vec;
     }
 
-    public static @NotNull CompoundTag writeVec3(@NotNull Vec3 vec)
+    public static CompoundTag writeVec3(Vec3 vec)
     {
         CompoundTag tag = new CompoundTag();
         tag.putDouble("x", vec.x());
@@ -59,13 +58,13 @@ public class TagHelper
         return tag;
     }
 
-    public static @NotNull CompoundTag writeVec3(@NotNull Vec3 vec, @NotNull CompoundTag dest, @NotNull String address)
+    public static CompoundTag writeVec3(Vec3 vec, CompoundTag dest, String address)
     {
         dest.put(address, writeVec3(vec));
         return dest;
     }
 
-    public static @NotNull CompoundTag writeVec2(@NotNull Vec2 vec)
+    public static CompoundTag writeVec2(Vec2 vec)
     {
         CompoundTag tag = new CompoundTag();
         tag.putFloat("x", vec.x);
@@ -74,13 +73,13 @@ public class TagHelper
         return tag;
     }
 
-    public static @NotNull CompoundTag writeVec2(@NotNull Vec2 vec, @NotNull CompoundTag dest, @NotNull String address)
+    public static CompoundTag writeVec2(Vec2 vec, CompoundTag dest, String address)
     {
         dest.put(address, writeVec2(vec));
         return dest;
     }
 
-    public static @NotNull BlockPos readBlockPos(@NotNull CompoundTag compound, @NotNull String address)
+    public static BlockPos readBlockPos(CompoundTag compound, String address)
     {
         BlockPos pos = BlockPos.ZERO;
 
@@ -96,7 +95,7 @@ public class TagHelper
         return pos;
     }
 
-    public static @NotNull CompoundTag writeBlockPos (@NotNull BlockPos pos)
+    public static CompoundTag writeBlockPos (BlockPos pos)
     {
         CompoundTag tag = new CompoundTag();
 
@@ -107,7 +106,7 @@ public class TagHelper
         return tag;
     }
 
-    public static @NotNull CompoundTag writeBlockPos(@NotNull BlockPos pos, @NotNull CompoundTag dest, @NotNull String address)
+    public static CompoundTag writeBlockPos(BlockPos pos, CompoundTag dest, String address)
     {
         dest.put(address, writeBlockPos(pos));
         return dest;

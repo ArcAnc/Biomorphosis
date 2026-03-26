@@ -19,7 +19,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.client.event.RenderFrameEvent;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -30,19 +29,19 @@ public class FluidLevelAnimator
     private static final float ANIMATION_SPEED = 0.1f;
     private static final Set<GlobalPos> BLOCK_ENTITIES = new HashSet<>();
 
-    public static void registerBlockEntity(@NotNull Level level, BlockPos pos)
+    public static void registerBlockEntity(Level level, BlockPos pos)
     {
         if (level.isClientSide() && FluidHelper.isFluidHandler(level, pos))
             BLOCK_ENTITIES.add(new GlobalPos(level.dimension(), pos));
     }
 
-    public static void removeBlockEntity(@NotNull Level level, BlockPos pos)
+    public static void removeBlockEntity(Level level, BlockPos pos)
     {
         if (level.isClientSide())
             BLOCK_ENTITIES.remove(new GlobalPos(level.dimension(), pos));
     }
 
-    public static void renderFrame(@NotNull final RenderFrameEvent.Pre event)
+    public static void renderFrame(final RenderFrameEvent.Pre event)
     {
         Minecraft mc = RenderHelper.mc();
         Level level = mc.level;

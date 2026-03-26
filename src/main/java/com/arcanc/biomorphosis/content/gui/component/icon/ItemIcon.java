@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.gui.component.icon;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class ItemIcon implements Icon
 {
@@ -24,7 +23,7 @@ public class ItemIcon implements Icon
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int xPos, int yPos, int width, int height)
+    public void render(GuiGraphics graphics, int xPos, int yPos, int width, int height)
     {
         float scaleX = width / 16f;
         float scaleY = height / 16f;

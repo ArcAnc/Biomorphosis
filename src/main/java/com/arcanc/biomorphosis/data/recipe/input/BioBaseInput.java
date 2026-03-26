@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.recipe.input;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class BioBaseInput implements RecipeInput
 {
@@ -43,7 +42,7 @@ public class BioBaseInput implements RecipeInput
     }
 
     @Override
-    public @NotNull ItemStack getItem(int index)
+    public ItemStack getItem(int index)
     {
         return ItemStack.EMPTY;
     }

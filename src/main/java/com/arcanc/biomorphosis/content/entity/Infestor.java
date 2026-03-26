@@ -12,6 +12,11 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
@@ -23,20 +28,19 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Infestor extends Monster implements GeoEntity
+public class Infestor extends Monster implements PAnimatable<Infestor>
 {
 	/*FIXME: 1 удар и потеря интереса + заражение и выпадение личинок. Приделать эту херь*/
 	/*FIXME: что-то не так с атакой мобов. Проверить, почему она не работает*/
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<Infestor> manager = PLibHelper.createManager(this);
+
+	private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+	private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+	
+	private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
 
 	public Infestor(EntityType<? extends Monster> type, Level level)
 	{
@@ -65,27 +69,42 @@ public class Infestor extends Monster implements GeoEntity
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
 	}
-
+	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Infestor> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "animController", 0, state ->
+		registrar.add(new PAnimationController<>("animController",state ->
 				{
-					if (this.swinging)
-						return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-					return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-				}),
-				DefaultAnimations.genericDeathController(this));
+					Infestor animatable = state.animatable();
+					if (animatable.swinging)
+						state.controller().play(ATTACK);
+					else
+					{
+						if (animatable.walkAnimation.isMoving())
+							state.controller().play(WALK);
+						else
+							state.controller().play(IDLE);
+					}
+					return state.controller().getState();
+				})).
+				add(new PAnimationController<>("death", state ->
+				{
+					if (state.animatable().isDeadOrDying())
+						state.controller().play(DEATH);
+					else
+						state.controller().stop();
+					return  state.controller().getState();
+				}));
 	}
 
 	@Override
-	protected @NotNull SoundEvent getDeathSound()
+	protected SoundEvent getDeathSound()
 	{
 		return Registration.EntityReg.MOB_INFESTOR.getSounds().getDeathSound().get();
 	}
 
 	@Override
-	protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+	protected SoundEvent getHurtSound(DamageSource damageSource)
 	{
 		return Registration.EntityReg.MOB_INFESTOR.getSounds().getHurtSound().get();
 	}
@@ -95,10 +114,10 @@ public class Infestor extends Monster implements GeoEntity
 	{
 		return Registration.EntityReg.MOB_INFESTOR.getSounds().getIdleSound().get();
 	}
-
+	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<Infestor> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 }

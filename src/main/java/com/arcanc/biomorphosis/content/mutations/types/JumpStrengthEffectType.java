@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.jetbrains.annotations.NotNull;
 
 public class JumpStrengthEffectType implements IGeneEffectType<JumpStrengthEffectType>
 {
@@ -37,7 +36,7 @@ public class JumpStrengthEffectType implements IGeneEffectType<JumpStrengthEffec
 	}
 	
 	@Override
-	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void apply(LivingEntity entity, AttributeParams params)
 	{
 		int modifier = params.getInt("modifier", 0);
 		if (modifier == 0)
@@ -51,7 +50,7 @@ public class JumpStrengthEffectType implements IGeneEffectType<JumpStrengthEffec
 	}
 	
 	@Override
-	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void remove(LivingEntity entity, AttributeParams params)
 	{
 		int modifier = params.getInt("modifier", 0);
 		if (modifier == 0)
@@ -63,7 +62,7 @@ public class JumpStrengthEffectType implements IGeneEffectType<JumpStrengthEffec
 	}
 	
 	@Override
-	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void tick(LivingEntity entity, AttributeParams params)
 	{
 	
 	}

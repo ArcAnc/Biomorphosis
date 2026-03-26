@@ -20,14 +20,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class IngredientWithSizeRenderer implements IIngredientRenderer<IngredientWithSize>
 {
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, @NotNull IngredientWithSize ingredient)
+    public void render(GuiGraphics guiGraphics, IngredientWithSize ingredient)
     {
         ItemStack stack = RenderHelper.getStackAtCurrentTime(ingredient);
         if (stack.isEmpty())
@@ -38,7 +37,7 @@ public class IngredientWithSizeRenderer implements IIngredientRenderer<Ingredien
     }
 
     @Override
-    public List<Component> getTooltip(@NotNull IngredientWithSize ingredient, @NotNull TooltipFlag tooltipFlag)
+    public List<Component> getTooltip(IngredientWithSize ingredient, TooltipFlag tooltipFlag)
     {
         Minecraft mc = RenderHelper.mc();
         Level level = mc.level;
@@ -49,7 +48,7 @@ public class IngredientWithSizeRenderer implements IIngredientRenderer<Ingredien
     }
 
     @Override
-    public void getTooltip(@NotNull ITooltipBuilder tooltip, @NotNull IngredientWithSize ingredient, @NotNull TooltipFlag tooltipFlag)
+    public void getTooltip(ITooltipBuilder tooltip, IngredientWithSize ingredient, TooltipFlag tooltipFlag)
     {
         tooltip.clear();
         tooltip.addAll(getTooltip(ingredient, tooltipFlag));

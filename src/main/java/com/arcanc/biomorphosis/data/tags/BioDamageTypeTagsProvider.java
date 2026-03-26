@@ -18,7 +18,6 @@ import net.minecraft.data.tags.DamageTypeTagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -30,7 +29,7 @@ public class BioDamageTypeTagsProvider extends DamageTypeTagsProvider
 	}
 	
 	@Override
-	protected void addTags(HolderLookup.@NotNull Provider provider)
+	protected void addTags(HolderLookup.Provider provider)
 	{
 		this.tag(Tags.DamageTypes.IS_PHYSICAL).
 				add(Registration.DamageTypeReg.TURRET_DAMAGE);

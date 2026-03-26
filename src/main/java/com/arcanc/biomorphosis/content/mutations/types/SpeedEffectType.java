@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.jetbrains.annotations.NotNull;
 
 public class SpeedEffectType implements IGeneEffectType<SpeedEffectType>
 {
@@ -37,7 +36,7 @@ public class SpeedEffectType implements IGeneEffectType<SpeedEffectType>
 	}
 	
 	@Override
-	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void apply(LivingEntity entity, AttributeParams params)
 	{
 		//we get modifier in percent, so, have to convert to double
 		int modifier = params.getInt("modifier", 0);
@@ -53,7 +52,7 @@ public class SpeedEffectType implements IGeneEffectType<SpeedEffectType>
 	}
 	
 	@Override
-	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void remove(LivingEntity entity, AttributeParams params)
 	{
 		int modifier = params.getInt("modifier", 0);
 		if (modifier == 0)
@@ -65,7 +64,7 @@ public class SpeedEffectType implements IGeneEffectType<SpeedEffectType>
 	}
 	
 	@Override
-	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void tick(LivingEntity entity, AttributeParams params)
 	{
 	
 	}

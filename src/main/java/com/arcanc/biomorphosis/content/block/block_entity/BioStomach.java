@@ -21,6 +21,12 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -37,20 +43,14 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEntity, ServerTickableBE
+public class BioStomach extends BioSidedAccessBlockEntity implements PAnimatable<BioStomach>, ServerTickableBE
 {
     private static final float NO_BIOMASS_SPEED_MODIFIER = 0.5f;
 
-    private static final RawAnimation WORK = RawAnimation.begin().thenLoop("work");
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final PRawAnimation WORK = PRawAnimation.begin().thenLoop("work").build();
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    private final PAnimationManager<BioStomach> manager = PLibHelper.createManager(this);
 
     private final FluidSidedStorage fluidHandler;
     private final ItemStackSidedStorage itemHandler;
@@ -106,7 +106,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public @Nullable InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return null;
     }
@@ -154,7 +154,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
             this.markDirty();
     }
 
-    private boolean tryCraft(@NotNull StomachRecipe recipe)
+    private boolean tryCraft(StomachRecipe recipe)
     {
         int timeToCheck = recipe.getResources().adrenaline().
                 filter(adrenaline -> !adrenaline.required() && this.adrenalineUsedThisTick).
@@ -215,7 +215,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
         }
     }
 
-    private void consumeResources(@NotNull StomachRecipe recipe)
+    private void consumeResources(StomachRecipe recipe)
     {
         float biomassPerTick = recipe.getResources().biomass().perSecond();
 		this.consumedFluidsData.biomassReminder += biomassPerTick;
@@ -271,36 +271,38 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
         this.consumedFluidsData.clearData();
         this.workedTime = 0;
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioStomach> animationRegistrar)
     {
-        controllers.add(new AnimationController<>(this, "work_controller", 0, state ->
+        animationRegistrar.add(new PAnimationController<>(state ->
         {
             if (this.isWorking)
-                return state.setAndContinue(WORK);
-            return state.setAndContinue(IDLE);
+                state.controller().play(WORK);
+            else
+                state.controller().play(IDLE);
+            return ControllerState.PLAY;
         }));
     }
 
-    public static @Nullable FluidSidedStorage getFluidHandler(@NotNull BioStomach be, Direction ctx)
+    public static @Nullable FluidSidedStorage getFluidHandler(BioStomach be, @Nullable Direction ctx)
     {
         return ctx == null ? be.fluidHandler : be.isAccessible(ctx) ? be.fluidHandler : null;
     }
 
-    public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull BioStomach be, Direction ctx)
+    public static @Nullable ItemStackSidedStorage getItemHandler(BioStomach be, @Nullable Direction ctx)
     {
         return ctx == null ? be.itemHandler : be.isAccessible(ctx) ? be.itemHandler : null;
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<BioStomach> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
@@ -314,7 +316,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.fluidHandler.serializeNBT(registries));

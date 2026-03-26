@@ -20,14 +20,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class StackWithChanceRenderer implements IIngredientRenderer<StackWithChance>
 {
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, @NotNull StackWithChance ingredient)
+    public void render(GuiGraphics guiGraphics, StackWithChance ingredient)
     {
         ItemStack stack = ingredient.stack();
         if (stack.isEmpty())
@@ -40,7 +39,7 @@ public class StackWithChanceRenderer implements IIngredientRenderer<StackWithCha
     }
 
     @Override
-    public List<Component> getTooltip(@NotNull StackWithChance ingredient, @NotNull TooltipFlag tooltipFlag)
+    public List<Component> getTooltip(StackWithChance ingredient, TooltipFlag tooltipFlag)
     {
         Minecraft mc = RenderHelper.mc();
         Level level = mc.level;
@@ -51,7 +50,7 @@ public class StackWithChanceRenderer implements IIngredientRenderer<StackWithCha
     }
 
     @Override
-    public void getTooltip(@NotNull ITooltipBuilder tooltip, @NotNull StackWithChance ingredient, @NotNull TooltipFlag tooltipFlag)
+    public void getTooltip(ITooltipBuilder tooltip, StackWithChance ingredient, TooltipFlag tooltipFlag)
     {
         tooltip.clear();
         tooltip.addAll(getTooltip(ingredient, tooltipFlag));

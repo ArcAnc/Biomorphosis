@@ -16,10 +16,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -77,7 +75,7 @@ public class ProgressInfoArea extends InfoArea
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         int current = this.info.current().get();
         int max = this.info.max().get();

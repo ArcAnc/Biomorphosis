@@ -43,7 +43,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -120,13 +119,13 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
-                                                       @NotNull BlockState state,
-                                                       @NotNull Level level,
-                                                       @NotNull BlockPos pos,
-                                                       @NotNull Player player,
-                                                       @NotNull InteractionHand hand,
-                                                       @NotNull BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack,
+                                                       BlockState state,
+                                                       Level level,
+                                                       BlockPos pos,
+                                                       Player player,
+                                                       InteractionHand hand,
+                                                       BlockHitResult hitResult)
     {
         if (FluidHelper.isFluidHandler(stack))
         {
@@ -173,7 +172,7 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
 
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult)
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
     {
         if (player.isShiftKeyDown())
         {
@@ -198,34 +197,34 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         Direction dir = context.getHorizontalDirection();
         return super.getStateForPlacement(context).setValue(HORIZONTAL_FACING, dir.getOpposite()).setValue(DOUBLE, false);
     }
 
     @Override
-    protected @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
-    protected @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation)
+    protected BlockState rotate(BlockState state, Rotation rotation)
     {
         return BlockHelper.nextHorizontalDirection(state);
     }
 
-    public static boolean isDouble (@NotNull BlockState state)
+    public static boolean isDouble (BlockState state)
     {
         return state.hasProperty(DOUBLE) ? state.getValue(DOUBLE) : false;
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state,
+                                           BlockGetter level,
+                                           BlockPos pos,
+                                           CollisionContext context)
     {
         Direction dir = state.getValue(HORIZONTAL_FACING);
         boolean flag = state.getValue(DOUBLE);
@@ -233,34 +232,34 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(HORIZONTAL_FACING, DOUBLE);
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.INVISIBLE;
     }
 
-    private @NotNull VoxelShape getRotatedShape (Direction direction, boolean flag)
+    private VoxelShape getRotatedShape (Direction direction, boolean flag)
     {
         VoxelShape shape = flag ? SHAPE_DOUBLE : SHAPE;
         return direction == Direction.NORTH ? shape : VoxelShapeHelper.rotateHorizontal(shape, direction);
     }
 
     @Override
-    protected @NotNull MapCodec<BioForgeBlock> codec()
+    protected MapCodec<BioForgeBlock> codec()
     {
         return CODEC;
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state,
-                            @NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState newState,
+    protected void onRemove(BlockState state,
+                            Level level,
+                            BlockPos pos,
+                            BlockState newState,
                             boolean movedByPiston)
     {
         if (!state.is(newState.getBlock()))

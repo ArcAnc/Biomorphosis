@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.recipe.input;
 import com.google.common.base.Preconditions;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ChamberRecipeInput extends BioBaseInput
 {
     public final ItemStack[] stacks;
 
-    public ChamberRecipeInput(@NotNull List<ItemStack> items)
+    public ChamberRecipeInput(List<ItemStack> items)
     {
         this (items.toArray(new ItemStack[]{}));
     }
@@ -53,7 +52,7 @@ public class ChamberRecipeInput extends BioBaseInput
     }
 
     @Override
-    public @NotNull ItemStack getItem(int index)
+    public ItemStack getItem(int index)
     {
         if (index < 0 || index > 11)
             throw new IllegalArgumentException("No item for index " + index);

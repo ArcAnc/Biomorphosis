@@ -20,13 +20,6 @@ group = mod_group_id
 repositories {
     mavenLocal()
     maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroup("software.bernie.geckolib")
-        }
-    }
-    maven {
         // location of the maven that hosts JEI files since January 2023
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
@@ -37,8 +30,7 @@ repositories {
         url = "https://modmaven.dev"
     }
     maven {
-        name = 'CurseMaven'
-        url "https://beta.cursemaven.com"
+        url = "https://api.modrinth.com/maven"
     }
 }
 
@@ -134,14 +126,14 @@ configurations {
 }
 
 dependencies {
-    implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    implementation "maven.modrinth:pulselib:${pulselib_version}"
 
     // compile against the JEI API but do not include it at runtime
     compileOnly("mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}")
     // at runtime, use the full JEI jar for NeoForge
     runtimeOnly("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
-    implementation "curse.maven:jade-${jade_version}"
+    implementation "maven.modrinth:jade:${jade_version}"
 }
 
 // This block of code expands all declared replace properties in the specified resource targets.
@@ -159,7 +151,7 @@ var generateModMetadata = tasks.register("generateModMetadata", ProcessResources
             mod_version            : mod_version,
             mod_authors            : mod_authors,
             mod_description        : mod_description,
-            geckolib_version       : geckolib_version,
+            pulselib_version       : pulselib_version,
             jei_version            : jei_version,
             jade_version           : jade_version
     ]

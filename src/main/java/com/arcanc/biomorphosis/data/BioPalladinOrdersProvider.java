@@ -19,7 +19,6 @@ import com.google.common.base.Preconditions;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,14 +44,14 @@ public class BioPalladinOrdersProvider extends BioRegistryData
 	}
 	
 	@Override
-	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
+	protected void registerContent(RegistrySetBuilder registrySetBuilder)
 	{
 		registrySetBuilder.add(Registration.PalladinOrderReg.ORDER_KEY, context ->
 				this.ordersMap.forEach((location, orderData) ->
 						context.register(getOrderKey(location), orderData)));
 	}
 	
-	private @NotNull ResourceKey<PalladinOrder> getOrderKey(ResourceLocation location)
+	private ResourceKey<PalladinOrder> getOrderKey(ResourceLocation location)
 	{
 		Preconditions.checkNotNull(location);
 		return getResourceKey(Registration.PalladinOrderReg.ORDER_KEY, location);

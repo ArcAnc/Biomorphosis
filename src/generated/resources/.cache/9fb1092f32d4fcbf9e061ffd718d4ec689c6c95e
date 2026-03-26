@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-24T02:37:09.173015597	Recipes
+// 1.21.1	2026-03-03T13:01:43.012774066	Recipes
 6dfcf11c8f97763260ef1883cd57b5be205a4f01 data/biomorphosis/advancement/recipes/chamber/catcher_from_chamber.json
 c0996fd1f6a2894208af7f1fea8c3a6d7853ae04 data/biomorphosis/advancement/recipes/chamber/chest_from_chamber.json
 07bbe973e530fc89f141bbea49db03d56d1b6034 data/biomorphosis/advancement/recipes/chamber/crusher_from_chamber.json
@@ -178,7 +178,7 @@ adb2260bfe9e44d92a8ca4a471317dd1e85dc873 data/biomorphosis/advancement/recipes/f
 2f7f2d6eeba7b1cf78870c231767a317373f92b8 data/biomorphosis/advancement/recipes/forge/yellow_glazed_terracotta.json
 acc3ad6f4948aff2a119782f9185c6466f79861e data/biomorphosis/advancement/recipes/misc/book.json
 b90212332c1286ba81fbec6c67029ba5a0f1e1ef data/biomorphosis/advancement/recipes/misc/multiblock_morpher.json
-83f79427053ecdedf89ffae37a75b5ed685b19a4 data/biomorphosis/advancement/recipes/misc/norph_source.json
+e4e8353ef31b33d4a6f69252317e46b1391b6054 data/biomorphosis/advancement/recipes/misc/norph_source.json
 e15e5658f3ac6dc9fe2af6101158013ff4762371 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_0.json
 47bcbdeec3ae4257024cecc332e4d47a50330476 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_1.json
 fb0b56c49daa5a65d612507630b061258171f679 data/biomorphosis/advancement/recipes/squeezer/biomass_from_foods.json

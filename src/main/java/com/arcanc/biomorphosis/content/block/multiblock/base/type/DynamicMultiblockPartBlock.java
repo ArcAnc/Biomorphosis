@@ -17,7 +17,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -29,20 +28,20 @@ public class DynamicMultiblockPartBlock<T extends DynamicMultiblockPart> extends
     }
 
     @Override
-    protected void onPlace(@NotNull BlockState state,
-                           @NotNull Level level,
-                           @NotNull BlockPos pos,
-                           @NotNull BlockState oldState,
+    protected void onPlace(BlockState state,
+                           Level level,
+                           BlockPos pos,
+                           BlockState oldState,
                            boolean movedByPiston)
     {
         BlockHelper.castTileEntity(level, pos, DynamicMultiblockPart.class).ifPresent(part -> part.onPlace((ServerLevel) level, pos, state));
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state,
-                            @NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState newState,
+    protected void onRemove(BlockState state,
+                            Level level,
+                            BlockPos pos,
+                            BlockState newState,
                             boolean movedByPiston)
     {
         if (!state.is(newState.getBlock()))

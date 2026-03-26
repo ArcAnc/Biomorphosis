@@ -22,24 +22,23 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ChrysalisMenu extends BioContainerMenu
 {
 	private final BlockPos pos;
 	
-	public static @NotNull ChrysalisMenu makeServer(MenuType<?> type, int id, @NotNull Inventory playerInv, MultiblockChrysalis chrysalis)
+	public static ChrysalisMenu makeServer(MenuType<?> type, int id, Inventory playerInv, MultiblockChrysalis chrysalis)
 	{
 		return new ChrysalisMenu(blockCtx(type, id, chrysalis), playerInv, chrysalis.getBlockPos());
 	}
 	
-	public static @NotNull ChrysalisMenu makeClient(MenuType<?> type, int id, @NotNull Inventory playerInv, BlockPos chrysalis)
+	public static ChrysalisMenu makeClient(MenuType<?> type, int id, Inventory playerInv, BlockPos chrysalis)
 	{
 		return new ChrysalisMenu(clientCtx(type, id, ContextType.BLOCK), playerInv, chrysalis);
 	}
 	
-	private ChrysalisMenu(@NotNull MenuContext ctx, @NotNull Inventory playerInv, BlockPos chrysalisPos)
+	private ChrysalisMenu(MenuContext ctx, Inventory playerInv, BlockPos chrysalisPos)
 	{
 		super(ctx);
 		this.pos = chrysalisPos;
@@ -48,7 +47,7 @@ public class ChrysalisMenu extends BioContainerMenu
 		opened(player);
 	}
 	
-	private void opened(@NotNull Player player)
+	private void opened(Player player)
 	{
 		if (player.level() instanceof ServerLevel serverLevel)
 			BlockHelper.castTileEntity(serverLevel, this.pos, MultiblockChrysalis.class).
@@ -56,7 +55,7 @@ public class ChrysalisMenu extends BioContainerMenu
 	}
 	
 	@Override
-	public void removed(@NotNull Player player)
+	public void removed(Player player)
 	{
 		super.removed(player);
 		if (player.level() instanceof ServerLevel serverLevel)
@@ -65,7 +64,7 @@ public class ChrysalisMenu extends BioContainerMenu
 	}
 	
 	@Override
-	protected void handleMessage(@NotNull ServerPlayer player, CompoundTag tag)
+	protected void handleMessage(ServerPlayer player, CompoundTag tag)
 	{
 		ServerLevel level = player.serverLevel();
 		BlockPos bePos = TagHelper.readBlockPos(tag, "block_entity_pos");

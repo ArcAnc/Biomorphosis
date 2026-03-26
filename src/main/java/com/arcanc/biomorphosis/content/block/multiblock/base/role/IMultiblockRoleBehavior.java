@@ -14,7 +14,6 @@ import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.neoforged.neoforge.capabilities.BlockCapability;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -27,9 +26,9 @@ public interface IMultiblockRoleBehavior
 
     Optional<BlockPos> getLocalPos();
 
-    <T, C extends @Nullable Object> @Nullable T getCapability(BlockCapability<T, C> capability, C context);
+    <T, C extends @Nullable Object> @Nullable T getCapability(BlockCapability<T, C> capability, @Nullable C context);
 
-    static @NotNull CompoundTag save(@NotNull IMultiblockRoleBehavior behavior)
+    static CompoundTag save(IMultiblockRoleBehavior behavior)
     {
         CompoundTag tag = new CompoundTag();
         tag.putBoolean("is_master", behavior.isMaster());
@@ -37,7 +36,7 @@ public interface IMultiblockRoleBehavior
         return tag;
     }
 
-    static IMultiblockRoleBehavior load(@NotNull CompoundTag tag, BioMultiblockPart part)
+    static IMultiblockRoleBehavior load(CompoundTag tag, BioMultiblockPart part)
     {
         boolean isMaster = tag.getBoolean("is_master");
         if (isMaster)

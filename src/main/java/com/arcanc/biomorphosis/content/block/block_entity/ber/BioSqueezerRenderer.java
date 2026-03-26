@@ -13,29 +13,50 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 import com.arcanc.biomorphosis.content.block.block_entity.BioSqueezer;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-public class BioSqueezerRenderer extends GeoBlockRenderer<BioSqueezer>
+import java.util.Collection;
+import java.util.function.Function;
+
+public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("block/squeezer/0");
+	
 	public BioSqueezerRenderer(final BlockEntityRendererProvider.Context ctx)
 	{
-		super(new DefaultedBlockGeoModel<>(Database.rl("squeezer")));
+		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("squeezer")).
+					build(),
+				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
 	@Override
-	public void preRender(PoseStack poseStack, BioSqueezer animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	protected void perBoneSubmit(BioSqueezer animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<BioSqueezer>> animationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
 	{
-		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+		if (!bone.name().equals("main"))
+		{
+			super.perBoneSubmit(animatable, poseStack, bone, animationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+			return;
+		}
+		poseStack.pushPose();
 		float percent = FluidHelper.getFluidHandler(animatable).
 				map(handler -> handler.getFluidInTank(2).getAmount() / (float) handler.getTankCapacity(2)).orElse(0.0f);
 		//FIXME: проверить название модели и убедиться что скейл стоит правильный
-		model.getBone("main").ifPresent(geoBone -> geoBone.setScaleY(percent));
+		poseStack.scale(1, percent, 1);
+		super.perBoneSubmit(animatable, poseStack, bone, animationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+		poseStack.popPose();
+	}
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	{
+		event.addTextureLocation(TEXTURE);
 	}
 }

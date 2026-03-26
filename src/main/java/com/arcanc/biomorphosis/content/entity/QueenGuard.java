@@ -14,6 +14,12 @@ import com.arcanc.biomorphosis.content.entity.ai.goals.RandomPatrolGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerLevel;
@@ -30,23 +36,21 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class QueenGuard extends Monster implements GeoEntity
+public class QueenGuard extends Monster implements PAnimatable<QueenGuard>
 {
 
     /*FIXME: переписать ИИ на брейн работу. Добавить оружие и щит в руки гвардосу. Дописать реакцию на атаку квины*/
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final PAnimationManager<QueenGuard> manager = PLibHelper.createManager(this);
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+    private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+    private static final PRawAnimation DEATH = PRawAnimation.begin().thenPlay("death").build();
+    
     private UUID queen;
     private BlockPos patrolPos;
 
@@ -81,9 +85,10 @@ public class QueenGuard extends Monster implements GeoEntity
     
     @SuppressWarnings("deprecation")
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
-                                                  @NotNull DifficultyInstance difficulty,
-                                                  @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData)
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
+                                                  DifficultyInstance difficulty,
+                                                  MobSpawnType spawnType,
+                                                  @Nullable SpawnGroupData spawnGroupData)
     {
         this.patrolPos = this.blockPosition();
         //this.getBrain().setMemory(Registration.AIReg.QUEEN_GUARD_PATROL_POS.get(), this.blockPosition());
@@ -104,14 +109,14 @@ public class QueenGuard extends Monster implements GeoEntity
 		return null;
 	}
 
-    public void setQueen(@NotNull Queen queen)
+    public void setQueen(Queen queen)
     {
         this.queen = queen.getUUID();
         //this.getBrain().setMemory(Registration.AIReg.QUEEN_GUARD_QUEEN_UUID.get(), queen.getUUID());
     }
 
     /*@Override
-    protected @NotNull Brain<?> makeBrain(@NotNull Dynamic<?> dynamic)
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
     {
         return GuardBrain.makeBrain(dynamic);
     }
@@ -124,7 +129,7 @@ public class QueenGuard extends Monster implements GeoEntity
 
     @Override
     @SuppressWarnings("unchecked")
-    public @NotNull Brain<QueenGuard> getBrain()
+    public Brain<QueenGuard> getBrain()
     {
         return (Brain<QueenGuard>) super.getBrain();
     }
@@ -136,19 +141,19 @@ public class QueenGuard extends Monster implements GeoEntity
     }*/
 
     @Override
-    protected @NotNull SoundEvent getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getDeathSound().get();
     }
 
     @Override
-    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    protected SoundEvent getHurtSound(DamageSource damageSource)
     {
         return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getHurtSound().get();
     }
 
     @Override
-    protected @NotNull SoundEvent getAmbientSound()
+    protected SoundEvent getAmbientSound()
     {
         return Registration.EntityReg.MOB_QUEEN_GUARD.getSounds().getIdleSound().get();
     }
@@ -160,7 +165,7 @@ public class QueenGuard extends Monster implements GeoEntity
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound)
+    public void readAdditionalSaveData(CompoundTag compound)
     {
         super.readAdditionalSaveData(compound);
 
@@ -178,7 +183,7 @@ public class QueenGuard extends Monster implements GeoEntity
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compound)
+    public void addAdditionalSaveData(CompoundTag compound)
     {
         super.addAdditionalSaveData(compound);
 
@@ -192,23 +197,37 @@ public class QueenGuard extends Monster implements GeoEntity
         this.getBrain().getMemory(Registration.AIReg.QUEEN_GUARD_PATROL_POS.get()).
                 ifPresent(pos -> TagHelper.writeBlockPos(pos, compound, "patrol"))*/;
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<QueenGuard> registrar)
     {
-        controllers.add(new AnimationController<>(this, "animController", 0, state ->
+        registrar.add(new PAnimationController<>("walk/idle/attack", state ->
                 {
-                    if (this.swinging)
-                        return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-                    return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-                }),
-                DefaultAnimations.genericDeathController(this));
+                    QueenGuard animatable = state.animatable();
+                    if (animatable.swinging)
+                    {
+                        state.controller().play(ATTACK);
+                        return ControllerState.PLAY;
+                    }
+                    if (animatable.walkAnimation.isMoving())
+                        state.controller().play(WALK);
+                    else
+                        state.controller().play(IDLE);
+                    return ControllerState.PLAY;
+                })).
+        add(new PAnimationController<>("death", state ->
+        {
+            if (!state.animatable().isDeadOrDying())
+                return ControllerState.STOP;
+            state.controller().play(DEATH);
+            return ControllerState.PLAY;
+        }));
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<QueenGuard> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
     
     @Override

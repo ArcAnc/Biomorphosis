@@ -22,7 +22,6 @@ import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -30,13 +29,13 @@ public class NormalBookPage extends AbstractBookPage
 {
     private Vec3i toTitle, arrowLeft, arrowRight;
 
-    public NormalBookPage(@NotNull BookPageData data)
+    public NormalBookPage(BookPageData data)
     {
         super(data);
     }
 
     @Override
-    protected void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPageContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         int subPage = BookData.getInstance().getCurrentSubpage();
         List<AbstractPageComponent> currentPage = this.dividedComponents.get(subPage);
@@ -60,7 +59,7 @@ public class NormalBookPage extends AbstractBookPage
         this.arrowRight = new Vec3i(zone.getX() + 15 + 225, zone.getY() + 145, 0);
     }
 
-    private boolean isArrowActive(@NotNull Vec3i arrow)
+    private boolean isArrowActive(Vec3i arrow)
     {
         if (arrow.equals(this.toTitle))
             return true;
@@ -70,7 +69,7 @@ public class NormalBookPage extends AbstractBookPage
     }
 
     @Override
-    protected void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderNavigationButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Font font = RenderHelper.mc().font;
         if (isArrowActive(this.arrowLeft))
@@ -102,7 +101,7 @@ public class NormalBookPage extends AbstractBookPage
             guiGraphics.blit(GuideScreen.TEXT, this.toTitle.getX(), this.toTitle.getY(), 49, 194, 17, 9, 256, 256);
     }
 
-    private boolean isAboveArrow(double mouseX, double mouseY, @NotNull Vec3i arrow)
+    private boolean isAboveArrow(double mouseX, double mouseY, Vec3i arrow)
     {
         return mouseX >= arrow.getX() && mouseY >= arrow.getY() && mouseX <= arrow.getX() + (arrow.equals(this.toTitle) ? 17 : 18) && mouseY <= arrow.getY() + (arrow.equals(this.toTitle) ? 9 : 10);
     }
@@ -156,7 +155,7 @@ public class NormalBookPage extends AbstractBookPage
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }

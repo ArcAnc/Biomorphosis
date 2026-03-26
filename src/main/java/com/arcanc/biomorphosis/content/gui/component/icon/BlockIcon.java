@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.gui.component.icon;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 public class BlockIcon implements Icon
 {
@@ -24,7 +23,7 @@ public class BlockIcon implements Icon
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int xPos, int yPos, int width, int height)
+    public void render(GuiGraphics graphics, int xPos, int yPos, int width, int height)
     {
         graphics.pose().pushPose();
         float scaleX = width / 16.0f;

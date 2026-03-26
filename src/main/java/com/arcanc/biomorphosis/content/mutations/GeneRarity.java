@@ -16,7 +16,6 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 public enum GeneRarity implements StringRepresentable
 {
@@ -39,7 +38,7 @@ public enum GeneRarity implements StringRepresentable
 	}
 	
 	@Override
-	public @NotNull String getSerializedName()
+	public String getSerializedName()
 	{
 		return this.name;
 	}

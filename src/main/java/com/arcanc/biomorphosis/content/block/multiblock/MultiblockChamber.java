@@ -22,6 +22,12 @@ import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -32,25 +38,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockEntity, BlockInterfaces.IInteractionObject<MultiblockChamber>
+public class MultiblockChamber extends StaticMultiblockPart implements PAnimatable<MultiblockChamber>, BlockInterfaces.IInteractionObject<MultiblockChamber>
 {
     public static final int MAX_SLOT_AMOUNT = 12;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    private final PAnimationManager<MultiblockChamber> manager = PLibHelper.createManager(this);
+    private final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    
     private final ItemStackSidedStorage itemHandler;
     private boolean canWork = false;
     private int workedTime;
@@ -137,7 +136,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
             this.markDirty();
     }
 
-    private boolean tryCraft(@NotNull ChamberRecipe recipe)
+    private boolean tryCraft(ChamberRecipe recipe)
     {
         ItemStack resultStack = this.itemHandler.getStackInSlot(0);
         if (!   (resultStack.isEmpty() ||
@@ -185,7 +184,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
         }
     }
 
-    private @NotNull List<ItemStack> findInput()
+    private List<ItemStack> findInput()
     {
         List<ItemStack> items = new ArrayList<>();
 
@@ -200,7 +199,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     { }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         if (!this.isMaster())
@@ -212,7 +211,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         if (!this.isMaster())
@@ -222,27 +221,30 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
         this.workedTime = tag.getInt("worked_time");
         this.maxWorkedTime = tag.getInt("max_worked_time");
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChamber> registrar)
     {
-        controllers.add(new AnimationController<>(this, "controller", 0, state ->
+        registrar.add(new PAnimationController<>(state ->
         {
             if (!isMaster())
-                return PlayState.STOP;
+                return ControllerState.STOP;
             if (getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
-                return state.setAndContinue(DefaultAnimations.IDLE);
-            return PlayState.STOP;
+            {
+                state.controller().play(IDLE);
+                return ControllerState.PLAY;
+            }
+            return ControllerState.STOP;
         }));
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<MultiblockChamber> getAnimationManager()
     {
-        return cache;
+        return this.manager;
     }
-
-    public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull MultiblockChamber be, Direction ctx)
+    
+    public static @Nullable ItemStackSidedStorage getItemHandler(MultiblockChamber be, Direction ctx)
     {
         return be.isMaster() ? be.itemHandler : be.getMasterPos().
                 flatMap(pos -> BlockHelper.
@@ -266,7 +268,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements GeoBlockE
     }
 
     @Override
-    public boolean canUseGui(@NotNull Player player)
+    public boolean canUseGui(Player player)
     {
         return getMasterPos().map(pos -> player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 64).orElse(false);
     }

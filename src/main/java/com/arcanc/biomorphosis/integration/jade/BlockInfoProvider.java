@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
 import snownee.jade.api.IServerDataProvider;
@@ -26,8 +25,8 @@ public enum BlockInfoProvider implements IBlockComponentProvider,
     INSTANCE;
 
     @Override
-    public void appendTooltip(@NotNull ITooltip tooltip,
-                              @NotNull BlockAccessor blockAccessor,
+    public void appendTooltip(ITooltip tooltip,
+                              BlockAccessor blockAccessor,
                               IPluginConfig iPluginConfig)
     {
         CompoundTag data = blockAccessor.getServerData();
@@ -50,7 +49,7 @@ public enum BlockInfoProvider implements IBlockComponentProvider,
     }
 
     @Override
-    public void appendServerData(@NotNull CompoundTag compoundTag, @NotNull BlockAccessor blockAccessor)
+    public void appendServerData(CompoundTag compoundTag, BlockAccessor blockAccessor)
     {
         /*BioFluidStorage block = (BioFluidStorage) blockAccessor.getBlockEntity();
         compoundTag.putInt("fluid_amount", 10);

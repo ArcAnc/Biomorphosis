@@ -30,11 +30,9 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
@@ -53,19 +51,19 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     private final int maxPerRow = 6;
     private final int startY = 10;
 
-    public ChamberRecipeCategory(@NotNull IGuiHelper guiHelper)
+    public ChamberRecipeCategory(IGuiHelper guiHelper)
     {
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.MULTIBLOCK_CHAMBER));
     }
 
     @Override
-    public @NotNull RecipeType<ChamberRecipe> getRecipeType()
+    public RecipeType<ChamberRecipe> getRecipeType()
     {
         return RECIPE_TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle()
+    public Component getTitle()
     {
         return Component.translatable(Database.Integration.JeiInfo.CHAMBER_RECIPE_NAME);
     }
@@ -77,7 +75,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull ChamberRecipe recipe, @NotNull IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, ChamberRecipe recipe, IFocusGroup focuses)
     {
         builder.setShapeless();
 
@@ -105,14 +103,14 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
         builder.addSlot(RecipeIngredientRole.OUTPUT, 50, 70).addItemStack(recipe.result().copy());
     }
 
-    private void addInputSlot (@NotNull IRecipeLayoutBuilder builder, int x, int y, IngredientWithSize ingredient)
+    private void addInputSlot (IRecipeLayoutBuilder builder, int x, int y, IngredientWithSize ingredient)
     {
         IRecipeSlotBuilder slotBuilder = builder.addSlot(RecipeIngredientRole.INPUT, x, y);
         slotBuilder.addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, ingredient);
     }
 
     @Override
-    public void draw(@NotNull ChamberRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY)
+    public void draw(ChamberRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
     {
         List<IngredientWithSize> inputs = recipe.input();
 

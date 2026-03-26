@@ -1169,7 +1169,7 @@
   "gui_light": "side",
   "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/catcher",
-    "particle": "biomorphosis:block/catcher"
+    "all": "biomorphosis:block/catcher/0",
+    "particle": "biomorphosis:block/catcher/0"
   }
 }

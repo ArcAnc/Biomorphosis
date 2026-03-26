@@ -16,7 +16,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class SergeantRenderer extends LivingEntityRenderer<Sergeant, SergeantModel>
 {
@@ -28,13 +27,13 @@ public class SergeantRenderer extends LivingEntityRenderer<Sergeant, SergeantMod
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Sergeant entity)
+	protected boolean shouldShowName(Sergeant entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull Sergeant entity)
+	public ResourceLocation getTextureLocation(Sergeant entity)
 	{
 		return TEXTURE;
 	}

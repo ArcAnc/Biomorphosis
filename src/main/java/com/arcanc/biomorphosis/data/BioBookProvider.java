@@ -20,7 +20,6 @@ import com.google.common.base.Preconditions;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -270,7 +269,7 @@ public class BioBookProvider extends BioRegistryData
     }
 
     @Override
-    protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
+    protected void registerContent(RegistrySetBuilder registrySetBuilder)
     {
         registrySetBuilder.add(Registration.BookDataReg.CHAPTER_KEY, context ->
                 this.chapterDataMap.forEach((location, bookChapterData) ->
@@ -280,13 +279,13 @@ public class BioBookProvider extends BioRegistryData
                         context.register(getPageKey(location), bookPageData)));
     }
 
-    private @NotNull ResourceKey<BookPageData> getPageKey(ResourceLocation location)
+    private ResourceKey<BookPageData> getPageKey(ResourceLocation location)
     {
         Preconditions.checkNotNull(location);
         return getResourceKey(Registration.BookDataReg.PAGE_KEY, location);
     }
 
-    private @NotNull ResourceKey<BookChapterData> getChapterKey(ResourceLocation location)
+    private ResourceKey<BookChapterData> getChapterKey(ResourceLocation location)
     {
         Preconditions.checkNotNull(location);
         return getResourceKey(Registration.BookDataReg.CHAPTER_KEY, location);

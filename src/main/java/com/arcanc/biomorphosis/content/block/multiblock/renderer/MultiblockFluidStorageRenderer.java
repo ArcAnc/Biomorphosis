@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -93,10 +92,10 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
     }
 
     @Override
-    public void render(@NotNull MultiblockFluidStorage blockEntity,
+    public void render(MultiblockFluidStorage blockEntity,
                        float partialTick,
-                       @NotNull PoseStack poseStack,
-                       @NotNull MultiBufferSource bufferSource,
+                       PoseStack poseStack,
+                       MultiBufferSource bufferSource,
                        int packedLight,
                        int packedOverlay)
     {
@@ -115,11 +114,11 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         }
     }
 
-    private void renderFace(@NotNull MultiblockFluidStorage blockEntity,
-                            @NotNull Direction dir,
+    private void renderFace(MultiblockFluidStorage blockEntity,
+                            Direction dir,
                             float partialTick,
-                            @NotNull PoseStack poseStack,
-                            @NotNull MultiBufferSource bufferSource,
+                            PoseStack poseStack,
+                            MultiBufferSource bufferSource,
                             int packedLight,
                             int packedOverlay)
     {
@@ -183,9 +182,9 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         }
     }
 
-    private void renderFluid(@NotNull FluidStack fluid,
+    private void renderFluid(FluidStack fluid,
                              float fluidHeight,
-                             @NotNull PoseStack poseStack)
+                             PoseStack poseStack)
     {
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(fluid.getFluid());
 
@@ -216,7 +215,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         poseStack.popPose();
     }
 
-    private void drawTop(@NotNull VertexConsumer builder, PoseStack.Pose pose, float height, @NotNull TextureAtlasSprite tex, @NotNull Vector4f color, boolean gas)
+    private void drawTop(VertexConsumer builder, PoseStack.Pose pose, float height, TextureAtlasSprite tex, Vector4f color, boolean gas)
     {
         float minX = gas ? MAX_X : MIN_X;
         float maxX = gas ? MIN_X : MAX_X;
@@ -233,7 +232,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         builder.addVertex(pose, maxX, y, MAX_Z).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
 
-    private void drawSides(@NotNull VertexConsumer builder, PoseStack.Pose pose, float height, @NotNull TextureAtlasSprite tex, @NotNull Vector4f color, boolean gas)
+    private void drawSides(VertexConsumer builder, PoseStack.Pose pose, float height, TextureAtlasSprite tex, Vector4f color, boolean gas)
     {
         float minY = gas ? MAX_Y - (height * (MAX_Y - MIN_Y)) : MIN_Y;
         float maxY = gas ? MAX_Y : MIN_Y + height * (MAX_Y - MIN_Y);
@@ -282,7 +281,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
     }
 
     // Битовая маска: 1 = DOWN, 2 = UP, 4 = RIGHT, 8 = LEFT
-    private @NotNull CTInfo computeCTInfo(Direction face, Level level, @NotNull BlockPos pos, Predicate<BlockState> connectPredicate)
+    private CTInfo computeCTInfo(Direction face, Level level, BlockPos pos, Predicate<BlockState> connectPredicate)
     {
         byte[][] mask = new byte[4][4];
 
@@ -331,22 +330,22 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         return (dx + dy) == 1;
     }
 
-    private @NotNull TextureAtlasSprite getTextureLocation(@NotNull BlockEntity blockEntity, String suffix)
+    private TextureAtlasSprite getTextureLocation(BlockEntity blockEntity, String suffix)
     {
         return getTextureLocation(blockEntity.getBlockState().getBlock(), suffix, "");
     }
 
-    private @NotNull TextureAtlasSprite getTextureLocation(@NotNull BlockEntity blockEntity, String suffix, String prefix)
+    private TextureAtlasSprite getTextureLocation(BlockEntity blockEntity, String suffix, String prefix)
     {
         return getTextureLocation(blockEntity.getBlockState().getBlock(), suffix, prefix);
     }
 
-    private @NotNull TextureAtlasSprite getTextureLocation(Block block, String suffix, String prefix)
+    private TextureAtlasSprite getTextureLocation(Block block, String suffix, String prefix)
     {
         return RenderHelper.getTexture(BlockHelper.getRegistryName(block).withPrefix(prefix).withPrefix("block/").withSuffix(suffix));
     }
 
-    private Vector2f @NotNull [] getUv(int mask, @NotNull TextureAtlasSprite sprite)
+    private Vector2f [] getUv(int mask, TextureAtlasSprite sprite)
     {
         Vector2f uv = INDEX_TO_UV[MASK_TO_INDEX[mask]];
 
@@ -364,7 +363,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
                 };
     }
 
-    private Vector3f @NotNull [] getQuadForDirection(@NotNull Direction dir, float x0, float y0, float x1, float y1)
+    private Vector3f [] getQuadForDirection(Direction dir, float x0, float y0, float x1, float y1)
     {
         return switch (dir)
         {
@@ -413,7 +412,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         };
     }
 
-    private Direction getLeftForFace(@NotNull Direction face)
+    private Direction getLeftForFace(Direction face)
     {
         return switch (face)
         {
@@ -424,7 +423,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         };
     }
 
-    private Direction getRightForFace(@NotNull Direction face) {
+    private Direction getRightForFace(Direction face) {
         return switch (face) {
             case UP, NORTH -> Direction.EAST;
             case SOUTH, DOWN -> Direction.WEST;
@@ -433,7 +432,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         };
     }
 
-    private Direction getUpForFace(@NotNull Direction face)
+    private Direction getUpForFace(Direction face)
     {
         return switch (face)
         {
@@ -443,7 +442,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         };
     }
 
-    private Direction getDownForFace(@NotNull Direction face)
+    private Direction getDownForFace(Direction face)
     {
         return switch (face)
         {
@@ -453,7 +452,7 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         };
     }
 
-    private boolean getCTInfoFrom(@NotNull Level level, BlockPos pos, @NotNull Predicate<BlockState> connect)
+    private boolean getCTInfoFrom(Level level, BlockPos pos, Predicate<BlockState> connect)
     {
         return connect.test(level.getBlockState(pos));
     }

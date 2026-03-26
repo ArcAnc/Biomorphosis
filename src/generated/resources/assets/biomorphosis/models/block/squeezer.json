@@ -1862,7 +1862,7 @@
   "gui_light": "side",
   "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/squeezer",
-    "particle": "biomorphosis:block/squeezer"
+    "all": "biomorphosis:block/squeezer/0",
+    "particle": "biomorphosis:block/squeezer/0"
   }
 }

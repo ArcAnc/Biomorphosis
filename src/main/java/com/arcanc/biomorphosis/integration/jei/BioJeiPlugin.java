@@ -25,7 +25,6 @@ import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 
@@ -33,7 +32,7 @@ import java.util.Set;
 public class BioJeiPlugin implements IModPlugin
 {
     @Override
-    public void registerIngredients(@NotNull IModIngredientRegistration registration)
+    public void registerIngredients(IModIngredientRegistration registration)
     {
         registration.register(BioIngredientTypes.STACK_WITH_CHANCE_TYPE,
                 Set.of(),
@@ -49,7 +48,7 @@ public class BioJeiPlugin implements IModPlugin
     }
 
     @Override
-    public void registerCategories(@NotNull IRecipeCategoryRegistration registration)
+    public void registerCategories(IRecipeCategoryRegistration registration)
     {
         registration.addRecipeCategories(new ChamberRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
         registration.addRecipeCategories(new CrusherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
@@ -59,7 +58,7 @@ public class BioJeiPlugin implements IModPlugin
     }
 
     @Override
-    public void registerRecipes(@NotNull IRecipeRegistration registration)
+    public void registerRecipes(IRecipeRegistration registration)
     {
         registration.addRecipes(ChamberRecipeCategory.RECIPE_TYPE, ChamberRecipe.RECIPES);
         registration.addRecipes(CrusherRecipeCategory.RECIPE_TYPE, CrusherRecipe.RECIPES);
@@ -69,7 +68,7 @@ public class BioJeiPlugin implements IModPlugin
     }
 
     @Override
-    public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration registration)
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration)
     {
         registration.addRecipeCatalyst(Registration.BlockReg.MULTIBLOCK_CHAMBER, ChamberRecipeCategory.RECIPE_TYPE);
         registration.addRecipeCatalyst(Registration.BlockReg.CRUSHER, CrusherRecipeCategory.RECIPE_TYPE);
@@ -79,7 +78,7 @@ public class BioJeiPlugin implements IModPlugin
     }
     
     @Override
-    public @NotNull ResourceLocation getPluginUid()
+    public ResourceLocation getPluginUid()
     {
         return Database.Integration.JeiInfo.ID;
     }

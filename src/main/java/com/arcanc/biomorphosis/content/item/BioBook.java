@@ -18,7 +18,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class BioBook extends BioBaseItem
 {
@@ -28,7 +27,7 @@ public class BioBook extends BioBaseItem
     }
     
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand usedHand)
+    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand)
     {
         if (level.isClientSide())
             RenderHelper.openGuideScreen();
@@ -38,7 +37,7 @@ public class BioBook extends BioBaseItem
     }
 
     @Override
-    public @NotNull InteractionResult onItemUseFirst(@NotNull ItemStack stack, @NotNull UseOnContext context)
+    public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context)
     {
         Level level = context.getLevel();
         Player player = context.getPlayer();

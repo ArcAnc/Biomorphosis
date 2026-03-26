@@ -16,7 +16,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class SoldierRenderer extends LivingEntityRenderer<Soldier, SoldierModel>
 {
@@ -29,13 +28,13 @@ public class SoldierRenderer extends LivingEntityRenderer<Soldier, SoldierModel>
 	
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Soldier entity)
+	protected boolean shouldShowName(Soldier entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull Soldier entity)
+	public ResourceLocation getTextureLocation(Soldier entity)
 	{
 		return TEXTURE;
 	}

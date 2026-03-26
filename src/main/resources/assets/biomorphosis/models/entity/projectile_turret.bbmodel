@@ -92,7 +92,7 @@
 	],
 	"textures": [
 		{
-			"name": "texture",
+			"name": "0",
 			"path": "",
 			"folder": "block",
 			"namespace": "",
@@ -104,7 +104,7 @@
 			"uv_height": 16,
 			"particle": true,
 			"use_as_default": false,
-			"layers_enabled": true,
+			"layers_enabled": false,
 			"sync_to_project": "",
 			"render_mode": "default",
 			"render_sides": "auto",
@@ -116,76 +116,8 @@
 			"visible": true,
 			"internal": true,
 			"saved": false,
-			"uuid": "467b9a3a-7004-9b9e-e145-09c1004588cd",
-			"layers": [
-				{
-					"name": "layer",
-					"offset": [0, 0],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 16,
-					"height": 16,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAJUlEQVR4AeyTsQ0AAAyCSP8/uvEGN4MHOBA4ynkAMpBBMhrw4AEAAP//uBwiawAAAAZJREFUAwBJIAAhJFoqZwAAAABJRU5ErkJggg=="
-				},
-				{
-					"name": "pasted",
-					"offset": [4, 0],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 4,
-					"height": 4,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAMElEQVR4AUzIwQkAMAhDUXGBDpW1k0s36gY1gmDgQfhJ8m4ZNQDP6kYHn9FB0jHHDwAA//9RlpQPAAAABklEQVQDAHu9E+FxOLLMAAAAAElFTkSuQmCC"
-				},
-				{
-					"name": "pasted",
-					"offset": [8, 0],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 4,
-					"height": 4,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAMElEQVR4AUzIwQkAMAhDUXGBDpW1k0s36gY1gmDgQfhJ8m4ZNQDP6kYHn9FB0jHHDwAA//9RlpQPAAAABklEQVQDAHu9E+FxOLLMAAAAAElFTkSuQmCC"
-				},
-				{
-					"name": "pasted",
-					"offset": [0, 4],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 4,
-					"height": 4,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAMElEQVR4AUzIwQkAMAhDUXGBDpW1k0s36gY1gmDgQfhJ8m4ZNQDP6kYHn9FB0jHHDwAA//9RlpQPAAAABklEQVQDAHu9E+FxOLLMAAAAAElFTkSuQmCC"
-				},
-				{
-					"name": "pasted",
-					"offset": [4, 4],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 4,
-					"height": 4,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAMElEQVR4AUzIwQkAMAhDUXGBDpW1k0s36gY1gmDgQfhJ8m4ZNQDP6kYHn9FB0jHHDwAA//9RlpQPAAAABklEQVQDAHu9E+FxOLLMAAAAAElFTkSuQmCC"
-				},
-				{
-					"name": "pasted",
-					"offset": [8, 4],
-					"scale": [1, 1],
-					"opacity": 100,
-					"visible": true,
-					"blend_mode": "default",
-					"width": 8,
-					"height": 4,
-					"data_url": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAECAYAAACzzX7wAAAAN0lEQVR4AXyKwQkAIAzEpAs4VNfufdzIDWwOfGppIAeJqlo/YvRl5oZWPw4MB8gLB5Im3AgH9gEAAP//LgUvMAAAAAZJREFUAwCDSye5XTmp1wAAAABJRU5ErkJggg=="
-				}
-			],
-			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAfElEQVR4AeyTQQrAIAwExQ/0R73os82lP+oPygQCkgaxem1hyIauqxHMyX2ttWuEs6dXAIZSyg1oQAPaEwZ406gPA0TkAFuIBuv7mv28/c9Ie7+egPnAFqBhptcAM65UDWA+sAA0zPS51nruoCewnVbqH5Dix/TlMrcv8QEAAP//slcvkAAAAAZJREFUAwDFzHAhDBJz1gAAAABJRU5ErkJggg=="
+			"uuid": "77b026a3-cb34-a4ff-f54f-5cd363ea75e2",
+			"source": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAWklEQVR4nOyRQQpAIQhEDdr/G/2NHls33agbRIsgQrKQWvU2MiCjoxEGmDnBBCL6ex21JkTMtYrIp2nTYAfVYJykTW4EK/PSBlbmmXbfwB0hgJMzb3wGlw0KAAAA//+YeLOxAAAABklEQVQDAGbpJrAGoxg2AAAAAElFTkSuQmCC"
 		}
 	],
 	"animations": [

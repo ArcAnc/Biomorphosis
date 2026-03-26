@@ -19,7 +19,6 @@ import net.minecraft.client.gui.navigation.CommonInputs;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 import java.util.function.Supplier;
@@ -36,7 +35,7 @@ public class ChamberButtonStart extends Button
 
     private boolean clicked = false;
 
-    public ChamberButtonStart(int x, int y, int width, int height, OnPress onPress, @NotNull ClickLimitation limitation)
+    public ChamberButtonStart(int x, int y, int width, int height, OnPress onPress, ClickLimitation limitation)
     {
         super(x, y, width, height, Component.empty(), onPress, messageSupplier -> Component.empty());
         this.texture = new AnimatedTexture(new Vector2i(16, 128), new Vector2i(16, 16), 8, TEXTURE);
@@ -45,7 +44,7 @@ public class ChamberButtonStart extends Button
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         this.texture.render(guiGraphics, new Rect2i(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
 

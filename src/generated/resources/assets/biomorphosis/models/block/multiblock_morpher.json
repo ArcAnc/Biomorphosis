@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/water",
   "textures": {
-    "particle": "biomorphosis:block/morpher"
+    "particle": "biomorphosis:block/morpher/0"
   }
 }

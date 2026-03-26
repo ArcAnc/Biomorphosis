@@ -17,14 +17,13 @@ import com.arcanc.biomorphosis.data.recipe.input.SqueezerRecipeInput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class SqueezerRecipeBuilder extends BioBaseRecipeBuilder<SqueezerRecipeBuilder, SqueezerRecipe, SqueezerRecipeInput>
 {
 	private IngredientWithSize input;
 	private FluidStack result;
 	
-	public static @NotNull SqueezerRecipeBuilder newBuilder(@NotNull BioBaseRecipe.ResourcesInfo info)
+	public static SqueezerRecipeBuilder newBuilder(BioBaseRecipe.ResourcesInfo info)
 	{
 		return new SqueezerRecipeBuilder(info);
 	}
@@ -40,20 +39,20 @@ public class SqueezerRecipeBuilder extends BioBaseRecipeBuilder<SqueezerRecipeBu
 		return new SqueezerRecipe(this.group, this.input, this.info, this.result);
 	}
 	
-	public SqueezerRecipeBuilder setInput(@NotNull IngredientWithSize input)
+	public SqueezerRecipeBuilder setInput(IngredientWithSize input)
 	{
 		this.input = input;
 		return this;
 	}
 	
-	public SqueezerRecipeBuilder setResult(@NotNull FluidStack result)
+	public SqueezerRecipeBuilder setResult(FluidStack result)
 	{
 		this.result = result;
 		return this;
 	}
 	
 	@Override
-	public @NotNull Item getResult()
+	public Item getResult()
 	{
 		return ItemStack.EMPTY.getItem();
 	}

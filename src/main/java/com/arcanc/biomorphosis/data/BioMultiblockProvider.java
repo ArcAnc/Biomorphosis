@@ -29,7 +29,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.phys.shapes.Shapes;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -173,7 +172,7 @@ public class BioMultiblockProvider
 						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(0, 2, 1), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0.875d, 1, 0.875d, 1)),
-						IngredientWithSize.of(Registration.BlockReg.NORPHED_DIRT_STAIR_0)).
+						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
 				addPart(new BlockPos(-1, 2, 0), Shapes.or(Shapes.box(0, 0.875d, 0, 1, 1, 1),
 																   Shapes.box(0, 0, 0, 0.125d, 0.875d, 1)),
 						IngredientWithSize.of(Ingredient.of(BioItemTags.NORPHED_STAIRS))).
@@ -209,12 +208,12 @@ public class BioMultiblockProvider
                 end());
     }
 	
-    private @NotNull StaticMultiblockBuilder staticBuilder(ResourceLocation location)
+    private StaticMultiblockBuilder staticBuilder(ResourceLocation location)
     {
         return new StaticMultiblockBuilder(location);
     }
 
-    private @NotNull DynamicMultiblockBuilder dynamicBuilder(ResourceLocation location)
+    private DynamicMultiblockBuilder dynamicBuilder(ResourceLocation location)
     {
         return new DynamicMultiblockBuilder(location);
     }
@@ -228,7 +227,7 @@ public class BioMultiblockProvider
 	public record Runner(PackOutput packOutput, CompletableFuture<HolderLookup.Provider> registries) implements DataProvider
 	{
 		@Override
-		public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output)
+		public CompletableFuture<?> run(CachedOutput output)
 		{
 			return this.registries.thenCompose(provider ->
 			{
@@ -262,7 +261,7 @@ public class BioMultiblockProvider
 		}
 		
 		@Override
-		public @NotNull String getName()
+		public String getName()
 		{
 			return Database.MOD_ID + ": Multiblocks";
 		}

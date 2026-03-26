@@ -20,7 +20,6 @@ import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -68,7 +67,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public FluidStack insert(FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
+    public FluidStack insert(FaceMode mode, FluidStack value, boolean isSimulate)
     {
         if (mode == FaceMode.OUTPUT || mode == FaceMode.BLOCKED)
             return FluidStack.EMPTY;
@@ -92,7 +91,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public FluidStack extract(@Nullable FaceMode mode, @NotNull FluidStack value, boolean isSimulate)
+    public FluidStack extract(@Nullable FaceMode mode, FluidStack value, boolean isSimulate)
     {
         if (mode == FaceMode.INPUT || mode == FaceMode.BLOCKED)
             return FluidStack.EMPTY;
@@ -131,7 +130,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public @NotNull FluidStack getFluidInTank(int tank)
+    public FluidStack getFluidInTank(int tank)
     {
         return getValueAtId(null, tank);
     }
@@ -148,25 +147,25 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public boolean isFluidValid(int tank, @NotNull FluidStack stack)
+    public boolean isFluidValid(int tank, FluidStack stack)
     {
         return isValueValid(null, tank, stack);
     }
 
     @Override
-    public int fill(@NotNull FluidStack fluid, @NotNull FluidAction action)
+    public int fill(FluidStack fluid, FluidAction action)
     {
         return insert(null, fluid, action.simulate()).getAmount();
     }
 
     @Override
-    public @NotNull FluidStack drain(@NotNull FluidStack resource, @NotNull FluidAction action)
+    public FluidStack drain(FluidStack resource, FluidAction action)
     {
         return extract(null, resource, action.simulate());
     }
 
     @Override
-    public @NotNull FluidStack drain(int maxDrain, @NotNull FluidAction action)
+    public FluidStack drain(int maxDrain, FluidAction action)
     {
         if (maxDrain == 0)
             return FluidStack.EMPTY;
@@ -197,7 +196,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     //--------------------------------------------------
 
     @Override
-    public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider)
+    public CompoundTag serializeNBT(HolderLookup.Provider provider)
     {
         ListTag list = new ListTag();
         for (int q = 0; q < getTanks(); q++)
@@ -230,7 +229,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag nbt)
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt)
     {
         ListTag list = nbt.getList(Database.Capabilities.Fluids.TANKS, Tag.TAG_COMPOUND);
         for (int q = 0; q < list.size(); q++)

@@ -1304,20 +1304,20 @@ public class BioGeneModel extends BioMultiModel
 				newFace(7,262,72,62,263,72,1,264,72));
 	}
 	
-	public void renderModel(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int mainColor, int secondaryColor)
+	public void renderModel(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int mainColor, int secondaryColor)
 	{
 		this.fallbackRender(mStack, type, bufferSource, overlay, light, mainColor);
 		this.renderChild(mStack, type, bufferSource, overlay, light, secondaryColor);
 	}
 	
 	@Override
-	protected void fallbackRender(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	protected void fallbackRender(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		super.fallbackRender(mStack, type, bufferSource, overlay, light, color);
 	}
 	
 	@Override
-	public void renderChild(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	public void renderChild(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		super.renderChild(mStack, type, bufferSource, overlay, light, color);
 	}

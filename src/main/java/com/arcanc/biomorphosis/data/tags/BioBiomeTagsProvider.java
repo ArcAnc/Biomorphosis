@@ -17,7 +17,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.BiomeTagsProvider;
 import net.minecraft.tags.BiomeTags;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -29,7 +28,7 @@ public class BioBiomeTagsProvider extends BiomeTagsProvider
 	}
 	
 	@Override
-	protected void addTags(HolderLookup.@NotNull Provider provider)
+	protected void addTags(HolderLookup.Provider provider)
 	{
 		this.tag(BioBiomesTags.HAS_SWARM_VILLAGE).
 				addTag(BiomeTags.IS_FOREST).

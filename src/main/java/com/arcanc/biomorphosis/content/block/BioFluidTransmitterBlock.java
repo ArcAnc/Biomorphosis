@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -78,41 +77,41 @@ public class BioFluidTransmitterBlock extends BioNorphDependentBlock<BioFluidTra
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         Direction dir = context.getClickedFace();
         return super.getStateForPlacement(context).setValue(FACING, dir.getOpposite());
     }
 
     @Override
-    protected @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(FACING)));
     }
 
     @Override
-    protected @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation)
+    protected BlockState rotate(BlockState state, Rotation rotation)
     {
         return BlockHelper.nextDirection(state);
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state,
+                                           BlockGetter level,
+                                           BlockPos pos,
+                                           CollisionContext context)
     {
         return BY_DIRECTION.get(state.getValue(FACING));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(FACING);
     }
 
     @Override
-    protected @NotNull MapCodec<BioFluidTransmitterBlock> codec()
+    protected MapCodec<BioFluidTransmitterBlock> codec()
     {
         return CODEC;
     }

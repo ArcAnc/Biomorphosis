@@ -19,7 +19,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -768,7 +767,7 @@ public class MorpherEggObj extends BioObjModel
 	}
 
 	@Override
-	public void render(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	public void render(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		Matrix4f matrix = mStack.last().pose();
 		PoseStack.Pose normal = mStack.last();
@@ -842,7 +841,7 @@ public class MorpherEggObj extends BioObjModel
 		}
 	}
 
-	private void applyDisplacementToFace(@NotNull Face face, float timeSeconds, float thresholdY, float amplitude, float frequency)
+	private void applyDisplacementToFace(Face face, float timeSeconds, float thresholdY, float amplitude, float frequency)
 	{
 		if (!this.usedIndexes.contains(face.v00()))
 		{
@@ -862,7 +861,7 @@ public class MorpherEggObj extends BioObjModel
 		}
 	}
 
-	private void applyDisplacement(@NotNull Vector3f vertex, Vector3f normal, float phase, float timeSeconds, float thresholdY, float amplitude, float frequency)
+	private void applyDisplacement(Vector3f vertex, Vector3f normal, float phase, float timeSeconds, float thresholdY, float amplitude, float frequency)
 	{
 		if (vertex.y() > thresholdY)
 		{

@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.util.helper;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +18,12 @@ import java.util.stream.Stream;
 
 public class ZoneHelper
 {
-    public static Stream<BlockPos> getPoses(BlockPos centerPos, @NotNull ZoneHelper.RadiusOptions radiusOptions)
+    public static Stream<BlockPos> getPoses(BlockPos centerPos, ZoneHelper.RadiusOptions radiusOptions)
     {
         return radiusOptions.getZoneType().getCreator().createZone(centerPos, new Vec3i(radiusOptions.getX(), radiusOptions.getY(), radiusOptions.getZ()));
     }
 
-    private static @NotNull Stream<BlockPos> createCircularZone(@NotNull BlockPos centerPos, @NotNull Vec3i radius)
+    private static Stream<BlockPos> createCircularZone(BlockPos centerPos, Vec3i radius)
     {
         List<BlockPos> result = new ArrayList<>();
 
@@ -47,7 +46,7 @@ public class ZoneHelper
         return result.stream();
     }
 
-    private static @NotNull Stream<BlockPos> createSquareZone(@NotNull BlockPos centerPos, @NotNull Vec3i radius)
+    private static Stream<BlockPos> createSquareZone(BlockPos centerPos, Vec3i radius)
     {
         List<BlockPos> result = new ArrayList<>();
 
@@ -81,17 +80,17 @@ public class ZoneHelper
             this.z = z;
         }
 
-        public static @NotNull ZoneHelper.RadiusOptions of(ZoneType type, int radius)
+        public static ZoneHelper.RadiusOptions of(ZoneType type, int radius)
         {
             return new RadiusOptions(type, radius, radius, radius);
         }
 
-        public static @NotNull ZoneHelper.RadiusOptions of(ZoneType type, int horizontalRadius, int y)
+        public static ZoneHelper.RadiusOptions of(ZoneType type, int horizontalRadius, int y)
         {
             return new RadiusOptions(type, horizontalRadius, y, horizontalRadius);
         }
 
-        public static @NotNull ZoneHelper.RadiusOptions of(ZoneType type, int x, int y, int z)
+        public static ZoneHelper.RadiusOptions of(ZoneType type, int x, int y, int z)
         {
             return new RadiusOptions(type, x, y, z);
         }

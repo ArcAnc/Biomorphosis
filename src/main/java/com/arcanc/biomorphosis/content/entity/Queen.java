@@ -13,6 +13,12 @@ import com.arcanc.biomorphosis.content.entity.ai.goals.MoveToLureGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -27,24 +33,20 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Queen extends Monster implements GeoEntity
+public class Queen extends Monster implements PAnimatable<Queen>
 {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    public static final RawAnimation UNBURROW = RawAnimation.begin().thenLoop("unburrow");
-    public static final RawAnimation BURROW = RawAnimation.begin().thenLoop("burrow");
+    private final PAnimationManager<Queen> manager = PLibHelper.createManager(this);
 
-    private BlockPos lurePos;
+    private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+    private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    private static final PRawAnimation UNBURROW = PRawAnimation.begin().thenHold("unburrow").build();
+    private static final PRawAnimation BURROW = PRawAnimation.begin().thenHold("burrow").build();
+    private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
+
+    private @Nullable BlockPos lurePos;
     private BlockPos spawnPos;
     private boolean findLure = false;
     private BurrowState burrowState;
@@ -180,7 +182,7 @@ public class Queen extends Monster implements GeoEntity
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound)
+    public void readAdditionalSaveData(CompoundTag compound)
     {
         super.readAdditionalSaveData(compound);
         this.lurePos = TagHelper.readBlockPos(compound, "lure_pos");
@@ -192,7 +194,7 @@ public class Queen extends Monster implements GeoEntity
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compound)
+    public void addAdditionalSaveData(CompoundTag compound)
     {
         super.addAdditionalSaveData(compound);
         TagHelper.writeBlockPos(this.lurePos, compound, "lure_pos");
@@ -202,29 +204,53 @@ public class Queen extends Monster implements GeoEntity
         compound.putInt("burrow_timer", this.burrowTimer);
         compound.putInt("unburrow_timer", this.unburrowTimer);
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Queen> registrar)
     {
-        controllers.add(new AnimationController<>(this, "animControl", 5, state ->
-                switch (this.burrowState)
+        registrar.add(new PAnimationController<>("animControl", state ->
+        {
+            Queen animatable = state.animatable();
+            return switch (animatable.burrowState)
+            {
+                case BURROWING -> {
+                    state.controller().play(BURROW);
+                    yield ControllerState.PLAY;
+                }
+                case ON_GROUND ->
                 {
-                    case BURROWING -> state.setAndContinue(BURROW);
-                    case ON_GROUND ->
+                    if (animatable.swinging)
                     {
-                        if (this.swinging)
-                            yield  state.setAndContinue(DefaultAnimations.ATTACK_STRIKE);
-                        yield state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
+                        state.controller().play(ATTACK);
                     }
-                    case UNBURROWING -> state.setAndContinue(UNBURROW);
-                    case UNDER_GROUND ->
+                    else
                     {
-                        state.setAndContinue(UNBURROW);
-                        yield PlayState.STOP;
+                        if (animatable.walkAnimation.isMoving())
+                            state.controller().play(WALK);
+                        else
+                            state.controller().play(IDLE);
                     }
-                }));
+	                yield ControllerState.PLAY;
+                }
+                case UNBURROWING -> {
+                    state.controller().play(UNBURROW);
+                    yield ControllerState.PLAY;
+                }
+                case UNDER_GROUND ->
+                {
+                    state.controller().pause();
+                    yield ControllerState.STOP;
+                }
+            };
+        })).
+        add(new PAnimationController<>("death", state ->
+        {
+            if (!state.animatable().isDeadOrDying())
+                return ControllerState.STOP;
+            state.controller().play(DEATH);
+            return ControllerState.PLAY;
+        }));
     }
-
     @Override
     public int getCurrentSwingDuration()
     {
@@ -238,23 +264,23 @@ public class Queen extends Monster implements GeoEntity
     }
 
     @Override
-    protected @NotNull SoundEvent getDeathSound()
+    protected SoundEvent getDeathSound()
     {
         return Registration.EntityReg.MOB_QUEEN.getSounds().getDeathSound().get();
     }
 
     @Override
-    protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    protected SoundEvent getHurtSound(DamageSource damageSource)
     {
         return Registration.EntityReg.MOB_QUEEN.getSounds().getHurtSound().get();
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<Queen> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
-
+    
     private enum BurrowState
     {
         UNDER_GROUND, UNBURROWING, ON_GROUND, BURROWING;

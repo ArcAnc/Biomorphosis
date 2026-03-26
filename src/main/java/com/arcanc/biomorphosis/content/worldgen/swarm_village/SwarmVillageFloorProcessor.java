@@ -20,7 +20,6 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlac
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemplate;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SwarmVillageFloorProcessor extends StructureProcessor
@@ -28,12 +27,12 @@ public class SwarmVillageFloorProcessor extends StructureProcessor
 	public static final MapCodec<SwarmVillageFloorProcessor> CODEC = MapCodec.unit(SwarmVillageFloorProcessor :: new);
 	
 	@Override
-	public @Nullable StructureTemplate.StructureBlockInfo process(@NotNull LevelReader serverLevel,
-	                                                              @NotNull BlockPos offset,
-	                                                              @NotNull BlockPos pos,
-	                                                              StructureTemplate.@NotNull StructureBlockInfo blockInfo,
-	                                                              StructureTemplate.@NotNull StructureBlockInfo relativeBlockInfo,
-	                                                              @NotNull StructurePlaceSettings settings,
+	public @Nullable StructureTemplate.StructureBlockInfo process(LevelReader serverLevel,
+	                                                              BlockPos offset,
+	                                                              BlockPos pos,
+	                                                              StructureTemplate.StructureBlockInfo blockInfo,
+	                                                              StructureTemplate.StructureBlockInfo relativeBlockInfo,
+	                                                              StructurePlaceSettings settings,
 	                                                              @Nullable StructureTemplate template)
 	{
 		BlockState state = relativeBlockInfo.state();
@@ -43,7 +42,7 @@ public class SwarmVillageFloorProcessor extends StructureProcessor
 	}
 	
 	@Override
-	protected @NotNull StructureProcessorType<?> getType()
+	protected StructureProcessorType<?> getType()
 	{
 		return Registration.StructureProcessorTypeReg.VILLAGE_FLOOR_REPLACE.get();
 	}

@@ -49,7 +49,6 @@ import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -62,7 +61,7 @@ public abstract class FluidTransportHandler
     public abstract Set<FluidTransport> getTransport(Level level);
     public abstract Set<FluidTransport> getRemoveList(Level level);
     public abstract Set<FluidTransport> getAddList(Level level);
-    public static FluidTransportHandler get(@NotNull Level level)
+    public static FluidTransportHandler get(Level level)
     {
         return get(level.isClientSide());
     }
@@ -97,19 +96,19 @@ public abstract class FluidTransportHandler
         private final Map<ResourceLocation, Set<FluidTransport>> TO_ADD = new HashMap<>();
 
         @Override
-        public Set<FluidTransport> getTransport(@NotNull Level level)
+        public Set<FluidTransport> getTransport(Level level)
         {
             return TRANSPORT.computeIfAbsent(level.dimension().location(), k -> new HashSet<>());
         }
 
         @Override
-        public Set<FluidTransport> getRemoveList(@NotNull Level level)
+        public Set<FluidTransport> getRemoveList(Level level)
         {
             return TO_REMOVE.computeIfAbsent(level.dimension().location(), k -> new HashSet<>());
         }
 
         @Override
-        public Set<FluidTransport> getAddList(@NotNull Level level)
+        public Set<FluidTransport> getAddList(Level level)
         {
             return TO_ADD.computeIfAbsent(level.dimension().location(), k -> new HashSet<>());
         }
@@ -140,12 +139,12 @@ public abstract class FluidTransportHandler
         }
     }
 
-    public static Set<FluidTransport> getTransportTable(@NotNull Level level)
+    public static Set<FluidTransport> getTransportTable(Level level)
     {
         return get(level).getTransport(level);
     }
 
-    private static void loadLevel(final LevelEvent.@NotNull Load event)
+    private static void loadLevel(final LevelEvent.Load event)
     {
         LevelAccessor levelAccessor = event.getLevel();
         if (!(levelAccessor instanceof ServerLevel serverLevel))
@@ -157,19 +156,19 @@ public abstract class FluidTransportHandler
         data.addAll(savedData.getSavedInfo());
     }
 
-    private static void unloadLevel(final LevelEvent.@NotNull Unload event)
+    private static void unloadLevel(final LevelEvent.Unload event)
     {
         LevelAccessor level = event.getLevel();
         if (level.isClientSide())
             getTransportTable((Level) level).clear();
     }
 
-    private static void saveLevel(final LevelEvent.@NotNull Save event)
+    private static void saveLevel(final LevelEvent.Save event)
     {
         FluidTransportSavedData.getInstance((ServerLevel) event.getLevel()).setDirty();
     }
 
-    private static void playerLoad(final @NotNull EntityJoinLevelEvent event)
+    private static void playerLoad(final EntityJoinLevelEvent event)
     {
         if (event.getEntity() instanceof ServerPlayer serverPlayer)
         {
@@ -179,7 +178,7 @@ public abstract class FluidTransportHandler
         }
     }
 
-    private static void levelTickPre(final LevelTickEvent.@NotNull Pre event)
+    private static void levelTickPre(final LevelTickEvent.Pre event)
     {
         Level level = event.getLevel();
         FluidTransportHandler handler = FluidTransportHandler.get(level);
@@ -230,7 +229,7 @@ public abstract class FluidTransportHandler
         removeList.clear();
     }
 
-    private static void transportRenderer(final @NotNull RenderLevelStageEvent event)
+    private static void transportRenderer(final RenderLevelStageEvent event)
     {
         if (event.getStage() != RenderLevelStageEvent.Stage.AFTER_PARTICLES)
             return;
@@ -247,7 +246,7 @@ public abstract class FluidTransportHandler
     private static final int lonSegments = 8;
     private static final float RADIUS = 0.08f;
 
-    private static void renderTransport(@NotNull RenderLevelStageEvent event, @NotNull FluidTransport trn)
+    private static void renderTransport(RenderLevelStageEvent event, FluidTransport trn)
     {
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(trn.getStack().getFluid());
 
@@ -295,7 +294,7 @@ public abstract class FluidTransportHandler
         poseStack.popPose();
     }
 
-    private static float @NotNull [] sphereVertex(double cx, double cy, double cz, float r, float theta, float phi)
+    private static float [] sphereVertex(double cx, double cy, double cz, float r, float theta, float phi)
     {
         float x = (float) (r * Math.sin(theta) * Math.cos(phi)) + (float) cx;
         float y = (float) (r * Math.cos(theta)) + (float) cy;
@@ -381,7 +380,7 @@ public abstract class FluidTransportHandler
             this.prevPos = route.get(step);
         }
 
-        private FluidTransport(@NotNull CompoundTag tag)
+        private FluidTransport(CompoundTag tag)
         {
             this.id = tag.getUUID("id");
             this.startPos = TagHelper.readVec3(tag, "start");
@@ -425,7 +424,7 @@ public abstract class FluidTransportHandler
             return tag;
         }
 
-        public void tick(@NotNull Level ticker)
+        public void tick(Level ticker)
         {
             if (ticker.getGameTime() % 5 != 0)
                 return;
@@ -531,7 +530,7 @@ public abstract class FluidTransportHandler
             return this.savedInfo;
         }
 
-        public static @NotNull FluidTransportSavedData getInstance(@NotNull ServerLevel level)
+        public static FluidTransportSavedData getInstance(ServerLevel level)
         {
             return level.getDataStorage().computeIfAbsent(new Factory<>(
                     () -> new FluidTransportSavedData(level),
@@ -539,7 +538,7 @@ public abstract class FluidTransportHandler
                     FILE_NAME);
         }
 
-        public static @NotNull FluidTransportSavedData load(@NotNull ServerLevel level, @NotNull CompoundTag tag)
+        public static FluidTransportSavedData load(ServerLevel level, CompoundTag tag)
         {
             FluidTransportSavedData data = new FluidTransportSavedData(level);
             ListTag tags = tag.getList("fluid_transport", Tag.TAG_COMPOUND);
@@ -556,7 +555,7 @@ public abstract class FluidTransportHandler
         }
 
         @Override
-        public @NotNull CompoundTag save(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries)
+        public CompoundTag save(CompoundTag tag, HolderLookup.Provider registries)
         {
             ListTag listTag = new ListTag();
             FluidTransportHandler.get(this.level).getTransport(this.level).forEach(fluidTransport ->

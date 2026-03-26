@@ -13,7 +13,6 @@ package com.arcanc.biomorphosis.content.network.packets;
 import com.arcanc.biomorphosis.content.event.OverlayRenderHandler;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
-import com.arcanc.biomorphosis.content.mutations.GeneRarity;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
@@ -28,7 +27,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -44,7 +42,7 @@ public record S2CUnlockedGenomeSync(UnlockedGenome unlockedGenome, List<GeneInst
 			S2CUnlockedGenomeSync :: new);
 	
 	@Override
-	public void process(@NotNull IPayloadContext context)
+	public void process(IPayloadContext context)
 	{
 		context.enqueueWork(() ->
 		{
@@ -100,7 +98,7 @@ public record S2CUnlockedGenomeSync(UnlockedGenome unlockedGenome, List<GeneInst
 	}
 	
 	@Override
-	public @NotNull Type<S2CUnlockedGenomeSync> type()
+	public Type<S2CUnlockedGenomeSync> type()
 	{
 		return TYPE;
 	}

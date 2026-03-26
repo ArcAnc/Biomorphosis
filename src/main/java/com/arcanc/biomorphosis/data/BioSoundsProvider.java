@@ -16,7 +16,6 @@ import net.minecraft.data.PackOutput;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SoundDefinition;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
-import org.jetbrains.annotations.NotNull;
 
 public class BioSoundsProvider extends SoundDefinitionsProvider
 {
@@ -101,7 +100,7 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		this.addEntitySound(entry, subtitle, 1,1,1);
 	}
 
-	private void addEntitySound(Registration.EntityReg.@NotNull EntitySoundEntry entry, Database.GUI.Sounds.@NotNull EntitySoundSubtitle subtitle, int idleCount, int deathCount, int hurtCount)
+	private void addEntitySound(Registration.EntityReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle, int idleCount, int deathCount, int hurtCount)
 	{
 		SoundDefinition definition = SoundDefinition.definition().subtitle(subtitle.getIdle());
 		if (idleCount == 1)

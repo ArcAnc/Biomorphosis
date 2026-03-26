@@ -15,14 +15,13 @@ import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.data.recipe.input.ForgeRecipeInput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class ForgeRecipeBuilder extends BioBaseRecipeBuilder<ForgeRecipeBuilder, ForgeRecipe, ForgeRecipeInput>
 {
     private IngredientWithSize input;
     private ItemStack result;
 
-    public static @NotNull ForgeRecipeBuilder newBuilder(@NotNull BioBaseRecipe.ResourcesInfo info)
+    public static ForgeRecipeBuilder newBuilder(BioBaseRecipe.ResourcesInfo info)
     {
         return new ForgeRecipeBuilder(info);
     }
@@ -38,20 +37,20 @@ public class ForgeRecipeBuilder extends BioBaseRecipeBuilder<ForgeRecipeBuilder,
         return new ForgeRecipe(this.group, this.input, this.info, this.result);
     }
 
-    public ForgeRecipeBuilder setInput(@NotNull IngredientWithSize input)
+    public ForgeRecipeBuilder setInput(IngredientWithSize input)
     {
         this.input = input;
         return this;
     }
 
-    public ForgeRecipeBuilder setResult(@NotNull ItemStack result)
+    public ForgeRecipeBuilder setResult(ItemStack result)
     {
         this.result = result;
         return this;
     }
 
     @Override
-    public @NotNull Item getResult()
+    public Item getResult()
     {
         return this.result.getItem();
     }

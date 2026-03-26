@@ -26,7 +26,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.ticks.ScheduledTick;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, BlockInterfaces.IWrencheable
@@ -53,7 +52,7 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
      */
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = this.defaultBlockState();
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED))
@@ -65,12 +64,12 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
     
     
     @Override
-    protected @NotNull BlockState updateShape(@NotNull BlockState state,
-                                              @NotNull Direction direction,
-                                              @NotNull BlockState neighborState,
-                                              @NotNull LevelAccessor level,
-                                              @NotNull BlockPos pos,
-                                              @NotNull BlockPos neighborPos)
+    protected BlockState updateShape(BlockState state,
+                                              Direction direction,
+                                              BlockState neighborState,
+                                              LevelAccessor level,
+                                              BlockPos pos,
+                                              BlockPos neighborPos)
     {
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED) && state.getValue(BlockHelper.BlockProperties.WATERLOGGED))
         {
@@ -80,7 +79,7 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
     }
     
     @Override
-    public @NotNull FluidState getFluidState(@NotNull BlockState state)
+    public FluidState getFluidState(BlockState state)
     {
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED) && state.getValue(BlockHelper.BlockProperties.WATERLOGGED))
         {
@@ -90,19 +89,19 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
     }
 
     @Override
-    public boolean canPlaceLiquid(@Nullable Player player, @NotNull BlockGetter world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull Fluid liquid)
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter world, BlockPos pos, BlockState state, Fluid liquid)
     {
         return state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED) && SimpleWaterloggedBlock.super.canPlaceLiquid(player, world, pos, state, liquid);
     }
 
     @Override
-    public boolean placeLiquid(@NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockState state, @NotNull FluidState liquid)
+    public boolean placeLiquid(LevelAccessor world, BlockPos pos, BlockState state, FluidState liquid)
     {
         return state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED) && SimpleWaterloggedBlock.super.placeLiquid(world, pos, state, liquid);
     }
 
     @Override
-    public @NotNull ItemStack pickupBlock(@Nullable Player player, @NotNull LevelAccessor world, @NotNull BlockPos pos, @NotNull BlockState state)
+    public ItemStack pickupBlock(@Nullable Player player, LevelAccessor world, BlockPos pos, BlockState state)
     {
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED))
         {
@@ -116,7 +115,7 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
      */
 
     @Override
-    public @NotNull InteractionResult onUsed(@NotNull ItemStack stack, @NotNull UseOnContext ctx)
+    public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return InteractionResult.PASS;
     }

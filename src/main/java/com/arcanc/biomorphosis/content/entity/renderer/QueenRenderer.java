@@ -11,24 +11,41 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Queen;
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class QueenRenderer extends GeoEntityRenderer<Queen>
+import java.util.Collection;
+import java.util.function.Function;
+
+public class QueenRenderer extends PEntityRenderer<Queen>
 {
+    private static final ResourceLocation TEXTURE = Database.rl("entity/queen/0");
     public QueenRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new DefaultedEntityGeoModel<>(Database.rl("queen"), true));
+        super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("queen")).
+                        build(),
+                PRenderTypes.RenderTypeProvider :: trianglesCutout);
     }
-
+    
     @Override
-    public @Nullable RenderType getRenderType(Queen animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+    protected void perBoneSubmit(Queen animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<Queen>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick, @Nullable HeadRotation headRotation)
     {
-        return RenderType.entityTranslucent(texture);
+        if(bone.name().equals("head") || bone.name().equals("wing_left") || bone.name().equals("wing_right"))
+            renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
+        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick, headRotation);
+    }
+    
+    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    {
+        event.addTextureLocation(TEXTURE);
     }
 }

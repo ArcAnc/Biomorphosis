@@ -13,9 +13,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2f;
 
 public class ChamberProgressArea extends ProgressInfoArea
@@ -29,7 +27,7 @@ public class ChamberProgressArea extends ProgressInfoArea
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         int current = this.info.current().get();
         int max = this.info.max().get();

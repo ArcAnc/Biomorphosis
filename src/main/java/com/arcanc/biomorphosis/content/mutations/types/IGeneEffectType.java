@@ -15,7 +15,6 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 public interface IGeneEffectType<T extends IGeneEffectType<?>>
 {
@@ -25,9 +24,9 @@ public interface IGeneEffectType<T extends IGeneEffectType<?>>
 	
 	ResourceLocation getId();
 
-	void apply (@NotNull LivingEntity entity, @NotNull AttributeParams params);
+	void apply (LivingEntity entity, AttributeParams params);
 	
-	void remove (@NotNull LivingEntity entity, @NotNull AttributeParams params);
+	void remove (LivingEntity entity, AttributeParams params);
 	
-	void tick (@NotNull LivingEntity entity, @NotNull AttributeParams params);
+	void tick (LivingEntity entity, AttributeParams params);
 }

@@ -16,22 +16,20 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
-import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
 public class BioItemTagsProvider extends ItemTagsProvider
 {
-    public BioItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @NotNull BlockTagsProvider blockTagsProvider, ExistingFileHelper existingFileHelper)
+    public BioItemTagsProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, BlockTagsProvider blockTagsProvider, ExistingFileHelper existingFileHelper)
     {
         super(output, lookupProvider, blockTagsProvider.contentsGetter(), Database.MOD_ID, existingFileHelper);
     }
 
     @Override
-    protected void addTags(HolderLookup.@NotNull Provider provider)
+    protected void addTags(HolderLookup.Provider provider)
     {
         copy(BioBlockTags.NORPH, BioItemTags.NORPH);
         copy(BioBlockTags.NORPHED_STAIRS, BioItemTags.NORPHED_STAIRS);

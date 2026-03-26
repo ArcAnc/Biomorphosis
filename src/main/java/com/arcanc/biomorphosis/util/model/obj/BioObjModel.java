@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -34,12 +33,12 @@ public class BioObjModel
     protected final ResourceLocation texture;
     protected final boolean flipUV;
 
-    public static @NotNull BioObjModel newModel(ResourceLocation texture)
+    public static BioObjModel newModel(ResourceLocation texture)
     {
         return new BioObjModel(texture, false);
     }
 
-    public static @NotNull BioObjModel newModel(ResourceLocation texture, boolean flipUV)
+    public static BioObjModel newModel(ResourceLocation texture, boolean flipUV)
     {
         return new BioObjModel(texture, flipUV);
     }
@@ -120,12 +119,12 @@ public class BioObjModel
      * @param normals - x, y, z normal index
      * @return model
      */
-    public BioObjModel newFace(@NotNull Vector3i vertices, @NotNull Vector3i uvs, @NotNull Vector3i normals)
+    public BioObjModel newFace(Vector3i vertices, Vector3i uvs, Vector3i normals)
     {
         return newFace(vertices.x(), uvs.x(), normals.x(), vertices.y(), uvs.y(), normals.y(), vertices.z(), uvs.z(), normals.z());
     }
 
-    public void render(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+    public void render(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
     {
         Matrix4f matrix = mStack.last().pose();
         PoseStack.Pose normal = mStack.last();

@@ -24,9 +24,7 @@ import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 public class TurretScreen extends BioContainerScreen<TurretMenu>
 {
@@ -99,7 +97,7 @@ public class TurretScreen extends BioContainerScreen<TurretMenu>
 	}
 	
 	@Override
-	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY)
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
 	}
 }

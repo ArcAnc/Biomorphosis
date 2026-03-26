@@ -21,7 +21,6 @@ import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 import java.util.Collection;
@@ -53,7 +52,7 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 	}
 	
 	@Override
-	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
 		guiGraphics.blit(
 				this.textureProvider.apply(this.getValue()),
@@ -64,13 +63,13 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 				16, 16);
 	}
 	
-	public static @NotNull TexturedBuilder<Boolean> onOffBuilder(Function<Boolean, Component> componentProvider)
+	public static TexturedBuilder<Boolean> onOffBuilder(Function<Boolean, Component> componentProvider)
 	{
 		return new TexturedBuilder<>(componentProvider).
 				withValues(ImmutableList.of(Boolean.TRUE, Boolean.FALSE));
 	}
 	
-	public static <T> @NotNull TexturedBuilder<T> builder(@NotNull Function<T, Component> valueStringifier)
+	public static <T> TexturedBuilder<T> builder(Function<T, Component> valueStringifier)
 	{
 		return new TexturedBuilder<>(valueStringifier);
 	}
@@ -84,7 +83,7 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 			super(valueStringifier);
 		}
 		
-		public @NotNull TexturedBuilder<T> withValues(@NotNull Collection<T> values)
+		public TexturedBuilder<T> withValues(Collection<T> values)
 		{
 			this.withValues(CycleButton.ValueListSupplier.create(values));
 			return this;
@@ -97,65 +96,65 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withValues(@NotNull List<T> defaultList, @NotNull List<T> selectedList)
+		public TexturedBuilder<T> withValues(List<T> defaultList, List<T> selectedList)
 		{
 			this.withValues(CycleButton.ValueListSupplier.create(CycleButton.DEFAULT_ALT_LIST_SELECTOR, defaultList, selectedList));
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withValues(@NotNull BooleanSupplier altListSelector, @NotNull List<T> defaultList, @NotNull List<T> selectedList)
+		public TexturedBuilder<T> withValues(BooleanSupplier altListSelector, List<T> defaultList, List<T> selectedList)
 		{
 			this.withValues(CycleButton.ValueListSupplier.create(altListSelector, defaultList, selectedList));
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withValues(CycleButton.@NotNull ValueListSupplier<T> values)
+		public TexturedBuilder<T> withValues(CycleButton.ValueListSupplier<T> values)
 		{
 			super.withValues(values);
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withTooltip(OptionInstance.@NotNull TooltipSupplier<T> tooltipSupplier)
+		public TexturedBuilder<T> withTooltip(OptionInstance.TooltipSupplier<T> tooltipSupplier)
 		{
 			super.withTooltip(tooltipSupplier);
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withInitialValue(@NotNull T initialValue)
+		public TexturedBuilder<T> withInitialValue(T initialValue)
 		{
 			super.withInitialValue(initialValue);
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withCustomNarration(@NotNull Function<CycleButton<T>, MutableComponent> narrationProvider)
+		public TexturedBuilder<T> withCustomNarration(Function<CycleButton<T>, MutableComponent> narrationProvider)
 		{
 			super.withCustomNarration(narrationProvider);
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> displayOnlyValue()
+		public TexturedBuilder<T> displayOnlyValue()
 		{
 			super.displayOnlyValue();
 			return this;
 		}
 		
-		public @NotNull TexturedBuilder<T> withTextureProvider(Function<T, ResourceLocation> textureProvider)
+		public TexturedBuilder<T> withTextureProvider(Function<T, ResourceLocation> textureProvider)
 		{
 			this.textureProvider = textureProvider;
 			return this;
 		}
 		
-		public @NotNull TexturedCycleButton<T> create(@NotNull Component message, CycleButton.@NotNull OnValueChange<T> onValueChange)
+		public TexturedCycleButton<T> create(Component message, CycleButton.OnValueChange<T> onValueChange)
 		{
 			return this.create(0, 0, 150, 20, message, onValueChange);
 		}
 		
-		public @NotNull TexturedCycleButton<T> create(int x, int y, int width, int height, @NotNull Component name)
+		public TexturedCycleButton<T> create(int x, int y, int width, int height, Component name)
 		{
 			return this.create(x, y, width, height, name, (button, value) -> { });
 		}
 		
-		public @NotNull TexturedCycleButton<T> create(int x, int y, int width, int height, @NotNull Component name, CycleButton.@NotNull OnValueChange<T> onValueChange)
+		public TexturedCycleButton<T> create(int x, int y, int width, int height, Component name, CycleButton.OnValueChange<T> onValueChange)
 		{
 			List<T> list = this.values.getDefaultList();
 			if (list.isEmpty())
@@ -199,7 +198,7 @@ public class TexturedCycleButton<T> extends CycleButton<T>
 		}
 		
 		@Override
-		protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+		protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 		{
 			this.texture.render(guiGraphics, new Rect2i(this.getX(), this.getY(), this.getWidth(), this.getHeight()));
 			

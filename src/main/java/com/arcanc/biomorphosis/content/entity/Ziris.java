@@ -10,6 +10,12 @@
 package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
@@ -28,23 +34,20 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 
-public class Ziris extends FlyingMob implements GeoEntity, Enemy
+public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
 {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    private final PAnimationManager<Ziris> manager = PLibHelper.createManager(this);
+    private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+    private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
+    
     private Ziris.AttackPhase attackPhase = Ziris.AttackPhase.CIRCLE;
     private BlockPos anchorPoint = BlockPos.ZERO;
     private Vec3 moveTargetPoint = Vec3.ZERO;
@@ -381,7 +384,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag compound)
+    public void readAdditionalSaveData(CompoundTag compound)
     {
         super.readAdditionalSaveData(compound);
         if (compound.contains("AX"))
@@ -389,7 +392,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag compound)
+    public void addAdditionalSaveData(CompoundTag compound)
     {
         super.addAdditionalSaveData(compound);
         compound.putInt("AX", this.anchorPoint.getX());
@@ -399,9 +402,10 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     
     @SuppressWarnings("deprecation")
     @Override
-    public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
-                                                  @NotNull DifficultyInstance difficulty,
-                                                  @NotNull MobSpawnType spawnType, @Nullable SpawnGroupData spawnGroupData)
+    public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
+                                                  DifficultyInstance difficulty,
+                                                  MobSpawnType spawnType,
+                                                  @Nullable SpawnGroupData spawnGroupData)
     {
         this.anchorPoint = this.blockPosition().above(5);
         return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
@@ -414,23 +418,32 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     }
 
     @Override
-    public boolean canAttackType(@NotNull EntityType<?> type)
+    public boolean canAttackType(EntityType<?> type)
     {
         return true;
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Ziris> registrar)
     {
-        controllers.add(new AnimationController<>(this, "animController", 0, state ->
-                {
-                    if (this.swinging)
-                        return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-                    return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-                }),
-                DefaultAnimations.genericDeathController(this));
+        registrar.add(new PAnimationController<>("animController", state ->
+        {
+            Ziris animatable = state.animatable();
+            if (animatable.swinging)
+                state.controller().play(ATTACK);
+            else
+                state.controller().play(animatable.walkAnimation.isMoving() ? WALK : IDLE);
+            return state.controller().getState();
+        })).
+                add(new PAnimationController<>("deathController", state ->
+        {
+            if (!state.animatable().isDeadOrDying())
+                return ControllerState.STOP;
+            state.controller().play(DEATH);
+            return ControllerState.PLAY;
+        }));
     }
-
+    
     @Override
     protected @Nullable SoundEvent getDeathSound()
     {
@@ -438,7 +451,7 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     }
 
     @Override
-    protected @Nullable SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    protected @Nullable SoundEvent getHurtSound(DamageSource damageSource)
     {
         return Registration.EntityReg.MOB_ZIRIS.getSounds().getHurtSound().get();
     }
@@ -448,10 +461,10 @@ public class Ziris extends FlyingMob implements GeoEntity, Enemy
     {
         return Registration.EntityReg.MOB_ZIRIS.getSounds().getIdleSound().get();
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<Ziris> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
 }

@@ -15,7 +15,6 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +28,7 @@ public interface Icon
 
     class IconParser
     {
-        public static @NotNull List<Object> parse(String text)
+        public static List<Object> parse(String text)
         {
             List<Object> result = new ArrayList<>();
             int start = 0;

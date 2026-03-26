@@ -25,7 +25,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import org.jetbrains.annotations.NotNull;
 
 public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage>
 {
@@ -51,13 +50,13 @@ public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
-                                                       @NotNull BlockState state,
-                                                       @NotNull Level level,
-                                                       @NotNull BlockPos pos,
-                                                       @NotNull Player player,
-                                                       @NotNull InteractionHand hand,
-                                                       @NotNull BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack,
+                                                       BlockState state,
+                                                       Level level,
+                                                       BlockPos pos,
+                                                       Player player,
+                                                       InteractionHand hand,
+                                                       BlockHitResult hitResult)
     {
         if (FluidHelper.isFluidHandler(stack))
         {
@@ -73,16 +72,16 @@ public class BioFluidStorageBlock extends BioNorphDependentBlock<BioFluidStorage
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state,
+                                           BlockGetter level,
+                                           BlockPos pos,
+                                           CollisionContext context)
     {
         return SHAPE;
     }
 
     @Override
-    protected @NotNull MapCodec<BioFluidStorageBlock> codec()
+    protected MapCodec<BioFluidStorageBlock> codec()
     {
         return CODEC;
     }

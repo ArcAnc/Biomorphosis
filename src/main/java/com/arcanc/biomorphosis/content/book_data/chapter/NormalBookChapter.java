@@ -19,7 +19,6 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class NormalBookChapter extends AbstractBookChapter
     private final Icon icon;
     private final String title;
 
-    public NormalBookChapter(@NotNull BookChapterData data)
+    public NormalBookChapter(BookChapterData data)
     {
         super(data);
         List<Object> objects = Icon.IconParser.parse(Component.translatable(data.title()).getString());
@@ -45,7 +44,7 @@ public class NormalBookChapter extends AbstractBookChapter
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         RenderHelper.blit(
                 guiGraphics,
@@ -83,7 +82,7 @@ public class NormalBookChapter extends AbstractBookChapter
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }

@@ -24,7 +24,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.EntityType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -1586,7 +1585,7 @@ public class BioGenomeTemplatesProvider
 
 	}
 	
-	private void addTemplate(@NotNull GenomeTemplate builder)
+	private void addTemplate(GenomeTemplate builder)
 	{
 		ResourceLocation id = EntityType.getKey(builder.entityType());
 		if (this.templates.putIfAbsent(id, builder) != null)
@@ -1597,7 +1596,7 @@ public class BioGenomeTemplatesProvider
 	{
 		
 		@Override
-		public @NotNull CompletableFuture<?> run(@NotNull CachedOutput output)
+		public CompletableFuture<?> run(CachedOutput output)
 		{
 			return this.registries().thenCompose(provider ->
 			{
@@ -1614,7 +1613,7 @@ public class BioGenomeTemplatesProvider
 		}
 		
 		@Override
-		public @NotNull String getName()
+		public String getName()
 		{
 			return Database.MOD_ID + ": Genome Templates Provider";
 		}

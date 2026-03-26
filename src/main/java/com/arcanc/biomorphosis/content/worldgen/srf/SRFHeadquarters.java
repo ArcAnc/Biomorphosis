@@ -15,7 +15,6 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -29,7 +28,7 @@ public class SRFHeadquarters extends Structure
 	}
 	
 	@Override
-	protected @NotNull Optional<GenerationStub> findGenerationPoint(@NotNull GenerationContext context)
+	protected Optional<GenerationStub> findGenerationPoint(GenerationContext context)
 	{
 		//FIXME: прописать адекватный плейсмент, когда начну юзать
 		return Structure.onTopOfChunkCenter(context, Heightmap.Types.WORLD_SURFACE_WG, piecesBuilder ->
@@ -37,7 +36,7 @@ public class SRFHeadquarters extends Structure
 	}
 	
 	@Override
-	public @NotNull StructureType<SRFHeadquarters> type()
+	public StructureType<SRFHeadquarters> type()
 	{
 		return Registration.StructureTypeReg.SRF_HEADQUARTERS.get();
 	}

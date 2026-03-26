@@ -24,7 +24,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,11 @@ public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
     private final ItemStack result;
     private final List<StackWithChance> secondaryResults;
 
-    public CrusherRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resourcesInfo, ItemStack result)
+    public CrusherRecipe(String id, IngredientWithSize input, ResourcesInfo resourcesInfo, ItemStack result)
     {
         this(id, input, resourcesInfo, result, List.of());
     }
-    public CrusherRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resources, ItemStack result, List<StackWithChance> secondaryResults)
+    public CrusherRecipe(String id, IngredientWithSize input, ResourcesInfo resources, ItemStack result, List<StackWithChance> secondaryResults)
     {
         super(id, resources);
         this.input = input;
@@ -50,7 +49,7 @@ public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
     }
 
     @Override
-    public boolean matches(@NotNull CrusherRecipeInput input, @NotNull Level level)
+    public boolean matches(CrusherRecipeInput input, Level level)
     {
         ItemStack inputItem = input.getItem(0);
         return this.input.test(inputItem) && this.input.amount() <= inputItem.getCount() && super.matches(input, level);
@@ -72,25 +71,25 @@ public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
     }
     
     @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return this.result();
     }
     
     @Override
-    public @NotNull ItemStack assemble(@NotNull CrusherRecipeInput input, HolderLookup.@NotNull Provider registries)
+    public ItemStack assemble(CrusherRecipeInput input, HolderLookup.Provider registries)
     {
         return this.result.copy();
     }
 
     @Override
-    public @NotNull RecipeSerializer<CrusherRecipe> getSerializer()
+    public RecipeSerializer<CrusherRecipe> getSerializer()
     {
         return Registration.RecipeReg.CRUSHER_RECIPE.getSerializer().get();
     }
 
     @Override
-    public @NotNull RecipeType<CrusherRecipe> getType()
+    public RecipeType<CrusherRecipe> getType()
     {
         return Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get();
     }
@@ -121,13 +120,13 @@ public class CrusherRecipe extends BioBaseRecipe<CrusherRecipeInput>
                 CrusherRecipe :: new);
 
         @Override
-        public @NotNull MapCodec<CrusherRecipe> codec()
+        public MapCodec<CrusherRecipe> codec()
         {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> streamCodec()
+        public StreamCodec<RegistryFriendlyByteBuf, CrusherRecipe> streamCodec()
         {
             return STREAM_CODEC;
         }

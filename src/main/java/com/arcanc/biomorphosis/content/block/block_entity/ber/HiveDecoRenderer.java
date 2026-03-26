@@ -12,14 +12,26 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.block_entity.HiveDeco;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-public class HiveDecoRenderer extends GeoBlockRenderer<HiveDeco>
+public class HiveDecoRenderer extends PBlockRenderer<HiveDeco>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("block/hive_deco/0");
+	
 	public HiveDecoRenderer(final BlockEntityRendererProvider.Context ctx)
 	{
-		super(new DefaultedBlockGeoModel<>(Database.rl("hive_deco")));
+		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("hive_deco")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesSolid);
+	}
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	{
+		event.addTextureLocation(TEXTURE);
 	}
 }

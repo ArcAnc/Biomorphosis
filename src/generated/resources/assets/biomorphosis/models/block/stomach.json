@@ -2881,7 +2881,7 @@
   "gui_light": "side",
   "render_type": "minecraft:solid",
   "textures": {
-    "all": "biomorphosis:block/stomach",
-    "particle": "biomorphosis:block/stomach"
+    "all": "biomorphosis:block/stomach/0",
+    "particle": "biomorphosis:block/stomach/0"
   }
 }

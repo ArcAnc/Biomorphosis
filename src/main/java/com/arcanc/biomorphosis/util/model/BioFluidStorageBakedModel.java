@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.QuadTransformers;
 import net.neoforged.neoforge.client.model.data.ModelData;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
@@ -39,10 +38,10 @@ public class BioFluidStorageBakedModel extends BakedModelWrapper<BakedModel>
     }
 
     @Override
-    public @NotNull List<BakedQuad> getQuads(@Nullable BlockState state,
+    public List<BakedQuad> getQuads(@Nullable BlockState state,
                                              @Nullable Direction direction,
-                                             @NotNull RandomSource random,
-                                             @NotNull ModelData modelData,
+                                             RandomSource random,
+                                             ModelData modelData,
                                              @Nullable RenderType renderType)
     {
         LinkedList<BakedQuad> quads = new LinkedList<>(this.originalModel.getQuads(state, direction, random, modelData, renderType));

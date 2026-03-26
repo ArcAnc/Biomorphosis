@@ -19,7 +19,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 
@@ -43,7 +42,7 @@ public class FluidStackHolder implements IFluidTank
     }
 
     @Override
-    public @NotNull FluidStack getFluid()
+    public FluidStack getFluid()
     {
         return this.fluid;
     }
@@ -54,7 +53,7 @@ public class FluidStackHolder implements IFluidTank
         update();
     }
 
-    public void setFluid(@NotNull FluidStack fluid)
+    public void setFluid(FluidStack fluid)
     {
         this.fluid = new FluidStack(fluid.getFluid(), Mth.clamp(fluid.getAmount(), 0, this.capacity));
         update();
@@ -81,7 +80,7 @@ public class FluidStackHolder implements IFluidTank
     }
 
     @Override
-    public boolean isFluidValid(@NotNull FluidStack stack)
+    public boolean isFluidValid(FluidStack stack)
     {
         return this.validator.test(stack);
     }
@@ -92,7 +91,7 @@ public class FluidStackHolder implements IFluidTank
     }
 
     @Override
-    public int fill(@NotNull FluidStack stack, IFluidHandler.@NotNull FluidAction action)
+    public int fill(FluidStack stack, IFluidHandler.FluidAction action)
     {
         if (stack.isEmpty() || !isFluidValid(stack))
             return 0;
@@ -112,7 +111,7 @@ public class FluidStackHolder implements IFluidTank
     }
 
     @Override
-    public @NotNull FluidStack drain(int amount, IFluidHandler.@NotNull FluidAction action)
+    public FluidStack drain(int amount, IFluidHandler.FluidAction action)
     {
         if (amount <= 0 || this.fluid.isEmpty())
             return FluidStack.EMPTY;
@@ -131,7 +130,7 @@ public class FluidStackHolder implements IFluidTank
     }
 
     @Override
-    public @NotNull FluidStack drain(@NotNull FluidStack stack, IFluidHandler.@NotNull FluidAction action)
+    public FluidStack drain(FluidStack stack, IFluidHandler.FluidAction action)
     {
         return (stack.isEmpty() || !FluidStack.isSameFluidSameComponents(stack, fluid)) ? FluidStack.EMPTY : drain(stack.getAmount(), action);
     }
@@ -151,7 +150,7 @@ public class FluidStackHolder implements IFluidTank
         return tag;
     }
 
-    public void deserializeNBT(HolderLookup.Provider registries, @NotNull CompoundTag tag)
+    public void deserializeNBT(HolderLookup.Provider registries, CompoundTag tag)
     {
         this.capacity = tag.getInt(Database.Capabilities.Fluids.Holder.CAPACITY);
         this.fluid = FluidStack.parseOptional(registries, tag.getCompound(Database.Capabilities.Fluids.Holder.FLUID));
@@ -179,7 +178,7 @@ public class FluidStackHolder implements IFluidTank
         this.clientFluidAmount = clientFluidAmount;
     }
 
-    public static @NotNull Builder newBuilder()
+    public static Builder newBuilder()
     {
         return new Builder();
     }
@@ -218,7 +217,7 @@ public class FluidStackHolder implements IFluidTank
             return this;
         }
 
-        public @NotNull FluidStackHolder build()
+        public FluidStackHolder build()
         {
             return new FluidStackHolder(this.stack, this.capacity, this.validator, this.callback);
         }

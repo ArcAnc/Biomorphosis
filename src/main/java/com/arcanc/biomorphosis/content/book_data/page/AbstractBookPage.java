@@ -24,7 +24,6 @@ import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,14 +45,14 @@ public abstract class AbstractBookPage extends AbstractWidget
     private final List<AbstractPageComponent> components;
     protected final Map<Integer, List<AbstractPageComponent>> dividedComponents = new HashMap<>();
 
-    public AbstractBookPage(@NotNull BookPageData data)
+    public AbstractBookPage(BookPageData data)
     {
         super(0, 0, 0, 0, Component.translatable(data.title()));
         this.data = data;
         this.components = data.text().isBlank() ? List.of() : parseComponents(Component.translatable(data.text()).getString());
     }
 
-    private @NotNull List<AbstractPageComponent> parseComponents(String string)
+    private List<AbstractPageComponent> parseComponents(String string)
     {
         List<AbstractPageComponent> components = new ArrayList<>();
 
@@ -146,7 +145,7 @@ public abstract class AbstractBookPage extends AbstractWidget
             this.dividedComponents.computeIfAbsent(component.getOwningSubpage(), k -> new ArrayList<>()).add(component);
     }
 	
-    private @NotNull LayoutState splitTextComponentIfNeeded(@NotNull LayoutState state)
+    private LayoutState splitTextComponentIfNeeded(LayoutState state)
     {
         if (!(state.lastComponent() instanceof TextPageComponent component))
 			return state;
@@ -230,21 +229,21 @@ public abstract class AbstractBookPage extends AbstractWidget
         return false;
     }
 
-    private boolean isMouseInZone(@NotNull Rect2i zone, double mouseX, double mouseY)
+    private boolean isMouseInZone(Rect2i zone, double mouseX, double mouseY)
     {
         return mouseX >= zone.getX() && mouseX < zone.getX() + zone.getWidth() &&
                 mouseY >= zone.getY() && mouseY < zone.getY() + zone.getHeight();
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         renderPageContent(guiGraphics, mouseX, mouseY, partialTicks);
         renderNavigationButtons(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
-    protected abstract void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
-    protected abstract void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
+    protected abstract void renderPageContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
+    protected abstract void renderNavigationButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks);
 	
 	private record LayoutState(AbstractPageComponent lastComponent, int currentIndex, int subPage, int currentY){}
 }

@@ -17,7 +17,6 @@ import net.minecraft.client.gui.components.MultiLineTextWidget;
 import net.minecraft.client.gui.narration.NarratedElementType;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 public class FittingMultiLineText extends AbstractScrollWidget
 {
@@ -43,7 +42,7 @@ public class FittingMultiLineText extends AbstractScrollWidget
 	}
 	
 	@Override
-	public void setMessage(@NotNull Component message)
+	public void setMessage(Component message)
 	{
 		super.setMessage(message);
 		this.multilineWidget.setMessage(message);
@@ -62,7 +61,7 @@ public class FittingMultiLineText extends AbstractScrollWidget
 	}
 	
 	@Override
-	protected void renderContents(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	protected void renderContents(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		guiGraphics.pose().pushPose();
 		guiGraphics.pose().translate(this.getX() + this.innerPadding(), this.getY() + this.innerPadding(), 0.0F);
@@ -71,7 +70,7 @@ public class FittingMultiLineText extends AbstractScrollWidget
 	}
 	
 	@Override
-	protected void updateWidgetNarration(@NotNull NarrationElementOutput narration)
+	protected void updateWidgetNarration(NarrationElementOutput narration)
 	{
 		narration.add(NarratedElementType.TITLE, this.getMessage());
 	}

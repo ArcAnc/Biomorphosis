@@ -14,7 +14,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DirectionHelper
@@ -41,14 +40,14 @@ public class DirectionHelper
         return BasicSidedStorage.RelativeFace.DOWN;
     }
 
-    public static Direction getFace(@NotNull BlockState state)
+    public static Direction getFace(BlockState state)
     {
         return state.getOptionalValue(BlockHelper.BlockProperties.HORIZONTAL_FACING).
                 or(() -> state.getOptionalValue(BlockHelper.BlockProperties.FACING)).
                 orElse(Direction.NORTH);
     }
 
-    public static Rotation rotationFromNorth(@NotNull Direction direction)
+    public static Rotation rotationFromNorth(Direction direction)
     {
         return switch (direction)
         {
@@ -60,7 +59,7 @@ public class DirectionHelper
         };
     }
 
-    public static BlockPos rotatePosition(BlockPos pos, @NotNull Direction direction)
+    public static BlockPos rotatePosition(BlockPos pos, Direction direction)
     {
         return switch (direction)
         {

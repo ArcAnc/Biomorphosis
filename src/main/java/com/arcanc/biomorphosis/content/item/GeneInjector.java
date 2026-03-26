@@ -20,7 +20,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.common.ItemAbility;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -37,31 +36,31 @@ public class GeneInjector extends BioBaseItem
 	}
 	
 	@Override
-	public boolean canAttackBlock(@NotNull BlockState state,
-	                              @NotNull Level level,
-	                              @NotNull BlockPos pos,
-	                              @NotNull Player player)
+	public boolean canAttackBlock(BlockState state,
+	                              Level level,
+	                              BlockPos pos,
+	                              Player player)
 	{
 		return !player.isCreative();
 	}
 	
 	@Override
-	public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity attacker)
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker)
 	{
 		return true;
 	}
 	
 	@Override
-	public void postHurtEnemy(@NotNull ItemStack stack,
-	                          @NotNull LivingEntity enemy,
-	                          @NotNull LivingEntity attacker)
+	public void postHurtEnemy(ItemStack stack,
+	                          LivingEntity enemy,
+	                          LivingEntity attacker)
 	{
 		stack.hurtAndBreak(1, attacker, EquipmentSlot.MAINHAND);
 	}
 	
 	@Override
-	public boolean canPerformAction(@NotNull ItemStack stack,
-	                                net.neoforged.neoforge.common.@NotNull ItemAbility itemAbility)
+	public boolean canPerformAction(ItemStack stack,
+	                                net.neoforged.neoforge.common.ItemAbility itemAbility)
 	{
 		return INJECTOR_ACTIONS.contains(itemAbility);
 	}

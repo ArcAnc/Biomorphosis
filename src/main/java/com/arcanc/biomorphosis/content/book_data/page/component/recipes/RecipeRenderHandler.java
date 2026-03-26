@@ -38,7 +38,6 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.phys.Vec2;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
@@ -55,7 +54,7 @@ public class RecipeRenderHandler
         NeoForge.EVENT_BUS.addListener(RecipeRenderHandler :: addRecipeRenderers);
     }
 
-    private static void addRecipeRenderers(@NotNull final CustomEvents.AddRecipeRenderer event)
+    private static void addRecipeRenderers(final CustomEvents.AddRecipeRenderer event)
     {
         event.addRenderer(RecipeType.CRAFTING, new CraftingRecipeRenderer());
         CookingRecipeRenderer cookingRecipeRenderer = new CookingRecipeRenderer();
@@ -78,7 +77,7 @@ public class RecipeRenderHandler
         }
 
         @Override
-        public void renderRecipe(@NotNull Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        public void renderRecipe(Recipe<?> recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
         {
             if (recipe.getType().equals(RecipeType.CRAFTING))
             {
@@ -143,7 +142,7 @@ public class RecipeRenderHandler
 
         }
 
-        private void renderShapedRecipe(@NotNull ShapedRecipe recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+        private void renderShapedRecipe(ShapedRecipe recipe, int xPos, int yPos, GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
         {
             final List<Vec2> positions = new ArrayList<>();
             Vec2 imagePos = Vec2.ZERO;
@@ -165,7 +164,7 @@ public class RecipeRenderHandler
 
             List<IngredientWithSize> ingr = recipe.pattern.ingredients().
                     stream().
-                    map(ingredient -> ingredient != null ? new IngredientWithSize(ingredient, 1) : null).
+                    map(ingredient -> ingredient != null && !ingredient.isEmpty() ? new IngredientWithSize(ingredient, 1) : null).
                     collect(Collectors.toList());
 			if (ingr.size() < 8)
 				for (int lastPart = ingr.size(); lastPart < 9; lastPart++)

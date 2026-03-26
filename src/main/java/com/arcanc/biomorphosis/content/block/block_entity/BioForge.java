@@ -22,6 +22,12 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -37,32 +43,24 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntity, ServerTickableBE
+public class BioForge extends BioSidedAccessBlockEntity implements PAnimatable<BioForge>, ServerTickableBE
 {
-    private static final RawAnimation WORK = RawAnimation.begin().thenLoop("work");
-    private static final RawAnimation DOUBLE_WORK_LEFT = RawAnimation.begin().thenLoop("work_left");
-    private static final RawAnimation DOUBLE_WORK_RIGHT = RawAnimation.begin().thenLoop("work_right");
+    private static final PRawAnimation WORK = PRawAnimation.begin().thenLoop("work").build();
+    private static final PRawAnimation DOUBLE_WORK_LEFT = PRawAnimation.begin().thenLoop("work_left").build();
+    private static final PRawAnimation DOUBLE_WORK_RIGHT = PRawAnimation.begin().thenLoop("work_right").build();
 
-    private static final RawAnimation DOUBLE_IDLE_LEFT = RawAnimation.begin().thenLoop("misc.idle_left");
-    private static final RawAnimation DOUBLE_IDLE_RIGHT = RawAnimation.begin().thenLoop("misc.idle_right");
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    private static final PRawAnimation DOUBLE_IDLE_LEFT = PRawAnimation.begin().thenLoop("idle_left").build();
+    private static final PRawAnimation DOUBLE_IDLE_RIGHT = PRawAnimation.begin().thenLoop("idle_right").build();
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final PAnimationManager<BioForge> manager = PLibHelper.createManager(this);
 
     private final ItemStackSidedStorage itemHandler;
     private final FluidSidedStorage fluidHandler;
@@ -137,7 +135,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public @Nullable InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return null;
     }
@@ -160,7 +158,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
             this.workConsumer.accept(1);
     }
 
-    private void consumeResources(int slot, @NotNull ForgeRecipe recipe)
+    private void consumeResources(int slot, ForgeRecipe recipe)
     {
         float biomassPerTick = recipe.getResources().biomass().perSecond();
 		this.consumedFluidsData[slot].biomassReminder += biomassPerTick;
@@ -212,7 +210,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
         });
     }
 
-    private boolean tryCraft(ServerLevel level, int slot, @NotNull ForgeRecipe recipe)
+    private boolean tryCraft(ServerLevel level, int slot, ForgeRecipe recipe)
     {
         int timeToCheck = recipe.getResources().adrenaline().
                 filter(adrenaline -> !adrenaline.required() && this.adrenalineUsedThisTick[slot]).
@@ -284,59 +282,65 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
         this.consumedFluidsData[slot].clearData();
         this.workedTime[slot] = 0;
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioForge> animationRegistrar)
     {
-        controllers.add(createController(
+        animationRegistrar.add(createController(
                 "single_controller",
                 () -> !isDouble(this),
-                () -> this.isWorking[0] ? WORK : DefaultAnimations.IDLE
+                () -> this.isWorking[0] ? WORK : IDLE
         ));
-
-        controllers.add(createController(
+        
+        animationRegistrar.add(createController(
                 "double_left_controller",
                 () -> isDouble(this),
                 () -> this.isWorking[0] ? DOUBLE_WORK_LEFT : DOUBLE_IDLE_LEFT
         ));
-
-        controllers.add(createController(
+        
+        animationRegistrar.add(createController(
                 "double_right_controller",
                 () -> isDouble(this),
                 () -> this.isWorking[1] ? DOUBLE_WORK_RIGHT : DOUBLE_IDLE_RIGHT
         ));
     }
-
-    private @NotNull AnimationController<?> createController(String name, BooleanSupplier condition, Supplier<RawAnimation> animationSupplier)
+    
+    private PAnimationController<BioForge> createController(String name, BooleanSupplier condition, Supplier<PRawAnimation> animationSupplier)
     {
-        return new AnimationController<>(this, name, 0, state -> condition.getAsBoolean()
-                ? state.setAndContinue(animationSupplier.get())
-                : PlayState.STOP);
+        return new PAnimationController<>(name, state ->
+        {
+            if (condition.getAsBoolean())
+            {
+                state.controller().play(animationSupplier.get());
+                return ControllerState.PLAY;
+            }
+            return ControllerState.STOP;
+        });
     }
 
-    private static boolean isDouble(@NotNull BioForge forge)
+    private static boolean isDouble(BioForge forge)
     {
         return BioForgeBlock.isDouble(forge.getBlockState());
     }
 
-    public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull BioForge be, Direction ctx)
+    public static @Nullable ItemStackSidedStorage getItemHandler(BioForge be, @Nullable Direction ctx)
     {
         return ctx == null ? be.itemHandler : be.isAccessible(ctx) ? be.itemHandler : null;
     }
 
-    public static @Nullable FluidSidedStorage getFluidHandler(@NotNull BioForge be, Direction ctx)
+    public static @Nullable FluidSidedStorage getFluidHandler(BioForge be, @Nullable Direction ctx)
     {
         return ctx == null ? be.fluidHandler : be.isAccessible(ctx) ? be.fluidHandler : null;
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<BioForge> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
-
+    
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
@@ -353,7 +357,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements GeoBlockEntit
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.fluidHandler.serializeNBT(registries));

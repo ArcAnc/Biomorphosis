@@ -25,7 +25,6 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class SqueezerRecipe extends BioBaseRecipe<SqueezerRecipeInput>
 	private final IngredientWithSize input;
 	private final FluidStack result;
 	
-	public SqueezerRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resources, FluidStack result)
+	public SqueezerRecipe(String id, IngredientWithSize input, ResourcesInfo resources, FluidStack result)
 	{
 		super(id, resources);
 		this.input = input;
@@ -45,7 +44,7 @@ public class SqueezerRecipe extends BioBaseRecipe<SqueezerRecipeInput>
 	}
 	
 	@Override
-	public boolean matches(@NotNull SqueezerRecipeInput input, @NotNull Level level)
+	public boolean matches(SqueezerRecipeInput input, Level level)
 	{
 		ItemStack inputItem = input.getItem(0);
 		return this.input.test(inputItem) && this.input.amount() <= inputItem.getCount() && super.matches(input, level);
@@ -62,25 +61,25 @@ public class SqueezerRecipe extends BioBaseRecipe<SqueezerRecipeInput>
 	}
 	
 	@Override
-	public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+	public ItemStack getResultItem(HolderLookup.Provider registries)
 	{
 		return ItemStack.EMPTY;
 	}
 	
 	@Override
-	public @NotNull ItemStack assemble(@NotNull SqueezerRecipeInput input, HolderLookup.@NotNull Provider registries)
+	public ItemStack assemble(SqueezerRecipeInput input, HolderLookup.Provider registries)
 	{
 		return ItemStack.EMPTY;
 	}
 	
 	@Override
-	public @NotNull RecipeSerializer<SqueezerRecipe> getSerializer()
+	public RecipeSerializer<SqueezerRecipe> getSerializer()
 	{
 		return Registration.RecipeReg.SQUEEZER_RECIPE.getSerializer().get();
 	}
 	
 	@Override
-	public @NotNull RecipeType<SqueezerRecipe> getType()
+	public RecipeType<SqueezerRecipe> getType()
 	{
 		return Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get();
 	}
@@ -108,13 +107,13 @@ public class SqueezerRecipe extends BioBaseRecipe<SqueezerRecipeInput>
 				SqueezerRecipe :: new);
 		
 		@Override
-		public @NotNull MapCodec<SqueezerRecipe> codec()
+		public MapCodec<SqueezerRecipe> codec()
 		{
 			return CODEC;
 		}
 		
 		@Override
-		public @NotNull StreamCodec<RegistryFriendlyByteBuf, SqueezerRecipe> streamCodec()
+		public StreamCodec<RegistryFriendlyByteBuf, SqueezerRecipe> streamCodec()
 		{
 			return STREAM_CODEC;
 		}

@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -44,23 +43,23 @@ public abstract class BioBaseBlockEntity extends BlockEntity
     protected abstract void firstTick();
 
     @Override
-    protected void loadAdditional(@NotNull CompoundTag pTag, HolderLookup.@NotNull Provider registries)
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider registries)
     {
         super.loadAdditional(pTag, registries);
 
         this.readCustomTag(pTag, registries, false);
     }
 
-    public abstract void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket);
+    public abstract void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket);
 
     @Override
-    protected void saveAdditional(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries)
+    protected void saveAdditional(CompoundTag tag, HolderLookup.Provider registries)
     {
         super.saveAdditional(tag, registries);
         this.writeCustomTag(tag, registries,false);
     }
 
-    public abstract void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket);
+    public abstract void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket);
 
     @Override
     public ClientboundBlockEntityDataPacket getUpdatePacket()
@@ -74,20 +73,20 @@ public abstract class BioBaseBlockEntity extends BlockEntity
     }
 
     @Override
-    public void onDataPacket(@NotNull Connection net, @NotNull ClientboundBlockEntityDataPacket pkt, HolderLookup.@NotNull Provider registries)
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider registries)
     {
         CompoundTag nonNullTag = pkt.getTag();
         this.readCustomTag(nonNullTag, registries, true);
     }
 
     @Override
-    public void handleUpdateTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries)
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider registries)
     {
         this.readCustomTag(tag, registries, true);
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.@NotNull Provider registries)
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries)
     {
         CompoundTag tag = super.getUpdateTag(registries);
         writeCustomTag(tag, registries, true);

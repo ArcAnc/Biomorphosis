@@ -35,7 +35,6 @@ import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -43,7 +42,7 @@ import java.util.List;
 
 public class GenomeHandler
 {
-	public static void register(@NotNull IEventBus modEventBus)
+	public static void register(IEventBus modEventBus)
 	{
 		NeoForge.EVENT_BUS.addListener(GenomeHandler :: onEntityJoin);
 		NeoForge.EVENT_BUS.addListener(GenomeHandler :: onStartTracking);
@@ -56,7 +55,7 @@ public class GenomeHandler
 		NeoForge.EVENT_BUS.addListener(GenomeHandler :: onDieEvent);
 	}
 	
-	private static void onPlayerLogin(final @NotNull PlayerEvent.PlayerLoggedInEvent event)
+	private static void onPlayerLogin(final PlayerEvent.PlayerLoggedInEvent event)
 	{
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
 			return;
@@ -69,7 +68,7 @@ public class GenomeHandler
 		NetworkEngine.sendToPlayer(serverPlayer, new S2CGenomeSync(serverPlayer.getUUID(), genome));
 	}
 	
-	private static void onPlayerRespawn(final @NotNull PlayerEvent.PlayerRespawnEvent event)
+	private static void onPlayerRespawn(final PlayerEvent.PlayerRespawnEvent event)
 	{
 		if (!(event.getEntity() instanceof ServerPlayer serverPlayer))
 			return;
@@ -82,7 +81,7 @@ public class GenomeHandler
 		NetworkEngine.sendToPlayer(serverPlayer, new S2CGenomeSync(serverPlayer.getUUID(), genome));
 	}
 
-	private static void onEntityJoin(final @NotNull EntityJoinLevelEvent event)
+	private static void onEntityJoin(final EntityJoinLevelEvent event)
 	{
 		Entity ent = event.getEntity();
 		Level level = ent.level();
@@ -109,7 +108,7 @@ public class GenomeHandler
 	}
 	
 	//FIXME: по идеи будет автосинк. Вероятно это будет лишним
-	private static void onStartTracking(final @NotNull PlayerEvent.StartTracking event)
+	private static void onStartTracking(final PlayerEvent.StartTracking event)
 	{
 		if(!(event.getTarget() instanceof LivingEntity livingEntity))
 			return;
@@ -120,7 +119,7 @@ public class GenomeHandler
 		NetworkEngine.sendToPlayer(serverPlayer, new S2CGenomeSync(livingEntity.getUUID(), instance));
 	}
 	
-	private static void screenOpener(final @NotNull PlayerInteractEvent.EntityInteract event)
+	private static void screenOpener(final PlayerInteractEvent.EntityInteract event)
 	{
 		if (!(event.getTarget() instanceof LivingEntity livingEntity))
 			return;
@@ -130,7 +129,7 @@ public class GenomeHandler
 			RenderHelper.openGenomeScreen(event.getEntity(), livingEntity);
 	}
 	
-	private static void onHurtEvent(final @NotNull LivingDamageEvent.Post event)
+	private static void onHurtEvent(final LivingDamageEvent.Post event)
 	{
 		DamageSource source = event.getSource();
 		Entity sourceEntity = source.getEntity();
@@ -167,7 +166,7 @@ public class GenomeHandler
 				});
 	}
 	
-	private static void onDieEvent(final @NotNull LivingDeathEvent event)
+	private static void onDieEvent(final LivingDeathEvent event)
 	{
 		LivingEntity diedEntity = event.getEntity();
 		DamageSource source = event.getSource();

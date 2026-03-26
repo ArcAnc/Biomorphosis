@@ -13,6 +13,12 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
@@ -27,19 +33,17 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Swarmling extends Animal implements GeoEntity
+public class Swarmling extends Animal implements PAnimatable<Swarmling>
 {
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<Swarmling> manager = PLibHelper.createManager(this);
 
+	private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+	private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+	private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
+	
 	public Swarmling(EntityType<? extends Animal> type, Level level)
 	{
 		super(type, level);
@@ -68,27 +72,36 @@ public class Swarmling extends Animal implements GeoEntity
 		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 	}
-
+	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Swarmling> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "animController", 0, state ->
+		registrar.add(new PAnimationController<>("animController", state ->
 				{
-					if (this.swinging)
-						return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-					return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-				}),
-				DefaultAnimations.genericDeathController(this));
+					Swarmling animatable = state.animatable();
+					if (animatable.swinging)
+						state.controller().play(ATTACK);
+					else
+						state.controller().play(animatable.walkAnimation.isMoving() ? WALK : IDLE);
+					return state.controller().getState();
+				})).
+				add(new PAnimationController<>("deathController", state ->
+				{
+					if (!state.animatable().isDeadOrDying())
+						return ControllerState.STOP;
+					state.controller().play(DEATH);
+					return ControllerState.PLAY;
+				}));
 	}
 	
 	@Override
-	public boolean isFood(@NotNull ItemStack stack)
+	public boolean isFood(ItemStack stack)
 	{
 		return stack.is(BioItemTags.SWARMLING_FOOD);
 	}
 	
 	@Override
-	public @Nullable AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent)
+	public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent)
 	{
 		return Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get().create(level);
 	}
@@ -100,20 +113,20 @@ public class Swarmling extends Animal implements GeoEntity
 	}
 
 	@Override
-	protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+	protected SoundEvent getHurtSound(DamageSource damageSource)
 	{
 		return Registration.EntityReg.MOB_SWARMLING.getSounds().getHurtSound().get();
 	}
 
 	@Override
-	protected @NotNull SoundEvent getDeathSound()
+	protected SoundEvent getDeathSound()
 	{
 		return Registration.EntityReg.MOB_SWARMLING.getSounds().getDeathSound().get();
 	}
-
+	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<Swarmling> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 }

@@ -19,7 +19,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.common.util.INBTSerializable;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -112,19 +111,19 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
     }
 
     @Override
-    public @NotNull ItemStack getStackInSlot(int slot)
+    public ItemStack getStackInSlot(int slot)
     {
         return getValueAtId(null, slot);
     }
 
     @Override
-    public @NotNull ItemStack insertItem(int slot, @NotNull ItemStack stack, boolean simulate)
+    public ItemStack insertItem(int slot, ItemStack stack, boolean simulate)
     {
         return getHolderAt(null, slot).map(holder -> holder.insertItem(stack, simulate)).orElse(stack);
     }
 
     @Override
-    public @NotNull ItemStack extractItem(int slot, int amount, boolean simulate)
+    public ItemStack extractItem(int slot, int amount, boolean simulate)
     {
         if (amount <= 0)
             return ItemStack.EMPTY;
@@ -139,7 +138,7 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
     }
 
     @Override
-    public boolean isItemValid(int slot, @NotNull ItemStack stack)
+    public boolean isItemValid(int slot, ItemStack stack)
     {
         return isValueValid(null, slot, stack);
     }
@@ -149,7 +148,7 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
     //--------------------------------------------------
 
     @Override
-    public @NotNull CompoundTag serializeNBT(HolderLookup.@NotNull Provider provider)
+    public CompoundTag serializeNBT(HolderLookup.Provider provider)
     {
         ListTag list = new ListTag();
         for (int q = 0; q < getSlots(); q++)
@@ -182,7 +181,7 @@ public class ItemStackSidedStorage extends BasicSidedStorage<ItemStackSidedStora
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull CompoundTag nbt)
+    public void deserializeNBT(HolderLookup.Provider provider, CompoundTag nbt)
     {
         ListTag list = nbt.getList(Database.Capabilities.Items.HOLDERS, Tag.TAG_COMPOUND);
         for (int q = 0; q < list.size(); q++)

@@ -23,7 +23,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.event.RenderTooltipEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import org.jetbrains.annotations.NotNull;
 import org.lwjgl.opengl.GL11;
 
 public class TooltipBorderHandler
@@ -35,7 +34,7 @@ public class TooltipBorderHandler
         NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
     }
 
-    private static void tooltipDisplayEvent(final @NotNull CustomEvents.TooltipDisplayEvent event)
+    private static void tooltipDisplayEvent(final CustomEvents.TooltipDisplayEvent event)
     {
         LocalPlayer player = Minecraft.getInstance().player;
 
@@ -130,9 +129,9 @@ public class TooltipBorderHandler
         guiGraphics.pose().popPose();
     }
 
-    private static void renderInterpolatedDecorations(@NotNull AnimationData animationData,
-                                                      @NotNull LocalPlayer player,
-                                                      @NotNull GuiGraphics guiGraphics,
+    private static void renderInterpolatedDecorations(AnimationData animationData,
+                                                      LocalPlayer player,
+                                                      GuiGraphics guiGraphics,
                                                       ResourceLocation texture,
                                                       int x,
                                                       int y,
@@ -301,9 +300,9 @@ public class TooltipBorderHandler
                 intColor);
     }
 
-    private static void renderNormalDecorations(@NotNull AnimationData animationData,
-                                                @NotNull LocalPlayer player,
-                                                @NotNull GuiGraphics guiGraphics,
+    private static void renderNormalDecorations(AnimationData animationData,
+                                                LocalPlayer player,
+                                                GuiGraphics guiGraphics,
                                                 ResourceLocation texture,
                                                 int x,
                                                 int y,
@@ -333,7 +332,7 @@ public class TooltipBorderHandler
         guiGraphics.blit(texture, x + (width - middleWidth) / 2, y + height - 1, cornerWidth, middleHeight + offset, middleWidth, middleHeight, texWidth, texHeight);
     }
 
-    private static void tooltipBackgroundEvent(final @NotNull RenderTooltipEvent.Color event)
+    private static void tooltipBackgroundEvent(final RenderTooltipEvent.Color event)
     {
         if (!(event.getItemStack().getItem() instanceof ICustomTooltip tooltip))
             return;

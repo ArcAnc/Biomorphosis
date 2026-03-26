@@ -13,6 +13,11 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.entity.ai.goals.WorkingRandomGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -28,20 +33,17 @@ import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class Worker extends Monster implements GeoEntity
+public class Worker extends Monster implements PAnimatable<Worker>
 {
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-	private final RawAnimation WORK = RawAnimation.begin().thenPlay("misc.work");
+	private final PAnimationManager<Worker> manager = PLibHelper.createManager(this);
+	
+	private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+	private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+	private final PRawAnimation WORK = PRawAnimation.begin().thenPlay("work").build();
+	private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
 
 	private static final EntityDataAccessor<Boolean> WORKING = SynchedEntityData.defineId(Worker.class, EntityDataSerializers.BOOLEAN);
 
@@ -62,7 +64,7 @@ public class Worker extends Monster implements GeoEntity
 	}
 
 	@Override
-	protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder)
+	protected void defineSynchedData(SynchedEntityData.Builder builder)
 	{
 		super.defineSynchedData(builder);
 		builder.define(WORKING, false);
@@ -92,7 +94,7 @@ public class Worker extends Monster implements GeoEntity
 	}
 
 	@Override
-	public void readAdditionalSaveData(@NotNull CompoundTag compound)
+	public void readAdditionalSaveData(CompoundTag compound)
 	{
 		super.readAdditionalSaveData(compound);
 
@@ -100,41 +102,60 @@ public class Worker extends Monster implements GeoEntity
 	}
 
 	@Override
-	public void addAdditionalSaveData(@NotNull CompoundTag compound)
+	public void addAdditionalSaveData(CompoundTag compound)
 	{
 		super.addAdditionalSaveData(compound);
 
 		//compound.putBoolean("working", this.working);
 	}
-
+	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Worker> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "animController", 0, state ->
+		registrar.add(new PAnimationController<>("animController", state ->
 				{
-					if (this.swinging)
-						return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-					else if (this.isWorking())
-						return state.setAndContinue(WORK);
-					return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-				}),
-				DefaultAnimations.genericDeathController(this));
+					Worker animatable = state.animatable();
+					if (animatable.swinging)
+					{
+						state.controller().play(ATTACK);
+						return state.controller().getState();
+					}
+					else if (animatable.isWorking())
+					{
+						state.controller().play(WORK);
+						return state.controller().getState();
+					}
+					if (animatable.walkAnimation.isMoving())
+						state.controller().play(WALK);
+					else
+						state.controller().play(IDLE);
+					return state.controller().getState();
+				})).
+				add(new PAnimationController<>("death", state ->
+				{
+					if (!state.animatable().isDeadOrDying())
+						state.controller().stop();
+					else
+						state.controller().play(DEATH);
+					return state.controller().getState();
+				}));
+				
 	}
-
+	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<Worker> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
-
+	
 	@Override
-	protected @NotNull SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+	protected SoundEvent getHurtSound(DamageSource damageSource)
 	{
 		return Registration.EntityReg.MOB_WORKER.getSounds().getHurtSound().get();
 	}
 
 	@Override
-	protected @NotNull SoundEvent getDeathSound()
+	protected SoundEvent getDeathSound()
 	{
 		return Registration.EntityReg.MOB_WORKER.getSounds().getDeathSound().get();
 	}

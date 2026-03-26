@@ -21,7 +21,6 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructureSet;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import org.jetbrains.annotations.NotNull;
 
 public class BioWorldGenProvider extends BioRegistryData
 {
@@ -34,7 +33,7 @@ public class BioWorldGenProvider extends BioRegistryData
 	}
 
 	@Override
-	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
+	protected void registerContent(RegistrySetBuilder registrySetBuilder)
 	{
 		//FIXME: придумать адекватный метод впилить биом
 		//registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
@@ -46,7 +45,7 @@ public class BioWorldGenProvider extends BioRegistryData
 		registrySetBuilder.add(Registries.TEMPLATE_POOL, BioWorldGenProvider :: registerTemplatePools);
 	}
 	
-	private static void registerStructures(@NotNull BootstrapContext<Structure> context)
+	private static void registerStructures(BootstrapContext<Structure> context)
 	{
 		SwarmVillage.structures(context);
 		SwarmResistanceForces.structures(context);

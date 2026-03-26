@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.util.helper;
 
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
 
@@ -60,12 +59,12 @@ public class MathHelper
             return color(255, red, green, blue);
         }
 
-        public static int color(@NotNull Vector3f vec)
+        public static int color(Vector3f vec)
         {
             return color(as8BitChannel(vec.x()), as8BitChannel(vec.y()), as8BitChannel(vec.z()));
         }
 
-        public static int color(@NotNull Vector4f vec)
+        public static int color(Vector4f vec)
         {
             return color(as8BitChannel(vec.w()), as8BitChannel(vec.x()), as8BitChannel(vec.y()), as8BitChannel(vec.z()));
         }
@@ -146,7 +145,7 @@ public class MathHelper
             return color(as8BitChannel(alpha), as8BitChannel(red), as8BitChannel(green), as8BitChannel(blue));
         }
 
-        public static @NotNull Vector3f vector3fFromRGB24(int color)
+        public static Vector3f vector3fFromRGB24(int color)
         {
             return new Vector3f(
                     red(color) / 255.0f,
@@ -155,7 +154,7 @@ public class MathHelper
             );
         }
 
-        public static @NotNull Vector4f vector4fFromARGB(int color)
+        public static Vector4f vector4fFromARGB(int color)
         {
             return new Vector4f(
                     red(color) / 255.0f,

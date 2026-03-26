@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
@@ -713,7 +712,7 @@ public class SphereObj extends BioObjModel
         newFace(7, 358, 120, 12, 359, 120, 11, 360, 120);
     }
 
-    private void applyDisplacementToFace(@NotNull Face face, float displacement)
+    private void applyDisplacementToFace(Face face, float displacement)
     {
         Vector3f first = this.vertices.get(face.v00());
         Vector3f second = this.vertices.get(face.v10());
@@ -737,7 +736,7 @@ public class SphereObj extends BioObjModel
         }
     }
 
-    private @NotNull Vector3f applyDisplacement(Vector3f vertex, Vector3f normal, float displacement)
+    private Vector3f applyDisplacement(Vector3f vertex, Vector3f normal, float displacement)
     {
         Vector3f result = new Vector3f(vertex);
 
@@ -745,7 +744,7 @@ public class SphereObj extends BioObjModel
     }
 
     @Override
-    public void render(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+    public void render(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
     {
         Matrix4f matrix = mStack.last().pose();
         PoseStack.Pose normal = mStack.last();

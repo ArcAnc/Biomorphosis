@@ -15,51 +15,79 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.model.baked.PBakedModel;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class MultiblockTurretRenderer extends GeoBlockRenderer<MultiblockTurret>
+import java.util.Collection;
+import java.util.function.Function;
+
+public class MultiblockTurretRenderer extends PBlockRenderer<MultiblockTurret>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("block/turret/0");
+	
+	private static final PModelData MORPHED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("turret")).build();
+	private static final PModelData MORPHING = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("turret")).build();
+	private static final PModelData DISASSEMBLED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("turret")).build();
+	
 	public MultiblockTurretRenderer(BlockEntityRendererProvider.Context ctx)
 	{
-		super(new MultiblockGeoModel<>(Database.rl("turret"), Database.rl("turret"), Database.rl("turret")));
+		super(new PModelData.Builder(Database.rl("turret"), "block").build(),
+				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
 	@Override
-	public void preRender(PoseStack poseStack, MultiblockTurret animatable, BakedGeoModel model, @Nullable MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	public @Nullable PBakedModel getModel(MultiblockTurret animatable)
 	{
-		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+		return this.getModelData(animatable).getModel();
 	}
 	
 	@Override
-	public void renderRecursively(PoseStack poseStack, MultiblockTurret animatable, @NotNull GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	public PModelData getModelData(MultiblockTurret animatable)
 	{
-		if (bone.getName().equals("projectile"))
-			renderColor = animatable.getShootEffect().getColor();
-		super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+		MultiblockState state = animatable.getBlockState().getValue(MultiblockPartBlock.STATE);
+		return state == MultiblockState.FORMED ? MORPHED : state == MultiblockState.MORPHING ? MORPHING : DISASSEMBLED;
 	}
 	
 	@Override
-	public @NotNull AABB getRenderBoundingBox(@NotNull MultiblockTurret blockEntity)
+	protected void perBoneSubmit(MultiblockTurret animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockTurret>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+	{
+		if (bone.name().equals("projectile"))
+		{
+			renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
+			packedColor = animatable.getShootEffect().getColor();
+		}
+		super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+	}
+	
+	@Override
+	public AABB getRenderBoundingBox(MultiblockTurret blockEntity)
 	{
 		BlockPos size = blockEntity.getDefinition().map(IMultiblockDefinition :: size).orElse(BlockPos.ZERO);
 		return blockEntity.isMaster() ? new AABB(Vec3.atCenterOf(blockEntity.getBlockPos().subtract(size)), Vec3.atCenterOf(blockEntity.getBlockPos().offset(size))) : super.getRenderBoundingBox(blockEntity);
 	}
 	
 	@Override
-	public boolean shouldRender(@NotNull MultiblockTurret blockEntity, @NotNull Vec3 cameraPos)
+	public boolean shouldRender(MultiblockTurret blockEntity, Vec3 cameraPos)
 	{
 		return blockEntity.isMaster() && blockEntity.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED && super.shouldRender(blockEntity, cameraPos);
+	}
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	{
+		event.addTextureLocation(TEXTURE);
 	}
 }

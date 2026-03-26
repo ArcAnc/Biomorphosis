@@ -18,7 +18,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidType;
 import org.apache.commons.lang3.function.TriFunction;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 import org.joml.Vector4f;
@@ -32,9 +31,9 @@ public class BioFluidType extends FluidType
     protected final FogOptionsGetter fogOptions;
     protected final ColorParams colorParams;
 
-    public BioFluidType(final @NotNull ResourceLocation stillTexture,
-                        final @NotNull ResourceLocation flowingTexture,
-                        final @NotNull ResourceLocation overlayTexture,
+    public BioFluidType(final ResourceLocation stillTexture,
+                        final ResourceLocation flowingTexture,
+                        final ResourceLocation overlayTexture,
                         final ColorParams colorGetter,
                         final BioFluidType.FogGetter fogColor,
                         final FogOptionsGetter fogParameters,
@@ -55,13 +54,13 @@ public class BioFluidType extends FluidType
         return new IClientFluidTypeExtensions()
         {
             @Override
-            public @NotNull ResourceLocation getStillTexture()
+            public ResourceLocation getStillTexture()
             {
                 return stillTexture;
             }
 
             @Override
-            public @NotNull ResourceLocation getFlowingTexture()
+            public ResourceLocation getFlowingTexture()
             {
                 return flowingTexture;
             }
@@ -79,25 +78,25 @@ public class BioFluidType extends FluidType
             }
             
             @Override
-            public @NotNull Vector3f modifyFogColor(@NotNull Camera camera,
+            public Vector3f modifyFogColor(Camera camera,
                                                     float partialTick,
-                                                    @NotNull ClientLevel level,
+                                                    ClientLevel level,
                                                     int renderDistance,
                                                     float darkenWorldAmount,
-                                                    @NotNull Vector3f fluidFogColor)
+                                                    Vector3f fluidFogColor)
 
             {
                 return fogColor.getFog(camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams);
             }
             
             @Override
-            public void modifyFogRender(@NotNull Camera camera,
-                                        FogRenderer.@NotNull FogMode mode,
+            public void modifyFogRender(Camera camera,
+                                        FogRenderer.FogMode mode,
                                         float renderDistance,
                                         float partialTick,
                                         float nearDistance,
                                         float farDistance,
-                                        @NotNull FogShape shape)
+                                        FogShape shape)
             {
                 fogOptions.getFogParameters(camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams);
             }
@@ -133,7 +132,7 @@ public class BioFluidType extends FluidType
     {
         Vector3f getFog(Camera camera, float partialTick, ClientLevel level, int renderDistance, float darkenWorldAmount, Vector3f fluidFogColor, ColorParams colorParams);
 
-        static Vector4f interColor(Vector4f curColor, @NotNull Vector4f targetColor, float delta)
+        static Vector4f interColor(Vector4f curColor, Vector4f targetColor, float delta)
         {
             Vector4f diff = new Vector4f();
 
@@ -149,19 +148,19 @@ public class BioFluidType extends FluidType
 
     public interface FogOptionsGetter
     {
-        void getFogParameters(@NotNull Camera camera,
-                                       FogRenderer.@NotNull FogMode mode,
+        void getFogParameters(Camera camera,
+                                       FogRenderer.FogMode mode,
                                        float renderDistance,
                                        float partialTick,
                                        float nearDistance,
                                        float farDistance,
-                                       @NotNull FogShape shape,
-                                       @NotNull ColorParams colorParams);
+                                       FogShape shape,
+                                       ColorParams colorParams);
     }
 
     public record ColorParams(Vector4f minColor, Vector4f maxColor, int maxTime, TriFunction<Vector4f, Vector4f, Integer, Integer> colorGetter)
     {
-        public static @NotNull ColorParams constantColor(Vector4f color)
+        public static ColorParams constantColor(Vector4f color)
         {
             return new ColorParams(color, color, 0, (minColor, maxColor, maxTime) -> MathHelper.ColorHelper.color(minColor.div(255f, new Vector4f())));
         }

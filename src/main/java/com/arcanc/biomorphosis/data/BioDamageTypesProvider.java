@@ -21,7 +21,6 @@ import net.minecraft.world.damagesource.DamageEffects;
 import net.minecraft.world.damagesource.DamageScaling;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.damagesource.DeathMessageType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,14 +53,14 @@ public class BioDamageTypesProvider extends BioRegistryData
 	}
 	
 	@Override
-	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
+	protected void registerContent(RegistrySetBuilder registrySetBuilder)
 	{
 		registrySetBuilder.add(Registries.DAMAGE_TYPE, context ->
 				this.damageTypeMap.forEach((location, damageType) ->
 						context.register(getDefinitionKey(location), damageType)));
 	}
 	
-	private @NotNull ResourceKey<DamageType> getDefinitionKey(ResourceLocation location)
+	private ResourceKey<DamageType> getDefinitionKey(ResourceLocation location)
 	{
 		Preconditions.checkNotNull(location);
 		return getResourceKey(Registries.DAMAGE_TYPE, location);

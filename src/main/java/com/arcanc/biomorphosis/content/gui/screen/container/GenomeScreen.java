@@ -29,7 +29,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +96,7 @@ public class GenomeScreen extends Screen
 	}
 	
 	@Override
-	public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
 		//FIXME: юзать метод, который в меню прописан. Избавиться от этого бесполезного куска кода
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -112,7 +111,7 @@ public class GenomeScreen extends Screen
 	}
 	
 	@Override
-	protected void renderMenuBackground(@NotNull GuiGraphics guiGraphics, int x, int y, int width, int height)
+	protected void renderMenuBackground(GuiGraphics guiGraphics, int x, int y, int width, int height)
 	{
 		super.renderMenuBackground(guiGraphics, x, y, width, height);
 		

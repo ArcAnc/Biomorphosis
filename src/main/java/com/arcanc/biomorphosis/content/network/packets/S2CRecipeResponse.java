@@ -16,7 +16,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 public record S2CRecipeResponse(ResourceLocation recipeLocation, Recipe<?> recipe) implements IPacket
 {
@@ -30,14 +29,14 @@ public record S2CRecipeResponse(ResourceLocation recipeLocation, Recipe<?> recip
     );
 
     @Override
-    public void process(@NotNull IPayloadContext context)
+    public void process(IPayloadContext context)
     {
         context.enqueueWork(() ->
                 AbstractRecipeComponent.RecipeCache.storeRecipe(recipeLocation(), recipe()));
     }
 
     @Override
-    public @NotNull Type<S2CRecipeResponse> type()
+    public Type<S2CRecipeResponse> type()
     {
         return TYPE;
     }

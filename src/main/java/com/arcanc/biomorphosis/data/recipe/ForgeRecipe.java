@@ -23,7 +23,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
     private final IngredientWithSize input;
     private final ItemStack result;
 
-    public ForgeRecipe(String id, IngredientWithSize input, @NotNull ResourcesInfo resources, ItemStack result)
+    public ForgeRecipe(String id, IngredientWithSize input, ResourcesInfo resources, ItemStack result)
     {
         super(id, resources);
         this.input = input;
@@ -43,7 +42,7 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
     }
 
     @Override
-    public boolean matches(@NotNull ForgeRecipeInput input, @NotNull Level level)
+    public boolean matches(ForgeRecipeInput input, Level level)
     {
         ItemStack inputItem = input.getItem(0);
         return this.input.test(inputItem) && this.input.amount() <= inputItem.getCount() && super.matches(input, level);
@@ -60,25 +59,25 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
     }
     
     @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return this.result();
     }
     
     @Override
-    public @NotNull ItemStack assemble(@NotNull ForgeRecipeInput input, HolderLookup.@NotNull Provider registries)
+    public ItemStack assemble(ForgeRecipeInput input, HolderLookup.Provider registries)
     {
         return this.result.copy();
     }
 
     @Override
-    public @NotNull RecipeSerializer<ForgeRecipe> getSerializer()
+    public RecipeSerializer<ForgeRecipe> getSerializer()
     {
         return Registration.RecipeReg.FORGE_RECIPE.getSerializer().get();
     }
 
     @Override
-    public @NotNull RecipeType<ForgeRecipe> getType()
+    public RecipeType<ForgeRecipe> getType()
     {
         return Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get();
     }
@@ -106,13 +105,13 @@ public class ForgeRecipe extends BioBaseRecipe<ForgeRecipeInput>
                 ForgeRecipe :: new);
 
         @Override
-        public @NotNull MapCodec<ForgeRecipe> codec()
+        public MapCodec<ForgeRecipe> codec()
         {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec()
+        public StreamCodec<RegistryFriendlyByteBuf, ForgeRecipe> streamCodec()
         {
             return STREAM_CODEC;
         }

@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
-import org.jetbrains.annotations.NotNull;
 
 public class MultiblockMorpherBlockItem extends BioBaseBlockItem
 {
@@ -34,7 +33,7 @@ public class MultiblockMorpherBlockItem extends BioBaseBlockItem
 							RenderHelper.mc().getEntityModels()
 					);
 			@Override
-			public @NotNull BlockEntityWithoutLevelRenderer getCustomRenderer()
+			public BlockEntityWithoutLevelRenderer getCustomRenderer()
 			{
 				return this.renderer;
 			}

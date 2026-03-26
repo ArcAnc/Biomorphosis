@@ -16,7 +16,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.structure.pools.LegacySinglePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +29,12 @@ public class SwarmLegacySinglePoolElement extends LegacySinglePoolElement
 		super(Either.left(id), PROCESSORS, projection, Optional.empty());
 	}
 	
-	public static @NotNull SwarmLegacySinglePoolElement terrainMatching(ResourceLocation id)
+	public static SwarmLegacySinglePoolElement terrainMatching(ResourceLocation id)
 	{
 		return new SwarmLegacySinglePoolElement(id, StructureTemplatePool.Projection.TERRAIN_MATCHING);
 	}
 	
-	public static @NotNull SwarmLegacySinglePoolElement rigid(ResourceLocation id)
+	public static SwarmLegacySinglePoolElement rigid(ResourceLocation id)
 	{
 		return new SwarmLegacySinglePoolElement(id, StructureTemplatePool.Projection.RIGID);
 	}

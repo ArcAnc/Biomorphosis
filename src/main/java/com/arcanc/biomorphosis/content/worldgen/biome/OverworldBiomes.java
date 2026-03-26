@@ -21,7 +21,6 @@ import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -29,12 +28,12 @@ public class OverworldBiomes
 {
 	/*FIXME: заменить музыку в биоме пустошей*/
 
-	private static void addFeature(BiomeGenerationSettings.@NotNull Builder builder, GenerationStep.Decoration step, ResourceKey<PlacedFeature> feature)
+	private static void addFeature(BiomeGenerationSettings.Builder builder, GenerationStep.Decoration step, ResourceKey<PlacedFeature> feature)
 	{
 		builder.addFeature(step, feature);
 	}
 
-	public static @NotNull Biome wastes (HolderGetter<PlacedFeature> placedFeatureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter)
+	public static Biome wastes (HolderGetter<PlacedFeature> placedFeatureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter)
 	{
 		MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();
 		BiomeDefaultFeatures.desertSpawns(builder);
@@ -59,7 +58,7 @@ public class OverworldBiomes
 		return biome(false, 2.0F, 0.0F, builder, settingsBuilder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DESERT));
 	}
 
-	private static @NotNull Biome biome(
+	private static Biome biome(
 			boolean hasPercipitation,
 			float temperature,
 			float downfall,
@@ -70,7 +69,7 @@ public class OverworldBiomes
 		return biome(hasPercipitation, temperature, downfall, 4159204, 329011, null, null, mobSpawnSettings, generationSettings, backgroundMusic);
 	}
 
-	private static @NotNull Biome biome(
+	private static Biome biome(
 			boolean hasPrecipitation,
 			float temperature,
 			float downfall,

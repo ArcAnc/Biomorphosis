@@ -19,12 +19,10 @@ import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
-import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.Pools;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.util.random.WeightedRandomList;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.Biome;
@@ -40,7 +38,6 @@ import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStruct
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.EnumMap;
@@ -50,7 +47,7 @@ public class SwarmVillage
 {
 	public static final KeysData VILLAGE = new KeysData("village");
 	
-	public static void structures(@NotNull BootstrapContext<Structure> context)
+	public static void structures(BootstrapContext<Structure> context)
 	{
 		HolderGetter<Biome> biomes = context.lookup(Registries.BIOME);
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
@@ -87,7 +84,7 @@ public class SwarmVillage
 				Heightmap.Types.WORLD_SURFACE_WG));
 	}
 
-	public static void structureSets(@NotNull BootstrapContext<StructureSet> context)
+	public static void structureSets(BootstrapContext<StructureSet> context)
 	{
 		HolderGetter<Structure> structures = context.lookup(Registries.STRUCTURE);
 		
@@ -96,7 +93,7 @@ public class SwarmVillage
 						new RandomSpreadStructurePlacement (34, 8, RandomSpreadType.LINEAR, 65295359)));
 	}
 
-	public static void templatePools(@NotNull BootstrapContext<StructureTemplatePool> context)
+	public static void templatePools(BootstrapContext<StructureTemplatePool> context)
 	{
 		HolderGetter<StructureTemplatePool> pools = context.lookup(Registries.TEMPLATE_POOL);
 		Holder<StructureTemplatePool> empty = pools.getOrThrow(Pools.EMPTY);
@@ -195,7 +192,7 @@ public class SwarmVillage
 			return this.poolsData.getOrDefault(type, BioWorldGenProvider.EMPTY_POOL);
 		}
 		
-		public @Nullable StructureTemplatePool getPool(@NotNull Registry<StructureTemplatePool> registry, CellType type)
+		public @Nullable StructureTemplatePool getPool(Registry<StructureTemplatePool> registry, CellType type)
 		{
 			return registry.getOptional(this.getPoolKey(type)).orElse(null);
 		}

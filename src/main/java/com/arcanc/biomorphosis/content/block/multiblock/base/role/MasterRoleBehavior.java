@@ -44,7 +44,7 @@ public class MasterRoleBehavior implements IMultiblockRoleBehavior
     }
 
     @Override
-    public <T, C> @Nullable T getCapability(BlockCapability<T, C> capability, C context)
+    public <T, C> @Nullable T getCapability(BlockCapability<T, C> capability, @Nullable C context)
     {
         if (this.part.getLevel() == null)
             return null;

@@ -17,7 +17,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,7 @@ public class BioBlockLoot extends BlockLootSubProvider
     }
 
     @Override
-    protected @NotNull Iterable<Block> getKnownBlocks()
+    protected Iterable<Block> getKnownBlocks()
     {
         List<DeferredBlock<Block>> handMadeBlocks = List.of();
 

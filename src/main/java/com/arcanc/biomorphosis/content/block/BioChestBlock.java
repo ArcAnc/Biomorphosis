@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class BioChestBlock extends BioBaseEntityBlock<BioChest>
 {
@@ -27,13 +26,13 @@ public class BioChestBlock extends BioBaseEntityBlock<BioChest>
 	}
 
 	@Override
-	protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+	protected RenderShape getRenderShape(BlockState state)
 	{
 		return RenderShape.INVISIBLE;
 	}
 
 	@Override
-	protected @NotNull MapCodec<BioChestBlock> codec()
+	protected MapCodec<BioChestBlock> codec()
 	{
 		return CODEC;
 	}

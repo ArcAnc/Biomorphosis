@@ -16,14 +16,13 @@ import com.arcanc.biomorphosis.data.recipe.input.StomachRecipeInput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class StomachRecipeBuilder extends BioBaseRecipeBuilder<StomachRecipeBuilder, StomachRecipe, StomachRecipeInput>
 {
     private IngredientWithSize input;
     private FluidStack result;
 
-    public static @NotNull StomachRecipeBuilder newBuilder(@NotNull BioBaseRecipe.ResourcesInfo info)
+    public static StomachRecipeBuilder newBuilder(BioBaseRecipe.ResourcesInfo info)
     {
         return new StomachRecipeBuilder(info);
     }
@@ -39,20 +38,20 @@ public class StomachRecipeBuilder extends BioBaseRecipeBuilder<StomachRecipeBuil
         return new StomachRecipe(this.group, this.input, this.info, this.result);
     }
 
-    public StomachRecipeBuilder setInput(@NotNull IngredientWithSize input)
+    public StomachRecipeBuilder setInput(IngredientWithSize input)
     {
         this.input = input;
         return this;
     }
 
-    public StomachRecipeBuilder setResult(@NotNull FluidStack result)
+    public StomachRecipeBuilder setResult(FluidStack result)
     {
         this.result = result;
         return this;
     }
 
     @Override
-    public @NotNull Item getResult()
+    public Item getResult()
     {
         return ItemStack.EMPTY.getItem();
     }

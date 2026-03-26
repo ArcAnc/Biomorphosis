@@ -22,6 +22,12 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -40,20 +46,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEntity, ServerTickableBE
+public class BioCrusher extends BioSidedAccessBlockEntity implements PAnimatable<BioCrusher>, ServerTickableBE
 {
-    private static final RawAnimation WORK = RawAnimation.begin().thenLoop("work");
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private static final PRawAnimation WORK = PRawAnimation.begin().thenLoop("work").build();
+    private final PAnimationManager<BioCrusher> manager = PLibHelper.createManager(this);
 
     private static final AABB INPUT_ZONE = new AABB(0,0,0,1, 0.5d, 1);
 
@@ -144,7 +142,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         }
     }
 
-    private boolean tryCraft(ServerLevel level, @NotNull CrusherRecipe recipe)
+    private boolean tryCraft(ServerLevel level, CrusherRecipe recipe)
     {
         int timeToCheck = recipe.getResources().adrenaline().
                 filter(adrenaline -> !adrenaline.required() && this.adrenalineUsedThisTick).
@@ -225,7 +223,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
         }
     }
 
-    private void consumeResources(@NotNull CrusherRecipe recipe)
+    private void consumeResources(CrusherRecipe recipe)
     {
         float biomassPerTick = recipe.getResources().biomass().perSecond();
 		this.consumedFluidsData.biomassReminder += biomassPerTick;
@@ -285,7 +283,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public @Nullable InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return null;
     }
@@ -294,36 +292,39 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     protected void firstTick()
     {
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioCrusher> animationRegistrar)
     {
-        controllers.add(new AnimationController<>(this, "work_controller", 10, state ->
+        animationRegistrar.add(new PAnimationController<>(state ->
         {
-			if (this.isWorking)
-                return state.setAndContinue(WORK);
-            return PlayState.STOP;
+            if (this.isWorking)
+            {
+                state.controller().play(WORK);
+                return ControllerState.PLAY;
+            }
+            return ControllerState.STOP;
         }));
     }
-
-    public static @Nullable FluidSidedStorage getFluidHandler(@NotNull BioCrusher be, Direction ctx)
+    
+    public static @Nullable FluidSidedStorage getFluidHandler(BioCrusher be, @Nullable Direction ctx)
     {
         return ctx == null ? be.fluidHandler : be.isAccessible(ctx) ? be.fluidHandler : null;
     }
 
-    public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull BioCrusher be, Direction ctx)
+    public static @Nullable ItemStackSidedStorage getItemHandler(BioCrusher be, @Nullable Direction ctx)
     {
         return ctx == null ? be.itemHandler : be.isAccessible(ctx) ? be.itemHandler : null;
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<BioCrusher> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
-
+    
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
@@ -336,7 +337,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.fluidHandler.serializeNBT(registries));

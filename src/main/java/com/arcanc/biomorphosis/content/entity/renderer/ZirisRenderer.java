@@ -11,14 +11,26 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Ziris;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-public class ZirisRenderer extends GeoEntityRenderer<Ziris>
+public class ZirisRenderer extends PEntityRenderer<Ziris>
 {
+    private static final ResourceLocation TEXTURE = Database.rl("entity/ziris/0");
+    
     public ZirisRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new DefaultedEntityGeoModel<>(Database.rl("ziris"), true));
+        super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("ziris")).
+                        build(),
+                PRenderTypes.RenderTypeProvider :: trianglesSolid);
+    }
+    
+    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    {
+        event.addTextureLocation(TEXTURE);
     }
 }

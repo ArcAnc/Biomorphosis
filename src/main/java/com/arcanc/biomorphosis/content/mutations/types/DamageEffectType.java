@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import org.jetbrains.annotations.NotNull;
 
 public class DamageEffectType implements IGeneEffectType<DamageEffectType>
 {
@@ -37,7 +36,7 @@ public class DamageEffectType implements IGeneEffectType<DamageEffectType>
 	}
 	
 	@Override
-	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void apply(LivingEntity entity, AttributeParams params)
 	{
 		int damageAmount = params.getInt("amount", 0);
 		if (damageAmount == 0)
@@ -50,7 +49,7 @@ public class DamageEffectType implements IGeneEffectType<DamageEffectType>
 	}
 	
 	@Override
-	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void remove(LivingEntity entity, AttributeParams params)
 	{
 		int damageAmount = params.getInt("amount", 0);
 		if (damageAmount == 0)
@@ -62,7 +61,7 @@ public class DamageEffectType implements IGeneEffectType<DamageEffectType>
 	}
 	
 	@Override
-	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void tick(LivingEntity entity, AttributeParams params)
 	{
 	
 	}

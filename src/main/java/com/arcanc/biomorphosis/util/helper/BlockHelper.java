@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
@@ -90,7 +89,7 @@ public class BlockHelper
         return Optional.empty();
     }
 
-    public static @NotNull BlockState nextDirection(@NotNull BlockState state)
+    public static BlockState nextDirection(BlockState state)
     {
         if (state.hasProperty(BlockProperties.FACING))
         {
@@ -100,7 +99,7 @@ public class BlockHelper
         return state;
     }
 
-    public static @NotNull BlockState nextHorizontalDirection(@NotNull BlockState state)
+    public static BlockState nextHorizontalDirection(BlockState state)
     {
         if (state.hasProperty(BlockProperties.HORIZONTAL_FACING))
         {
@@ -110,7 +109,7 @@ public class BlockHelper
         return state;
     }
 
-    public static boolean statesEquivalent(@NotNull BlockState expected, @NotNull BlockState actual)
+    public static boolean statesEquivalent(BlockState expected, BlockState actual)
     {
         if (expected.getBlock() != actual.getBlock())
             return false;
@@ -130,7 +129,7 @@ public class BlockHelper
         return true;
     }
 
-    public static @NotNull ResourceLocation getRegistryName (Block block)
+    public static ResourceLocation getRegistryName (Block block)
     {
         return BuiltInRegistries.BLOCK.getKey(block);
     }

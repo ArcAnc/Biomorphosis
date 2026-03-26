@@ -26,8 +26,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -48,7 +46,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
     public int ownSlotCount;
     private final ContextType contextType;
 
-    protected BioContainerMenu(@NotNull MenuContext ctx)
+    protected BioContainerMenu(MenuContext ctx)
     {
         super(ctx.type, ctx.id);
         this.contextType = ctx.contextType;
@@ -115,7 +113,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
 
 
     @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int slot)
+    public ItemStack quickMoveStack(Player player, int slot)
     {
         ItemStack itemstack = ItemStack.EMPTY;
         Slot slotObject = this.slots.get(slot);
@@ -170,12 +168,12 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
     }
 
     @Override
-    public boolean stillValid(@NotNull Player player)
+    public boolean stillValid(Player player)
     {
         return this.isValid.test(player);
     }
 
-	protected static @NotNull MenuContext entityCtx(MenuType<?> menuType, int containerId, Entity entity)
+	protected static MenuContext entityCtx(MenuType<?> menuType, int containerId, Entity entity)
 	{
 		return new MenuContext(menuType, containerId, ContextType.ENTITY, () ->
 		{
@@ -189,7 +187,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
 		});
 	}
 	
-    protected static @NotNull MenuContext blockCtx(MenuType<?> menuType, int containerId, BlockEntity be)
+    protected static MenuContext blockCtx(MenuType<?> menuType, int containerId, BlockEntity be)
     {
         return new MenuContext(menuType, containerId, ContextType.BLOCK, () ->
         {
@@ -207,7 +205,7 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         });
     }
 
-    protected static @NotNull MenuContext itemCtx(
+    protected static MenuContext itemCtx(
             MenuType<?> pMenuType, int pContainerId, Inventory playerInv, EquipmentSlot slot, ItemStack stack
     )
     {
@@ -219,14 +217,14 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         });
     }
 
-    protected static @NotNull MenuContext clientCtx(MenuType<?> pMenuType, int pContainerId, ContextType type)
+    protected static MenuContext clientCtx(MenuType<?> pMenuType, int pContainerId, ContextType type)
     {
         return new MenuContext(pMenuType, pContainerId, type, () -> {
         }, $ -> true);
     }
     
     //FIXME: check positions
-    protected void addStandardInventorySlots(@NotNull Inventory playerInventory, int x, int y)
+    protected void addStandardInventorySlots(Inventory playerInventory, int x, int y)
     {
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 9; j++)

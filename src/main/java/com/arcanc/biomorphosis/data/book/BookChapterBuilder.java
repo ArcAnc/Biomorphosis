@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.google.common.base.Preconditions;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 public class BookChapterBuilder
 {
@@ -26,7 +25,7 @@ public class BookChapterBuilder
     {}
 
     @Contract(value = " -> new", pure = true)
-    public static @NotNull BookChapterBuilder newChapter()
+    public static BookChapterBuilder newChapter()
     {
         return new BookChapterBuilder();
     }

@@ -23,7 +23,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +32,7 @@ public class TagPageComponent extends AbstractPageComponent
 	private final List<ItemStack> toRender;
 
     @SuppressWarnings("unchecked")
-    public TagPageComponent(@NotNull String tagType, @NotNull ResourceLocation location)
+    public TagPageComponent(String tagType, ResourceLocation location)
     {
         super(0, 0, 18, 18, Component.empty());
 	    
@@ -61,7 +60,7 @@ public class TagPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         if (!this.toRender.isEmpty())
         {
@@ -73,7 +72,7 @@ public class TagPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }

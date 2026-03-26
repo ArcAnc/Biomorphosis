@@ -27,7 +27,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.IFluidTank;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -100,7 +99,7 @@ public class FluidInfoArea extends InfoArea
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         FluidStack stack = this.tank.getFluid();
         float capacity = this.tank.getCapacity();

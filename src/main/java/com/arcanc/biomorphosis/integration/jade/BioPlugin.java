@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.integration.jade;
 
 import com.arcanc.biomorphosis.util.Database;
-import org.jetbrains.annotations.NotNull;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaCommonRegistration;
 import snownee.jade.api.IWailaPlugin;
@@ -20,13 +19,13 @@ import snownee.jade.api.WailaPlugin;
 public class BioPlugin implements IWailaPlugin
 {
     @Override
-    public void register(@NotNull IWailaCommonRegistration registration)
+    public void register(IWailaCommonRegistration registration)
     {
         //registration.registerBlockDataProvider(BlockInfoProvider.INSTANCE, BioFluidStorage.class);
     }
 
     @Override
-    public void registerClient(@NotNull IWailaClientRegistration registration)
+    public void registerClient(IWailaClientRegistration registration)
     {
         //registration.registerBlockComponent(BlockInfoProvider.INSTANCE, BioFluidStorageBlock.class);
     }

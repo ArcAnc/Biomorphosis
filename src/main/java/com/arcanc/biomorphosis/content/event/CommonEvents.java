@@ -29,12 +29,11 @@ import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 public class CommonEvents
 {
 
-    public static void registerCommonEvents(@NotNull final IEventBus modEventBus)
+    public static void registerCommonEvents(final IEventBus modEventBus)
     {
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
@@ -49,7 +48,7 @@ public class CommonEvents
         //modEventBus.addListener(CommonEvents :: commonSetupEvent);
    }
     
-    /*private static void commonSetupEvent(@NotNull FMLCommonSetupEvent event)
+    /*private static void commonSetupEvent(FMLCommonSetupEvent event)
     {
         event.enqueueWork(() ->
         {
@@ -60,7 +59,7 @@ public class CommonEvents
     }*/
     
     @SuppressWarnings("unchecked")
-    private static void registerEntityAttributes(final @NotNull EntityAttributeCreationEvent event)
+    private static void registerEntityAttributes(final EntityAttributeCreationEvent event)
     {
         Registration.EntityReg.ENTITY_TYPES.getEntries().stream().
                 map(DeferredHolder::get).
@@ -73,7 +72,7 @@ public class CommonEvents
                                     build()));
     }
 
-    private static void registerCapabilitiesEvent(final @NotNull RegisterCapabilitiesEvent event)
+    private static void registerCapabilitiesEvent(final RegisterCapabilitiesEvent event)
     {
         Registration.ItemReg.ITEMS.getEntries().stream().filter(item -> item.get() instanceof BioBucketItem).
                 map(DeferredHolder :: get).

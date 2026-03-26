@@ -33,7 +33,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.NotNull;
 
 public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 {
@@ -152,7 +151,7 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	}
 	
 	@Override
-	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY)
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
 		guiGraphics.pose().pushPose();
 		guiGraphics.pose().translate(138, 72, 0);

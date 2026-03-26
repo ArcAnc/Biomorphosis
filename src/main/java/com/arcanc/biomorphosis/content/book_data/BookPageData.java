@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public record BookPageData(String author, String title, ResourceLocation chapter
             ).apply(instance, BookPageData :: new)));
 
 
-    public static @NotNull BookPageData getTitleData(@NotNull AbstractBookChapter chapter)
+    public static BookPageData getTitleData(AbstractBookChapter chapter)
     {
         return new BookPageData("ArcAnc", "", chapter.getData().id(), "", List.of());
     }

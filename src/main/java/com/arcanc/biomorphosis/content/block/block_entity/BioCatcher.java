@@ -20,6 +20,12 @@ import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -38,34 +44,27 @@ import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 
-public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEntity, ServerTickableBE, ClientTickableBE
+public class BioCatcher extends BioSidedAccessBlockEntity implements PAnimatable<BioCatcher>, ServerTickableBE, ClientTickableBE
 {
-    private static final RawAnimation LOCK_IN = RawAnimation.begin().thenPlayAndHold("lock-in");
-    private static final RawAnimation LOCK_OUT = RawAnimation.begin().thenPlayAndHold("lock-out");
+    private static final PRawAnimation LOCK_IN = PRawAnimation.begin().thenHold("lock-in").build();
+    private static final PRawAnimation LOCK_OUT = PRawAnimation.begin().thenHold("lock-out").build();
 
     private static final int TICK_PERIOD = 20;
 
     private static final AABB CATCH_ZONE = new AABB(8/16f, 1/16f, 8/16f, 9/16f, 6/16f, 9/16f);
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final PAnimationManager<BioCatcher> manager = PLibHelper.createManager(this);
 
     private final AABB entityCatchZone;
-    private LivingEntity entity = null;
-    private EntityInfo entityInfo = null;
+    private @Nullable LivingEntity entity = null;
+    private @Nullable EntityInfo entityInfo = null;
 
     private final FluidSidedStorage fluidHandler;
 
-    private LazyDataLoader<BioCatcher> entityLoader;
+    private @Nullable LazyDataLoader<BioCatcher> entityLoader;
 
     public BioCatcher(BlockPos pos, BlockState blockState)
     {
@@ -84,7 +83,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public @Nullable InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return null;
     }
@@ -182,27 +181,33 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             return;
         }
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioCatcher> animationRegistrar)
     {
-        controllers.add(new AnimationController<>(this, "catch_controller", 0, state ->
-                state.setAndContinue(this.entity == null ? LOCK_OUT : LOCK_IN)));
+       animationRegistrar.add(new PAnimationController<>("catch_controller", state ->
+       {
+           if (this.entity == null)
+               state.controller().play(LOCK_OUT);
+           else
+               state.controller().play(LOCK_IN);
+	       return ControllerState.PLAY;
+       }));
     }
-
-    public static @Nullable FluidSidedStorage getFluidHandler(@NotNull BioCatcher be, Direction ctx)
+    
+    public static @Nullable FluidSidedStorage getFluidHandler(BioCatcher be, @Nullable Direction ctx)
     {
         return ctx == null ? be.fluidHandler : be.isAccessible(ctx) ? be.fluidHandler : null;
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<BioCatcher> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.writeCustomTag(tag, registries, descrPacket);
         tag.put(Database.Capabilities.Fluids.HANDLER, this.fluidHandler.serializeNBT(registries));
@@ -214,7 +219,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         super.readCustomTag(tag, registries, descrPacket);
         this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
@@ -239,7 +244,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
 
     private record EntityInfo(Vec3 entityPos, Vec2 entityRotation)
     {
-        private void writeToTag(@NotNull CompoundTag tag)
+        private void writeToTag(CompoundTag tag)
         {
             CompoundTag infoTag = new CompoundTag();
             TagHelper.writeVec3(entityPos(), infoTag, "entity_pos");
@@ -247,7 +252,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements GeoBlockEnt
             tag.put("entity_info", infoTag);
         }
 
-        private static @NotNull EntityInfo readFromTag(@NotNull CompoundTag tag)
+        private static EntityInfo readFromTag(CompoundTag tag)
         {
             CompoundTag infoTag = tag.getCompound("entity_info");
             Vec3 pos = TagHelper.readVec3(infoTag, "entity_pos");

@@ -14,7 +14,6 @@ import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
-import org.jetbrains.annotations.NotNull;
 
 public class ChestScreen extends BioContainerScreen<ChestMenu>
 {
@@ -26,7 +25,7 @@ public class ChestScreen extends BioContainerScreen<ChestMenu>
 	}
 
 	@Override
-	protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY)
+	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
 	}
 }

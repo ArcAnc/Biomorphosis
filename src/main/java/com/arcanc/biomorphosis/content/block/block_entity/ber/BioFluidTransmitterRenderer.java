@@ -20,7 +20,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 
 import java.util.ArrayList;
@@ -39,10 +38,10 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
     }
 
     @Override
-    public void render(@NotNull BioFluidTransmitter blockEntity,
+    public void render(BioFluidTransmitter blockEntity,
                        float partialTicks,
-                       @NotNull PoseStack poseStack,
-                       @NotNull MultiBufferSource bufferSource,
+                       PoseStack poseStack,
+                       MultiBufferSource bufferSource,
                        int packedLight,
                        int packedOverlay)
     {
@@ -55,7 +54,7 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
         poseStack.popPose();
     }
 
-    private void renderTube(@NotNull List<Vec3> points, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
+    private void renderTube(List<Vec3> points, PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay)
     {
         if (points.size() < 2)
             return;
@@ -103,7 +102,7 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
             }
     }
 
-    private void addQuad(@NotNull VertexConsumer vertexConsumer, @NotNull PoseStack matrix, int segment, @NotNull Vector3f v0, @NotNull Vector3f v1, @NotNull Vector3f v2, @NotNull Vector3f v3, Vector3f normalCur, Vector3f normalNext, int packedLight, int packedOverlay)
+    private void addQuad(VertexConsumer vertexConsumer, PoseStack matrix, int segment, Vector3f v0, Vector3f v1, Vector3f v2, Vector3f v3, Vector3f normalCur, Vector3f normalNext, int packedLight, int packedOverlay)
     {
         vertexConsumer.addVertex(matrix.last().pose(), v0.x(), v0.y(), v0.z()).setColor(33, 12, 12, 175).setUv(0, segment/(float)SEGMENTS).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalCur.x(), normalCur.y(), normalNext.z());
         vertexConsumer.addVertex(matrix.last().pose(), v1.x(), v1.y(), v1.z()).setColor(33, 12, 12,175).setUv(0, ((segment + 1) / (float)SEGMENTS)).setOverlay(packedOverlay).setLight(packedLight).setNormal(matrix.last(), normalNext.x(), normalNext.y(), normalNext.z());
@@ -112,13 +111,13 @@ public class BioFluidTransmitterRenderer implements BlockEntityRenderer<BioFluid
     }
 
     @Override
-    public boolean shouldRenderOffScreen(@NotNull BioFluidTransmitter blockEntity)
+    public boolean shouldRenderOffScreen(BioFluidTransmitter blockEntity)
     {
         return true;
     }
 
     @Override
-    public @NotNull AABB getRenderBoundingBox(@NotNull BioFluidTransmitter blockEntity)
+    public AABB getRenderBoundingBox(BioFluidTransmitter blockEntity)
     {
         return new AABB(blockEntity.getBlockPos()).inflate(16);
     }

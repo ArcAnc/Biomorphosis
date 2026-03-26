@@ -13,7 +13,6 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -26,7 +25,7 @@ public abstract class BioRegistryData
     {
     }
 
-    public static void register(@NotNull BioRegistryData data)
+    public static void register(BioRegistryData data)
     {
         data.addContent();
         DATA.add(data);
@@ -35,12 +34,12 @@ public abstract class BioRegistryData
     protected abstract void addContent();
     protected abstract void registerContent(RegistrySetBuilder registrySetBuilder);
 
-    protected  <T> @NotNull ResourceKey<T> getResourceKey(ResourceKey<Registry<T>> registryKey, ResourceLocation location)
+    protected  <T> ResourceKey<T> getResourceKey(ResourceKey<Registry<T>> registryKey, ResourceLocation location)
     {
         return ResourceKey.create(registryKey, location);
     }
 
-    public static @NotNull RegistrySetBuilder getBuilder()
+    public static RegistrySetBuilder getBuilder()
     {
         RegistrySetBuilder builder = new RegistrySetBuilder();
         DATA.forEach(bioRegistryData ->

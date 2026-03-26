@@ -13,17 +13,15 @@ package com.arcanc.biomorphosis.util.helper;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 public class DamageHelper
 {
-	public static boolean mutationDamage(int amount, @NotNull LivingEntity target)
+	public static boolean mutationDamage(int amount, LivingEntity target)
 	{
 		Level level = target.level();
 		DamageSource source = new DamageSource(
@@ -33,7 +31,7 @@ public class DamageHelper
 		return dealDamage(source, amount, target);
 	}
 	
-	public static boolean turretDamage(@NotNull MultiblockTurret turret, int amount, @NotNull LivingEntity target)
+	public static boolean turretDamage(MultiblockTurret turret, int amount, LivingEntity target)
 	{
 		Level level = target.level();
 		DamageSource source = new DamageSource(
@@ -44,7 +42,7 @@ public class DamageHelper
 		return dealDamage(source, amount, target);
 	}
 	
-	public static boolean dealDamage(DamageSource source, float amount, @NotNull Entity target)
+	public static boolean dealDamage(DamageSource source, float amount, Entity target)
 	{
 		Level level = target.level();
 		//if (!(level instanceof ServerLevel serverLevel))

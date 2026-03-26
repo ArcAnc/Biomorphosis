@@ -697,7 +697,7 @@
   "gui_light": "side",
   "render_type": "minecraft:translucent",
   "textures": {
-    "all": "biomorphosis:block/lure_campfire",
-    "particle": "biomorphosis:block/lure_campfire"
+    "all": "biomorphosis:block/lure_campfire/main",
+    "particle": "biomorphosis:block/lure_campfire/main"
   }
 }

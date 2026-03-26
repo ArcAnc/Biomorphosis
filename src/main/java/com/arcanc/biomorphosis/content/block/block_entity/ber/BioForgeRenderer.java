@@ -12,59 +12,36 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 import com.arcanc.biomorphosis.content.block.BioForgeBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.BioForge;
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
-import software.bernie.geckolib.renderer.GeoRenderer;
 
-public class BioForgeRenderer extends GeoBlockRenderer<BioForge>
+public class BioForgeRenderer extends PBlockRenderer<BioForge>
 {
+    private static final ResourceLocation TEXTURE = Database.rl("block/forge/0");
+    
+    private static final PModelData FORGE = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("forge")).build();
+    
+    private static final PModelData DOUBLE_FORGE = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("forge_double")).
+            addTexture("0", TEXTURE).build();
+    
     public BioForgeRenderer(final BlockEntityRendererProvider.Context ctx)
     {
-        super(new BioForgeBlockModel());
+        super(FORGE, PRenderTypes.RenderTypeProvider :: trianglesTranslucent);
     }
-
+    
     @Override
-    public @Nullable RenderType getRenderType(BioForge animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+    public PModelData getModelData(BioForge animatable)
     {
-        return RenderType.entityTranslucent(texture);
+        return animatable.getBlockState().getValue(BioForgeBlock.DOUBLE) ? DOUBLE_FORGE : FORGE;
     }
-
-    private static class BioForgeBlockModel extends DefaultedBlockGeoModel<BioForge>
+    
+    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
     {
-        private static final ResourceLocation FORGE_RL = Database.rl("forge");
-        private static final ResourceLocation DOUBLE_FORGE_RL = Database.rl("forge_double");
-
-        private final ResourceLocation forgeModelRL;
-        private final ResourceLocation forgeAnimationRL;
-        private final ResourceLocation doubleForgeModelRL;
-        private final ResourceLocation doubleForgeAnimationRl;
-
-        public BioForgeBlockModel()
-        {
-            super(FORGE_RL);
-            this.forgeModelRL = buildFormattedModelPath(FORGE_RL);
-            this.doubleForgeModelRL = buildFormattedModelPath(DOUBLE_FORGE_RL);
-
-            this.forgeAnimationRL = buildFormattedAnimationPath(FORGE_RL);
-            this.doubleForgeAnimationRl = buildFormattedAnimationPath(DOUBLE_FORGE_RL);
-        }
-
-        @Override
-        public ResourceLocation getModelResource(@NotNull BioForge animatable, GeoRenderer<BioForge> renderer)
-        {
-            return BioForgeBlock.isDouble(animatable.getBlockState()) ? doubleForgeModelRL : forgeModelRL;
-        }
-
-        @Override
-        public ResourceLocation getAnimationResource(@NotNull BioForge animatable)
-        {
-            return BioForgeBlock.isDouble(animatable.getBlockState()) ? doubleForgeAnimationRl : forgeAnimationRL;
-        }
+        event.addTextureLocation(TEXTURE);
     }
 }

@@ -17,7 +17,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.common.data.SpriteSourceProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -48,7 +47,7 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
     }
 
     @Override
-    public @NotNull String getName()
+    public String getName()
     {
         return Database.MOD_NAME + ": Sprite Generator";
     }

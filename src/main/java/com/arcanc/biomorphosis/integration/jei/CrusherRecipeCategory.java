@@ -32,7 +32,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
@@ -42,19 +41,19 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
 
     private final IDrawable icon;
 
-    public CrusherRecipeCategory(@NotNull IGuiHelper guiHelper)
+    public CrusherRecipeCategory(IGuiHelper guiHelper)
     {
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.CRUSHER));
     }
 
     @Override
-    public @NotNull RecipeType<CrusherRecipe> getRecipeType()
+    public RecipeType<CrusherRecipe> getRecipeType()
     {
         return RECIPE_TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle()
+    public Component getTitle()
     {
         return Component.translatable(Database.Integration.JeiInfo.CRUSHER_RECIPE_NAME);
     }
@@ -66,7 +65,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull CrusherRecipe recipe, @NotNull IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, CrusherRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 10, 80).addItemStack(recipe.result().copy());
@@ -111,7 +110,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     }
 
     @Override
-    public void draw(@NotNull CrusherRecipe recipe, @NotNull IRecipeSlotsView recipeSlotsView, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY)
+    public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
     {
         Minecraft mc = RenderHelper.mc();
         Font font = mc.font;

@@ -24,7 +24,6 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
@@ -76,7 +75,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	}
 	
 	@Override
-	protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+	protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
 	{
 	
 	}
@@ -116,7 +115,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 	}
 	
 	@Override
-	protected void renderSelection(@NotNull GuiGraphics guiGraphics, int top, int width, int height, int outerColor, int innerColor)
+	protected void renderSelection(GuiGraphics guiGraphics, int top, int width, int height, int outerColor, int innerColor)
 	{
 		int left = getRowLeft();
 		int right = getRowRight();
@@ -147,7 +146,7 @@ public class OwnedGeneList extends AbstractSelectionList<OwnedGeneList.OwnedGene
 		}
 		
 		@Override
-		public void render(@NotNull GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick)
+		public void render(GuiGraphics guiGraphics, int index, int top, int left, int width, int height, int mouseX, int mouseY, boolean hovering, float partialTick)
 		{
 			Minecraft mc = RenderHelper.mc();
 			Font font = mc.font;

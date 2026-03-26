@@ -21,23 +21,22 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class ChamberMenu extends BioContainerMenu
 {
     private final BlockPos pos;
 
-    public static @NotNull ChamberMenu makeServer(MenuType<?> type, int id, @NotNull Inventory playerInv, MultiblockChamber chamber)
+    public static ChamberMenu makeServer(MenuType<?> type, int id, Inventory playerInv, MultiblockChamber chamber)
     {
         return new ChamberMenu(blockCtx(type, id, chamber), playerInv, chamber.getBlockPos());
     }
 
-    public static @NotNull ChamberMenu makeClient(MenuType<?> type, int id, @NotNull Inventory playerInv, BlockPos chamberPos)
+    public static ChamberMenu makeClient(MenuType<?> type, int id, Inventory playerInv, BlockPos chamberPos)
     {
         return new ChamberMenu(clientCtx(type, id, ContextType.BLOCK), playerInv, chamberPos);
     }
 
-    private ChamberMenu(@NotNull MenuContext ctx, @NotNull Inventory playerInventory, BlockPos chamberPos)
+    private ChamberMenu(MenuContext ctx, Inventory playerInventory, BlockPos chamberPos)
     {
         super(ctx);
 
@@ -56,7 +55,7 @@ public class ChamberMenu extends BioContainerMenu
     }
 
     @Override
-    protected void handleMessage(@NotNull ServerPlayer player, @NotNull CompoundTag tag)
+    protected void handleMessage(ServerPlayer player, CompoundTag tag)
     {
         ServerLevel level = player.serverLevel();
         BlockPos bePos = TagHelper.readBlockPos(tag, "block_entity_pos");

@@ -19,7 +19,6 @@ import net.minecraft.advancements.critereon.RecipeUnlockedTrigger;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
@@ -46,21 +45,21 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
     }
 
     @Override
-    public @NotNull T unlockedBy(@NotNull String name, @NotNull Criterion<?> criterion)
+    public T unlockedBy(String name, Criterion<?> criterion)
     {
         this.criteria.put(name, criterion);
         return getSelf();
     }
 
     @Override
-    public @NotNull T group(@Nullable String groupName)
+    public T group(@Nullable String groupName)
     {
         this.group = groupName;
         return getSelf();
     }
     
     @Override
-    public void save(@NotNull RecipeOutput output, @NotNull ResourceLocation loc)
+    public void save(RecipeOutput output, ResourceLocation loc)
     {
         Advancement.Builder advancement = output.advancement().
                         addCriterion("has_the_recipe", RecipeUnlockedTrigger.unlocked(loc)).
@@ -72,7 +71,7 @@ public abstract class BioBaseRecipeBuilder<T extends BioBaseRecipeBuilder<T, R, 
     }
 
     @Override
-    public void save(@NotNull RecipeOutput recipeOutput, @NotNull String id)
+    public void save(RecipeOutput recipeOutput, String id)
     {
         ResourceLocation resourcelocation = RecipeBuilder.getDefaultRecipeId(this.getResult());
         ResourceLocation resourcelocation1 = ResourceLocation.parse(id);

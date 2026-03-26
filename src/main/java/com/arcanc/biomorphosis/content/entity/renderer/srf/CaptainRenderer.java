@@ -16,7 +16,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class CaptainRenderer extends LivingEntityRenderer<Captain, CaptainModel>
 {
@@ -28,13 +27,13 @@ public class CaptainRenderer extends LivingEntityRenderer<Captain, CaptainModel>
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Captain entity)
+	protected boolean shouldShowName(Captain entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull Captain entity)
+	public ResourceLocation getTextureLocation(Captain entity)
 	{
 		return TEXTURE;
 	}

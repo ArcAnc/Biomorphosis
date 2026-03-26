@@ -14,10 +14,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class TexturedButton extends Button
 {
@@ -31,7 +29,7 @@ public class TexturedButton extends Button
 	}
 	
 	@Override
-	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
 	{
 		ResourceLocation resourcelocation = this.sprites.get(this.isActive(), this.isHoveredOrFocused());
 		guiGraphics.blit(

@@ -18,7 +18,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 public record C2SGuiData(int containerId, CompoundTag tag) implements IPacket
 {
@@ -31,7 +30,7 @@ public record C2SGuiData(int containerId, CompoundTag tag) implements IPacket
             C2SGuiData :: new);
 
     @Override
-    public void process(@NotNull IPayloadContext context)
+    public void process(IPayloadContext context)
     {
         Player player = context.player();
         if (!(player instanceof ServerPlayer serverPlayer))
@@ -47,7 +46,7 @@ public record C2SGuiData(int containerId, CompoundTag tag) implements IPacket
     }
 
     @Override
-    public @NotNull Type<C2SGuiData> type()
+    public Type<C2SGuiData> type()
     {
         return TYPE;
     }

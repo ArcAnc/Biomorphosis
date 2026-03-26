@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.fluids.FluidUtil;
-import org.jetbrains.annotations.NotNull;
 
 public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<MultiblockFluidStorage>
 {
@@ -32,19 +31,19 @@ public class MultiblockFluidStorageBlock extends DynamicMultiblockPartBlock<Mult
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
-                                                       @NotNull BlockState state,
-                                                       @NotNull Level level,
-                                                       @NotNull BlockPos pos,
-                                                       @NotNull Player player,
-                                                       @NotNull InteractionHand hand,
-                                                       @NotNull BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack,
+                                                       BlockState state,
+                                                       Level level,
+                                                       BlockPos pos,
+                                                       Player player,
+                                                       InteractionHand hand,
+                                                       BlockHitResult hitResult)
     {
         if (FluidHelper.isFluidHandler(stack))
         {

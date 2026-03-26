@@ -11,14 +11,13 @@ package com.arcanc.biomorphosis.content.block.block_entity.tick;
 
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import org.jetbrains.annotations.NotNull;
 
 /*This code was taken from Immersive Engineering. Thanks BluSunrize, it's perfect*/
 public interface ClientTickableBE extends TickableBase
 {
     void tickClient();
 
-    static <T extends BlockEntity> @NotNull BlockEntityTicker<T> makeTicker()
+    static <T extends BlockEntity> BlockEntityTicker<T> makeTicker()
     {
         return (level, pos, state, blockEntity) -> {
             ClientTickableBE tickable = (ClientTickableBE) blockEntity;

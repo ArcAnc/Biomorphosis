@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerAboutToStartEvent;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -32,7 +31,7 @@ public class Trades
 	
 	private static final Map<ResourceKey<PalladinOrder>, Map<PalladinTraderType, VillagerTrades.ItemListing[]>> PALLADIN_TRADES = new HashMap<>();
 	
-	private static void registerTrades(final @NotNull ServerAboutToStartEvent event)
+	private static void registerTrades(final ServerAboutToStartEvent event)
 	{
 		PALLADIN_TRADES.put(PalladinOrders.BASE_ORDER, ImmutableMap.<PalladinTraderType, VillagerTrades.ItemListing[]>builder().
 				put(PalladinTraderType.CAPTAIN, new VillagerTrades.ItemListing[]
@@ -75,7 +74,7 @@ public class Trades
 		return PALLADIN_TRADES.get(order).get(traderType);
 	}
 	
-	public static void register(@NotNull IEventBus modEventBus)
+	public static void register(IEventBus modEventBus)
 	{
 		NeoForge.EVENT_BUS.addListener(Trades :: registerTrades);
 	}

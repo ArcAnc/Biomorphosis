@@ -3736,7 +3736,7 @@
   "gui_light": "side",
   "render_type": "minecraft:translucent",
   "textures": {
-    "all": "biomorphosis:block/eggs",
-    "particle": "biomorphosis:block/eggs"
+    "all": "biomorphosis:block/eggs/0",
+    "particle": "biomorphosis:block/eggs/0"
   }
 }

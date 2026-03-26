@@ -17,7 +17,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 public class MultiblockMorpherSpecialRenderer extends BlockEntityWithoutLevelRenderer
 {
@@ -28,10 +27,10 @@ public class MultiblockMorpherSpecialRenderer extends BlockEntityWithoutLevelRen
     }
     
     @Override
-    public void renderByItem(@NotNull ItemStack stack,
-                             @NotNull ItemDisplayContext displayContext,
-                             @NotNull PoseStack poseStack,
-                             @NotNull MultiBufferSource buffer,
+    public void renderByItem(ItemStack stack,
+                             ItemDisplayContext displayContext,
+                             PoseStack poseStack,
+                             MultiBufferSource buffer,
                              int packedLight,
                              int packedOverlay)
     {

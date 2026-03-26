@@ -20,7 +20,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.BiFunction;
@@ -39,31 +38,31 @@ public class BioNorphDependentBlock<T extends BioBaseBlockEntity> extends BioBas
     }
 
     @Override
-    public void setPlacedBy(@NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState state,
+    public void setPlacedBy(Level level,
+                            BlockPos pos,
+                            BlockState state,
                             @Nullable LivingEntity placer,
-                            @NotNull ItemStack stack)
+                            ItemStack stack)
     {
         if (!isConnectedToNorph(level, pos, state))
             dropBlock(level, pos);
     }
     
     @Override
-    protected void neighborChanged(@NotNull BlockState state,
-                                   @NotNull Level level,
-                                   @NotNull BlockPos pos,
-                                   @NotNull Block neighborBlock,
-                                   @NotNull BlockPos neighborPos, boolean movedByPiston)
+    protected void neighborChanged(BlockState state,
+                                   Level level,
+                                   BlockPos pos,
+                                   Block neighborBlock,
+                                   BlockPos neighborPos, boolean movedByPiston)
     {
         if (!isConnectedToNorph(level, pos, state))
             dropBlock(level, pos);
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }
 
-    public boolean isConnectedToNorph(@NotNull Level level,
-                                       @NotNull BlockPos pos,
-                                       @NotNull BlockState state)
+    public boolean isConnectedToNorph(Level level,
+                                       BlockPos pos,
+                                       BlockState state)
     {
         if (state.is(Registration.BlockReg.NORPH_OVERLAY))
             return true;
@@ -78,7 +77,7 @@ public class BioNorphDependentBlock<T extends BioBaseBlockEntity> extends BioBas
         return false;
     }
 
-    protected void dropBlock(@NotNull Level level, BlockPos pos)
+    protected void dropBlock(Level level, BlockPos pos)
     {
         level.destroyBlock(pos, true);
         level.sendBlockUpdated(pos, defaultBlockState(), level.getBlockState(pos), UPDATE_ALL);

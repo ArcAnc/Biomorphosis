@@ -22,7 +22,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerContainerEvent;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,17 +33,17 @@ public class ChestMenu extends BioContainerMenu
 	private final BlockPos pos;
 	public final List<UUID> usingPlayers = new ArrayList<>();
 
-	public static @NotNull ChestMenu makeServer(MenuType<?> type, int id, @NotNull Inventory playerInv, BioChest chest)
+	public static ChestMenu makeServer(MenuType<?> type, int id, Inventory playerInv, BioChest chest)
 	{
 		return new ChestMenu(blockCtx(type, id, chest), playerInv, chest.getBlockPos());
 	}
 
-	public static @NotNull ChestMenu makeClient(MenuType<?> type, int id, @NotNull Inventory playerInv, BlockPos chestPos)
+	public static ChestMenu makeClient(MenuType<?> type, int id, Inventory playerInv, BlockPos chestPos)
 	{
 		return new ChestMenu(clientCtx(type, id, ContextType.BLOCK), playerInv, chestPos);
 	}
 
-	private ChestMenu(@NotNull MenuContext ctx, @NotNull Inventory playerInventory, BlockPos chestPos)
+	private ChestMenu(MenuContext ctx, Inventory playerInventory, BlockPos chestPos)
 	{
 		super(ctx);
 
@@ -61,7 +60,7 @@ public class ChestMenu extends BioContainerMenu
 		this.addStandardInventorySlots(playerInventory, 13, 95);
 	}
 
-	private static void onOpen(final PlayerContainerEvent.@NotNull Open event)
+	private static void onOpen(final PlayerContainerEvent.Open event)
 	{
 		if (event.getContainer() instanceof ChestMenu container && event.getEntity() instanceof ServerPlayer player)
 		{
@@ -72,7 +71,7 @@ public class ChestMenu extends BioContainerMenu
 		}
 	}
 
-	private static void onClose(final PlayerContainerEvent.@NotNull Close event)
+	private static void onClose(final PlayerContainerEvent.Close event)
 	{
 		if (event.getContainer() instanceof ChestMenu container && event.getEntity() instanceof ServerPlayer player)
 		{

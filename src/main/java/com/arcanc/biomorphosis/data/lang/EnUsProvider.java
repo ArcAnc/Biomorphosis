@@ -18,7 +18,6 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.common.data.LanguageProvider;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -293,7 +292,7 @@ public class EnUsProvider extends LanguageProvider
 		this.add("death.attack.biomorphosis:impossible_mutation", "Player %s mutated too hard");
     }
 
-    private void addFluidDescription(Registration.FluidReg.@NotNull FluidEntry entry, String description)
+    private void addFluidDescription(Registration.FluidReg.FluidEntry entry, String description)
     {
         this.addItem(entry.bucket(), description + " Bucket");
         this.add(entry.still().getId().toLanguageKey(), description);
@@ -302,7 +301,7 @@ public class EnUsProvider extends LanguageProvider
         this.add(entry.type().get().getDescriptionId(), description);
     }
 
-    private void addEntity(Registration.EntityReg.@NotNull EntityEntry<?> entity, String description, Database.GUI.Sounds.EntitySoundSubtitle subtitle, String idleAction)
+    private void addEntity(Registration.EntityReg.EntityEntry<?> entity, String description, Database.GUI.Sounds.EntitySoundSubtitle subtitle, String idleAction)
     {
         this.addEntityType(entity.getEntityHolder(), description);
         if (entity.getEggHolder() != null)
@@ -313,24 +312,24 @@ public class EnUsProvider extends LanguageProvider
         this.add(subtitle.getDeath(), description + " dies");
     }
 
-	private @NotNull String multiblock(ResourceLocation multiblockLocation)
+	private String multiblock(ResourceLocation multiblockLocation)
 	{
 		Preconditions.checkNotNull(multiblockLocation);
 		
 		return "</multiblock;" + multiblockLocation + "/>";
 	}
 	
-	private @NotNull String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
+	private String recipeForBook(RecipeType<?> recipeType, ResourceLocation recipeId)
 	{
 		return recipeForBook(recipeType, "", recipeId);
 	}
 	
-	private @NotNull String recipeForBook(@NotNull RecipeType<?> recipeType, String suffix, ResourceLocation recipeId)
+	private String recipeForBook(RecipeType<?> recipeType, String suffix, ResourceLocation recipeId)
 	{
 		return recipeForBook(ResourceLocation.parse(recipeType.toString()), suffix, recipeId);
 	}
 	
-    private @NotNull String recipeForBook(ResourceLocation recipeType, String suffix, ResourceLocation recipeId)
+    private String recipeForBook(ResourceLocation recipeType, String suffix, ResourceLocation recipeId)
     {
         Preconditions.checkNotNull(recipeType);
         Preconditions.checkNotNull(recipeId);

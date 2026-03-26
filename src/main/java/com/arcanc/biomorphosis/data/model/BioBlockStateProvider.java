@@ -93,7 +93,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	{
 		BioBaseEntityBlock<EggsDeco> block = Registration.BlockReg.EGGS_DECO.get();
 		
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.translucent().name).
@@ -714,7 +714,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createChestModel()
 	{
 		BioChestBlock block = Registration.BlockReg.CHEST.get();
-		ResourceLocation blockTexture = BuiltInRegistries.BLOCK.getKey(block).withPrefix("swarm_").withPrefix("block/");
+		ResourceLocation blockTexture = BuiltInRegistries.BLOCK.getKey(block).withPrefix("swarm_").withPrefix("block/").withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).
@@ -2581,7 +2581,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockPrefix("morpher"));
+				texture("particle", blockPrefix("morpher") + "/0");
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2593,7 +2593,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockPrefix("chrysalis"));
+				texture("particle", blockPrefix("chrysalis") + "/0");
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2605,7 +2605,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockPrefix("turret"));
+				texture("particle", blockPrefix("turret") + "/0");
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2617,7 +2617,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		//Water used coz there is no particle only block in 1.21.1
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("water"))).
-				texture("particle", blockPrefix("chamber"));
+				texture("particle", blockPrefix("chamber") + "/0");
 		
 		//Item model is missing here, coz using custom renderer
 		getVariantBuilder(block).partialState().addModels(new ConfiguredModel(model));
@@ -2658,7 +2658,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	{
 		BioSqueezerBlock block = Registration.BlockReg.SQUEEZER.get();
 		
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).
@@ -3131,7 +3131,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createForgeModel()
 	{
 		BioForgeBlock block = Registration.BlockReg.FORGE.get();
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		/*FIXME: Добавить вторую модель*/
 		
@@ -3719,7 +3719,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createCatcherModel()
 	{
 		BioCatcherBlock block = Registration.BlockReg.CATCHER.get();
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).
@@ -3920,7 +3920,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createStomachModel()
 	{
 		BioStomachBlock block = Registration.BlockReg.STOMACH.get();
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).
@@ -4378,7 +4378,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createCrusherModel()
 	{
 		BioCrusherBlock block = Registration.BlockReg.CRUSHER.get();
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).
@@ -5054,7 +5054,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 		registerModels(block, model);
 	}
 	
-	private void createFluidModel(@NotNull Registration.FluidReg.FluidEntry fluid)
+	private void createFluidModel(Registration.FluidReg.FluidEntry fluid)
 	{
 		LiquidBlock block = fluid.block().get();
 		
@@ -5191,7 +5191,9 @@ public class BioBlockStateProvider extends BlockStateProvider
 							from(0, 0, 0).
 							to(16, 16, 16).
 					allFaces((direction, faceBuilder) ->
-							faceBuilder.uvs(0, 0, 16, 16)).
+							faceBuilder.
+									uvs(0, 0, 16, 16).
+									cullface(direction)).
 					texture("#all").
 					end();
 			
@@ -5209,7 +5211,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	{
 		NorphSourceBlock block = Registration.BlockReg.NORPH_SOURCE.get();
 		
-		ResourceLocation blockText = blockTexture(block);
+		ResourceLocation blockText = blockTexture(block).withSuffix("/main");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				texture("all", blockText).
@@ -5505,11 +5507,12 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createLureCampfireModel()
 	{
 		Block block = Registration.BlockReg.LURE_CAMPFIRE.get();
+		ResourceLocation texture = blockTexture(block).withSuffix("/main");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.translucent().name).
-				texture("all", blockTexture(block)).
-				texture("particle", blockTexture(block)).
+				texture("all", texture).
+				texture("particle", texture).
 				guiLight(BlockModel.GuiLight.SIDE).
 				element().
 						from(2, 0, 3).
@@ -5779,23 +5782,23 @@ public class BioBlockStateProvider extends BlockStateProvider
 				parent(model);
 	}
 	
-	private @NotNull String itemPrefix(String str)
+	private String itemPrefix(String str)
 	{
 		return ModelProvider.ITEM_FOLDER + "/" + str;
 	}
 	
-	private @NotNull String blockPrefix(String str)
+	private String blockPrefix(String str)
 	{
 		return ModelProvider.BLOCK_FOLDER + "/" + str;
 	}
 	
-	private @NotNull String name(Block block)
+	private String name(Block block)
 	{
 		return BlockHelper.getRegistryName(block).getPath();
 	}
 	
 	@Override
-	public @NotNull String getName()
+	public String getName()
 	{
 		return Database.MOD_NAME + " Block Models";
 	}

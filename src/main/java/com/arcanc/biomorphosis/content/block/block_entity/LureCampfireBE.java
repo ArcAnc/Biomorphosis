@@ -16,6 +16,12 @@ import com.arcanc.biomorphosis.content.entity.QueenGuard;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
@@ -27,26 +33,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickableBE, GeoBlockEntity
+public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickableBE, PAnimatable<LureCampfireBE>
 {
-    private static final RawAnimation SHAFT_ROTATION = RawAnimation.begin().thenLoop("shaft_rotation");
-    private static final RawAnimation FIRE_ENABLE = RawAnimation.begin().thenPlayAndHold("fire_enable");
-    private static final RawAnimation FIRE_DISABLE = RawAnimation.begin().thenPlayAndHold("fire_disable");
+    private static final PRawAnimation SHAFT_ROTATION = PRawAnimation.begin().thenLoop("shaft_rotation").build();
+    private static final PRawAnimation FIRE_ENABLE = PRawAnimation.begin().thenHold("fire_enable").build();
+    private static final PRawAnimation FIRE_DISABLE = PRawAnimation.begin().thenHold("fire_disable").build();
 
     private static final int BASE_SUMMON_TIME = 2 * 60 * 20;
     private static final int REDUCTION_PER_MEAT = 20 * 15;
     private int timer;
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final PAnimationManager<LureCampfireBE> manager = PLibHelper.createManager(this);
     private final LureCampfireStackHandler itemHandler = new LureCampfireStackHandler(5);
 
     public LureCampfireBE(BlockPos pos, BlockState blockState)
@@ -71,14 +69,14 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
     {}
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         itemHandler.deserializeNBT(registries, tag.getCompound("inventory"));
         timer = tag.getInt("timer");
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         tag.put("inventory", itemHandler.serializeNBT(registries));
         tag.putInt("timer", timer);
@@ -134,32 +132,37 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
         }
         return meatAmount > 1 ? BASE_SUMMON_TIME - ((meatAmount - 1) * REDUCTION_PER_MEAT) : BASE_SUMMON_TIME;
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<LureCampfireBE> registrar)
     {
-        controllers.add(new AnimationController<>(this, "shaft_controller", 10, state ->
+        registrar.add(new PAnimationController<>("shaft_controller", state ->
         {
-            if (state.getAnimatable().getBlockState().getValue(BlockHelper.BlockProperties.LIT) && !ItemHelper.isEmpty(state.getAnimatable().getInventory()))
-                return state.setAndContinue(SHAFT_ROTATION);
-            return PlayState.STOP;
+            LureCampfireBE animatable = state.animatable();
+            if (animatable.getBlockState().getValue(BlockHelper.BlockProperties.LIT) && !ItemHelper.isEmpty(animatable.getInventory()))
+            {
+                state.controller().play(SHAFT_ROTATION);
+                return ControllerState.PLAY;
+            }
+            return ControllerState.STOP;
         }));
-        controllers.add(new AnimationController<>(this, "fire_controller", state ->
+        registrar.add(new PAnimationController<>("fire_controller", state ->
         {
-            if (state.getAnimatable().getBlockState().getValue(BlockHelper.BlockProperties.LIT))
-                state.getController().setAnimation(FIRE_ENABLE);
+            LureCampfireBE animatable = state.animatable();
+            if (animatable.getBlockState().getValue(BlockHelper.BlockProperties.LIT))
+                state.controller().play(FIRE_ENABLE);
             else
-                state.getController().setAnimation(FIRE_DISABLE);
-            return PlayState.CONTINUE;
+                state.controller().play(FIRE_DISABLE);
+            return ControllerState.PLAY;
         }));
     }
 
     @Override
-    public @NotNull AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<LureCampfireBE> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
-
+    
     public record UsingResult(ItemStack stack, boolean added)
     {
     }
@@ -178,13 +181,13 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
         }
 
         @Override
-        protected int getStackLimit(int slot, @NotNull ItemStack stack)
+        protected int getStackLimit(int slot, ItemStack stack)
         {
             return 1;
         }
 
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack)
+        public boolean isItemValid(int slot, ItemStack stack)
         {
             return stack.is(Registration.BlockReg.FLESH.asItem());
         }

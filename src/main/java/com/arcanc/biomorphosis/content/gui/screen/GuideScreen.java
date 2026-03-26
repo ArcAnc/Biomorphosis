@@ -17,7 +17,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -101,7 +100,7 @@ public class GuideScreen extends Screen
                 orElse(null));
     }
 
-    public void setCurrentOpenedByHistory(BookData.@NotNull BookHistoryEntry entry)
+    public void setCurrentOpenedByHistory(BookData.BookHistoryEntry entry)
     {
         setCurrentChapter(entry.chapter());
         setCurrentPage(entry.page());
@@ -179,13 +178,13 @@ public class GuideScreen extends Screen
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         super.render(guiGraphics, mouseX, mouseY, partialTicks);
     }
 
     @Override
-    public void renderBackground(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         super.renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 

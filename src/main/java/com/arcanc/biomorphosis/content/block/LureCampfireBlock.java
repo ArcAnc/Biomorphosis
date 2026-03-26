@@ -33,7 +33,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.neoforge.common.Tags;
-import org.jetbrains.annotations.NotNull;
 
 public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
 {
@@ -48,13 +47,13 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
-                                                       @NotNull BlockState state,
-                                                       @NotNull Level level,
-                                                       @NotNull BlockPos pos,
-                                                       @NotNull Player player,
-                                                       @NotNull InteractionHand hand,
-                                                       @NotNull BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack,
+                                                       BlockState state,
+                                                       Level level,
+                                                       BlockPos pos,
+                                                       Player player,
+                                                       InteractionHand hand,
+                                                       BlockHitResult hitResult)
     {
         return BlockHelper.castTileEntity(level, pos, LureCampfireBE.class).
                 map(lureCampfireBE ->
@@ -86,7 +85,7 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull BlockHitResult hitResult)
+    protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult)
     {
         return BlockHelper.castTileEntity(level, pos, LureCampfireBE.class).
             map(lureCampfireBE ->
@@ -108,38 +107,38 @@ public class LureCampfireBlock extends BioBaseEntityBlock<LureCampfireBE>
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         return super.getStateForPlacement(context).setValue(HORIZONTAL_FACING, context.getHorizontalDirection().getOpposite()).setValue(LIT, false);
     }
 
     @Override
-    public @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rot)
+    public BlockState rotate(BlockState state, Rotation rot)
     {
         return state.setValue(HORIZONTAL_FACING, rot.rotate(state.getValue(HORIZONTAL_FACING)));
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public @NotNull BlockState mirror(BlockState state, Mirror mirror)
+    public BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(LIT, HORIZONTAL_FACING);
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    protected @NotNull MapCodec<LureCampfireBlock> codec()
+    protected MapCodec<LureCampfireBlock> codec()
     {
         return CODEC;
     }

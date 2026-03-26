@@ -13,7 +13,6 @@ package com.arcanc.biomorphosis.content.worldgen.srf.orders;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +23,7 @@ public class PalladinOrders
 	
 	public static final ResourceKey<PalladinOrder> BASE_ORDER = create("base");
 	
-	private static @NotNull ResourceKey<PalladinOrder> create(String name)
+	private static ResourceKey<PalladinOrder> create(String name)
 	{
 		ResourceKey<PalladinOrder> order = ResourceKey.create(Registration.PalladinOrderReg.ORDER_KEY, Database.rl(name));
 		FULL_ORDERS.add(order);

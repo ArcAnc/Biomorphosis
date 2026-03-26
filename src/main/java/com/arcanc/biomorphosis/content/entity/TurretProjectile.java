@@ -13,6 +13,11 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
@@ -21,6 +26,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,22 +35,16 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class TurretProjectile extends ThrowableProjectile implements GeoEntity
+public class TurretProjectile extends ThrowableProjectile implements PAnimatable<TurretProjectile>
 {
 	private static final EntityDataAccessor<Integer> EFFECT_ID =
 			SynchedEntityData.defineId(TurretProjectile.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<BlockPos> TURRET_POS =
 			SynchedEntityData.defineId(TurretProjectile.class, EntityDataSerializers.BLOCK_POS);
 	
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<TurretProjectile> manager = PLibHelper.createManager(this);
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
 	
 	public TurretProjectile(EntityType<? extends ThrowableProjectile> type, Level level)
 	{
@@ -52,14 +52,28 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 	}
 	
 	@Override
-	protected void defineSynchedData(SynchedEntityData.@NotNull Builder builder)
+	protected void defineSynchedData(SynchedEntityData.Builder builder)
 	{
 		builder.define(EFFECT_ID, 0);
 		builder.define(TURRET_POS, BlockPos.ZERO);
 	}
 	
 	@Override
-	protected void onHitEntity(@NotNull EntityHitResult result)
+	public void tick()
+	{
+		if (this.firstTick)
+			this.setNoGravity(true);
+		super.tick();
+		RandomSource random = this.level().random;
+		for (int q = 0; q < 4; q++)
+			this.level().addParticle(ParticleTypes.CRIT,
+					this.getX() + random.nextFloat() * 0.75f - 0.75f,
+					this.getY() + random.nextFloat() * 0.75f - 0.75f,
+					this.getZ() + random.nextFloat() * 0.75f - 0.75f, 0, 0.005f, 0);
+	}
+	
+	@Override
+	protected void onHitEntity(EntityHitResult result)
 	{
 		if (!(this.level() instanceof ServerLevel serverLevel))
 			return;
@@ -82,7 +96,7 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 	}
 	
 	@Override
-	protected void onHitBlock(@NotNull BlockHitResult result)
+	protected void onHitBlock(BlockHitResult result)
 	{
 		super.onHitBlock(result);
 		if (!(this.level() instanceof ServerLevel serverLevel))
@@ -92,15 +106,15 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 		discard();
 	}
 	
-	private void spawnImpactParticles(@NotNull ServerLevel serverLevel, @NotNull Vec3 location)
+	private void spawnImpactParticles(ServerLevel serverLevel, Vec3 location)
 	{
 		//FIXME: change particle types and speed
-		ParticleOptions particle = ParticleTypes.CRIT;
+		ParticleOptions particle = ParticleTypes.EXPLOSION;
 		
 		serverLevel.sendParticles(
 				particle,
 				location.x(), location.y(), location.z(),
-				12,
+				1,
 				0, 0, 0,
 				0.15f);
 	}
@@ -117,7 +131,7 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 		return this.getEntityData().get(TURRET_POS);
 	}
 	
-	public void setEffect(MultiblockTurret.@NotNull TurretEffect shootEffect)
+	public void setEffect(MultiblockTurret.TurretEffect shootEffect)
 	{
 		this.getEntityData().set(EFFECT_ID, shootEffect.ordinal());
 	}
@@ -129,7 +143,7 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 	}
 	
 	@Override
-	protected void addAdditionalSaveData(@NotNull CompoundTag compound)
+	protected void addAdditionalSaveData(CompoundTag compound)
 	{
 		super.addAdditionalSaveData(compound);
 		compound.putInt("effect_id", this.getEntityData().get(EFFECT_ID));
@@ -137,7 +151,7 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 	}
 	
 	@Override
-	protected void readAdditionalSaveData(@NotNull CompoundTag compound)
+	protected void readAdditionalSaveData(CompoundTag compound)
 	{
 		super.readAdditionalSaveData(compound);
 		this.getEntityData().set(EFFECT_ID, compound.getInt("effect_id"));
@@ -146,15 +160,18 @@ public class TurretProjectile extends ThrowableProjectile implements GeoEntity
 	}
 	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<TurretProjectile> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "controller", 0, state ->
-				state.setAndContinue(DefaultAnimations.IDLE)));
+		registrar.add(new PAnimationController<>(state ->
+		{
+			state.controller().play(IDLE);
+			return state.controller().getState();
+		}));
 	}
 	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<TurretProjectile> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 }

@@ -24,7 +24,6 @@ import com.mojang.serialization.JsonOps;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -419,14 +418,14 @@ public class BioGenomeProvider extends BioRegistryData
 	}
 	
 	@Override
-	protected void registerContent(@NotNull RegistrySetBuilder registrySetBuilder)
+	protected void registerContent(RegistrySetBuilder registrySetBuilder)
 	{
 		registrySetBuilder.add(Registration.GenomeReg.DEFINITION_KEY, context ->
 				this.geneDataMap.forEach((location, geneDefinition) ->
 						context.register(getDefinitionKey(location), geneDefinition)));
 	}
 	
-	private @NotNull ResourceKey<GeneDefinition> getDefinitionKey(ResourceLocation location)
+	private ResourceKey<GeneDefinition> getDefinitionKey(ResourceLocation location)
 	{
 		Preconditions.checkNotNull(location);
 		return getResourceKey(Registration.GenomeReg.DEFINITION_KEY, location);

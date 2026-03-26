@@ -10,7 +10,6 @@
 package com.arcanc.biomorphosis.content.block.multiblock.base;
 
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 public enum MultiblockState implements StringRepresentable
 {
@@ -26,7 +25,7 @@ public enum MultiblockState implements StringRepresentable
     }
 
     @Override
-    public @NotNull String getSerializedName()
+    public String getSerializedName()
     {
         return name;
     }

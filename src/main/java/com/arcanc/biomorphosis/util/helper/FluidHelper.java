@@ -21,7 +21,6 @@ import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -29,17 +28,17 @@ import java.util.Set;
 
 public class FluidHelper
 {
-    public static boolean isFluidHandler(@NotNull Level level, @NotNull BlockPos pos)
+    public static boolean isFluidHandler(Level level, BlockPos pos)
     {
         return getFluidHandler(level, pos, null).isPresent();
     }
 
-    public static boolean isFluidHandler(@NotNull Level level, @NotNull BlockPos pos, @Nullable Direction dir)
+    public static boolean isFluidHandler(Level level, BlockPos pos, @Nullable Direction dir)
     {
         return getFluidHandler(level, pos, dir).isPresent();
     }
 
-    public static boolean isFluidHandler(@NotNull ItemStack stack)
+    public static boolean isFluidHandler(ItemStack stack)
     {
         return !stack.isEmpty() && getFluidHandler(stack).isPresent();
     }
@@ -49,7 +48,7 @@ public class FluidHelper
         return isFluidHandler(tile, null);
     }
 
-    public static boolean isFluidHandler(@NotNull BlockEntity tile, Direction dir)
+    public static boolean isFluidHandler(BlockEntity tile, Direction dir)
     {
         return getFluidHandler(tile, dir).isPresent();
     }
@@ -59,17 +58,17 @@ public class FluidHelper
         return getFluidHandler(level, pos, null);
     }
 
-    public static Optional<IFluidHandler> getFluidHandler (@NotNull Level level, @NotNull BlockPos pos, @Nullable Direction dir)
+    public static Optional<IFluidHandler> getFluidHandler (Level level, BlockPos pos, @Nullable Direction dir)
     {
         return Optional.ofNullable(level.getCapability(Capabilities.FluidHandler.BLOCK, pos, dir));
     }
 
-    public static Optional<IFluidHandler> getFluidHandler (@NotNull BlockEntity tile)
+    public static Optional<IFluidHandler> getFluidHandler (BlockEntity tile)
     {
         return getFluidHandler(tile, null);
     }
 
-    public static Optional<IFluidHandler> getFluidHandler (@NotNull BlockEntity tile, @Nullable Direction dir)
+    public static Optional<IFluidHandler> getFluidHandler (BlockEntity tile, @Nullable Direction dir)
     {
         BlockPos pos = tile.getBlockPos();
         Level level = tile.getLevel();
@@ -78,19 +77,19 @@ public class FluidHelper
         return getFluidHandler(level, pos, tile, state, dir);
     }
 
-    public static Optional<IFluidHandler> getFluidHandler(@NotNull Level level, @NotNull BlockPos pos, @Nullable BlockEntity tile, @Nullable BlockState state, @Nullable Direction dir)
+    public static Optional<IFluidHandler> getFluidHandler(Level level, BlockPos pos, @Nullable BlockEntity tile, @Nullable BlockState state, @Nullable Direction dir)
     {
         return Optional.ofNullable(level.getCapability(Capabilities.FluidHandler.BLOCK, pos, state, tile, dir));
     }
 
-    public static Optional<IFluidHandler> getNearbyFluidHandler (@NotNull BlockEntity tile, Direction dir)
+    public static Optional<IFluidHandler> getNearbyFluidHandler (BlockEntity tile, Direction dir)
     {
         BlockPos pos = tile.getBlockPos();
         Level level = tile.getLevel();
         return getFluidHandler(level, pos.relative(dir), dir.getOpposite());
     }
 
-    public static Optional<IFluidHandlerItem> getFluidHandler (@NotNull ItemStack stack)
+    public static Optional<IFluidHandlerItem> getFluidHandler (ItemStack stack)
     {
         return Optional.ofNullable(stack.getCapability(Capabilities.FluidHandler.ITEM));
     }
@@ -120,7 +119,7 @@ public class FluidHelper
         return false;
     }
 
-    public static boolean hasEmptySpace(@NotNull Optional<IFluidHandler> in)
+    public static boolean hasEmptySpace(Optional<IFluidHandler> in)
     {
         return in.map(handler ->
         {
@@ -136,7 +135,7 @@ public class FluidHelper
         }).orElse(false);
     }
 
-    public static boolean hasEmptyItemSpace(@NotNull Optional<IFluidHandlerItem> in)
+    public static boolean hasEmptyItemSpace(Optional<IFluidHandlerItem> in)
     {
         return in.map(handler ->
         {
@@ -152,7 +151,7 @@ public class FluidHelper
         }).orElse(false);
     }
 
-    public static boolean hasEmptySpace(@NotNull IFluidHandler handler)
+    public static boolean hasEmptySpace(IFluidHandler handler)
     {
         for (int q = 0; q < handler.getTanks(); q++)
         {
@@ -165,7 +164,7 @@ public class FluidHelper
         return false;
     }
 
-    public static boolean hasEmptySpace(@NotNull IItemHandler in)
+    public static boolean hasEmptySpace(IItemHandler in)
     {
         for (int q = 0; q < in.getSlots(); q++)
         {
@@ -178,7 +177,7 @@ public class FluidHelper
         return false;
     }
 
-    public static int getEmptySpace(@NotNull IFluidHandler handler)
+    public static int getEmptySpace(IFluidHandler handler)
     {
         int space = 0;
         for (int q = 0; q < handler.getTanks(); q++)
@@ -196,7 +195,7 @@ public class FluidHelper
         return space;
     }
 
-    public static int getEmptySpace(@NotNull IFluidHandlerItem handler)
+    public static int getEmptySpace(IFluidHandlerItem handler)
     {
         int space = 0;
         for (int q = 0; q < handler.getTanks(); q++)
@@ -263,7 +262,7 @@ public class FluidHelper
         return false;
     }
 
-    public static boolean isEmpty(@NotNull Optional<IFluidHandler> in)
+    public static boolean isEmpty(Optional<IFluidHandler> in)
     {
         return in.map(handler ->
         {
@@ -276,7 +275,7 @@ public class FluidHelper
         }).orElse(true);
     }
 
-    public static boolean isEmpty(@NotNull IFluidHandler handler)
+    public static boolean isEmpty(IFluidHandler handler)
     {
         for (int q = 0; q < handler.getTanks(); q++)
         {
@@ -286,12 +285,12 @@ public class FluidHelper
         return true;
     }
 
-    public static boolean isFull(@NotNull Optional<IFluidHandler> input)
+    public static boolean isFull(Optional<IFluidHandler> input)
     {
         return input.map(FluidHelper :: isFull).orElse(false);
     }
 
-    public static boolean isFull(@NotNull IFluidHandler handler)
+    public static boolean isFull(IFluidHandler handler)
     {
         for (int q = 0; q < handler.getTanks(); q++)
             if (handler.getFluidInTank(q).getAmount() < handler.getTankCapacity(q))
@@ -299,7 +298,7 @@ public class FluidHelper
         return true;
     }
 
-    public static boolean contains (@NotNull Optional<IFluidHandler> handler, FluidType fluid)
+    public static boolean contains (Optional<IFluidHandler> handler, FluidType fluid)
     {
         return handler.map(iFluidHandler ->
         {
@@ -310,7 +309,7 @@ public class FluidHelper
         }).orElse(false);
     }
 
-    public static boolean contains (@NotNull Optional<IFluidHandler> handler, Set<FluidType> fluid)
+    public static boolean contains (Optional<IFluidHandler> handler, Set<FluidType> fluid)
     {
         return handler.map(iFluidHandler ->
         {

@@ -19,7 +19,6 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -36,7 +35,7 @@ public record S2CFluidTransportPacket(List<FluidTransportHandler.FluidTransport>
             S2CFluidTransportPacket :: new);
 
     @Override
-    public void process(@NotNull IPayloadContext context)
+    public void process(IPayloadContext context)
     {
         context.enqueueWork(() ->
         {
@@ -57,7 +56,7 @@ public record S2CFluidTransportPacket(List<FluidTransportHandler.FluidTransport>
     }
 
     @Override
-    public @NotNull Type<S2CFluidTransportPacket> type()
+    public Type<S2CFluidTransportPacket> type()
     {
         return TYPE;
     }

@@ -14,11 +14,10 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.damagesource.DamageType;
-import org.jetbrains.annotations.NotNull;
 
 public class BioDamageTypeTags
 {
-	private static @NotNull TagKey<DamageType> create(String name)
+	private static TagKey<DamageType> create(String name)
 	{
 		return TagKey.create(Registries.DAMAGE_TYPE, Database.rl(name));
 	}

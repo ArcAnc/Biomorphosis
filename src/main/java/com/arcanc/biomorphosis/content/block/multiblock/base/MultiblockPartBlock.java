@@ -39,7 +39,7 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockHelper.BlockProperties.HORIZONTAL_FACING;
     private final MultiblockType type;
 
-    public MultiblockPartBlock(MultiblockType type, Supplier<BlockEntityType<T>> tileType, @NotNull Properties props)
+    public MultiblockPartBlock(MultiblockType type, Supplier<BlockEntityType<T>> tileType, Properties props)
     {
         super(tileType, props.dynamicShape());
         this.type = type;
@@ -50,12 +50,12 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
         return this.type;
     }
 
-    public boolean isFormed(@NotNull BlockState state)
+    public boolean isFormed(BlockState state)
     {
         return state.hasProperty(STATE) && state.getValue(STATE) == MultiblockState.FORMED;
     }
 
-    public boolean isMorphed(@NotNull BlockState state)
+    public boolean isMorphed(BlockState state)
     {
         return state.hasProperty(STATE) && state.getValue(STATE) == MultiblockState.MORPHING;
     }
@@ -73,7 +73,7 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         BlockState state = super.getStateForPlacement(context);
         if (state.hasProperty(STATE))
@@ -83,7 +83,7 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
         return state;
     }
 
-    protected @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         if (state.hasProperty(HORIZONTAL_FACING))
             return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
@@ -91,16 +91,16 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
     }
 
     @Override
-    protected @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation)
+    protected BlockState rotate(BlockState state, Rotation rotation)
     {
         return BlockHelper.nextHorizontalDirection(state);
     }
     
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state,
+                                  BlockGetter level,
+                                  BlockPos pos,
+                                  CollisionContext context)
     {
 		BioMultiblockPart part = BlockHelper.castTileEntity(level, pos, BioMultiblockPart.class).orElse(null);
         if (part == null)

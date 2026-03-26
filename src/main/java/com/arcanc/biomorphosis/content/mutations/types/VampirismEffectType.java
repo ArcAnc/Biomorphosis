@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 
 public class VampirismEffectType implements IGeneEffectType<VampirismEffectType>
 {
@@ -34,21 +33,21 @@ public class VampirismEffectType implements IGeneEffectType<VampirismEffectType>
 	}
 	
 	@Override
-	public void apply(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void apply(LivingEntity entity, AttributeParams params)
 	{
 	}
 	
 	@Override
-	public void remove(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void remove(LivingEntity entity, AttributeParams params)
 	{
 	}
 	
 	@Override
-	public void tick(@NotNull LivingEntity entity, @NotNull AttributeParams params)
+	public void tick(LivingEntity entity, AttributeParams params)
 	{
 	}
 	
-	public void handle(LivingEntity damager, float newDamage, @NotNull AttributeParams params)
+	public void handle(LivingEntity damager, float newDamage, AttributeParams params)
 	{
 		int healthPerDamage = params.getInt("modifier", 0);
 		if (healthPerDamage == 0)

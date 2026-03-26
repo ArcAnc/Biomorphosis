@@ -16,7 +16,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 public class FluidIcon implements Icon
 {
@@ -28,7 +27,7 @@ public class FluidIcon implements Icon
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int xPos, int yPos, int width, int height)
+    public void render(GuiGraphics graphics, int xPos, int yPos, int width, int height)
     {
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(this.stack.getFluid());
 

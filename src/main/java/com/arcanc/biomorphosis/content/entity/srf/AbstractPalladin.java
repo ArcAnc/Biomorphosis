@@ -22,7 +22,6 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -42,9 +41,9 @@ public class AbstractPalladin extends PathfinderMob
 	
 	@SuppressWarnings("deprecation")
 	@Override
-	public @Nullable SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level,
-	                                              @NotNull DifficultyInstance difficulty,
-	                                              @NotNull MobSpawnType spawnType,
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
+	                                              DifficultyInstance difficulty,
+	                                              MobSpawnType spawnType,
 	                                              @Nullable SpawnGroupData spawnGroupData)
 	{
 		SpawnGroupData data = super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
@@ -86,7 +85,7 @@ public class AbstractPalladin extends PathfinderMob
 		}
 	}
 	
-	protected void rewardTradeXp(@NotNull MerchantOffer offer)
+	protected void rewardTradeXp(MerchantOffer offer)
 	{
 		if (!offer.shouldRewardExp())
 			return;
@@ -95,7 +94,7 @@ public class AbstractPalladin extends PathfinderMob
 	}
 	
 	@Override
-	public void addAdditionalSaveData(@NotNull CompoundTag compound)
+	public void addAdditionalSaveData(CompoundTag compound)
 	{
 		super.addAdditionalSaveData(compound);
 		
@@ -105,7 +104,7 @@ public class AbstractPalladin extends PathfinderMob
 	}
 	
 	@Override
-	public void readAdditionalSaveData(@NotNull CompoundTag compound)
+	public void readAdditionalSaveData(CompoundTag compound)
 	{
 		super.readAdditionalSaveData(compound);
 		

@@ -14,6 +14,10 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PBlockRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.renderer.GameRenderer;
@@ -23,17 +27,18 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoBlockRenderer;
 
-public class BioCatcherRenderer extends GeoBlockRenderer<BioCatcher>
+import java.util.function.Function;
+
+public class BioCatcherRenderer extends PBlockRenderer<BioCatcher>
 {
+    private static final ResourceLocation TEXTURE = Database.rl("block/catcher/0");
+    
     private static final float MIN_X =  3.01F/16F;
     private static final float MAX_X = 12.99F/16F;
     private static final float MIN_Y =  1.01F/16F;
@@ -46,14 +51,14 @@ public class BioCatcherRenderer extends GeoBlockRenderer<BioCatcher>
 
     public BioCatcherRenderer(final BlockEntityRendererProvider.Context ctx)
     {
-        super(new DefaultedBlockGeoModel<>(Database.rl("catcher")));
+        super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("catcher")).
+                        build(),
+                PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
-
+    
     @Override
-    public void postRender(PoseStack poseStack, BioCatcher animatable, BakedGeoModel model, MultiBufferSource bufferSource, @Nullable VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+    public void postSubmit(PoseStack poseStack, BioCatcher animatable, Function<ResourceLocation, RenderType> renderType, MultiBufferSource bufferSource, int packedLight, int packedOverlay, float partialTick, @Nullable Object... additionalData)
     {
-        if (animatable == null)
-            return;
         FluidSidedStorage storage = BioCatcher.getFluidHandler(animatable, null);
         if (storage == null)
             return;
@@ -62,8 +67,8 @@ public class BioCatcherRenderer extends GeoBlockRenderer<BioCatcher>
             return;
         renderContent(stack, (float)storage.getClientFluidAmountInTank(0) / storage.getTankCapacity(0), poseStack);
     }
-
-    private void renderContent(@NotNull FluidStack stack, float height, @NotNull PoseStack pose)
+    
+    private void renderContent(FluidStack stack, float height, PoseStack pose)
     {
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(stack.getFluid());
 
@@ -90,7 +95,7 @@ public class BioCatcherRenderer extends GeoBlockRenderer<BioCatcher>
         pose.popPose();
     }
 
-    private void drawFluid(@NotNull VertexConsumer builder, PoseStack.Pose pose, float height, @NotNull TextureAtlasSprite tex, @NotNull Vector4f color)
+    private void drawFluid(VertexConsumer builder, PoseStack.Pose pose, float height, TextureAtlasSprite tex, Vector4f color)
     {
         float maxZ = MAX_Z - 0.5f;
         float minZ = MIN_Z - 0.5f;
@@ -110,10 +115,9 @@ public class BioCatcherRenderer extends GeoBlockRenderer<BioCatcher>
         builder.addVertex(pose, minX, y, maxZ).setColor(color.x(), color.y(), color.z(), color.w()).setUv(maxU, maxV);
         builder.addVertex(pose, maxX, y, maxZ).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
-
-    @Override
-    public @Nullable RenderType getRenderType(BioCatcher animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+    
+    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
     {
-        return RenderType.entitySolid(texture);
+        event.addTextureLocation(TEXTURE);
     }
 }

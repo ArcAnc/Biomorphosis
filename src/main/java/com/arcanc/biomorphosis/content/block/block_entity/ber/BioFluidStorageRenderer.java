@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStorage>
@@ -49,10 +48,10 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
     }
 
     @Override
-    public void render(@NotNull BioFluidStorage be,
+    public void render(BioFluidStorage be,
                        float partialTick,
-                       @NotNull PoseStack poseStack,
-                       @NotNull MultiBufferSource bufferSource,
+                       PoseStack poseStack,
+                       MultiBufferSource bufferSource,
                        int packedLight,
                        int packedOverlay)
     {
@@ -65,7 +64,7 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
         renderContent(stack, (float)storage.getClientFluidAmountInTank(0) / storage.getTankCapacity(0), poseStack);
     }
 
-    private void renderContent(@NotNull FluidStack stack, float height, @NotNull PoseStack pose)
+    private void renderContent(FluidStack stack, float height, PoseStack pose)
     {
         IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(stack.getFluid());
 
@@ -96,7 +95,7 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
         pose.popPose();
     }
 
-    private void drawTop(@NotNull VertexConsumer builder, PoseStack.Pose pose, float height, @NotNull TextureAtlasSprite tex, @NotNull Vector4f color, boolean gas)
+    private void drawTop(VertexConsumer builder, PoseStack.Pose pose, float height, TextureAtlasSprite tex, Vector4f color, boolean gas)
     {
         float minX = gas ? MAX_X : MIN_X;
         float maxX = gas ? MIN_X : MAX_X;
@@ -113,7 +112,7 @@ public class BioFluidStorageRenderer implements BlockEntityRenderer<BioFluidStor
         builder.addVertex(pose, maxX, y, MAX_Z).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
 
-    private void drawSides(@NotNull VertexConsumer builder, PoseStack.Pose pose, float height, @NotNull TextureAtlasSprite tex, @NotNull Vector4f color, boolean gas)
+    private void drawSides(VertexConsumer builder, PoseStack.Pose pose, float height, TextureAtlasSprite tex, Vector4f color, boolean gas)
     {
         float minY = gas ? MAX_Y - (height * (MAX_Y - MIN_Y)) : MIN_Y;
         float maxY = gas ? MAX_Y : MIN_Y + height * (MAX_Y - MIN_Y);

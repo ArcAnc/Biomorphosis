@@ -9,8 +9,14 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChamberRenderer;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChrysalisRenderer;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockMorpherRenderer;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockTurretRenderer;
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.RecipeRenderHandler;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
+import com.arcanc.biomorphosis.content.entity.renderer.*;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.BlacksmithModel;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.CaptainModel;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SergeantModel;
@@ -19,9 +25,7 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
-import com.arcanc.biomorphosis.content.item.MultiblockChamberBlockItem;
 import com.arcanc.biomorphosis.content.item.MultiblockMorpherBlockItem;
-import com.arcanc.biomorphosis.content.item.renderer.MultiblockMorpherSpecialRenderer;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
@@ -36,8 +40,6 @@ import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
-import net.minecraft.client.color.item.ItemColor;
-import net.minecraft.client.color.item.ItemColors;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.BlockModelShaper;
@@ -60,7 +62,6 @@ import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -68,9 +69,9 @@ import java.util.concurrent.CompletableFuture;
 
 public final class ClientEvents
 {
-    public static void registerClientEvents(final @NotNull IEventBus modEventBus)
+    public static void registerClientEvents(final IEventBus modEventBus)
     {
-        modEventBus.addListener(ClientEvents :: clientSetup);
+		modEventBus.addListener(ClientEvents :: clientSetup);
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerRenderers);
 		modEventBus.addListener(ClientEvents :: registerItemColors);
@@ -84,9 +85,10 @@ public final class ClientEvents
         RecipeRenderHandler.registerRenderers();
         NeoForge.EVENT_BUS.addListener(FluidLevelAnimator :: renderFrame);
         NeoForge.EVENT_BUS.addListener(ClientEvents :: receiveRecipesEvent);
+		registerCustomTextures(modEventBus);
     }
 	
-	private static void receiveRecipesEvent(final @NotNull RecipesUpdatedEvent event)
+	private static void receiveRecipesEvent(final RecipesUpdatedEvent event)
     {
         ChamberRecipe.RECIPES.clear();
         ChamberRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
@@ -119,7 +121,7 @@ public final class ClientEvents
                 toList());
     }
 	
-	private static void registerItemColors(final @NotNull RegisterColorHandlersEvent.Item event)
+	private static void registerItemColors(final RegisterColorHandlersEvent.Item event)
 	{
 		Registration.ItemReg.ITEMS.getEntries().
 				stream().
@@ -129,7 +131,7 @@ public final class ClientEvents
 				event.register(new DynamicFluidContainerModel.Colors(), item));
 	}
 	
-    private static void registerClientExtensions(final @NotNull RegisterClientExtensionsEvent event)
+    private static void registerClientExtensions(final RegisterClientExtensionsEvent event)
     {
         Registration.FluidReg.FLUID_TYPES.getEntries().
             stream().
@@ -143,7 +145,7 @@ public final class ClientEvents
 		event.registerItem(morpherBlockItem.registerMorpherExtension(), morpherBlockItem);
     }
 
-    private static void clientSetup (final @NotNull FMLClientSetupEvent event)
+    private static void clientSetup (final FMLClientSetupEvent event)
     {
         event.enqueueWork(() ->
         {
@@ -157,7 +159,7 @@ public final class ClientEvents
         });
     }
 
-    private static void registerRenderers(final EntityRenderersEvent.@NotNull RegisterRenderers event)
+    private static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event)
     {
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().
                 map(DeferredHolder :: get).
@@ -182,7 +184,7 @@ public final class ClientEvents
                 forEach(type -> event.register(type.getMenuProvider().getType(), type.getScreenConstructor()));
     }
 
-    private static void registerLayerDefinitions(final EntityRenderersEvent.@NotNull RegisterLayerDefinitions event)
+    private static void registerLayerDefinitions(final EntityRenderersEvent.RegisterLayerDefinitions event)
     {
 		event.registerLayerDefinition(SoldierModel.LAYER_LOCATION, SoldierModel :: createMesh);
 		event.registerLayerDefinition(SergeantModel.LAYER_LOCATION, SergeantModel :: createMesh);
@@ -190,7 +192,7 @@ public final class ClientEvents
 		event.registerLayerDefinition(BlacksmithModel.LAYER_LOCATION, BlacksmithModel :: createMesh);
     }
 
-    private static void gatherData(final @NotNull GatherDataEvent event)
+    private static void gatherData(final GatherDataEvent event)
     {
         DataGenerator gen = event.getGenerator();
         PackOutput packOutput = gen.getPackOutput();
@@ -239,10 +241,40 @@ public final class ClientEvents
 		event.createProvider(BioGlobalLootModifier :: new);
     }
 
-    private static void setupModels (final ModelEvent.@NotNull ModifyBakingResult event)
+    private static void setupModels (final ModelEvent.ModifyBakingResult event)
     {
         event.getModels().computeIfPresent(
                 BlockModelShaper.stateToModelLocation(Registration.BlockReg.FLUID_STORAGE.get().defaultBlockState()),
                 (location, bakedModel) -> new BioFluidStorageBakedModel(bakedModel));
     }
+	
+	private static void registerCustomTextures(final IEventBus modEventBus)
+	{
+		// BLOCK_ENTITIES
+		modEventBus.addListener(BioCatcherRenderer :: registerTextures);
+		modEventBus.addListener(BioChestRenderer :: registerTextures);
+		modEventBus.addListener(BioCrusherRenderer :: registerTextures);
+		modEventBus.addListener(BioForgeRenderer :: registerTextures);
+		modEventBus.addListener(BioSqueezerRenderer :: registerTextures);
+		modEventBus.addListener(BioStomachRenderer :: registerTextures);
+		modEventBus.addListener(EggsDecoRenderer :: registerTextures);
+		modEventBus.addListener(HiveDecoRenderer :: registerTextures);
+		modEventBus.addListener(LureCampfireRenderer :: registerTextures);
+		modEventBus.addListener(NorphSourceRenderer ::  registerTextures);
+		// MULTIBLOCKS
+		modEventBus.addListener(MultiblockChamberRenderer :: registerTextures);
+		modEventBus.addListener(MultiblockChrysalisRenderer :: registerTextures);
+		modEventBus.addListener(MultiblockMorpherRenderer :: registerTextures);
+		modEventBus.addListener(MultiblockTurretRenderer :: registerTextures);
+		// ENTITIES
+		modEventBus.addListener(InfestorRenderer :: registerTextures);
+		modEventBus.addListener(KsiggRenderer :: registerTextures);
+		modEventBus.addListener(LarvaRenderer :: registerTextures);
+		modEventBus.addListener(QueenGuardRenderer :: registerTextures);
+		modEventBus.addListener(QueenRenderer :: registerTextures);
+		modEventBus.addListener(SwarmlingRenderer :: registerTextures);
+		modEventBus.addListener(TurretProjectileRenderer :: registerTextures);
+		modEventBus.addListener(WorkerRenderer :: registerTextures);
+		modEventBus.addListener(ZirisRenderer :: registerTextures);
+	}
 }

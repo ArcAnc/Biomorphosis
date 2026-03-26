@@ -23,6 +23,12 @@ import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -39,35 +45,29 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.entity.EntityTypeTest;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
 
-public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEntity, BlockInterfaces.IInteractionObject<MultiblockTurret>
+public class MultiblockTurret extends StaticMultiblockPart implements PAnimatable<MultiblockTurret>, BlockInterfaces.IInteractionObject<MultiblockTurret>
 {
 	private static final int TURRET_DAMAGE = 6;
 	private static final int COOLDOWN = 20 * 3;
 	private static final int RESOURCE_PER_SHOOT = 100;
 	private static final int MAX_RANGE = 32;
 	
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<MultiblockTurret> manager = PLibHelper.createManager(this);
+	private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
 	
 	private final FluidSidedStorage fluidHandler;
 	private boolean enabled;
 	private TurretEffect shootEffect;
 	private TargetMode targetMode;
 	private int timer;
-	private UUID target;
+	private @Nullable UUID target;
 	
 	public MultiblockTurret(BlockPos pos, BlockState blockState)
 	{
@@ -104,7 +104,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	}
 	
 	@Override
-	public boolean canUseGui(@NotNull Player player)
+	public boolean canUseGui(Player player)
 	{
 		return getMasterPos().map(pos -> player.distanceToSqr(pos.getX(), pos.getY(), pos.getZ()) <= 64).orElse(false);
 	}
@@ -240,7 +240,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	}
 	
 	@Override
-	public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.writeCustomTag(tag, registries, descrPacket);
 		if (!this.isMaster())
@@ -255,7 +255,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	}
 	
 	@Override
-	public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.readCustomTag(tag, registries, descrPacket);
 		if (!this.isMaster())
@@ -272,18 +272,24 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	}
 	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockTurret> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "controller", 0, state ->
+		registrar.add(new PAnimationController<>(state ->
 		{
 			if (!isMaster())
-				return PlayState.STOP;
+				return ControllerState.STOP;
 			if (getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED)
 				if (this.isAttacking())
-					return state.setAndContinue(DefaultAnimations.ATTACK_THROW);
+				{
+					state.controller().play(ATTACK);
+					return ControllerState.PLAY;
+				}
 				else
-					return state.setAndContinue(DefaultAnimations.IDLE);
-			return PlayState.STOP;
+				{
+					state.controller().play(IDLE);
+					return ControllerState.PLAY;
+				}
+			return ControllerState.STOP;
 		}));
 	}
 	
@@ -293,7 +299,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 		return Registration.MenuTypeReg.TURRET;
 	}
 	
-	public static @Nullable FluidSidedStorage getFluidHandler(@NotNull MultiblockTurret be, Direction ctx)
+	public static @Nullable FluidSidedStorage getFluidHandler(MultiblockTurret be, Direction ctx)
 	{
 		return be.isMaster() ? be.fluidHandler : be.getMasterPos().
 				flatMap(pos -> BlockHelper.
@@ -303,9 +309,9 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 	}
 	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<MultiblockTurret> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 	
 	public enum TargetMode
@@ -331,7 +337,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements GeoBlockEn
 			return targetValidator.test(target);
 		}
 		
-		private static boolean isValidBaseTarget(@NotNull LivingEntity target)
+		private static boolean isValidBaseTarget(LivingEntity target)
 		{
 			return target.isAlive() && !target.isRemoved();
 		}

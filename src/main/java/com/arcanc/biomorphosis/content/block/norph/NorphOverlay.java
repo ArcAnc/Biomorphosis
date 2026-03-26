@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.minecraft.world.level.material.FluidState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
@@ -51,13 +50,13 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
     }
 
     @Override
-    public @NotNull MapCodec<NorphOverlay> codec()
+    public MapCodec<NorphOverlay> codec()
     {
         return CODEC;
     }
 
     @Override
-    public @NotNull MultifaceSpreader getSpreader()
+    public MultifaceSpreader getSpreader()
     {
         return this.SPREADER;
     }
@@ -68,19 +67,19 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
     }
 
     @Override
-    protected void tick(@NotNull BlockState state,
-                        @NotNull ServerLevel level,
-                        @NotNull BlockPos pos,
-                        @NotNull RandomSource random)
+    protected void tick(BlockState state,
+                        ServerLevel level,
+                        BlockPos pos,
+                        RandomSource random)
     {
         trySpread(state, level, pos, random);
         level.scheduleTick(pos, this, NorphSpreadConfig.getTicksDelay(level));
     }
 
-    private void trySpread(@NotNull BlockState state,
-                           @NotNull ServerLevel level,
-                           @NotNull BlockPos pos,
-                           @NotNull RandomSource random)
+    private void trySpread(BlockState state,
+                           ServerLevel level,
+                           BlockPos pos,
+                           RandomSource random)
     {
         if (!level.isAreaLoaded(pos, 1))
             return;
@@ -113,9 +112,9 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
             addLowerLevel(state, level, pos);
     }
 
-    private void addLowerLevel(@NotNull BlockState state,
-                               @NotNull ServerLevel level,
-                               @NotNull BlockPos pos)
+    private void addLowerLevel(BlockState state,
+                               ServerLevel level,
+                               BlockPos pos)
     {
         if (!hasFace(state, Direction.DOWN))
             return;
@@ -134,9 +133,9 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
         }
     }
 
-    private void grow(@NotNull BlockState state,
-                      @NotNull ServerLevel level,
-                      @NotNull BlockPos pos)
+    private void grow(BlockState state,
+                      ServerLevel level,
+                      BlockPos pos)
     {
         Set<Direction> presentFaces = getPresentDirections(state);
         if (presentFaces.size() == 1)
@@ -163,10 +162,10 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
         state.updateNeighbourShapes(level, pos, Block.UPDATE_ALL);
     }
 
-    private void addFace(@NotNull BlockState state,
-                         @NotNull ServerLevel level,
-                         @NotNull BlockPos pos,
-                         @NotNull RandomSource random)
+    private void addFace(BlockState state,
+                         ServerLevel level,
+                         BlockPos pos,
+                         RandomSource random)
     {
         Set<Direction> possibleDirs = getPossibleDirections(state, level, pos);
         if (!possibleDirs.isEmpty())
@@ -186,7 +185,7 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
         grow(state, level, pos);
     }
 
-    private Set<Direction> getPossibleDirections(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos)
+    private Set<Direction> getPossibleDirections(BlockState state, Level level, BlockPos pos)
     {
         //FIXME: check if this Multifaceblock.canAttachTo is used in right way
         return Arrays.stream(Direction.values()).filter(direction -> !state.getValue(MultifaceBlock.getFaceProperty(direction)) &&
@@ -196,14 +195,14 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
                 collect(Collectors.toSet());
     }
 
-    private Set<Direction> getPresentDirections(@NotNull BlockState state)
+    private Set<Direction> getPresentDirections(BlockState state)
     {
         return Arrays.stream(Direction.values()).filter(direction -> state.getValue(MultifaceBlock.getFaceProperty(direction))).
                 collect(Collectors.toSet());
     }
 
     @Override
-    public boolean triggerEvent(@NotNull BlockState state, @NotNull Level world, @NotNull BlockPos pos, int eventId, int eventParam)
+    public boolean triggerEvent(BlockState state, Level world, BlockPos pos, int eventId, int eventParam)
     {
         if (world.isClientSide() && eventId == 255)
         {
@@ -214,10 +213,10 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
     }
 
     @Override
-    protected void onPlace(@NotNull BlockState state,
-                           @NotNull Level level,
-                           @NotNull BlockPos pos,
-                           @NotNull BlockState oldState,
+    protected void onPlace(BlockState state,
+                           Level level,
+                           BlockPos pos,
+                           BlockState oldState,
                            boolean movedByPiston)
     {
         if (level instanceof ServerLevel serverLevel)
@@ -229,7 +228,7 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
      */
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return InteractionResult.PASS;
     }
@@ -244,23 +243,23 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
             super(block);
         }
 
-        public static int getTicksDelay(@NotNull Level level)
+        public static int getTicksDelay(Level level)
         {
             return 200 + level.getRandom().nextInt(50) - 25;
         }
 
         @Override
-        public boolean isOtherBlockValidAsSource(@NotNull BlockState otherBlock)
+        public boolean isOtherBlockValidAsSource(BlockState otherBlock)
         {
             return otherBlock.is(BioBlockTags.NORPH_SOURCE);
         }
 
         @Override
-        protected boolean stateCanBeReplaced(@NotNull BlockGetter level,
-                                             @NotNull BlockPos pos,
-                                             @NotNull BlockPos spreadPos,
-                                             @NotNull Direction direction,
-                                             @NotNull BlockState state)
+        protected boolean stateCanBeReplaced(BlockGetter level,
+                                             BlockPos pos,
+                                             BlockPos spreadPos,
+                                             Direction direction,
+                                             BlockState state)
         {
             BlockState blockstate = level.getBlockState(spreadPos.relative(direction));
             if (!blockstate.is(Blocks.MOVING_PISTON))
@@ -279,7 +278,7 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
         }
 
         @Override
-        public boolean canSpreadInto(@NotNull BlockGetter level, @NotNull BlockPos pos, MultifaceSpreader.@NotNull SpreadPos spreadPos)
+        public boolean canSpreadInto(BlockGetter level, BlockPos pos, MultifaceSpreader.SpreadPos spreadPos)
         {
             BlockState state = level.getBlockState(spreadPos.pos());
             if (getSourcePos(level, spreadPos.pos()) != null)
@@ -289,14 +288,14 @@ public class NorphOverlay extends MultifaceBlock implements BlockInterfaces.IWre
             return false;
         }
 
-        public @Nullable BlockPos getSourcePos(BlockGetter level, @NotNull BlockPos pos)
+        public @Nullable BlockPos getSourcePos(BlockGetter level, BlockPos pos)
         {
             return ZoneHelper.getPoses(pos, ZoneHelper.RadiusOptions.of(ZoneHelper.ZoneType.CIRCLE, HORIZONTAL_RADIUS, VERTICAL_RADIUS)).
                     filter(checkPos -> this.isOtherBlockValidAsSource(level.getBlockState(checkPos))).findAny().orElse(null);
         }
 
         @Override
-        public boolean placeBlock(@NotNull LevelAccessor level, MultifaceSpreader.@NotNull SpreadPos pos, @NotNull BlockState state, boolean markForPostprocessing)
+        public boolean placeBlock(LevelAccessor level, MultifaceSpreader.SpreadPos pos, BlockState state, boolean markForPostprocessing)
         {
             return super.placeBlock(level, pos, state, markForPostprocessing);
         }

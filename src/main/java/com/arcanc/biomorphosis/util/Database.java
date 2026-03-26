@@ -14,7 +14,6 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,27 +62,27 @@ public class Database
 
     public static final class FluidInfo
     {
-        public static @NotNull ResourceLocation getStillLoc(String name)
+        public static ResourceLocation getStillLoc(String name)
         {
             return rl("fluids/" + name +"/still");
         }
 
-        public static @NotNull ResourceLocation getFlowLoc(String name)
+        public static ResourceLocation getFlowLoc(String name)
         {
             return rl("fluids/" + name +"/flow");
         }
 
-        public static @NotNull ResourceLocation getOverlayLoc(String name)
+        public static ResourceLocation getOverlayLoc(String name)
         {
             return rl("fluids/" + name + "/overlay");
         }
 
-        public static @NotNull ResourceLocation getBlockLocation(String name)
+        public static ResourceLocation getBlockLocation(String name)
         {
             return rl("fluids/" + name + "/block");
         }
 
-        public static @NotNull ResourceLocation getBucketLocation(String name)
+        public static ResourceLocation getBucketLocation(String name)
         {
             return rl("fluids/" + name + "/bucket");
         }
@@ -346,7 +345,7 @@ public class Database
 			}
 		}
 		
-        public static @NotNull ResourceLocation getTexturePath(String str)
+        public static ResourceLocation getTexturePath(String str)
         {
             return rl("textures/" + str + ".png");
         }
@@ -388,25 +387,25 @@ public class Database
         }
     }
 
-    public static @NotNull ResourceLocation rl(String name)
+    public static ResourceLocation rl(String name)
     {
         Preconditions.checkNotNull(name);
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, name);
     }
 
-    public static @NotNull ResourceLocation mineRl(String name)
+    public static ResourceLocation mineRl(String name)
     {
         Preconditions.checkNotNull(name);
         return ResourceLocation.withDefaultNamespace(name);
     }
 
-    public static @NotNull ResourceLocation neoRl(String name)
+    public static ResourceLocation neoRl(String name)
     {
         Preconditions.checkNotNull(name);
         return ResourceLocation.fromNamespaceAndPath("neoforge", name);
     }
 
-    public static @NotNull String rlStr(String name)
+    public static String rlStr(String name)
     {
         return rl(name).toString();
     }

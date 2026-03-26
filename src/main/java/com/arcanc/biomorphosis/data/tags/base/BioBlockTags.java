@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
 
 public class BioBlockTags
 {
@@ -22,7 +21,7 @@ public class BioBlockTags
     public static final TagKey<Block> NORPH_SOURCE = create("norph_source");
     public static final TagKey<Block> NORPHED_STAIRS = create("norphed_stairs");
 
-    private static @NotNull TagKey<Block> create(String name)
+    private static TagKey<Block> create(String name)
     {
         return TagKey.create(Registries.BLOCK, Database.rl(name));
     }

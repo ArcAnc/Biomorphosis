@@ -19,7 +19,6 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StairBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 public class NorphStairs extends StairBlock
 {
@@ -29,17 +28,17 @@ public class NorphStairs extends StairBlock
     }
 
     @Override
-    protected void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston)
+    protected void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston)
     {
         if (level instanceof ServerLevel serverLevel)
             serverLevel.scheduleTick(pos, this, NorphOverlay.NorphSpreadConfig.getTicksDelay(serverLevel));
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state,
-                            @NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState newState,
+    protected void onRemove(BlockState state,
+                            Level level,
+                            BlockPos pos,
+                            BlockState newState,
                             boolean movedByPiston)
     {
         super.onRemove(state, level, pos, newState, movedByPiston);
@@ -48,16 +47,16 @@ public class NorphStairs extends StairBlock
     }
 
     @Override
-    protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
+    protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
     {
         trySpread(state, level, pos, random);
         level.scheduleTick(pos, this, NorphOverlay.NorphSpreadConfig.getTicksDelay(level));
     }
 
-    private void trySpread(@NotNull BlockState state,
-                           @NotNull ServerLevel level,
-                           @NotNull BlockPos pos,
-                           @NotNull RandomSource random)
+    private void trySpread(BlockState state,
+                           ServerLevel level,
+                           BlockPos pos,
+                           RandomSource random)
     {
         if (!level.isAreaLoaded(pos, 1))
             return;

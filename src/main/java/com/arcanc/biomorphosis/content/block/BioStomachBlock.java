@@ -40,7 +40,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -103,13 +102,13 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
     }
 
     @Override
-    protected @NotNull ItemInteractionResult useItemOn(@NotNull ItemStack stack,
-                                                       @NotNull BlockState state,
-                                                       @NotNull Level level,
-                                                       @NotNull BlockPos pos,
-                                                       @NotNull Player player,
-                                                       @NotNull InteractionHand hand,
-                                                       @NotNull BlockHitResult hitResult)
+    protected ItemInteractionResult useItemOn(ItemStack stack,
+                                                       BlockState state,
+                                                       Level level,
+                                                       BlockPos pos,
+                                                       Player player,
+                                                       InteractionHand hand,
+                                                       BlockHitResult hitResult)
     {
         if (stack.isEmpty())
             return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
@@ -138,11 +137,11 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
     }
 
     @Override
-    protected @NotNull InteractionResult useWithoutItem(@NotNull BlockState state,
-                                                        @NotNull Level level,
-                                                        @NotNull BlockPos pos,
-                                                        @NotNull Player player,
-                                                        @NotNull BlockHitResult hitResult)
+    protected InteractionResult useWithoutItem(BlockState state,
+                                                        Level level,
+                                                        BlockPos pos,
+                                                        Player player,
+                                                        BlockHitResult hitResult)
     {
         if (player.isShiftKeyDown())
         {
@@ -170,56 +169,56 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
     }
 
     @Override
-    public BlockState getStateForPlacement(@NotNull BlockPlaceContext context)
+    public BlockState getStateForPlacement(BlockPlaceContext context)
     {
         Direction dir = context.getHorizontalDirection();
         return super.getStateForPlacement(context).setValue(HORIZONTAL_FACING, dir.getOpposite());
     }
 
     @Override
-    protected @NotNull BlockState mirror(@NotNull BlockState state, @NotNull Mirror mirror)
+    protected BlockState mirror(BlockState state, Mirror mirror)
     {
         return state.rotate(mirror.getRotation(state.getValue(HORIZONTAL_FACING)));
     }
 
     @Override
-    protected @NotNull BlockState rotate(@NotNull BlockState state, @NotNull Rotation rotation)
+    protected BlockState rotate(BlockState state, Rotation rotation)
     {
         return BlockHelper.nextHorizontalDirection(state);
     }
 
     @Override
-    protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-                                           @NotNull BlockGetter level,
-                                           @NotNull BlockPos pos,
-                                           @NotNull CollisionContext context)
+    protected VoxelShape getShape(BlockState state,
+                                           BlockGetter level,
+                                           BlockPos pos,
+                                           CollisionContext context)
     {
         return BY_DIRECTION.get(state.getValue(HORIZONTAL_FACING));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         builder.add(HORIZONTAL_FACING);
     }
 
     @Override
-    protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+    protected RenderShape getRenderShape(BlockState state)
     {
         return RenderShape.INVISIBLE;
     }
 
     @Override
-    protected @NotNull MapCodec<BioStomachBlock> codec()
+    protected MapCodec<BioStomachBlock> codec()
     {
         return CODEC;
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state,
-                            @NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState newState,
+    protected void onRemove(BlockState state,
+                            Level level,
+                            BlockPos pos,
+                            BlockState newState,
                             boolean movedByPiston)
     {
         if (!state.is(newState.getBlock()))

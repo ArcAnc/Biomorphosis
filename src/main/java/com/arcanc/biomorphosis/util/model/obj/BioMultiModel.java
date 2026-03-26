@@ -16,7 +16,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,12 +25,12 @@ public class BioMultiModel extends BioObjModel
 {
 	private final List<BioObjModel> children = new ArrayList<>();
 	
-	public static @NotNull BioMultiModel newModel(ResourceLocation texture)
+	public static BioMultiModel newModel(ResourceLocation texture)
 	{
 		return new BioMultiModel(texture, false);
 	}
 	
-	public static @NotNull BioMultiModel newModel(ResourceLocation texture, boolean flipUV)
+	public static BioMultiModel newModel(ResourceLocation texture, boolean flipUV)
 	{
 		return new BioMultiModel(texture, flipUV);
 	}
@@ -54,13 +53,13 @@ public class BioMultiModel extends BioObjModel
 	}
 	
 	//FIXME: temporary method, must be removed
-	protected void fallbackRender(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	protected void fallbackRender(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		super.render(mStack, type, bufferSource, overlay, light, color);
 	}
 	
 	@Override
-	public void render(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	public void render(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		mStack.pushPose();
 		super.render(mStack, type, bufferSource, overlay, light, color);
@@ -68,7 +67,7 @@ public class BioMultiModel extends BioObjModel
 		mStack.popPose();
 	}
 	
-	public void renderChild(@NotNull PoseStack mStack, @NotNull Function<ResourceLocation, RenderType> type, @NotNull MultiBufferSource bufferSource, int overlay, int light, int color)
+	public void renderChild(PoseStack mStack, Function<ResourceLocation, RenderType> type, MultiBufferSource bufferSource, int overlay, int light, int color)
 	{
 		for (BioObjModel child : this.children)
 			child.render(mStack, type, bufferSource, overlay, light, color);

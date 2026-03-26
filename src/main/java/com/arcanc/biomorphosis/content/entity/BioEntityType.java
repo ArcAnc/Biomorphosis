@@ -18,7 +18,6 @@ import net.minecraft.world.flag.FeatureFlag;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
@@ -61,7 +60,7 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
     }
 	
 	@Override
-	public @NotNull Class<T> getBaseClass()
+	public Class<T> getBaseClass()
 	{
 		return this.clazz;
 	}
@@ -100,184 +99,184 @@ public class BioEntityType<T extends Entity> extends EntityType<T>
 			this.clazz = entityClass;
         }
 
-        public static @NotNull <T extends Entity> BioEntityType.BioTypeBuilder<T> of(Class<T> entityClass, EntityType.@NotNull EntityFactory<T> factory, @NotNull MobCategory category)
+        public static <T extends Entity> BioEntityType.BioTypeBuilder<T> of(Class<T> entityClass, EntityType.EntityFactory<T> factory, MobCategory category)
         {
             return new BioTypeBuilder<>(entityClass, factory, category);
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> sized(float width, float height)
+        public BioEntityType.BioTypeBuilder<T> sized(float width, float height)
         {
             super.sized(width, height);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> spawnDimensionsScale(float spawnDimensionsScale)
+        public BioEntityType.BioTypeBuilder<T> spawnDimensionsScale(float spawnDimensionsScale)
         {
             super.spawnDimensionsScale(spawnDimensionsScale);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> eyeHeight(float eyeHeight)
+        public BioEntityType.BioTypeBuilder<T> eyeHeight(float eyeHeight)
         {
             super.eyeHeight(eyeHeight);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> passengerAttachments(float @NotNull ... attachPoints)
+        public BioEntityType.BioTypeBuilder<T> passengerAttachments(float ... attachPoints)
         {
             super.passengerAttachments(attachPoints);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> passengerAttachments(Vec3 @NotNull ... attachPoints)
+        public BioEntityType.BioTypeBuilder<T> passengerAttachments(Vec3 ... attachPoints)
         {
             super.passengerAttachments(attachPoints);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> vehicleAttachment(@NotNull Vec3 attachPoint)
+        public BioEntityType.BioTypeBuilder<T> vehicleAttachment(Vec3 attachPoint)
         {
             super.attach(EntityAttachment.VEHICLE, attachPoint);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> ridingOffset(float ridingOffset)
+        public BioEntityType.BioTypeBuilder<T> ridingOffset(float ridingOffset)
         {
             super.attach(EntityAttachment.VEHICLE, 0.0F, -ridingOffset, 0.0F);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> nameTagOffset(float nameTagOffset)
+        public BioEntityType.BioTypeBuilder<T> nameTagOffset(float nameTagOffset)
         {
             super.attach(EntityAttachment.NAME_TAG, 0.0F, nameTagOffset, 0.0F);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> attach(@NotNull EntityAttachment attachment, float x, float y, float z)
+        public BioEntityType.BioTypeBuilder<T> attach(EntityAttachment attachment, float x, float y, float z)
         {
             super.attach(attachment, x, y, z);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> attach(@NotNull EntityAttachment attachment, @NotNull Vec3 pos)
+        public BioEntityType.BioTypeBuilder<T> attach(EntityAttachment attachment, Vec3 pos)
         {
             super.attach(attachment, pos);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> noSummon()
+        public BioEntityType.BioTypeBuilder<T> noSummon()
         {
             super.noSummon();
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> noSave()
+        public BioEntityType.BioTypeBuilder<T> noSave()
         {
             super.noSave();
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> fireImmune()
+        public BioEntityType.BioTypeBuilder<T> fireImmune()
         {
             super.fireImmune();
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> immuneTo(Block @NotNull ... blocks)
+        public BioEntityType.BioTypeBuilder<T> immuneTo(Block ... blocks)
         {
             super.immuneTo(blocks);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> canSpawnFarFromPlayer()
+        public BioEntityType.BioTypeBuilder<T> canSpawnFarFromPlayer()
         {
             super.canSpawnFarFromPlayer();
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> clientTrackingRange(int clientTrackingRange)
+        public BioEntityType.BioTypeBuilder<T> clientTrackingRange(int clientTrackingRange)
         {
             super.clientTrackingRange(clientTrackingRange);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> updateInterval(int updateInterval)
+        public BioEntityType.BioTypeBuilder<T> updateInterval(int updateInterval)
         {
             super.updateInterval(updateInterval);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> requiredFeatures(FeatureFlag @NotNull ... requiredFeatures)
+        public BioEntityType.BioTypeBuilder<T> requiredFeatures(FeatureFlag ... requiredFeatures)
         {
             super.requiredFeatures(requiredFeatures);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> setUpdateInterval(int interval)
+        public BioEntityType.BioTypeBuilder<T> setUpdateInterval(int interval)
         {
             super.setUpdateInterval(interval);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> setTrackingRange(int range)
+        public BioEntityType.BioTypeBuilder<T> setTrackingRange(int range)
         {
             super.setTrackingRange(range);
             return this;
         }
 
         @Override
-        public @NotNull BioEntityType.BioTypeBuilder<T> setShouldReceiveVelocityUpdates(boolean value)
+        public BioEntityType.BioTypeBuilder<T> setShouldReceiveVelocityUpdates(boolean value)
         {
             super.setShouldReceiveVelocityUpdates(value);
             return this;
         }
 
-        public @NotNull BioEntityType.BioTypeBuilder<T> attributeProvider(@NotNull EntityAttributeProvider attributeProvider)
+        public BioEntityType.BioTypeBuilder<T> attributeProvider(EntityAttributeProvider attributeProvider)
         {
             this.attributeProvider = attributeProvider;
             return this;
         }
 
-        public @NotNull BioEntityType.BioTypeBuilder<T> rendererProvider(@NotNull EntityRendererProvider<T> rendererProvider)
+        public BioEntityType.BioTypeBuilder<T> rendererProvider(EntityRendererProvider<T> rendererProvider)
         {
             this.rendererProvider = rendererProvider;
             return this;
         }
         
-        public @NotNull BioEntityType.BioTypeBuilder<T> backgroundSpawnEggColor(int backgroundSpawnEggColor)
+        public BioEntityType.BioTypeBuilder<T> backgroundSpawnEggColor(int backgroundSpawnEggColor)
         {
             this.backgroundSpawnEggColor = backgroundSpawnEggColor;
             return this;
         }
         
-        public @NotNull BioEntityType.BioTypeBuilder<T> highlightSpawnEggColor(int highlightSpawnEggColor)
+        public BioEntityType.BioTypeBuilder<T> highlightSpawnEggColor(int highlightSpawnEggColor)
         {
             this.highlightSpawnEggColor = highlightSpawnEggColor;
             return this;
         }
         
         @Override
-        public @NotNull BioEntityType<T> build(@NotNull String key)
+        public BioEntityType<T> build(String key)
         {
             if (this.serialize)
                 Util.fetchChoiceType(References.ENTITY_TREE, key);

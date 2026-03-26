@@ -11,38 +11,36 @@ package com.arcanc.biomorphosis.integration.jei.ingredient;
 
 import com.arcanc.biomorphosis.integration.jei.BioIngredientTypes;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
-import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import mezz.jei.api.ingredients.IIngredientHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class StackWithChanceHelper implements IIngredientHelper<StackWithChance>
 {
     @Override
-    public @NotNull IIngredientType<StackWithChance> getIngredientType()
+    public IIngredientType<StackWithChance> getIngredientType()
     {
         return BioIngredientTypes.STACK_WITH_CHANCE_TYPE;
     }
 
     @Override
-    public @NotNull String getDisplayName(@NotNull StackWithChance ingredient)
+    public String getDisplayName(StackWithChance ingredient)
     {
         return ingredient.stack().getDisplayName().getString();
     }
     
     //FIXME: idk is this right way to make string for those method
     @Override
-    public String getUniqueId(@NotNull StackWithChance ingredient, UidContext context)
+    public String getUniqueId(StackWithChance ingredient, UidContext context)
     {
         return "StackWithChance";
     }
     
     @Override
-    public @NotNull String getUid(@NotNull StackWithChance ingredient, @NotNull UidContext context)
+    public String getUid(StackWithChance ingredient, UidContext context)
     {
         return ItemHelper.getRegistryName(ingredient.stack().getItem()).toString()
                 + "#" + ingredient.stack().getDamageValue()
@@ -50,19 +48,19 @@ public class StackWithChanceHelper implements IIngredientHelper<StackWithChance>
     }
 
     @Override
-    public @NotNull ResourceLocation getResourceLocation(@NotNull StackWithChance ingredient)
+    public ResourceLocation getResourceLocation(StackWithChance ingredient)
     {
         return ItemHelper.getRegistryName(ingredient.stack().getItem());
     }
 
     @Override
-    public @NotNull StackWithChance copyIngredient(@NotNull StackWithChance ingredient)
+    public StackWithChance copyIngredient(StackWithChance ingredient)
     {
         return new StackWithChance(ingredient.stack().copy(), ingredient.chance());
     }
 
     @Override
-    public @NotNull String getErrorInfo(@Nullable StackWithChance ingredient)
+    public String getErrorInfo(@Nullable StackWithChance ingredient)
     {
         return "";
     }

@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
-import org.jetbrains.annotations.NotNull;
 
 public class FleshLootModifier extends LootModifier
 {
@@ -37,7 +36,7 @@ public class FleshLootModifier extends LootModifier
 	}
 	
 	@Override
-	protected @NotNull ObjectArrayList<ItemStack> doApply(@NotNull ObjectArrayList<ItemStack> generatedLoot, @NotNull LootContext context)
+	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context)
 	{
 		if (!context.hasParam(LootContextParams.THIS_ENTITY) || !context.hasParam(LootContextParams.LAST_DAMAGE_PLAYER))
 			return generatedLoot;
@@ -52,7 +51,7 @@ public class FleshLootModifier extends LootModifier
 	}
 	
 	@Override
-	public @NotNull MapCodec<? extends IGlobalLootModifier> codec()
+	public MapCodec<? extends IGlobalLootModifier> codec()
 	{
 		return CODEC;
 	}

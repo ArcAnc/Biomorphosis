@@ -11,22 +11,22 @@ package com.arcanc.biomorphosis.content.block.block_entity;
 
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class HiveDeco extends BioBaseBlockEntity implements GeoBlockEntity
+public class HiveDeco extends BioBaseBlockEntity implements PAnimatable<HiveDeco>
 {
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+	private final PAnimationManager<HiveDeco> manager = PLibHelper.createManager(this);
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+	
 	public HiveDeco(BlockPos pos, BlockState blockState)
 	{
 		super(Registration.BETypeReg.BE_HIVE_DECO.get(), pos, blockState);
@@ -39,27 +39,30 @@ public class HiveDeco extends BioBaseBlockEntity implements GeoBlockEntity
 	}
 
 	@Override
-	public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 
 	}
 
 	@Override
-	public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 
 	}
 
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public PAnimationManager<HiveDeco> getAnimationManager()
 	{
-		controllers.add(new AnimationController<>(this, "controller", 0, state ->
-				state.setAndContinue(DefaultAnimations.IDLE)));
+		return this.manager;
 	}
-
+	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<HiveDeco> registrar)
 	{
-		return this.cache;
+		registrar.add(new PAnimationController<>(state ->
+		{
+			state.controller().play(IDLE);
+			return ControllerState.PLAY;
+		}));
 	}
 }

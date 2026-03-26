@@ -21,7 +21,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class MultiblockPageComponent extends AbstractPageComponent
 	}
 	
 	@Override
-	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		if (this.definition == null)
 			return;
@@ -87,7 +86,7 @@ public class MultiblockPageComponent extends AbstractPageComponent
 	}
 	
 	@Override
-	protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+	protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
 	{
 	
 	}

@@ -12,36 +12,41 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Infestor;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.BakedGeoModel;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class InfestorRenderer extends GeoEntityRenderer<Infestor>
+import java.util.function.Function;
+
+public class InfestorRenderer extends PEntityRenderer<Infestor>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("entity/infestor/0");
+	
 	public InfestorRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultedEntityGeoModel<>(Database.rl("infestor"), true));
+		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("infestor")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
-
+	
 	@Override
-	public void preRender(PoseStack poseStack,
-						  Infestor animatable,
-						  @NotNull BakedGeoModel model,
-						  @Nullable MultiBufferSource bufferSource,
-						  @Nullable VertexConsumer buffer,
-						  boolean isReRender,
-						  float partialTick,
-						  int packedLight,
-						  int packedOverlay,
-						  int renderColor)
+	public void trueSubmit(PoseStack poseStack, Infestor animatable, Function<ResourceLocation, RenderType> renderType, MultiBufferSource bufferSource, int packedLight, int packedOverlay, float partialTick, @Nullable Object... additionalData)
 	{
-		model.getBone("all").ifPresent(geoBone -> geoBone.updateScale(1.7f, 1.7f, 1.7f));
-		super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+		poseStack.pushPose();
+		poseStack.scale(1.7f, 1.7f, 1.7f);
+		super.trueSubmit(poseStack, animatable, renderType, bufferSource, packedLight, packedOverlay, partialTick, additionalData);
+		poseStack.popPose();
+	}
+	
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	{
+		event.addTextureLocation(TEXTURE);
 	}
 }

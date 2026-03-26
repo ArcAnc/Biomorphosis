@@ -9,7 +9,8 @@
 
 package com.arcanc.biomorphosis.util.helper;
 
-import com.mojang.datafixers.util.*;
+import com.mojang.datafixers.util.Function7;
+import com.mojang.datafixers.util.Function8;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import io.netty.buffer.ByteBuf;
@@ -22,8 +23,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -96,12 +95,12 @@ public class BioCodecs
 	
 	public static class StreamCodecs
 	{
-		public static <B, C, T1, T2, T3, T4, T5, T6, T7> @NotNull StreamCodec<B, C> composite(final StreamCodec<? super B, T1> codec1, final Function<C, T1> getter1, final StreamCodec<? super B, T2> codec2, final Function<C, T2> getter2, final StreamCodec<? super B, T3> codec3, final Function<C, T3> getter3, final StreamCodec<? super B, T4> codec4, final Function<C, T4> getter4, final StreamCodec<? super B, T5> codec5, final Function<C, T5> getter5, final StreamCodec<? super B, T6> codec6, final Function<C, T6> getter6, final StreamCodec<? super B, T7> codec7, final Function<C, T7> getter7, final Function7<T1, T2, T3, T4, T5, T6, T7, C> factory)
+		public static <B, C, T1, T2, T3, T4, T5, T6, T7> StreamCodec<B, C> composite(final StreamCodec<? super B, T1> codec1, final Function<C, T1> getter1, final StreamCodec<? super B, T2> codec2, final Function<C, T2> getter2, final StreamCodec<? super B, T3> codec3, final Function<C, T3> getter3, final StreamCodec<? super B, T4> codec4, final Function<C, T4> getter4, final StreamCodec<? super B, T5> codec5, final Function<C, T5> getter5, final StreamCodec<? super B, T6> codec6, final Function<C, T6> getter6, final StreamCodec<? super B, T7> codec7, final Function<C, T7> getter7, final Function7<T1, T2, T3, T4, T5, T6, T7, C> factory)
 		{
 			return new StreamCodec<B, C>()
 			{
 				@Override
-				public @NotNull C decode(@NotNull B buffer)
+				public C decode(B buffer)
 				{
 					T1 t1 = codec1.decode(buffer);
 					T2 t2 = codec2.decode(buffer);
@@ -114,7 +113,7 @@ public class BioCodecs
 				}
 				
 				@Override
-				public void encode(@NotNull B buffer, @NotNull C data)
+				public void encode(B buffer, C data)
 				{
 					codec1.encode(buffer, getter1.apply(data));
 					codec2.encode(buffer, getter2.apply(data));
@@ -127,7 +126,7 @@ public class BioCodecs
 			};
 		}
 		
-		public static <B, C, T1, T2, T3, T4, T5, T6, T7, T8> @NotNull StreamCodec<B, C> composite(
+		public static <B, C, T1, T2, T3, T4, T5, T6, T7, T8> StreamCodec<B, C> composite(
 				final StreamCodec<? super B, T1> codec1,
 				final Function<C, T1> getter1,
 				final StreamCodec<? super B, T2> codec2,
@@ -150,7 +149,7 @@ public class BioCodecs
 			return new StreamCodec<B, C>()
 			{
 				@Override
-				public @NotNull C decode(@NotNull B buffer)
+				public C decode(B buffer)
 				{
 					T1 t1 = codec1.decode(buffer);
 					T2 t2 = codec2.decode(buffer);
@@ -164,7 +163,7 @@ public class BioCodecs
 				}
 				
 				@Override
-				public void encode(@NotNull B buffer, @NotNull C data)
+				public void encode(B buffer, C data)
 				{
 					codec1.encode(buffer, getter1.apply(data));
 					codec2.encode(buffer, getter2.apply(data));

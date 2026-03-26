@@ -24,7 +24,6 @@ import net.minecraft.world.level.storage.loot.predicates.LootItemKilledByPlayerC
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import net.neoforged.neoforge.registries.DeferredHolder;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.stream.Stream;
 
@@ -138,7 +137,7 @@ public class BioEntityLoot extends EntityLootSubProvider
     }
 
     @Override
-    protected @NotNull Stream<EntityType<?>> getKnownEntityTypes()
+    protected Stream<EntityType<?>> getKnownEntityTypes()
     {
         return Registration.EntityReg.ENTITY_TYPES.getEntries().
                 stream().

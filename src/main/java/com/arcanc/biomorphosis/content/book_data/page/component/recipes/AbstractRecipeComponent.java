@@ -18,14 +18,12 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeType;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -37,7 +35,7 @@ public class AbstractRecipeComponent extends AbstractPageComponent
     private final ResourceLocation location;
     private Recipe<?> recipe;
 
-    private AbstractRecipeComponent(@NotNull ResourceLocation recipeType, ResourceLocation location)
+    private AbstractRecipeComponent(ResourceLocation recipeType, ResourceLocation location)
     {
         super(0, 0, 0, 0, Component.empty());
         this.location = location;
@@ -65,13 +63,13 @@ public class AbstractRecipeComponent extends AbstractPageComponent
         NetworkEngine.sendToServer(new C2SRecipeRequest(location));
     }
 
-    public static @NotNull AbstractRecipeComponent createRecipeComponent(ResourceLocation recipeType, ResourceLocation location)
+    public static AbstractRecipeComponent createRecipeComponent(ResourceLocation recipeType, ResourceLocation location)
     {
        return new AbstractRecipeComponent(recipeType, location);
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         if (this.recipe == null)
         {
@@ -91,13 +89,13 @@ public class AbstractRecipeComponent extends AbstractPageComponent
                 renderer.renderRecipe(this.recipe, getX(), getY(), guiGraphics, mouseX, mouseY, partialTicks));
     }
 
-    private void renderLoading(@NotNull GuiGraphics guiGraphics)
+    private void renderLoading(GuiGraphics guiGraphics)
     {
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal("Loading Recipe..."), this.getX(), this.getY(), Color.black.getRGB(), false);
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }
@@ -106,12 +104,12 @@ public class AbstractRecipeComponent extends AbstractPageComponent
     {
         private final static Map<ResourceLocation, Recipe<?>> CACHED_RECIPES = new HashMap<>();
 
-        public static void storeRecipe(@NotNull ResourceLocation id, @NotNull Recipe<?> recipe)
+        public static void storeRecipe(ResourceLocation id, Recipe<?> recipe)
         {
             CACHED_RECIPES.putIfAbsent(id, recipe);
         }
 
-        public static @NotNull Optional<Recipe<?>> getRecipe(ResourceLocation id)
+        public static Optional<Recipe<?>> getRecipe(ResourceLocation id)
         {
             return Optional.ofNullable(CACHED_RECIPES.get(id));
         }
@@ -126,7 +124,7 @@ public class AbstractRecipeComponent extends AbstractPageComponent
             CACHED_RENDERERS.putIfAbsent(type, renderer);
         }
 
-        public static @NotNull Optional<RecipeRenderer> getRenderer(RecipeType<?> type)
+        public static Optional<RecipeRenderer> getRenderer(RecipeType<?> type)
         {
             return Optional.ofNullable(CACHED_RENDERERS.get(type));
         }

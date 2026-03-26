@@ -11,23 +11,22 @@ package com.arcanc.biomorphosis.content.block.norph.source;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioBaseBlockEntity;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class NorphSource extends BioBaseBlockEntity implements GeoBlockEntity
+public class NorphSource extends BioBaseBlockEntity implements PAnimatable<NorphSource>
 {
-    private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+    private final PAnimationManager<NorphSource> manager = PLibHelper.createManager(this);
 
     public NorphSource(BlockPos pos, BlockState blockState)
     {
@@ -41,26 +40,30 @@ public class NorphSource extends BioBaseBlockEntity implements GeoBlockEntity
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
 
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
 
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<NorphSource> registrar)
     {
-        controllers.add(new AnimationController<>(this, "idle", 10, state -> state.setAndContinue(IDLE)));
+        registrar.add(new PAnimationController<>(state ->
+        {
+            state.controller().play(IDLE);
+            return ControllerState.PLAY;
+        }));
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<NorphSource> getAnimationManager()
     {
-        return cache;
+        return this.manager;
     }
 }

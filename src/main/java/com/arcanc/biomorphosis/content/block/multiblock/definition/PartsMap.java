@@ -19,7 +19,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.Arrays;
@@ -71,7 +70,7 @@ public class PartsMap
         return this.size;
     }
 
-    private @NotNull @Unmodifiable List<IngredientWithSize> calculateStructure()
+    private @Unmodifiable List<IngredientWithSize> calculateStructure()
     {
         Map<Ingredient, Integer> parts = new HashMap<>();
         this.partsMap.forEach((pos, part) ->
@@ -106,7 +105,7 @@ public class PartsMap
         return new BlockPos(sizes[0] - sizes[3] + 1, sizes[1] - sizes[4] + 1, sizes[2] - sizes[5] + 1);
     }
 
-    private void checkPos(int pos, int index, int @NotNull []sizes)
+    private void checkPos(int pos, int index, int []sizes)
     {
         int secondaryIndex = index + 3;
         sizes[index] = Math.max(sizes[index], pos);

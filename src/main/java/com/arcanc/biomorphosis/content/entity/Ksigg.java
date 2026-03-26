@@ -11,6 +11,11 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -29,23 +34,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 /*Like a cow, but FOR THE SWARM!*/
-public class Ksigg extends Animal implements GeoEntity
+public class Ksigg extends Animal implements PAnimatable<Ksigg>
 {
     /*FIXME: заменить молоко на другую жижу*/
     private static final EntityDimensions BABY_DIMENSIONS = Registration.EntityReg.MOB_KSIGG.getEntityHolder().get().getDimensions().scale(0.65f).withEyeHeight(0.6f);
 
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    private final PAnimationManager<Ksigg> manager = PLibHelper.createManager(this);
+    
+    private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
+    private static final PRawAnimation WALK = PRawAnimation.begin().thenLoop("walk").build();
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    
+    private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
+    
     public Ksigg(EntityType<? extends Animal> type, Level level)
     {
         super(type, level);
@@ -66,7 +70,7 @@ public class Ksigg extends Animal implements GeoEntity
     }
 
     @Override
-    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand)
+    public InteractionResult mobInteract(Player player, InteractionHand hand)
     {
         ItemStack itemstack = player.getItemInHand(hand);
         if (itemstack.is(Items.BUCKET) && !this.isBaby())
@@ -83,7 +87,7 @@ public class Ksigg extends Animal implements GeoEntity
     }
 
     @Override
-    public boolean isFood(@NotNull ItemStack stack)
+    public boolean isFood(ItemStack stack)
     {
         return stack.is(BioItemTags.KSIGG_FOOD);
     }
@@ -103,7 +107,7 @@ public class Ksigg extends Animal implements GeoEntity
 
     @Nullable
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource)
+    protected SoundEvent getHurtSound(DamageSource damageSource)
     {
         return Registration.EntityReg.MOB_KSIGG.getSounds().getHurtSound().get();
     }
@@ -117,32 +121,47 @@ public class Ksigg extends Animal implements GeoEntity
 
     @Nullable
     @Override
-    public AgeableMob getBreedOffspring(@NotNull ServerLevel level, @NotNull AgeableMob otherParent)
+    public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent)
     {
         return Registration.EntityReg.MOB_KSIGG.getEntityHolder().get().create(level);
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Ksigg> registrar)
     {
-        controllers.add(new AnimationController<>(this, "animController", 0, state ->
+        registrar.add(new PAnimationController<>("animController",state ->
         {
-            if (this.swinging)
-                return state.setAndContinue(DefaultAnimations.ATTACK_SWING);
-            return state.setAndContinue(this.walkAnimation.isMoving() ? DefaultAnimations.WALK : DefaultAnimations.IDLE);
-        }),
-                DefaultAnimations.genericDeathController(this));
+            Ksigg animatable = state.animatable();
+            if (animatable.swinging)
+                state.controller().play(ATTACK);
+            else
+            {
+                if (animatable.walkAnimation.isMoving())
+                    state.controller().play(WALK);
+                else
+                    state.controller().play(IDLE);
+            }
+            return state.controller().getState();
+        })).
+        add(new PAnimationController<>("death", state ->
+        {
+            if (state.animatable().isDeadOrDying())
+                state.controller().play(DEATH);
+            else
+                state.controller().stop();
+            return  state.controller().getState();
+        }));
     }
-
+    
     @Override
-    protected @NotNull EntityDimensions getDefaultDimensions(@NotNull Pose pose)
+    protected EntityDimensions getDefaultDimensions(Pose pose)
     {
         return this.isBaby() ? BABY_DIMENSIONS : super.getDefaultDimensions(pose);
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<Ksigg> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
 }

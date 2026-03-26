@@ -27,7 +27,6 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class GenomeStabilityInfoArea extends InfoArea
 	}
 	
 	@Override
-	protected void fillTooltipOverArea(int mouseX, int mouseY, @NotNull List<Component> tooltip)
+	protected void fillTooltipOverArea(int mouseX, int mouseY, List<Component> tooltip)
 	{
 		tooltip.add(Component.translatable(Database.GUI.InfoArea.GenomeStabilityInfoArea.Tooltip.STABILITY_TOOLTIP));
 	}

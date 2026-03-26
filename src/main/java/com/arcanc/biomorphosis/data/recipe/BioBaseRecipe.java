@@ -17,7 +17,6 @@ import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 import java.util.function.BooleanSupplier;
@@ -27,7 +26,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
     private final ResourcesInfo resources;
     private final String group;
     
-    public BioBaseRecipe(String group, @NotNull ResourcesInfo resources)
+    public BioBaseRecipe(String group, ResourcesInfo resources)
     {
         this.group = group;
         this.resources = resources;
@@ -39,7 +38,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
     }
 
     @Override
-    public boolean matches(@NotNull T input, @NotNull Level level)
+    public boolean matches(T input, Level level)
     {
         int time = this.resources.time();
 
@@ -90,7 +89,7 @@ public abstract class BioBaseRecipe<T extends BioBaseInput> implements Recipe<T>
     }
     
     @Override
-    public @NotNull String getGroup()
+    public String getGroup()
     {
         return this.group;
     }

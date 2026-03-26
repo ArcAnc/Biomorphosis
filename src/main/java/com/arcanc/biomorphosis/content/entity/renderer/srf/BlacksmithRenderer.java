@@ -16,7 +16,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class BlacksmithRenderer extends LivingEntityRenderer<Blacksmith, BlacksmithModel>
 {
@@ -28,13 +27,13 @@ public class BlacksmithRenderer extends LivingEntityRenderer<Blacksmith, Blacksm
 	}
 	
 	@Override
-	protected boolean shouldShowName(@NotNull Blacksmith entity)
+	protected boolean shouldShowName(Blacksmith entity)
 	{
 		return false;
 	}
 	
 	@Override
-	public @NotNull ResourceLocation getTextureLocation(@NotNull Blacksmith entity)
+	public ResourceLocation getTextureLocation(Blacksmith entity)
 	{
 		return TEXTURE;
 	}

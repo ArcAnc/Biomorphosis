@@ -15,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.MultifaceSpreader;
-import org.jetbrains.annotations.NotNull;
 
 public class GlowMossBlock extends MultifaceBlock implements BlockInterfaces.IWrencheable
 {
@@ -28,19 +27,19 @@ public class GlowMossBlock extends MultifaceBlock implements BlockInterfaces.IWr
     }
 
     @Override
-    public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+    public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
     {
         return InteractionResult.PASS;
     }
 
     @Override
-    protected @NotNull MapCodec<GlowMossBlock> codec()
+    protected MapCodec<GlowMossBlock> codec()
     {
         return CODEC;
     }
     
     @Override
-    public @NotNull MultifaceSpreader getSpreader()
+    public MultifaceSpreader getSpreader()
     {
         return this.spreader;
     }

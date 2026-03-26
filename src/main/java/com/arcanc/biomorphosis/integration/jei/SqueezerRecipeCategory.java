@@ -33,7 +33,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
@@ -43,26 +42,26 @@ public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
 	private final IDrawable icon;
 	private final IDrawable arrow;
 
-    public SqueezerRecipeCategory(@NotNull IGuiHelper guiHelper)
+    public SqueezerRecipeCategory(IGuiHelper guiHelper)
 	{
 		this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.SQUEEZER));
 		this.arrow = guiHelper.createAnimatedRecipeArrow(400);
 	}
 	
 	@Override
-	public @NotNull RecipeType<SqueezerRecipe> getRecipeType()
+	public RecipeType<SqueezerRecipe> getRecipeType()
 	{
 		return RECIPE_TYPE;
 	}
 	
 	@Override
-	public @NotNull Component getTitle()
+	public Component getTitle()
 	{
 		return Component.translatable(Database.Integration.JeiInfo.SQUEEZER_RECIPE_NAME);
 	}
 	
 	@Override
-	public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull SqueezerRecipe recipe, @NotNull IFocusGroup focuses)
+	public void setRecipe(IRecipeLayoutBuilder builder, SqueezerRecipe recipe, IFocusGroup focuses)
 	{
 		builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).
@@ -93,9 +92,9 @@ public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
 	}
 	
 	@Override
-	public void draw(@NotNull SqueezerRecipe recipe,
-		@NotNull IRecipeSlotsView recipeSlotsView,
-		@NotNull GuiGraphics guiGraphics,
+	public void draw(SqueezerRecipe recipe,
+		IRecipeSlotsView recipeSlotsView,
+		GuiGraphics guiGraphics,
 	double mouseX,
 	double mouseY)
 	{

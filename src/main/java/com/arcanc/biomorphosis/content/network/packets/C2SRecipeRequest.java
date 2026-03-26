@@ -10,10 +10,8 @@
 package com.arcanc.biomorphosis.content.network.packets;
 
 import com.arcanc.biomorphosis.util.Database;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
@@ -21,7 +19,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 public record C2SRecipeRequest(ResourceLocation recipeLocation) implements IPacket
 {
@@ -33,7 +30,7 @@ public record C2SRecipeRequest(ResourceLocation recipeLocation) implements IPack
     );
 
     @Override
-    public void process(@NotNull IPayloadContext context)
+    public void process(IPayloadContext context)
     {
         context.enqueueWork(() ->
         {
@@ -53,7 +50,7 @@ public record C2SRecipeRequest(ResourceLocation recipeLocation) implements IPack
     }
 
     @Override
-    public @NotNull Type<C2SRecipeRequest> type()
+    public Type<C2SRecipeRequest> type()
     {
         return TYPE;
     }

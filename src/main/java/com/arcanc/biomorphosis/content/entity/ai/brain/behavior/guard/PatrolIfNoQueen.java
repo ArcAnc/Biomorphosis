@@ -27,7 +27,6 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -75,7 +74,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected boolean checkExtraStartConditions(@NotNull ServerLevel level, @NotNull QueenGuard owner)
+	protected boolean checkExtraStartConditions(ServerLevel level, QueenGuard owner)
 	{
 		if (this.remainingCooldown > 0)
 		{
@@ -104,7 +103,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected boolean canStillUse(@NotNull ServerLevel level, @NotNull QueenGuard entity, long gameTime)
+	protected boolean canStillUse(ServerLevel level, QueenGuard entity, long gameTime)
 	{
 		if (this.path != null && this.lastTargetPos != null)
 		{
@@ -118,7 +117,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected void stop(@NotNull ServerLevel level, @NotNull QueenGuard entity, long gameTime)
+	protected void stop(ServerLevel level, QueenGuard entity, long gameTime)
 	{
 		if (entity.getBrain().hasMemoryValue(MemoryModuleType.WALK_TARGET)
 				&& !this.reachedTarget(entity, entity.getBrain().getMemory(MemoryModuleType.WALK_TARGET).get())
@@ -132,14 +131,14 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 	}
 
 	@Override
-	protected void start(@NotNull ServerLevel level, @NotNull QueenGuard entity, long gameTime)
+	protected void start(ServerLevel level, QueenGuard entity, long gameTime)
 	{
 		entity.getBrain().setMemory(MemoryModuleType.PATH, this.path);
 		entity.getNavigation().moveTo(this.path, this.speedModifier);
 	}
 
 	@Override
-	protected void tick(@NotNull ServerLevel level, @NotNull QueenGuard owner, long gameTime)
+	protected void tick(ServerLevel level, QueenGuard owner, long gameTime)
 	{
 		Path path = owner.getNavigation().getPath();
 		Brain<?> brain = owner.getBrain();
@@ -161,7 +160,7 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 		}
 	}
 
-	private boolean tryComputePath(@NotNull Mob mob, @NotNull WalkTarget target, long time)
+	private boolean tryComputePath(Mob mob, WalkTarget target, long time)
 	{
 		BlockPos blockpos = target.getTarget().currentBlockPosition();
 		this.path = mob.getNavigation().createPath(blockpos, 0);
@@ -193,12 +192,12 @@ public class PatrolIfNoQueen extends Behavior<QueenGuard>
 		return false;
 	}
 
-	private boolean reachedTarget(@NotNull Mob mob, @NotNull WalkTarget target)
+	private boolean reachedTarget(Mob mob, WalkTarget target)
 	{
 		return target.getTarget().currentBlockPosition().distManhattan(mob.blockPosition()) <= target.getCloseEnoughDist();
 	}
 
-	private static boolean isWalkTargetSpectator(@NotNull WalkTarget walkTarget)
+	private static boolean isWalkTargetSpectator(WalkTarget walkTarget)
 	{
 		return walkTarget.getTarget() instanceof EntityTracker entitytracker && entitytracker.getEntity().isSpectator();
 	}

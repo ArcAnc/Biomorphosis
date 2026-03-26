@@ -10,76 +10,77 @@
 package com.arcanc.biomorphosis.content.item;
 
 import com.arcanc.biomorphosis.util.Database;
-import com.google.common.base.Suppliers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.PItemAnimatable;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.content.renderer.PItemRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
+import net.minecraft.client.model.geom.EntityModelSet;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoItem;
-import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
-import software.bernie.geckolib.animatable.client.GeoRenderProvider;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.constant.DefaultAnimations;
-import software.bernie.geckolib.model.DefaultedBlockGeoModel;
-import software.bernie.geckolib.renderer.GeoItemRenderer;
-import software.bernie.geckolib.util.GeckoLibUtil;
+import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import java.util.function.Function;
 
-public class MultiblockChamberBlockItem extends BioBaseBlockItem implements GeoItem
+public class MultiblockChamberBlockItem extends BioBaseBlockItem implements PItemAnimatable<MultiblockChamberBlockItem>
 {
-    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-
+    private final PAnimationManager<MultiblockChamberBlockItem> manager = PLibHelper.createManager(this);
+    private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+    
     public MultiblockChamberBlockItem(Block block, Properties properties, boolean addToCreative)
     {
         super(block, properties, addToCreative);
-        SingletonGeoAnimatable.registerSyncedAnimatable(this);
     }
-
+    
     @Override
-    public void createGeoRenderer(@NotNull Consumer<GeoRenderProvider> consumer)
+    public IClientItemExtensions registerClientExtension()
     {
-        consumer.accept(new GeoRenderProvider()
+        return new IClientItemExtensions()
         {
-            private final Supplier<Renderer> renderer = Suppliers.memoize(Renderer :: new);
-
+            private final Renderer renderer = new Renderer(
+                    RenderHelper.mc().getBlockEntityRenderDispatcher(),
+                    RenderHelper.mc().getEntityModels()
+            );
+            
             @Override
-            public @NotNull GeoItemRenderer<MultiblockChamberBlockItem> getGeoItemRenderer()
+            public BlockEntityWithoutLevelRenderer getCustomRenderer()
             {
-                return this.renderer.get();
+                return this.renderer;
             }
-        });
+        };
     }
-
+    
     @Override
-    public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+    public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChamberBlockItem> registrar)
     {
-        controllers.add(new AnimationController<>(this, "controller", 0, state -> state.
-		        setAndContinue(DefaultAnimations.IDLE)));
+        registrar.add(new PAnimationController<>(state ->
+        {
+            state.controller().play(IDLE);
+            return state.controller().getState();
+        }));
     }
-
+    
     @Override
-    public AnimatableInstanceCache getAnimatableInstanceCache()
+    public PAnimationManager<MultiblockChamberBlockItem> getAnimationManager()
     {
-        return this.cache;
+        return this.manager;
     }
-
-    public static class Renderer extends GeoItemRenderer<MultiblockChamberBlockItem>
+    
+    private static class Renderer extends PItemRenderer<MultiblockChamberBlockItem>
     {
-        public Renderer()
+        private Renderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher,
+                        EntityModelSet entityModelSet)
         {
-            super(new DefaultedBlockGeoModel<>(Database.rl("chamber")));
-        }
-
-        @Override
-        public @Nullable RenderType getRenderType(MultiblockChamberBlockItem animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
-        {
-            return RenderType.entityTranslucent(texture);
+            super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).
+                    addTexture(Database.rl("0")).build(), PRenderTypes.RenderTypeProvider :: trianglesTranslucent, blockEntityRenderDispatcher, entityModelSet);
         }
     }
 }

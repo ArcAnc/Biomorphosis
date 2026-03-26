@@ -28,11 +28,11 @@ import net.minecraft.world.entity.monster.piglin.AbstractPiglin;
 import net.minecraft.world.entity.monster.warden.Warden;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class EntityPageComponent extends AbstractPageComponent
 {
-    private final LivingEntity entity;
+    private final @Nullable LivingEntity entity;
 
     public EntityPageComponent(ResourceLocation location)
     {
@@ -41,12 +41,12 @@ public class EntityPageComponent extends AbstractPageComponent
         EntityType<?> type = BuiltInRegistries.ENTITY_TYPE.get(location);
         Entity ent = type.create(RenderHelper.mc().level);
         if (ent instanceof LivingEntity)
-            entity = (LivingEntity)ent;
+            this.entity = (LivingEntity)ent;
         else
-            entity = null;
-        if (entity != null)
+            this.entity = null;
+        if (this.entity != null)
         {
-            switch (entity)
+            switch (this.entity)
             {
                 case Zombie zombie -> this.setSize(25, 35);
                 case EnderMan enderMan -> this.setSize(25, 50);
@@ -84,18 +84,18 @@ public class EntityPageComponent extends AbstractPageComponent
     }
 
     @Override
-    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-        if (entity != null)
+        if (this.entity != null)
         {
             InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, this.getX(), this.getY(), this.getX() + getWidth(), this.getY() + getHeight(), 15, 0.0625F, mouseX, mouseY, entity);
             if (isHovered())
-                guiGraphics.renderTooltip(RenderHelper.mc().font, entity.getType().getDescription(), mouseX, mouseY);
+                guiGraphics.renderTooltip(RenderHelper.mc().font, this.entity.getType().getDescription(), mouseX, mouseY);
         }
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }

@@ -35,7 +35,6 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 
@@ -50,7 +49,7 @@ public class OverlayRenderHandler
 	public static final ResourceLocation ITEMS = Database.rl("items");
 	public static final ResourceLocation BLOCKS = Database.rl("blocks");
 	
-	public static void registerGuiLayers(@NotNull RegisterGuiLayersEvent event)
+	public static void registerGuiLayers(RegisterGuiLayersEvent event)
 	{
 		event.registerAbove(VanillaGuiLayers.DEBUG_OVERLAY,
 				ADVANCEMENTS,
@@ -100,7 +99,7 @@ public class OverlayRenderHandler
 		
 		private static final List<AdvancementInfo<?>> ADVANCEMENT_INFOS = new ArrayList<>();
 		
-		private static void renderNewGeneOverlay(GuiGraphics guiGraphics, @NotNull LocalPlayer player, int scaledWidth, int scaledHeight, float partialTick)
+		private static void renderNewGeneOverlay(GuiGraphics guiGraphics, LocalPlayer player, int scaledWidth, int scaledHeight, float partialTick)
 		{
 			Minecraft mc = RenderHelper.mc();
 			Font font = mc.font;
@@ -259,7 +258,7 @@ public class OverlayRenderHandler
 			}
 		}
 		
-		private static @NotNull Vector2f calculatePos(ScreenAnchor anchor, Vector2f anchorPos, Vector2f size, @NotNull AdvancementInfo<?> info)
+		private static Vector2f calculatePos(ScreenAnchor anchor, Vector2f anchorPos, Vector2f size, AdvancementInfo<?> info)
 		{
 			return switch (info.state)
 			{
@@ -301,7 +300,7 @@ public class OverlayRenderHandler
 	private static class ItemOverlays
 	{
 		
-		private static void renderWrenchOverlay(GuiGraphics guiGraphics, @NotNull ItemStack stack, @NotNull LocalPlayer player, int scaledWidth, int scaledHeight)
+		private static void renderWrenchOverlay(GuiGraphics guiGraphics, ItemStack stack, LocalPlayer player, int scaledWidth, int scaledHeight)
 		{
 			Component str;
 			Minecraft mc = RenderHelper.mc();

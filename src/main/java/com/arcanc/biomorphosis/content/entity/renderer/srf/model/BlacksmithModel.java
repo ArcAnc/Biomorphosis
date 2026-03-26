@@ -17,7 +17,6 @@ import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.model.geom.PartPose;
 import net.minecraft.client.model.geom.builders.*;
 import net.minecraft.client.renderer.RenderType;
-import org.jetbrains.annotations.NotNull;
 
 public class BlacksmithModel extends HumanoidModel<Blacksmith>
 {
@@ -29,7 +28,7 @@ public class BlacksmithModel extends HumanoidModel<Blacksmith>
 		this.hat.visible = false;
 	}
 
-	public static @NotNull LayerDefinition createMesh()
+	public static LayerDefinition createMesh()
 	{
 		MeshDefinition meshdefinition = new MeshDefinition();
 		PartDefinition rootBone = meshdefinition.getRoot();
@@ -116,7 +115,7 @@ public class BlacksmithModel extends HumanoidModel<Blacksmith>
 	}
 	
 	@Override
-	public void setupAnim(@NotNull Blacksmith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
+	public void setupAnim(Blacksmith entity, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch)
 	{
 		super.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 	}

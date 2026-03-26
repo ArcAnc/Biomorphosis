@@ -17,7 +17,6 @@ import net.minecraft.world.entity.ai.behavior.Behavior;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.phys.AABB;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.Optional;
@@ -40,7 +39,7 @@ public class TargetOrRetaliate<E extends Mob> extends Behavior<E>
 	}
 
 	@Override
-	protected boolean checkExtraStartConditions(@NotNull ServerLevel level, @NotNull E owner)
+	protected boolean checkExtraStartConditions(ServerLevel level, E owner)
 	{
 		Optional<LivingEntity> hurtBy = owner.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY);
 
@@ -59,7 +58,7 @@ public class TargetOrRetaliate<E extends Mob> extends Behavior<E>
 	}
 
 	@Override
-	protected void start(@NotNull ServerLevel level, @NotNull E entity, long gameTime)
+	protected void start(ServerLevel level, E entity, long gameTime)
 	{
 		Optional<LivingEntity> hurtBy = entity.getBrain().getMemory(MemoryModuleType.HURT_BY_ENTITY);
 		if (hurtBy.isPresent() && this.validTarget.test(hurtBy.get()))
@@ -78,7 +77,7 @@ public class TargetOrRetaliate<E extends Mob> extends Behavior<E>
 		}
 	}
 
-	private boolean isAlly(@NotNull LivingEntity entity, E mob)
+	private boolean isAlly(LivingEntity entity, E mob)
 	{
 		return false;//entity.getTeam() != null && entity.getTeam() == mob.getTeam();
 	}

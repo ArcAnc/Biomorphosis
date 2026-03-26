@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 public class MultiblockMorpherBlock extends StaticMultiblockPartBlock<MultiblockMorpher>
 {
@@ -37,10 +36,10 @@ public class MultiblockMorpherBlock extends StaticMultiblockPartBlock<Multiblock
 	}
 
 	@Override
-	protected void onRemove(@NotNull BlockState state,
-							@NotNull Level level,
-							@NotNull BlockPos pos,
-							@NotNull BlockState newState,
+	protected void onRemove(BlockState state,
+							Level level,
+							BlockPos pos,
+							BlockState newState,
 							boolean movedByPiston)
 	{
 		if (state.hasBlockEntity() && !state.is(newState.getBlock()))
@@ -49,10 +48,10 @@ public class MultiblockMorpherBlock extends StaticMultiblockPartBlock<Multiblock
 
 	/*FIXME: add custom logic for shape, which must be received from multiblock definition, which means json*/
 	@Override
-	protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-										   @NotNull BlockGetter level,
-										   @NotNull BlockPos pos,
-										   @NotNull CollisionContext context)
+	protected VoxelShape getShape(BlockState state,
+										   BlockGetter level,
+										   BlockPos pos,
+										   CollisionContext context)
 	{
 		return state.getValue(STATE) == MultiblockState.FORMED ? super.getShape(state, level, pos, context) : BASIC_SHAPE;
 	}

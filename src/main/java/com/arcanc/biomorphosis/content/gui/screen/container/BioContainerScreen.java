@@ -14,9 +14,7 @@ import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.C2SGuiData;
-import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.base.Preconditions;
 import com.mojang.datafixers.util.Pair;
@@ -24,8 +22,6 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -34,7 +30,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 import java.util.ArrayList;
@@ -53,7 +48,7 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
@@ -71,7 +66,7 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
     }
 
     @Override
-    protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
+    protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
     {
         RenderHelper.blit(guiGraphics,
                 BACKGROUND,
@@ -90,7 +85,7 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
     }
 
     @Override
-    protected void renderSlot(@NotNull GuiGraphics guiGraphics, @NotNull Slot slot)
+    protected void renderSlot(GuiGraphics guiGraphics, Slot slot)
     {
         int i = slot.x;
         int j = slot.y;
@@ -190,7 +185,7 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         this.infoAreas.clear();
     }
 
-    protected void sendUpdateToServer(@NotNull Consumer<CompoundTag> additionalInfo)
+    protected void sendUpdateToServer(Consumer<CompoundTag> additionalInfo)
     {
         CompoundTag tag = new CompoundTag();
 

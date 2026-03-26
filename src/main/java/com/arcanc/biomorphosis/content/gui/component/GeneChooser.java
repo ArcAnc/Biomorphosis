@@ -29,7 +29,6 @@ import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -46,7 +45,7 @@ public class GeneChooser extends AbstractWidget
 	private final ErrorInfoArea error;
 	private final FittingMultiLineText text;
 	
-	public GeneChooser(int x, int y, int width, int height, @NotNull LivingEntity entity, ErrorInfoArea errorInfoArea)
+	public GeneChooser(int x, int y, int width, int height, LivingEntity entity, ErrorInfoArea errorInfoArea)
 	{
 		super(x, y, width, height, Component.empty());
 		this.error = errorInfoArea;
@@ -65,7 +64,7 @@ public class GeneChooser extends AbstractWidget
 	}
 	
 	@Override
-	protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		GenomeInstance genome = this.genome;
 		Minecraft mc = RenderHelper.mc();
@@ -200,7 +199,7 @@ public class GeneChooser extends AbstractWidget
 		return this.genome;
 	}
 	
-	public boolean canAddGene(@NotNull GeneInstance geneInstance)
+	public boolean canAddGene(GeneInstance geneInstance)
 	{
 		Minecraft mc = RenderHelper.mc();
 		GeneDefinition inputDefinition = mc.getConnection().registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
@@ -309,7 +308,7 @@ public class GeneChooser extends AbstractWidget
 	}
 	
 	@Override
-	protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+	protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
 	{
 	}
 	

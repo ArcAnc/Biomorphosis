@@ -32,7 +32,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
@@ -42,26 +41,26 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
     private final IDrawable icon;
     private final IDrawable arrow;
 
-    public StomachRecipeCategory(@NotNull IGuiHelper guiHelper)
+    public StomachRecipeCategory(IGuiHelper guiHelper)
     {
         this.icon = guiHelper.createDrawableItemStack(new ItemStack(Registration.BlockReg.STOMACH));
         this.arrow = guiHelper.createAnimatedRecipeArrow(400);
     }
 
     @Override
-    public @NotNull RecipeType<StomachRecipe> getRecipeType()
+    public RecipeType<StomachRecipe> getRecipeType()
     {
         return RECIPE_TYPE;
     }
 
     @Override
-    public @NotNull Component getTitle()
+    public Component getTitle()
     {
         return Component.translatable(Database.Integration.JeiInfo.STOMACH_RECIPE_NAME);
     }
 
     @Override
-    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, @NotNull StomachRecipe recipe, @NotNull IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, StomachRecipe recipe, IFocusGroup focuses)
     {
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).
@@ -100,9 +99,9 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
     }
 
     @Override
-    public void draw(@NotNull StomachRecipe recipe,
-                     @NotNull IRecipeSlotsView recipeSlotsView,
-                     @NotNull GuiGraphics guiGraphics,
+    public void draw(StomachRecipe recipe,
+                     IRecipeSlotsView recipeSlotsView,
+                     GuiGraphics guiGraphics,
                      double mouseX,
                      double mouseY)
     {

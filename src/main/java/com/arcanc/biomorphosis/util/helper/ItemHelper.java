@@ -21,7 +21,6 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.items.IItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
@@ -59,12 +58,12 @@ public class ItemHelper
         return getItemHandler(level, pos, null);
     }
 
-    public static Optional<IItemHandler> getItemHandler (@NotNull Level level, @NotNull BlockPos pos, @Nullable Direction dir)
+    public static Optional<IItemHandler> getItemHandler (Level level, BlockPos pos, @Nullable Direction dir)
     {
         return Optional.ofNullable(level.getCapability(Capabilities.ItemHandler.BLOCK, pos, dir));
     }
 
-    public static Optional<IItemHandler> getItemHandler (@NotNull BlockEntity tile, Direction dir)
+    public static Optional<IItemHandler> getItemHandler (BlockEntity tile, Direction dir)
     {
         BlockPos pos = tile.getBlockPos();
         Level level = tile.getLevel();
@@ -73,7 +72,7 @@ public class ItemHelper
         return getItemHandler(level, pos, tile, state, dir);
     }
 
-    public static Optional<IItemHandler> getItemHandler(@NotNull Level level, @NotNull BlockPos pos, @Nullable BlockEntity tile, @Nullable BlockState state, @Nullable Direction dir)
+    public static Optional<IItemHandler> getItemHandler(Level level, BlockPos pos, @Nullable BlockEntity tile, @Nullable BlockState state, @Nullable Direction dir)
     {
         return Optional.ofNullable(level.getCapability(Capabilities.ItemHandler.BLOCK, pos, state, tile, dir));
     }
@@ -93,7 +92,7 @@ public class ItemHelper
         return false;
     }
 
-    public static boolean hasEmptySpace(@NotNull Optional<IItemHandler> in)
+    public static boolean hasEmptySpace(Optional<IItemHandler> in)
     {
         return in.map(handler ->
         {
@@ -109,7 +108,7 @@ public class ItemHelper
         }).orElse(false);
     }
 
-    public static boolean hasEmptySpace(@NotNull IItemHandler in)
+    public static boolean hasEmptySpace(IItemHandler in)
     {
         for (int q = 0; q < in.getSlots(); q++)
         {
@@ -122,7 +121,7 @@ public class ItemHelper
         return false;
     }
 
-    public static boolean isEmpty(@NotNull IItemHandler inv)
+    public static boolean isEmpty(IItemHandler inv)
     {
         for (int q = 0; q < inv.getSlots(); q++)
         {
@@ -132,7 +131,7 @@ public class ItemHelper
         return true;
     }
 
-    public static @NotNull ResourceLocation getRegistryName(Item item)
+    public static ResourceLocation getRegistryName(Item item)
     {
         return BuiltInRegistries.ITEM.getKey(item);
     }

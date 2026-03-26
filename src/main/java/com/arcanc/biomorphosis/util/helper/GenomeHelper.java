@@ -25,7 +25,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ import java.util.Map;
 
 public class GenomeHelper
 {
-	public static <T extends LivingEntity> @Nullable GenomeTemplate getTemplateByEntity(@NotNull T entity)
+	public static <T extends LivingEntity> @Nullable GenomeTemplate getTemplateByEntity(T entity)
 	{
 		return entity.
 				registryAccess().
@@ -43,7 +42,7 @@ public class GenomeHelper
 				map(Holder.Reference :: value).orElse(null);
 	}
 	
-	public static UnlockedGenome getUnlockedGenome(@NotNull Player player)
+	public static UnlockedGenome getUnlockedGenome(Player player)
 	{
 		UnlockedGenome instance;
 		if (player.hasData(Registration.DataAttachmentsReg.UNLOCKED_GENOME))
@@ -80,7 +79,7 @@ public class GenomeHelper
 		return result;
 	}
 	
-	public static <T extends LivingEntity> @NotNull GenomeInstance getGenome(@NotNull T entity)
+	public static <T extends LivingEntity> GenomeInstance getGenome(T entity)
 	{
 		GenomeInstance instance;
 		if (entity.hasData(Registration.DataAttachmentsReg.GENOME))
@@ -104,7 +103,7 @@ public class GenomeHelper
 		return instance;
 	}
 	
-	public static @NotNull List<Object> getAllEffectData(GeneDefinition.@NotNull GeneEffectEntry entry)
+	public static List<Object> getAllEffectData(GeneDefinition.GeneEffectEntry entry)
 	{
 		List<Object> list = new ArrayList<>();
 		

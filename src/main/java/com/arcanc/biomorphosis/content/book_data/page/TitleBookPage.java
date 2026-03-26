@@ -24,7 +24,6 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.core.Vec3i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector2i;
 
 import java.awt.*;
@@ -104,7 +103,7 @@ public class TitleBookPage extends AbstractBookPage
     }
 
     @Override
-    protected void renderPageContent(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderPageContent(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         this.pages.forEach((integer, pageEntries) ->
                 pageEntries.forEach(entry ->
@@ -119,7 +118,7 @@ public class TitleBookPage extends AbstractBookPage
     }
 
     @Override
-    protected void renderNavigationButtons(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
+    protected void renderNavigationButtons(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks)
     {
         Font font = RenderHelper.mc().font;
         if (isArrowActive(this.arrowLeft))
@@ -154,7 +153,7 @@ public class TitleBookPage extends AbstractBookPage
         }
     }
 
-    private boolean isAboveArrow(double mouseX, double mouseY, @NotNull Vec3i arrow)
+    private boolean isAboveArrow(double mouseX, double mouseY, Vec3i arrow)
     {
         return mouseX >= arrow.getX() && mouseY >= arrow.getY() && mouseX <= arrow.getX() + (arrow.equals(this.toTitle) ? 17 : 18) && mouseY <= arrow.getY() + (arrow.equals(this.toTitle) ? 9 : 10);
     }
@@ -169,7 +168,7 @@ public class TitleBookPage extends AbstractBookPage
         return isArrowActive(arrow) && isAboveArrow(mouseX, mouseY, arrow);
     }
 
-    private boolean isArrowActive(@NotNull Vec3i arrow)
+    private boolean isArrowActive(Vec3i arrow)
     {
         if (arrow.equals(this.toTitle) && !BookData.getInstance().getCurrentChapter().getData().id().equals(Database.GUI.GuideBook.Chapters.TITLE.location()))
             return true;
@@ -223,7 +222,7 @@ public class TitleBookPage extends AbstractBookPage
     }
 
     @Override
-    protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+    protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
     {
 
     }
@@ -238,7 +237,7 @@ public class TitleBookPage extends AbstractBookPage
 
         private static final int LINE_HEIGHT = 11;
 
-        private PageEntry(@NotNull Vector2i pos, int page, Icon icon, String title, int subPage)
+        private PageEntry(Vector2i pos, int page, Icon icon, String title, int subPage)
         {
             super(pos.x(), pos.y(), 0,0, Component.empty());
             this.page = page;
@@ -251,7 +250,7 @@ public class TitleBookPage extends AbstractBookPage
         }
 
         @Override
-        protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+        protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
         {
             int yOffset = 0;
 
@@ -291,7 +290,7 @@ public class TitleBookPage extends AbstractBookPage
         }
 
         @Override
-        protected void updateWidgetNarration(@NotNull NarrationElementOutput narrationElementOutput)
+        protected void updateWidgetNarration(NarrationElementOutput narrationElementOutput)
         {
 
         }

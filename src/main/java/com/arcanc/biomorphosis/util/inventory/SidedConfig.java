@@ -14,7 +14,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.neoforged.neoforge.common.util.INBTSerializable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -56,17 +55,17 @@ public class SidedConfig implements INBTSerializable<ListTag>
         return config.get(face);
     }
 
-    public static @NotNull SidedConfig fullAccess()
+    public static SidedConfig fullAccess()
     {
         return new SidedConfig(defaultConfig(BasicSidedStorage.FaceMode.ALL));
     }
 
-    public static @NotNull SidedConfig zeroAccess()
+    public static SidedConfig zeroAccess()
     {
         return new SidedConfig(defaultConfig(BasicSidedStorage.FaceMode.BLOCKED));
     }
 
-    private static @NotNull EnumMap<BasicSidedStorage.RelativeFace, BasicSidedStorage.FaceMode> defaultConfig(BasicSidedStorage.FaceMode mode)
+    private static EnumMap<BasicSidedStorage.RelativeFace, BasicSidedStorage.FaceMode> defaultConfig(BasicSidedStorage.FaceMode mode)
     {
         EnumMap<BasicSidedStorage.RelativeFace, BasicSidedStorage.FaceMode> map = new EnumMap<>(BasicSidedStorage.RelativeFace.class);
         for (BasicSidedStorage.RelativeFace face : BasicSidedStorage.RelativeFace.values())
@@ -83,7 +82,7 @@ public class SidedConfig implements INBTSerializable<ListTag>
     // Serializing
     //-------------------------------------------------
     @Override
-    public @NotNull ListTag serializeNBT(HolderLookup.@NotNull Provider provider)
+    public ListTag serializeNBT(HolderLookup.Provider provider)
     {
         ListTag listTag = new ListTag();
 
@@ -98,7 +97,7 @@ public class SidedConfig implements INBTSerializable<ListTag>
     }
 
     @Override
-    public void deserializeNBT(HolderLookup.@NotNull Provider provider, @NotNull ListTag nbt)
+    public void deserializeNBT(HolderLookup.Provider provider, ListTag nbt)
     {
         this.config.clear();
 

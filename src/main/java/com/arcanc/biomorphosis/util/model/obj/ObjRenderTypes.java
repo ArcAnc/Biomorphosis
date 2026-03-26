@@ -15,7 +15,6 @@ import net.minecraft.Util;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
@@ -36,7 +35,7 @@ public class ObjRenderTypes
 		public static Function<ResourceLocation, RenderType> TRIANGLES_SOLID = Util.memoize(RenderTypeProviders :: trianglesSolid);
         public static Function<ResourceLocation, RenderType> TRIANGLES_TRANSLUCENT = Util.memoize(RenderTypeProviders :: trianglesTranslucent);
 
-        private static @NotNull RenderType trianglesSolid(ResourceLocation loc)
+        private static RenderType trianglesSolid(ResourceLocation loc)
         {
             RenderType.CompositeState state =  RenderType.CompositeState.builder().
                     setShaderState(RENDERTYPE_ENTITY_SOLID_SHADER).
@@ -49,7 +48,7 @@ public class ObjRenderTypes
             return create("triangles_solid", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.TRIANGLES, 1536, true, false, state);
         }
 
-        private static @NotNull RenderType trianglesTranslucent(ResourceLocation loc)
+        private static RenderType trianglesTranslucent(ResourceLocation loc)
         {
             RenderType.CompositeState state =  RenderType.CompositeState.builder().
                     setShaderState(RENDERTYPE_ENTITY_TRANSLUCENT_SHADER).

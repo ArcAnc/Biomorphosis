@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.client.model.data.ModelData;
 import net.neoforged.neoforge.client.model.data.ModelProperty;
-import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity implements BlockInterfaces.IWrencheable
 {
@@ -46,13 +46,13 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
     }
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         this.config.deserializeNBT(registries, tag.getList("config", Tag.TAG_COMPOUND));
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         tag.put("config", this.config.serializeNBT(registries));
     }
@@ -67,12 +67,12 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
         return getFaceModeForFace(getRelativeFace(dir));
     }
 
-    protected BasicSidedStorage.RelativeFace getRelativeFace(Direction dir)
+    protected BasicSidedStorage.@Nullable RelativeFace getRelativeFace(Direction dir)
     {
         return DirectionHelper.getRelativeDirection(getBlockState(), dir);
     }
 
-    protected BasicSidedStorage.FaceMode getFaceModeForFace(BasicSidedStorage.RelativeFace face)
+    protected BasicSidedStorage.FaceMode getFaceModeForFace(BasicSidedStorage.@Nullable RelativeFace face)
     {
         return this.config.getMode(face);
     }
@@ -86,7 +86,7 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
     }
 
     @Override
-    public @NotNull ModelData getModelData()
+    public ModelData getModelData()
     {
         return super.getModelData().derive().with(ACCESS_PROPERTIES, this.config.copy()).build();
     }
@@ -108,7 +108,7 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
             this.adrenaline = 0;
         }
 
-        public void writeData(@NotNull CompoundTag tag)
+        public void writeData(CompoundTag tag)
         {
             tag.putInt("biomass", this.biomass);
             tag.putInt("acid", this.acid);
@@ -119,7 +119,7 @@ public abstract class BioSidedAccessBlockEntity extends BioBaseBlockEntity imple
 			tag.putFloat("adrenaline_remainder", this.adrenalineReminder);
         }
 
-        public void readData(@NotNull CompoundTag tag)
+        public void readData(CompoundTag tag)
         {
             this.biomass = tag.getInt("biomass");
             this.acid = tag.getInt("acid");

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
@@ -32,10 +31,10 @@ public class StaticMultiblockPartBlock<T extends BioMultiblockPart> extends Mult
     }
 
     @Override
-    protected void onRemove(@NotNull BlockState state,
-                            @NotNull Level level,
-                            @NotNull BlockPos pos,
-                            @NotNull BlockState newState,
+    protected void onRemove(BlockState state,
+                            Level level,
+                            BlockPos pos,
+                            BlockState newState,
                             boolean movedByPiston)
     {
         if (!state.is(newState.getBlock()))
@@ -46,13 +45,13 @@ public class StaticMultiblockPartBlock<T extends BioMultiblockPart> extends Mult
     }
 	
 	@Override
-	protected @NotNull RenderShape getRenderShape(@NotNull BlockState state)
+	protected RenderShape getRenderShape(BlockState state)
 	{
 		return RenderShape.INVISIBLE;
 	}
 	
 	@Override
-    protected void createBlockStateDefinition(@NotNull StateDefinition.Builder<Block, BlockState> builder)
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
     {
         super.createBlockStateDefinition(builder);
         builder.add(HORIZONTAL_FACING);

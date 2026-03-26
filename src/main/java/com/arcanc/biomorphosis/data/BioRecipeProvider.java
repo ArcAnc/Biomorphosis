@@ -26,7 +26,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.DyeColor;
@@ -38,7 +37,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -58,7 +56,7 @@ public class BioRecipeProvider extends RecipeProvider
     }
 	
     @Override
-    protected void buildRecipes(@NotNull RecipeOutput output)
+    protected void buildRecipes(RecipeOutput output)
     {
         nineBlockStorageRecipes(output, RecipeCategory.MISC, Registration.ItemReg.FLESH_PIECE, RecipeCategory.MISC, Registration.BlockReg.FLESH);
 		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.ItemReg.BOOK).
@@ -94,7 +92,7 @@ public class BioRecipeProvider extends RecipeProvider
                 define('S', Tags.Items.STONES).
                 unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
                 unlockedBy(getHasName(Items.GOLDEN_APPLE), has(Items.GOLDEN_APPLE)).
-                unlockedBy(getHasName(Items.CLAY_BALL), has(Items.CLAY)).
+                unlockedBy(getHasName(Items.CLAY_BALL), has(Items.CLAY_BALL)).
                 unlockedBy(getHasName(Items.STONE), has(Tags.Items.STONES)).
                 save(output);
 
@@ -496,7 +494,7 @@ public class BioRecipeProvider extends RecipeProvider
         }
     }
 	
-	private void crusherRecipe(RecipeOutput output, @NotNull ItemStack input, ItemStack result, String name, StackWithChance @NotNull ... additionalOutput)
+	private void crusherRecipe(RecipeOutput output, ItemStack input, ItemStack result, String name, StackWithChance ... additionalOutput)
 	{
 		CrusherRecipeBuilder builder = CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
 				new BioBaseRecipe.BiomassInfo(true, 0.5f),
@@ -512,7 +510,7 @@ public class BioRecipeProvider extends RecipeProvider
 		builder.save(output, Database.rlStr(name));
 	}
 	
-	private void crusherRecipe(RecipeOutput output, @NotNull TagKey<Item> input, int inputAmount, ItemStack result, String name, StackWithChance @NotNull ... additionalOutput)
+	private void crusherRecipe(RecipeOutput output, TagKey<Item> input, int inputAmount, ItemStack result, String name, StackWithChance ... additionalOutput)
 	{
 		CrusherRecipeBuilder builder = CrusherRecipeBuilder.newBuilder(new BioBaseRecipe.ResourcesInfo(
 				new BioBaseRecipe.BiomassInfo(true, 0.5f),

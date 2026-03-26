@@ -27,7 +27,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -40,7 +39,7 @@ public abstract class DynamicMultiblockPart extends BioMultiblockPart
         super(type, pos, blockState);
     }
 
-    public void onPlace(@NotNull ServerLevel level, BlockPos pos, @NotNull BlockState state)
+    public void onPlace(ServerLevel level, BlockPos pos, BlockState state)
     {
         /*FIXME: надо проверить механизм создания мультиблока. Сейчас он слегка кривой, потому что можно слить 2 мультиблока в 1, как так и надо. + размер определяется слегка не верно*/
 

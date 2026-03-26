@@ -25,6 +25,12 @@ import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -41,25 +47,17 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.PlayState;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.UUID;
 
-public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBlockEntity, BlockInterfaces.IInteractionObject<MultiblockChrysalis>
+public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimatable<MultiblockChrysalis>, BlockInterfaces.IInteractionObject<MultiblockChrysalis>
 {
-	private static final RawAnimation WAVE_ANIMATION = RawAnimation.begin().thenPlay("wave");
+	private static final PRawAnimation WAVE_ANIMATION = PRawAnimation.begin().thenPlay("wave").build();
 	private static final int MIN_ANIM_PERIOD = 4 * 20;
 	private static final int MAX_ANIM_PERIOD = 10 * 20;
 	
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<MultiblockChrysalis> manager = PLibHelper.createManager(this);
 	
 	private final ServerBossEvent progressBar = new ServerBossEvent(
 			Component.translatable(Database.GUI.Chrysalis.PROGRESS_BAR, 0),
@@ -232,7 +230,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 		return true;
 	}
 	
-	private void lockPlayer(@NotNull ServerPlayer player)
+	private void lockPlayer(ServerPlayer player)
 	{
 		BlockPos center = getMasterPos().orElse(getBlockPos());
 		player.teleportTo(center.getX() + 0.5f,
@@ -267,7 +265,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 	}
 	
 	@Override
-	public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.readCustomTag(tag, registries, descrPacket);
 		if (!isMaster())
@@ -286,7 +284,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 	}
 	
 	@Override
-	public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.writeCustomTag(tag, registries, descrPacket);
 		if (!isMaster())
@@ -305,10 +303,11 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 	}
 	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChrysalis> registrar)
 	{
-		controllers.add(new AnimationController<>(this, "controller", 0, state -> PlayState.STOP).
-				triggerableAnim("wave", WAVE_ANIMATION));
+		registrar.add(new PAnimationController<>(state -> ControllerState.STOP));
+		//FIXME: add triggering animation
+		//triggerableAnim("wave", WAVE_ANIMATION));
 	}
 	
 	@Override
@@ -336,12 +335,12 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 	}
 	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<MultiblockChrysalis> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 	
-	public static @Nullable FluidSidedStorage getFluidHandler(@NotNull MultiblockChrysalis be, Direction ctx)
+	public static @Nullable FluidSidedStorage getFluidHandler(MultiblockChrysalis be, Direction ctx)
 	{
 		return be.isMaster() ? be.fluidHandler : be.getMasterPos().
 				flatMap(pos -> BlockHelper.
@@ -350,10 +349,10 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements GeoBloc
 				orElse(null);
 	}
 	
-	private void updateAnimationPeriod(@NotNull ServerLevel level)
+	private void updateAnimationPeriod(ServerLevel level)
 	{
 		this.currentAnimationPeriod = level.random.nextIntBetweenInclusive(MIN_ANIM_PERIOD, MAX_ANIM_PERIOD);
 		this.animationTimer = this.currentAnimationPeriod;
-		this.triggerAnim("controller", "wave");
+		//this.triggerAnim("controller", "wave");
 	}
 }

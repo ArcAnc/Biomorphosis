@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.gui.component.icon;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 public class ImageIcon implements Icon
 {
@@ -27,7 +26,7 @@ public class ImageIcon implements Icon
     }
 
     @Override
-    public void render(@NotNull GuiGraphics graphics, int xPos, int yPos, int width, int height)
+    public void render(GuiGraphics graphics, int xPos, int yPos, int width, int height)
     {
         graphics.blit(this.image, xPos, yPos, 0, 0, this.imgWidth, this.imgHeight, width, height, this.imgWidth, this.imgHeight);
     }

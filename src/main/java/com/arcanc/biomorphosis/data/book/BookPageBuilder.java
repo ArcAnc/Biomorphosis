@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.google.common.base.Preconditions;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ public class BookPageBuilder
     {}
 
     @Contract(value = " -> new", pure = true)
-    public static @NotNull BookPageBuilder newPage()
+    public static BookPageBuilder newPage()
     {
         return new BookPageBuilder();
     }

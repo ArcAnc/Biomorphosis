@@ -20,7 +20,6 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.entity.Entity;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -35,7 +34,7 @@ public record S2CGenomeSync (UUID entityId, GenomeInstance genome) implements IP
 			S2CGenomeSync :: new);
 	
 	@Override
-	public void process(@NotNull IPayloadContext context)
+	public void process(IPayloadContext context)
 	{
 		context.enqueueWork(() ->
 		{
@@ -50,7 +49,7 @@ public record S2CGenomeSync (UUID entityId, GenomeInstance genome) implements IP
 	}
 	
 	@Override
-	public @NotNull Type<S2CGenomeSync> type()
+	public Type<S2CGenomeSync> type()
 	{
 		return TYPE;
 	}

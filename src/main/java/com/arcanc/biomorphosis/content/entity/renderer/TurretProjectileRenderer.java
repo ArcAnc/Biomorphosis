@@ -12,36 +12,42 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.TurretProjectile;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
 
-public class TurretProjectileRenderer extends GeoEntityRenderer<TurretProjectile>
+import java.util.Collection;
+import java.util.function.Function;
+
+public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
 {
+	private static final ResourceLocation TEXTURE = Database.rl("entity/projectile_turret/0");
+	
 	public TurretProjectileRenderer(EntityRendererProvider.Context context)
 	{
-		super(context, new DefaultedEntityGeoModel<>(Database.rl("projectile_turret")));
+		super(context, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("projectile_turret")).
+						build(),
+				PRenderTypes.RenderTypeProvider :: trianglesTranslucent);
 	}
 	
 	@Override
-	public void renderRecursively(PoseStack poseStack, @NotNull TurretProjectile animatable, GeoBone bone, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor)
+	protected void perBoneSubmit(TurretProjectile animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<TurretProjectile>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick, @Nullable HeadRotation headRotation)
 	{
 		if (animatable.getEffect() != null)
-			renderColor = animatable.getEffect().getColor();
-		super.renderRecursively(poseStack, animatable, bone, renderType, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
+			packedColor = animatable.getEffect().getColor();
+		super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick, headRotation);
 	}
 	
-	@Override
-	public @Nullable RenderType getRenderType(TurretProjectile animatable, ResourceLocation texture, @Nullable MultiBufferSource bufferSource, float partialTick)
+	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
 	{
-		return RenderType.entityTranslucent(texture);
+		event.addTextureLocation(TEXTURE);
 	}
 }

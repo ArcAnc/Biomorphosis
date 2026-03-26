@@ -15,7 +15,6 @@ import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
 import net.neoforged.neoforge.fluids.FluidType;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -29,7 +28,7 @@ import java.util.function.Supplier;
 
 public abstract class BioBaseFluid extends BaseFlowingFluid
 {
-    public static BioBaseFluid makeFluid(@NotNull Function<Properties, ? extends BioBaseFluid> make, Properties properties, Consumer<Properties> props)
+    public static BioBaseFluid makeFluid(Function<Properties, ? extends BioBaseFluid> make, Properties properties, Consumer<Properties> props)
     {
         return make.apply(Util.make(properties, props));
     }
@@ -48,13 +47,13 @@ public abstract class BioBaseFluid extends BaseFlowingFluid
         }
 
         @Override
-        public int getAmount(@NotNull FluidState state)
+        public int getAmount(FluidState state)
         {
             return 8;
         }
 
         @Override
-        public boolean isSource(@NotNull FluidState state)
+        public boolean isSource(FluidState state)
         {
             return true;
         }
@@ -70,19 +69,19 @@ public abstract class BioBaseFluid extends BaseFlowingFluid
         }
 
         @Override
-        public int getAmount(@NotNull FluidState state)
+        public int getAmount(FluidState state)
         {
             return state.getValue(LEVEL);
         }
 
         @Override
-        public boolean isSource(@NotNull FluidState state)
+        public boolean isSource(FluidState state)
         {
             return false;
         }
 
         @Override
-        protected void createFluidStateDefinition(@NotNull StateDefinition.Builder<Fluid, FluidState> builder)
+        protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder)
         {
             super.createFluidStateDefinition(builder);
             builder.add(LEVEL);

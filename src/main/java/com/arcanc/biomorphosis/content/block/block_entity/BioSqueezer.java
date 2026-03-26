@@ -21,6 +21,12 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -37,19 +43,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.neoforged.neoforge.fluids.FluidStack;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEntity, ServerTickableBE
+public class BioSqueezer extends BioSidedAccessBlockEntity implements PAnimatable<BioSqueezer>, ServerTickableBE
 {
-	private static final RawAnimation WORK = RawAnimation.begin().thenLoop("work");
-	private static final RawAnimation IDLE = RawAnimation.begin().thenLoop("idle");
+	private static final PRawAnimation WORK = PRawAnimation.begin().thenLoop("work").build();
+	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
+	private static final PRawAnimation GROW = PRawAnimation.begin().thenPlay("grow").withSpeed(0.0f).build();
 	
 	private static final AABB INPUT_ZONE = new AABB(0,0,0,1, 0.5d, 1);
 	
@@ -64,7 +64,7 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 	
 	private final RecipeManager.CachedCheck<SqueezerRecipeInput, SqueezerRecipe> quickCheck;
 	
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<BioSqueezer> manager = PLibHelper.createManager(this);
 	
 	public BioSqueezer(BlockPos pos, BlockState blockState)
 	{
@@ -106,7 +106,7 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 	}
 	
 	@Override
-	public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+	public @Nullable InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
 	{
 		return null;
 	}
@@ -153,7 +153,7 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 			this.markDirty();
 	}
 	
-	private boolean tryCraft(@NotNull SqueezerRecipe recipe)
+	private boolean tryCraft(SqueezerRecipe recipe)
 	{
 		int timeToCheck = recipe.getResources().adrenaline().
 				filter(adrenaline -> !adrenaline.required() && this.adrenalineUsedThisTick).
@@ -214,7 +214,7 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 		}
 	}
 	
-	private void consumeResources(@NotNull SqueezerRecipe recipe)
+	private void consumeResources(SqueezerRecipe recipe)
 	{
 		recipe.getResources().acid().ifPresent(acid ->
 		{
@@ -257,34 +257,36 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 	}
 	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioSqueezer> animationRegistrar)
 	{
-		controllers.add(new AnimationController<>(this, "work_controller", 0, state ->
+		animationRegistrar.add(new PAnimationController<>(state ->
 		{
 			if (this.isWorking)
-				return state.setAndContinue(WORK);
-			return state.setAndContinue(IDLE);
+				state.controller().play(WORK);
+			else
+				state.controller().play(IDLE);
+			return ControllerState.PLAY;
 		}));
 	}
 	
-	public static @Nullable FluidSidedStorage getFluidHandler(@NotNull BioSqueezer be, Direction ctx)
+	public static @Nullable FluidSidedStorage getFluidHandler(BioSqueezer be, @Nullable Direction ctx)
 	{
 		return ctx == null ? be.fluidHandler : be.isAccessible(ctx) ? be.fluidHandler : null;
 	}
 	
-	public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull BioSqueezer be, Direction ctx)
+	public static @Nullable ItemStackSidedStorage getItemHandler(BioSqueezer be, @Nullable Direction ctx)
 	{
 		return ctx == null ? be.itemHandler : be.isAccessible(ctx) ? be.itemHandler : null;
 	}
 	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<BioSqueezer> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
 	
 	@Override
-	public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.readCustomTag(tag, registries, descrPacket);
 		this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
@@ -297,7 +299,7 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements GeoBlockEn
 	}
 	
 	@Override
-	public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.writeCustomTag(tag, registries, descrPacket);
 		tag.put(Database.Capabilities.Fluids.HANDLER, this.fluidHandler.serializeNBT(registries));

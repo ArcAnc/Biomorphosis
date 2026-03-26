@@ -11,14 +11,25 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Larva;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.renderer.PEntityRenderer;
+import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import software.bernie.geckolib.model.DefaultedEntityGeoModel;
-import software.bernie.geckolib.renderer.GeoEntityRenderer;
+import net.minecraft.resources.ResourceLocation;
 
-public class LarvaRenderer extends GeoEntityRenderer<Larva>
+public class LarvaRenderer extends PEntityRenderer<Larva>
 {
+    private static final ResourceLocation TEXTURE = Database.rl("entity/larva/0");
     public LarvaRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new DefaultedEntityGeoModel<>(Database.rl("larva"), true));
+        super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("larva")).
+                        build(),
+                PRenderTypes.RenderTypeProvider :: trianglesSolid);
+    }
+    
+    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    {
+        event.addTextureLocation(TEXTURE);
     }
 }

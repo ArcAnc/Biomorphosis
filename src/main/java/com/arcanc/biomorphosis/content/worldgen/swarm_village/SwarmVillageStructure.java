@@ -38,7 +38,6 @@ import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasBinding;
 import net.minecraft.world.level.levelgen.structure.pools.alias.PoolAliasLookup;
 import net.minecraft.world.level.levelgen.structure.templatesystem.LiquidSettings;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Optional;
@@ -81,7 +80,7 @@ public class SwarmVillageStructure extends Structure
 	private final DimensionPadding dimensionPadding;
 	private final LiquidSettings liquidSettings;
 	
-	private static DataResult<SwarmVillageStructure> verifyRange(@NotNull SwarmVillageStructure structure)
+	private static DataResult<SwarmVillageStructure> verifyRange(SwarmVillageStructure structure)
 	{
 		int i = switch (structure.terrainAdaptation())
 		{
@@ -143,7 +142,7 @@ public class SwarmVillageStructure extends Structure
 	}
 	
 	@Override
-	protected @NotNull Optional<GenerationStub> findGenerationPoint(@NotNull GenerationContext context)
+	protected Optional<GenerationStub> findGenerationPoint(GenerationContext context)
 	{
 		ChunkPos chunkpos = context.chunkPos();
 		int i = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
@@ -164,13 +163,13 @@ public class SwarmVillageStructure extends Structure
 	}
 	
 	@Override
-	public void afterPlace(@NotNull WorldGenLevel level,
-						   @NotNull StructureManager structureManager,
-						   @NotNull ChunkGenerator chunkGenerator,
-						   @NotNull RandomSource random,
-						   @NotNull BoundingBox boundingBox,
-						   @NotNull ChunkPos chunkPos,
-						   @NotNull PiecesContainer pieces)
+	public void afterPlace(WorldGenLevel level,
+						   StructureManager structureManager,
+						   ChunkGenerator chunkGenerator,
+						   RandomSource random,
+						   BoundingBox boundingBox,
+						   ChunkPos chunkPos,
+						   PiecesContainer pieces)
 	{
 		for (StructurePiece piece : pieces.pieces())
 		{
@@ -204,7 +203,7 @@ public class SwarmVillageStructure extends Structure
 	
 	
 	@Override
-	public @NotNull StructureType<?> type()
+	public StructureType<?> type()
 	{
 		return Registration.StructureTypeReg.SWARM_VILLAGE_TYPE.get();
 	}

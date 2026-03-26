@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.block.multiblock.definition;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.util.StringRepresentable;
-import org.jetbrains.annotations.NotNull;
 
 public enum MultiblockType implements StringRepresentable
 {
@@ -29,7 +28,7 @@ public enum MultiblockType implements StringRepresentable
     }
 
     @Override
-    public @NotNull String getSerializedName()
+    public String getSerializedName()
     {
         return this.id;
     }

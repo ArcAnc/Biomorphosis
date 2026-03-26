@@ -29,7 +29,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlock
 {
@@ -46,31 +45,31 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	}
 	
 	@Override
-	protected @NotNull VoxelShape getShape(@NotNull BlockState state,
-	                                       @NotNull BlockGetter level,
-	                                       @NotNull BlockPos pos,
-	                                       @NotNull CollisionContext context)
+	protected VoxelShape getShape(BlockState state,
+	                                       BlockGetter level,
+	                                       BlockPos pos,
+	                                       CollisionContext context)
 	{
 		return state.getValue(TIP) ? TIP_SHAPE : BASE_SHAPE;
 	}
 	
 	@Override
-	protected boolean propagatesSkylightDown(@NotNull BlockState state,
-	                                         @NotNull BlockGetter level,
-	                                         @NotNull BlockPos pos)
+	protected boolean propagatesSkylightDown(BlockState state,
+	                                         BlockGetter level,
+	                                         BlockPos pos)
 	{
 		return true;
 	}
 	
 	@Override
-	protected boolean canSurvive(@NotNull BlockState state,
-	                             @NotNull LevelReader level,
-	                             @NotNull BlockPos pos)
+	protected boolean canSurvive(BlockState state,
+	                             LevelReader level,
+	                             BlockPos pos)
 	{
 		return this.canStayAtPosition(level, pos);
 	}
 	
-	private boolean canStayAtPosition(@NotNull BlockGetter level, @NotNull BlockPos pos)
+	private boolean canStayAtPosition(BlockGetter level, BlockPos pos)
 	{
 		BlockPos blockpos = pos.relative(Direction.UP);
 		BlockState blockstate = level.getBlockState(blockpos);
@@ -78,12 +77,12 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	}
 	
 	@Override
-	protected @NotNull BlockState updateShape(@NotNull BlockState state,
-	                                          @NotNull Direction direction,
-	                                          @NotNull BlockState neighborState,
-	                                          @NotNull LevelAccessor level,
-	                                          @NotNull BlockPos pos,
-	                                          @NotNull BlockPos neighborPos)
+	protected BlockState updateShape(BlockState state,
+	                                          Direction direction,
+	                                          BlockState neighborState,
+	                                          LevelAccessor level,
+	                                          BlockPos pos,
+	                                          BlockPos neighborPos)
 	{
 		if (!this.canStayAtPosition(level, pos))
 			level.scheduleTick(pos, this, 1);
@@ -92,38 +91,38 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	}
 	
 	@Override
-	protected void randomTick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
+	protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
 	{
 		super.randomTick(state, level, pos, random);
 	}
 	
 	@Override
-	protected void tick(@NotNull BlockState state, @NotNull ServerLevel level, @NotNull BlockPos pos, @NotNull RandomSource random)
+	protected void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random)
 	{
 		if (!this.canStayAtPosition(level, pos))
 			level.destroyBlock(pos, true);
 	}
 	
 	@Override
-	protected void createBlockStateDefinition(StateDefinition.@NotNull Builder<Block, BlockState> builder)
+	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder)
 	{
 		builder.add(TIP);
 	}
 	
 	@Override
-	public boolean isValidBonemealTarget(@NotNull LevelReader level,
-	                                     @NotNull BlockPos pos,
-	                                     @NotNull BlockState state)
+	public boolean isValidBonemealTarget(LevelReader level,
+	                                     BlockPos pos,
+	                                     BlockState state)
 	{
 		return this.canGrowInto(level.getBlockState(this.getTip(level, pos).below()));
 	}
 	
-	private boolean canGrowInto(@NotNull BlockState state)
+	private boolean canGrowInto(BlockState state)
 	{
 		return state.isAir();
 	}
 	
-	public BlockPos getTip(@NotNull BlockGetter level, @NotNull BlockPos pos)
+	public BlockPos getTip(BlockGetter level, BlockPos pos)
 	{
 		BlockPos.MutableBlockPos blockpos$mutableblockpos = pos.mutable();
 		
@@ -137,19 +136,19 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	}
 	
 	@Override
-	public boolean isBonemealSuccess(@NotNull Level level,
-	                                 @NotNull RandomSource random,
-	                                 @NotNull BlockPos pos,
-	                                 @NotNull BlockState state)
+	public boolean isBonemealSuccess(Level level,
+	                                 RandomSource random,
+	                                 BlockPos pos,
+	                                 BlockState state)
 	{
 		return true;
 	}
 	
 	@Override
-	public void performBonemeal(@NotNull ServerLevel level,
-	                            @NotNull RandomSource random,
-	                            @NotNull BlockPos pos,
-	                            @NotNull BlockState state)
+	public void performBonemeal(ServerLevel level,
+	                            RandomSource random,
+	                            BlockPos pos,
+	                            BlockState state)
 	{
 		BlockPos blockpos = this.getTip(level, pos).below();
 		if (this.canGrowInto(level.getBlockState(blockpos)))
@@ -157,7 +156,7 @@ public class BioHangingMossBlock extends BioBaseBlock implements BonemealableBlo
 	}
 	
 	@Override
-	public @NotNull MapCodec<BioHangingMossBlock> codec()
+	public MapCodec<BioHangingMossBlock> codec()
 	{
 		return CODEC;
 	}

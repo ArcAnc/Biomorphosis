@@ -20,7 +20,6 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
-import org.jetbrains.annotations.NotNull;
 import org.joml.Vector4f;
 
 public class BioSlot extends SlotItemHandler
@@ -39,7 +38,7 @@ public class BioSlot extends SlotItemHandler
         this.menu = menu;
     }
 
-    public @NotNull Vector4f getSlotColor()
+    public Vector4f getSlotColor()
     {
         if (this.getItemHandler() instanceof ItemStackSidedStorage storage)
             return storage.getModeForIndex(this.index).map(BasicSidedStorage.FaceMode :: getColor).orElse(NORMAL_SLOT_COLOR);
@@ -58,19 +57,19 @@ public class BioSlot extends SlotItemHandler
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack)
+    public boolean mayPlace(ItemStack stack)
     {
         return super.mayPlace(stack);
     }
 
     @Override
-    public @NotNull Slot setBackground(@NotNull ResourceLocation atlas, @NotNull ResourceLocation sprite)
+    public Slot setBackground(ResourceLocation atlas, ResourceLocation sprite)
     {
         return super.setBackground(atlas, sprite);
     }
 
     @Override
-    public void set(@NotNull ItemStack stack)
+    public void set(ItemStack stack)
     {
         IItemHandler handler = getItemHandler();
         if (!(handler instanceof ItemStackSidedStorage storage))
@@ -82,7 +81,7 @@ public class BioSlot extends SlotItemHandler
     }
 
     @Override
-    public void initialize(@NotNull ItemStack stack)
+    public void initialize(ItemStack stack)
     {
         IItemHandler handler = getItemHandler();
         if (!(handler instanceof ItemStackSidedStorage storage))
@@ -101,7 +100,7 @@ public class BioSlot extends SlotItemHandler
         }
 
         @Override
-        public boolean mayPlace(@NotNull ItemStack stack)
+        public boolean mayPlace(ItemStack stack)
         {
             return false;
         }
@@ -115,7 +114,7 @@ public class BioSlot extends SlotItemHandler
         }
 
         @Override
-        public boolean mayPlace(@NotNull ItemStack stack)
+        public boolean mayPlace(ItemStack stack)
         {
             return FluidHelper.getFluidHandler(stack).
                     map(handler -> handler.getTanks() <= 0).
@@ -131,7 +130,7 @@ public class BioSlot extends SlotItemHandler
         }
 
         @Override
-        public boolean mayPickup(@NotNull Player player)
+        public boolean mayPickup(Player player)
         {
              return false;
         }

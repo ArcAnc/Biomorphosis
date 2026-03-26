@@ -16,6 +16,12 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.PAnimatable;
+import com.arcanc.pulselib.content.animatable.PAnimationManager;
+import com.arcanc.pulselib.content.animatable.instance.ControllerState;
+import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
@@ -26,21 +32,14 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib.animatable.GeoBlockEntity;
-import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.animation.AnimatableManager;
-import software.bernie.geckolib.animation.AnimationController;
-import software.bernie.geckolib.animation.RawAnimation;
-import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BioChest extends BioSidedAccessBlockEntity implements GeoBlockEntity, BlockInterfaces.IInteractionObject<BioChest>
+public class BioChest extends BioSidedAccessBlockEntity implements PAnimatable<BioChest>, BlockInterfaces.IInteractionObject<BioChest>
 {
-	private static final RawAnimation OPEN = RawAnimation.begin().thenPlayAndHold("open");
-	private static final RawAnimation CLOSE = RawAnimation.begin().thenPlayAndHold("close");
+	private static final PRawAnimation OPEN = PRawAnimation.begin().thenHold("open").build();
+	private static final PRawAnimation CLOSE = PRawAnimation.begin().thenHold("close").build();
 
-	private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+	private final PAnimationManager<BioChest> manager = PLibHelper.createManager(this);
 
 	public static final int MAX_SLOT_AMOUNT = 27;
 
@@ -82,7 +81,7 @@ public class BioChest extends BioSidedAccessBlockEntity implements GeoBlockEntit
 	}
 
 	@Override
-	public InteractionResult onUsed(@NotNull ItemStack stack, UseOnContext ctx)
+	public InteractionResult onUsed(ItemStack stack, UseOnContext ctx)
 	{
 		return InteractionResult.PASS;
 	}
@@ -92,24 +91,27 @@ public class BioChest extends BioSidedAccessBlockEntity implements GeoBlockEntit
 	{
 
 	}
-
+	
 	@Override
-	public void registerControllers(AnimatableManager.@NotNull ControllerRegistrar controllers)
+	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioChest> animationRegistrar)
 	{
-		controllers.add(new AnimationController<>(this, "controller", 0,
-				state ->
-				this.open ?
-						state.setAndContinue(OPEN) :
-						state.setAndContinue(CLOSE)));
+		animationRegistrar.add(new PAnimationController<>(state ->
+		{
+			if (this.open)
+				state.controller().play(OPEN);
+			else
+				state.controller().play(CLOSE);
+			return ControllerState.PLAY;
+		}));
 	}
-
-	public static @Nullable ItemStackSidedStorage getItemHandler(@NotNull BioChest be, Direction ctx)
+	
+	public static @Nullable ItemStackSidedStorage getItemHandler(BioChest be, @Nullable Direction ctx)
 	{
 		return ctx == null ? be.itemHandler : be.isAccessible(ctx) ? be.itemHandler : null;
 	}
 
 	@Override
-	public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.readCustomTag(tag, registries, descrPacket);
 		this.itemHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Items.HANDLER));
@@ -117,19 +119,19 @@ public class BioChest extends BioSidedAccessBlockEntity implements GeoBlockEntit
 	}
 
 	@Override
-	public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+	public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
 	{
 		super.writeCustomTag(tag, registries, descrPacket);
 		tag.put(Database.Capabilities.Items.HANDLER, this.itemHandler.serializeNBT(registries));
 		tag.putBoolean("open", this.open);
 	}
-
+	
 	@Override
-	public AnimatableInstanceCache getAnimatableInstanceCache()
+	public PAnimationManager<BioChest> getAnimationManager()
 	{
-		return this.cache;
+		return this.manager;
 	}
-
+	
 	@Override
 	public @Nullable BioChest getGuiMaster()
 	{
@@ -143,7 +145,7 @@ public class BioChest extends BioSidedAccessBlockEntity implements GeoBlockEntit
 	}
 
 	@Override
-	public boolean canUseGui(@NotNull Player player)
+	public boolean canUseGui(Player player)
 	{
 		BlockPos pos = this.getBlockPos();
 		return player.distanceToSqr(pos.getX() + 0.5f, pos.getY() + 0.5f, pos.getZ() + 0.5f) <= 64;

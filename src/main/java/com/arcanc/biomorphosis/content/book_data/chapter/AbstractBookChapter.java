@@ -17,7 +17,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,7 @@ public abstract class AbstractBookChapter extends AbstractWidget
 
     protected final boolean isNative;
 
-    public AbstractBookChapter(@NotNull BookChapterData data)
+    public AbstractBookChapter(BookChapterData data)
     {
         super(0, 0, 20, 26, Component.translatable(data.title()));
         this.data = data;

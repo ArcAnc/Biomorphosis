@@ -25,13 +25,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public abstract class BioMultiblockPart extends BioBaseBlockEntity
 {
-    protected IMultiblockDefinition definition;
-    protected IMultiblockRoleBehavior roleBehavior;
+    protected @Nullable IMultiblockDefinition definition;
+    protected @Nullable IMultiblockRoleBehavior roleBehavior;
 
     public BioMultiblockPart(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
@@ -74,7 +75,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
         markDirty();
     }
 
-    protected IMultiblockRoleBehavior setRoleBehavior(@NotNull BlockPos masterPos)
+    protected IMultiblockRoleBehavior setRoleBehavior(BlockPos masterPos)
     {
         return masterPos.equals(getBlockPos()) ? new MasterRoleBehavior(this) : new SlaveRoleBehavior(this).setMasterPos(masterPos);
     }
@@ -116,7 +117,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
         resetMultiblockState();
     }
 
-    protected boolean isConnectedToNorph(Level level)
+    protected boolean isConnectedToNorph(@Nullable Level level)
     {
         if (level == null)
             return false;
@@ -143,7 +144,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
     public abstract void onDisassemble();
 
     @Override
-    public void readCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void readCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         if (tag.contains("role"))
             this.roleBehavior = IMultiblockRoleBehavior.load(tag.getCompound("role"), this);
@@ -161,7 +162,7 @@ public abstract class BioMultiblockPart extends BioBaseBlockEntity
     }
 
     @Override
-    public void writeCustomTag(@NotNull CompoundTag tag, HolderLookup.@NotNull Provider registries, boolean descrPacket)
+    public void writeCustomTag(CompoundTag tag, HolderLookup.Provider registries, boolean descrPacket)
     {
         if (this.roleBehavior != null)
             tag.put("role", IMultiblockRoleBehavior.save(this.roleBehavior));

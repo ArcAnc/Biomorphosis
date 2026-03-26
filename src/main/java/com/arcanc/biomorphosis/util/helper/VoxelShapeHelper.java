@@ -16,7 +16,6 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,7 +35,7 @@ public class VoxelShapeHelper
      *
      * @return The rotated {@link AABB}
      */
-    public static AABB rotate(AABB box, @NotNull Direction side)
+    public static AABB rotate(AABB box, Direction side)
     {
         return switch (side)
         {
@@ -57,7 +56,7 @@ public class VoxelShapeHelper
      *
      * @return The rotated {@link AABB}
      */
-    public static AABB rotate(AABB box, @NotNull Rotation rotation)
+    public static AABB rotate(AABB box, Rotation rotation)
     {
         return switch (rotation)
         {
@@ -76,7 +75,7 @@ public class VoxelShapeHelper
      *
      * @return The rotated {@link AABB}
      */
-    public static AABB rotateHorizontal(AABB box, @NotNull Direction side)
+    public static AABB rotateHorizontal(AABB box, Direction side)
     {
         return switch (side)
         {
@@ -135,7 +134,7 @@ public class VoxelShapeHelper
      *
      * @return The rotated {@link VoxelShape}
      */
-    public static VoxelShape rotate(@NotNull VoxelShape shape, UnaryOperator<AABB> rotateFunction)
+    public static VoxelShape rotate(VoxelShape shape, UnaryOperator<AABB> rotateFunction)
     {
         List<VoxelShape> rotatedPieces = new ArrayList<>();
         //Explode the voxel shape into bounding boxes
@@ -159,7 +158,7 @@ public class VoxelShapeHelper
      *
      * @return The rotated {@link VoxelShape}
      */
-    public static <DATA> VoxelShape rotate(@NotNull VoxelShape shape, DATA data, BiFunction<AABB, DATA, AABB> rotateFunction)
+    public static <DATA> VoxelShape rotate(VoxelShape shape, DATA data, BiFunction<AABB, DATA, AABB> rotateFunction)
     {
         List<VoxelShape> rotatedPieces = new ArrayList<>();
         //Explode the voxel shape into bounding boxes
@@ -210,7 +209,7 @@ public class VoxelShapeHelper
      * @implNote We do not do any simplification until after combining all the shapes, and then only if the {@code simplify} is True. This is because there is a
      * performance hit in calculating the simplified shape each time if we still have more changers we are making to it.
      */
-    public static VoxelShape batchCombine(VoxelShape initial, BooleanOp function, boolean simplify, @NotNull Collection<VoxelShape> shapes)
+    public static VoxelShape batchCombine(VoxelShape initial, BooleanOp function, boolean simplify, Collection<VoxelShape> shapes)
     {
         VoxelShape combinedShape = initial;
         for (VoxelShape shape : shapes)
@@ -231,7 +230,7 @@ public class VoxelShapeHelper
      * @implNote We do not do any simplification until after combining all the shapes, and then only if the {@code simplify} is True. This is because there is a
      * performance hit in calculating the simplified shape each time if we still have more changers we are making to it.
      */
-    public static VoxelShape batchCombine(VoxelShape initial, BooleanOp function, boolean simplify, VoxelShape @NotNull ... shapes)
+    public static VoxelShape batchCombine(VoxelShape initial, BooleanOp function, boolean simplify, VoxelShape ... shapes)
     {
         VoxelShape combinedShape = initial;
         for (VoxelShape shape : shapes)

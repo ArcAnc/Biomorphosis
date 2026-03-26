@@ -16,7 +16,6 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.resources.ResourceLocation;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -35,7 +34,7 @@ public record GenomeInstance(List<GeneInstance> geneInstances)
 			GenomeInstance :: geneInstances,
 			GenomeInstance :: new);
 	
-	public @NotNull GenomeInstance copy()
+	public GenomeInstance copy()
 	{
 		return new GenomeInstance(List.copyOf(this.geneInstances));
 	}
@@ -73,7 +72,7 @@ public record GenomeInstance(List<GeneInstance> geneInstances)
 		return diff;
 	}
 	
-	public boolean hasGene(@NotNull ResourceLocation id)
+	public boolean hasGene(ResourceLocation id)
 	{
 		if (this.geneInstances().isEmpty())
 			return false;
@@ -83,7 +82,7 @@ public record GenomeInstance(List<GeneInstance> geneInstances)
 		return false;
 	}
 	
-	public Optional<GeneInstance> getGene(@NotNull ResourceLocation id)
+	public Optional<GeneInstance> getGene(ResourceLocation id)
 	{
 		if (this.geneInstances().isEmpty())
 			return Optional.empty();

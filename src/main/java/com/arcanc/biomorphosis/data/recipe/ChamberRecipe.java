@@ -25,7 +25,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,7 +50,7 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
                 result);
     }
 
-    public ChamberRecipe(String group, List<IngredientWithSize> inputs, @NotNull ResourcesInfo resources, ItemStack result)
+    public ChamberRecipe(String group, List<IngredientWithSize> inputs, ResourcesInfo resources, ItemStack result)
     {
         super(group, resources);
         Preconditions.checkNotNull(inputs);
@@ -71,7 +70,7 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
     }
 
     @Override
-    public boolean matches(@NotNull ChamberRecipeInput input, @NotNull Level level)
+    public boolean matches(ChamberRecipeInput input, Level level)
     {
         List<ItemStack> available = Arrays.stream(input.stacks).
                 filter(stack -> !stack.isEmpty()).
@@ -103,25 +102,25 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
     }
     
     @Override
-    public @NotNull ItemStack getResultItem(HolderLookup.@NotNull Provider registries)
+    public ItemStack getResultItem(HolderLookup.Provider registries)
     {
         return this.result();
     }
     
     @Override
-    public @NotNull ItemStack assemble(@NotNull ChamberRecipeInput input, HolderLookup.@NotNull Provider registries)
+    public ItemStack assemble(ChamberRecipeInput input, HolderLookup.Provider registries)
     {
         return this.result.copy();
     }
     
     @Override
-    public @NotNull RecipeSerializer<ChamberRecipe> getSerializer()
+    public RecipeSerializer<ChamberRecipe> getSerializer()
     {
         return Registration.RecipeReg.CHAMBER_RECIPE.getSerializer().get();
     }
 
     @Override
-    public @NotNull RecipeType<ChamberRecipe> getType()
+    public RecipeType<ChamberRecipe> getType()
     {
         return Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get();
     }
@@ -149,13 +148,13 @@ public class ChamberRecipe extends BioBaseRecipe<ChamberRecipeInput>
                 ChamberRecipe :: new);
 
         @Override
-        public @NotNull MapCodec<ChamberRecipe> codec()
+        public MapCodec<ChamberRecipe> codec()
         {
             return CODEC;
         }
 
         @Override
-        public @NotNull StreamCodec<RegistryFriendlyByteBuf, ChamberRecipe> streamCodec()
+        public StreamCodec<RegistryFriendlyByteBuf, ChamberRecipe> streamCodec()
         {
             return STREAM_CODEC;
         }
