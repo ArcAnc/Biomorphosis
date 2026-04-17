@@ -23,10 +23,10 @@ import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -274,7 +274,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements PAnimatabl
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockTurret> registrar)
 	{
-		registrar.add(new PAnimationController<>(state ->
+		registrar.add(() -> state ->
 		{
 			if (!isMaster())
 				return ControllerState.STOP;
@@ -290,7 +290,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements PAnimatabl
 					return ControllerState.PLAY;
 				}
 			return ControllerState.STOP;
-		}));
+		});
 	}
 	
 	@Override
@@ -309,7 +309,7 @@ public class MultiblockTurret extends StaticMultiblockPart implements PAnimatabl
 	}
 	
 	@Override
-	public PAnimationManager<MultiblockTurret> getAnimationManager()
+	public PAnimationManager<MultiblockTurret> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

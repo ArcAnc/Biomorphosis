@@ -16,10 +16,10 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -95,14 +95,14 @@ public class BioChest extends BioSidedAccessBlockEntity implements PAnimatable<B
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioChest> animationRegistrar)
 	{
-		animationRegistrar.add(new PAnimationController<>(state ->
+		animationRegistrar.add(() -> state ->
 		{
 			if (this.open)
 				state.controller().play(OPEN);
 			else
 				state.controller().play(CLOSE);
 			return ControllerState.PLAY;
-		}));
+		});
 	}
 	
 	public static @Nullable ItemStackSidedStorage getItemHandler(BioChest be, @Nullable Direction ctx)
@@ -127,7 +127,7 @@ public class BioChest extends BioSidedAccessBlockEntity implements PAnimatable<B
 	}
 	
 	@Override
-	public PAnimationManager<BioChest> getAnimationManager()
+	public PAnimationManager<BioChest> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

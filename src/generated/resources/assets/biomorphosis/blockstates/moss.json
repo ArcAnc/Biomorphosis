@@ -32,20 +32,20 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 270
+        "y": 90
       },
       "when": {
-        "west": "true"
+        "east": "true"
       }
     },
     {
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 90
+        "y": 270
       },
       "when": {
-        "east": "true"
+        "west": "true"
       }
     }
   ]

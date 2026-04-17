@@ -10,10 +10,10 @@
 package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -426,7 +426,7 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Ziris> registrar)
     {
-        registrar.add(new PAnimationController<>("animController", state ->
+        registrar.add("animController", () -> state ->
         {
             Ziris animatable = state.animatable();
             if (animatable.swinging)
@@ -434,14 +434,14 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
             else
                 state.controller().play(animatable.walkAnimation.isMoving() ? WALK : IDLE);
             return state.controller().getState();
-        })).
-                add(new PAnimationController<>("deathController", state ->
-        {
-            if (!state.animatable().isDeadOrDying())
-                return ControllerState.STOP;
-            state.controller().play(DEATH);
-            return ControllerState.PLAY;
-        }));
+        }).
+                add("deathController", () -> state ->
+                {
+                    if (!state.animatable().isDeadOrDying())
+                        return ControllerState.STOP;
+                    state.controller().play(DEATH);
+                    return ControllerState.PLAY;
+                });
     }
     
     @Override
@@ -463,7 +463,7 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
     }
     
     @Override
-    public PAnimationManager<Ziris> getAnimationManager()
+    public PAnimationManager<Ziris> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

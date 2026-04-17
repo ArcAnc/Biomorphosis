@@ -13,10 +13,10 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -76,7 +76,7 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Swarmling> registrar)
 	{
-		registrar.add(new PAnimationController<>("animController", state ->
+		registrar.add("animController", () -> state ->
 				{
 					Swarmling animatable = state.animatable();
 					if (animatable.swinging)
@@ -84,14 +84,14 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 					else
 						state.controller().play(animatable.walkAnimation.isMoving() ? WALK : IDLE);
 					return state.controller().getState();
-				})).
-				add(new PAnimationController<>("deathController", state ->
+				}).
+				add("deathController", () -> state ->
 				{
 					if (!state.animatable().isDeadOrDying())
 						return ControllerState.STOP;
 					state.controller().play(DEATH);
 					return ControllerState.PLAY;
-				}));
+				});
 	}
 	
 	@Override
@@ -125,7 +125,7 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 	}
 	
 	@Override
-	public PAnimationManager<Swarmling> getAnimationManager()
+	public PAnimationManager<Swarmling> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

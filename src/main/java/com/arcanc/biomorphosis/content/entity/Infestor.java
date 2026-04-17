@@ -12,9 +12,9 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.sounds.SoundEvent;
@@ -73,7 +73,7 @@ public class Infestor extends Monster implements PAnimatable<Infestor>
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Infestor> registrar)
 	{
-		registrar.add(new PAnimationController<>("animController",state ->
+		registrar.add("animController", () -> state ->
 				{
 					Infestor animatable = state.animatable();
 					if (animatable.swinging)
@@ -86,15 +86,15 @@ public class Infestor extends Monster implements PAnimatable<Infestor>
 							state.controller().play(IDLE);
 					}
 					return state.controller().getState();
-				})).
-				add(new PAnimationController<>("death", state ->
+				}).
+				add("death", () -> state ->
 				{
 					if (state.animatable().isDeadOrDying())
 						state.controller().play(DEATH);
 					else
 						state.controller().stop();
 					return  state.controller().getState();
-				}));
+				});
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class Infestor extends Monster implements PAnimatable<Infestor>
 	}
 	
 	@Override
-	public PAnimationManager<Infestor> getAnimationManager()
+	public PAnimationManager<Infestor> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

@@ -11,10 +11,10 @@ package com.arcanc.biomorphosis.content.block.block_entity;
 
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -51,7 +51,7 @@ public class HiveDeco extends BioBaseBlockEntity implements PAnimatable<HiveDeco
 	}
 
 	@Override
-	public PAnimationManager<HiveDeco> getAnimationManager()
+	public PAnimationManager<HiveDeco> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}
@@ -59,10 +59,10 @@ public class HiveDeco extends BioBaseBlockEntity implements PAnimatable<HiveDeco
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<HiveDeco> registrar)
 	{
-		registrar.add(new PAnimationController<>(state ->
+		registrar.add(() -> state ->
 		{
 			state.controller().play(IDLE);
 			return ControllerState.PLAY;
-		}));
+		});
 	}
 }

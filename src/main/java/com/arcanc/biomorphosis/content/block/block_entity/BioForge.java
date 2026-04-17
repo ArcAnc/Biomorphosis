@@ -22,10 +22,7 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
-import com.arcanc.pulselib.content.animatable.PAnimatable;
-import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.animatable.*;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -286,28 +283,28 @@ public class BioForge extends BioSidedAccessBlockEntity implements PAnimatable<B
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioForge> animationRegistrar)
     {
-        animationRegistrar.add(createController(
-                "single_controller",
-                () -> !isDouble(this),
-                () -> this.isWorking[0] ? WORK : IDLE
+        animationRegistrar.add("single_controller",
+                createController(
+                        () -> !isDouble(this),
+                        () -> this.isWorking[0] ? WORK : IDLE
         ));
         
-        animationRegistrar.add(createController(
-                "double_left_controller",
-                () -> isDouble(this),
-                () -> this.isWorking[0] ? DOUBLE_WORK_LEFT : DOUBLE_IDLE_LEFT
+        animationRegistrar.add("double_left_controller",
+                createController(
+                        () -> isDouble(this),
+                        () -> this.isWorking[0] ? DOUBLE_WORK_LEFT : DOUBLE_IDLE_LEFT
         ));
         
-        animationRegistrar.add(createController(
-                "double_right_controller",
-                () -> isDouble(this),
-                () -> this.isWorking[1] ? DOUBLE_WORK_RIGHT : DOUBLE_IDLE_RIGHT
+        animationRegistrar.add("double_right_controller",
+                createController(
+                        () -> isDouble(this),
+                        () -> this.isWorking[1] ? DOUBLE_WORK_RIGHT : DOUBLE_IDLE_RIGHT
         ));
     }
     
-    private PAnimationController<BioForge> createController(String name, BooleanSupplier condition, Supplier<PRawAnimation> animationSupplier)
+    private Supplier<PAnimationController.StateHandler<BioForge>> createController(BooleanSupplier condition, Supplier<PRawAnimation> animationSupplier)
     {
-        return new PAnimationController<>(name, state ->
+        return () -> state ->
         {
             if (condition.getAsBoolean())
             {
@@ -315,7 +312,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements PAnimatable<B
                 return ControllerState.PLAY;
             }
             return ControllerState.STOP;
-        });
+        };
     }
 
     private static boolean isDouble(BioForge forge)
@@ -334,7 +331,7 @@ public class BioForge extends BioSidedAccessBlockEntity implements PAnimatable<B
     }
     
     @Override
-    public PAnimationManager<BioForge> getAnimationManager()
+    public PAnimationManager<BioForge> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

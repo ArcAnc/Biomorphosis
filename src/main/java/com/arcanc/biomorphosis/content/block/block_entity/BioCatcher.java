@@ -20,10 +20,10 @@ import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -185,14 +185,14 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements PAnimatable
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioCatcher> animationRegistrar)
     {
-       animationRegistrar.add(new PAnimationController<>("catch_controller", state ->
+       animationRegistrar.add("catch_controller", () -> state ->
        {
            if (this.entity == null)
                state.controller().play(LOCK_OUT);
            else
                state.controller().play(LOCK_IN);
 	       return ControllerState.PLAY;
-       }));
+       });
     }
     
     public static @Nullable FluidSidedStorage getFluidHandler(BioCatcher be, @Nullable Direction ctx)
@@ -201,7 +201,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements PAnimatable
     }
     
     @Override
-    public PAnimationManager<BioCatcher> getAnimationManager()
+    public PAnimationManager<BioCatcher> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

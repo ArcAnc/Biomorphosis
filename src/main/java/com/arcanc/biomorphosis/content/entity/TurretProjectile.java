@@ -13,9 +13,9 @@ package com.arcanc.biomorphosis.content.entity;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -162,15 +162,15 @@ public class TurretProjectile extends ThrowableProjectile implements PAnimatable
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<TurretProjectile> registrar)
 	{
-		registrar.add(new PAnimationController<>(state ->
+		registrar.add(() -> state ->
 		{
 			state.controller().play(IDLE);
 			return state.controller().getState();
-		}));
+		});
 	}
 	
 	@Override
-	public PAnimationManager<TurretProjectile> getAnimationManager()
+	public PAnimationManager<TurretProjectile> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

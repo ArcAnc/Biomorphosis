@@ -21,10 +21,10 @@ import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import com.mojang.datafixers.util.Pair;
@@ -383,7 +383,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements PAnimatab
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockMorpher> registrar)
 	{
-		registrar.add(new PAnimationController<>(state ->
+		registrar.add(() -> state ->
 		{
 			MultiblockMorpher morpher = state.animatable();
 			if (morpher.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING)
@@ -391,11 +391,11 @@ public class MultiblockMorpher extends StaticMultiblockPart implements PAnimatab
 			else
 				state.controller().play(HOLD);
 			return ControllerState.PLAY;
-		}));
+		});
 	}
 	
 	@Override
-	public PAnimationManager<MultiblockMorpher> getAnimationManager()
+	public PAnimationManager<MultiblockMorpher> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

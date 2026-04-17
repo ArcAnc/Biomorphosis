@@ -14,10 +14,10 @@ import com.arcanc.biomorphosis.content.entity.ai.goals.RandomPatrolGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -201,7 +201,7 @@ public class QueenGuard extends Monster implements PAnimatable<QueenGuard>
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<QueenGuard> registrar)
     {
-        registrar.add(new PAnimationController<>("walk/idle/attack", state ->
+        registrar.add("walk/idle/attack", () -> state ->
                 {
                     QueenGuard animatable = state.animatable();
                     if (animatable.swinging)
@@ -214,18 +214,18 @@ public class QueenGuard extends Monster implements PAnimatable<QueenGuard>
                     else
                         state.controller().play(IDLE);
                     return ControllerState.PLAY;
-                })).
-        add(new PAnimationController<>("death", state ->
+                }).
+        add("death", () -> state ->
         {
             if (!state.animatable().isDeadOrDying())
                 return ControllerState.STOP;
             state.controller().play(DEATH);
             return ControllerState.PLAY;
-        }));
+        });
     }
     
     @Override
-    public PAnimationManager<QueenGuard> getAnimationManager()
+    public PAnimationManager<QueenGuard> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

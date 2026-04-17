@@ -11,9 +11,9 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.server.level.ServerLevel;
@@ -129,7 +129,7 @@ public class Ksigg extends Animal implements PAnimatable<Ksigg>
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<Ksigg> registrar)
     {
-        registrar.add(new PAnimationController<>("animController",state ->
+        registrar.add("animController", () -> state ->
         {
             Ksigg animatable = state.animatable();
             if (animatable.swinging)
@@ -142,15 +142,15 @@ public class Ksigg extends Animal implements PAnimatable<Ksigg>
                     state.controller().play(IDLE);
             }
             return state.controller().getState();
-        })).
-        add(new PAnimationController<>("death", state ->
+        }).
+        add("death", () -> state ->
         {
             if (state.animatable().isDeadOrDying())
                 state.controller().play(DEATH);
             else
                 state.controller().stop();
             return  state.controller().getState();
-        }));
+        });
     }
     
     @Override
@@ -160,7 +160,7 @@ public class Ksigg extends Animal implements PAnimatable<Ksigg>
     }
     
     @Override
-    public PAnimationManager<Ksigg> getAnimationManager()
+    public PAnimationManager<Ksigg> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.content.block.block_entity.LureCampfireBE;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.CustomEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;

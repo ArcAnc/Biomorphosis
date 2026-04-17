@@ -37,7 +37,10 @@ public class BioBlockLoot extends BlockLootSubProvider
     @Override
     protected Iterable<Block> getKnownBlocks()
     {
-        List<DeferredBlock<Block>> handMadeBlocks = List.of();
+        List<DeferredBlock<? extends Block>> handMadeBlocks = List.of(
+                Registration.BlockReg.MULTIBLOCK_CHAMBER,
+                Registration.BlockReg.MULTIBLOCK_CHRYSALIS,
+                Registration.BlockReg.MULTIBLOCK_TURRET);
 
         return Registration.BlockReg.BLOCKS.getEntries().
                 stream().

@@ -11,7 +11,7 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.CustomEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;

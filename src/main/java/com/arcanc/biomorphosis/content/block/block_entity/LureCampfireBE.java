@@ -16,10 +16,10 @@ import com.arcanc.biomorphosis.content.entity.QueenGuard;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -136,7 +136,7 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<LureCampfireBE> registrar)
     {
-        registrar.add(new PAnimationController<>("shaft_controller", state ->
+        registrar.add("shaft_controller", () -> state ->
         {
             LureCampfireBE animatable = state.animatable();
             if (animatable.getBlockState().getValue(BlockHelper.BlockProperties.LIT) && !ItemHelper.isEmpty(animatable.getInventory()))
@@ -145,8 +145,7 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
                 return ControllerState.PLAY;
             }
             return ControllerState.STOP;
-        }));
-        registrar.add(new PAnimationController<>("fire_controller", state ->
+        }).add("fire_controller", () -> state ->
         {
             LureCampfireBE animatable = state.animatable();
             if (animatable.getBlockState().getValue(BlockHelper.BlockProperties.LIT))
@@ -154,11 +153,11 @@ public class LureCampfireBE extends BioBaseBlockEntity implements ServerTickable
             else
                 state.controller().play(FIRE_DISABLE);
             return ControllerState.PLAY;
-        }));
+        });
     }
 
     @Override
-    public PAnimationManager<LureCampfireBE> getAnimationManager()
+    public PAnimationManager<LureCampfireBE> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

@@ -21,10 +21,10 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -41,7 +41,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class BioStomach extends BioSidedAccessBlockEntity implements PAnimatable<BioStomach>, ServerTickableBE
@@ -275,14 +274,14 @@ public class BioStomach extends BioSidedAccessBlockEntity implements PAnimatable
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioStomach> animationRegistrar)
     {
-        animationRegistrar.add(new PAnimationController<>(state ->
+        animationRegistrar.add(() -> state ->
         {
             if (this.isWorking)
                 state.controller().play(WORK);
             else
                 state.controller().play(IDLE);
             return ControllerState.PLAY;
-        }));
+        });
     }
 
     public static @Nullable FluidSidedStorage getFluidHandler(BioStomach be, @Nullable Direction ctx)
@@ -296,7 +295,7 @@ public class BioStomach extends BioSidedAccessBlockEntity implements PAnimatable
     }
     
     @Override
-    public PAnimationManager<BioStomach> getAnimationManager()
+    public PAnimationManager<BioStomach> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

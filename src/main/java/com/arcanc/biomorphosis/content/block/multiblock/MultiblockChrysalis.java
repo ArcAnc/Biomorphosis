@@ -25,10 +25,10 @@ import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -305,7 +305,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChrysalis> registrar)
 	{
-		registrar.add(new PAnimationController<>(state -> ControllerState.STOP));
+		registrar.add(() -> state -> ControllerState.STOP);
 		//FIXME: add triggering animation
 		//triggerableAnim("wave", WAVE_ANIMATION));
 	}
@@ -335,7 +335,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 	}
 	
 	@Override
-	public PAnimationManager<MultiblockChrysalis> getAnimationManager()
+	public PAnimationManager<MultiblockChrysalis> getAnimationManager(AnimManagerKey key)
 	{
 		return this.manager;
 	}

@@ -22,10 +22,10 @@ import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -296,7 +296,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements PAnimatable
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<BioCrusher> animationRegistrar)
     {
-        animationRegistrar.add(new PAnimationController<>(state ->
+        animationRegistrar.add(() -> state ->
         {
             if (this.isWorking)
             {
@@ -304,7 +304,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements PAnimatable
                 return ControllerState.PLAY;
             }
             return ControllerState.STOP;
-        }));
+        });
     }
     
     public static @Nullable FluidSidedStorage getFluidHandler(BioCrusher be, @Nullable Direction ctx)
@@ -318,7 +318,7 @@ public class BioCrusher extends BioSidedAccessBlockEntity implements PAnimatable
     }
     
     @Override
-    public PAnimationManager<BioCrusher> getAnimationManager()
+    public PAnimationManager<BioCrusher> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

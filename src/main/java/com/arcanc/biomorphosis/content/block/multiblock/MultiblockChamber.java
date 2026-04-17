@@ -22,10 +22,10 @@ import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackHolder;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
+import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
-import com.arcanc.pulselib.content.animatable.instance.ControllerState;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.core.BlockPos;
@@ -225,7 +225,7 @@ public class MultiblockChamber extends StaticMultiblockPart implements PAnimatab
     @Override
     public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChamber> registrar)
     {
-        registrar.add(new PAnimationController<>(state ->
+        registrar.add(() -> state ->
         {
             if (!isMaster())
                 return ControllerState.STOP;
@@ -235,11 +235,11 @@ public class MultiblockChamber extends StaticMultiblockPart implements PAnimatab
                 return ControllerState.PLAY;
             }
             return ControllerState.STOP;
-        }));
+        });
     }
     
     @Override
-    public PAnimationManager<MultiblockChamber> getAnimationManager()
+    public PAnimationManager<MultiblockChamber> getAnimationManager(AnimManagerKey key)
     {
         return this.manager;
     }

@@ -12,14 +12,14 @@ package com.arcanc.biomorphosis.content.item;
 
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
 import com.arcanc.pulselib.content.animatable.PItemAnimatable;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.animatable.singleton.SingletonAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.content.renderer.PItemRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
-import com.arcanc.pulselib.util.helpers.PLibHelper;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
@@ -28,7 +28,6 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 public class MultiblockChrysalisBlockItem extends BioBaseBlockItem implements PItemAnimatable<MultiblockChrysalisBlockItem>
 {
-	private final PAnimationManager<MultiblockChrysalisBlockItem> manager = PLibHelper.createManager(this);
 	private static final PRawAnimation IDLE = PRawAnimation.begin().thenLoop("idle").build();
 	
 	public MultiblockChrysalisBlockItem(Block block, Properties properties, boolean addToCreative)
@@ -57,17 +56,17 @@ public class MultiblockChrysalisBlockItem extends BioBaseBlockItem implements PI
 	@Override
 	public void registerAnimationControllers(PAnimationManager.PAnimationRegistrar<MultiblockChrysalisBlockItem> registrar)
 	{
-		registrar.add(new PAnimationController<>(state ->
+		registrar.add(() -> state ->
 		{
 			state.controller().play(IDLE);
 			return state.controller().getState();
-		}));
+		});
 	}
 	
 	@Override
-	public PAnimationManager<MultiblockChrysalisBlockItem> getAnimationManager()
+	public PAnimationManager<MultiblockChrysalisBlockItem> getAnimationManager(AnimManagerKey key)
 	{
-		return this.manager;
+		return SingletonAnimationManager.getManager(key, this);
 	}
 	
 	private static class Renderer extends PItemRenderer<MultiblockChrysalisBlockItem>

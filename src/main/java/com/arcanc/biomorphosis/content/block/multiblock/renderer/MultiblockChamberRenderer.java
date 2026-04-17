@@ -18,7 +18,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
 import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
 import com.arcanc.biomorphosis.util.model.obj.SphereObj;
-import com.arcanc.pulselib.content.animatable.instance.PAnimationController;
+import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.CustomEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
