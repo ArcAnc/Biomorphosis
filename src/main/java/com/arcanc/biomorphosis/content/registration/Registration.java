@@ -1851,6 +1851,7 @@ public final class Registration
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_NORMAL = variable("block_step");
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_TRAMPLED = variable("block_step_trampled");
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_STEP_LEAF = variable("block_step_leaf");
+	    public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_MORPH_COMPLETE = variable("block_morph_complete");
 
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_OPEN = variable("block_chest_open");
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_CLOSE = variable("block_chest_close");

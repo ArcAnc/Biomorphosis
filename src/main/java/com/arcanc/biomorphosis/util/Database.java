@@ -234,6 +234,7 @@ public class Database
 	            public static final PageInfo V0082 = new PageInfo(rl("v0082"));
 				public static final PageInfo V261 = new PageInfo(rl("v261"));
 	            public static final PageInfo V2611 = new PageInfo(rl("v2611"));
+	            public static final PageInfo V262 = new PageInfo(rl("v262"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
@@ -273,7 +274,8 @@ public class Database
 
         public static final class Sounds
         {
-	        public static final String ADVANCEMENT_RECEIVE = Database.rl("sound.subtitle.advancement.receive").toLanguageKey();
+	        public static final String MULTIBLOCK_MORPH_COMPLETE = Database.rl("sound.subtitle.block.morph_complete").toLanguageKey();
+			public static final String ADVANCEMENT_RECEIVE = Database.rl("sound.subtitle.advancement.receive").toLanguageKey();
 
             public static final String BLOCK_DESTROYED = Database.rl("sound.subtitle.block.destroyed").toLanguageKey();
             public static final String BLOCK_PLACED = Database.rl("sound.subtitle.block.placed").toLanguageKey();

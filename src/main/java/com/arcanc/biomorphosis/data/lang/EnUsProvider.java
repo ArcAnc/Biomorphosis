@@ -157,6 +157,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V261.textLangKey(), "\u2022 Version numbering has been changed to mirror Mojang’s new versioning scheme. The first number now indicates the year of the update release, the second denotes a major update, and the remaining numbers are hotfixes \n\u2022 Added the first version of the gene system \n\u2022 A number of animals now have genes: cow, pig, fox, wolf, etc. \n\u2022 Added the Chrysalis, which allows rewriting the player character’s genome and modifying it as desired \n\u2022 Added the injector for collecting genes. You must use it to finish off a gene carrier in order to obtain the genes they possessed \n\u2022 Reworked the multiblock system. Each block now has its own hitbox \n\u2022 Items and ingredients can now be used in multiblock structures \n\u2022 Added an achievement system. Currently, it is used to notify the player when new genes are obtained; it will be reworked later \n\u2022 Fixed a bug with the fluid transmitter that caused an infinite fluid source to be created \n\u2022 Fixed the display of multiblock recipes in the guide book \n\u2022 Added a new API for creating genes.");
 	    this.add(Database.GUI.GuideBook.Pages.V2611.titleLangKey(), "Version: 26.1.1");
 	    this.add(Database.GUI.GuideBook.Pages.V2611.textLangKey(), "\u2022 1.21.1 port \n\u2022 Norphed Stairs now are craftable \n\u2022 Multiblock now can accept any Norphed Stairs");
+	    this.add(Database.GUI.GuideBook.Pages.V262.titleLangKey(), "Version: 26.2");
+	    this.add(Database.GUI.GuideBook.Pages.V262.textLangKey(), "\u2022 Completely migrated to PulseLib from GeckoLib \n\u2022 Fixed a crash when opening a book with an empty slot in a recipe \n\u2022 Added a custom font to the game \n\u2022 Started rewriting the book code \n\u2022 Fixed chamber recipe was not accepted tag");
 	    
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
 		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life — and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses… all bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
@@ -252,6 +254,7 @@ public class EnUsProvider extends LanguageProvider
 		//-----------------------------
         //SOUND
         this.add(Database.GUI.Sounds.ADVANCEMENT_RECEIVE, "Advancement received");
+	    this.add(Database.GUI.Sounds.MULTIBLOCK_MORPH_COMPLETE, "Multiblock morphed");
 	    
 	    this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
         this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");

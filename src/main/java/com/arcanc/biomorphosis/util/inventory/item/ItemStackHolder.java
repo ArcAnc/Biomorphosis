@@ -48,7 +48,7 @@ public class ItemStackHolder implements IItemHolder
 
     public void setStack(ItemStack stack)
     {
-        this.stack = new ItemStack(stack.getItem(), Mth.clamp(stack.getCount(), 0, this.capacity));
+        this.stack = stack.copyWithCount(Mth.clamp(stack.getCount(), 0, this.capacity));
         update();
     }
 
@@ -86,7 +86,7 @@ public class ItemStackHolder implements IItemHolder
 
         ItemStack existing = getStack();
 
-        int limit = Math.min(existing.getMaxStackSize(), getCapacity());
+        int limit = Math.min(stack.getMaxStackSize(), getCapacity());
 
         if (!existing.isEmpty())
         {

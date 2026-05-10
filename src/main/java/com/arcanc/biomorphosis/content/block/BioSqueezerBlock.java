@@ -41,7 +41,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 public class BioSqueezerBlock extends BioNorphDependentBlock<BioSqueezer>
@@ -77,15 +76,16 @@ public class BioSqueezerBlock extends BioNorphDependentBlock<BioSqueezer>
 			Shapes.box(0.625, 0.375, 0.375, 0.75, 0.4375, 0.625),
 			Shapes.box(0.25, 0.375, 0.375, 0.375, 0.4375, 0.625));
 	
-	private static final Map<Direction, VoxelShape> BY_DIRECTION = new EnumMap<>(Direction.class);
+	private final Map<Direction, VoxelShape> BY_DIRECTION;// = new EnumMap<>(Direction.class);
 	
 	public BioSqueezerBlock(Properties blockProps)
 	{
 		super(Registration.BETypeReg.BE_SQUEEZER, blockProps);
-		BY_DIRECTION.put(Direction.NORTH, SHAPE);
+		BY_DIRECTION = VoxelShapeHelper.rotateHorizontal(SHAPE);
+		/*BY_DIRECTION.put(Direction.NORTH, SHAPE);
 		BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
 		BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
-		BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
+		BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));*/
 	}
 	
 	@Override

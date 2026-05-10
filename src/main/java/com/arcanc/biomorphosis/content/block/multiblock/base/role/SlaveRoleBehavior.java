@@ -64,7 +64,7 @@ public class SlaveRoleBehavior implements IMultiblockRoleBehavior
                 if (state.getValue(MultiblockPartBlock.HORIZONTAL_FACING) == Direction.NORTH)
                     return toReturn;
                 else
-                    return DirectionHelper.rotatePosition(toReturn, state.getValue(MultiblockPartBlock.HORIZONTAL_FACING).getOpposite());
+                    return DirectionHelper.rotatePosition(toReturn, state.getValue(MultiblockPartBlock.HORIZONTAL_FACING));
 
             return toReturn;
         });

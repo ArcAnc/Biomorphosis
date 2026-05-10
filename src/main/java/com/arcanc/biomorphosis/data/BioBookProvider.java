@@ -149,6 +149,13 @@ public class BioBookProvider extends BioRegistryData
 			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
 			    addTags("Patch Notes").
 			    end());
+	    addPage(Database.GUI.GuideBook.Pages.V262.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.V262.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.V262.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+			    addTags("Patch Notes").
+			    end());
         //-----------------------------------------------------------------------
         // BASIC CHAPTER
         //-----------------------------------------------------------------------

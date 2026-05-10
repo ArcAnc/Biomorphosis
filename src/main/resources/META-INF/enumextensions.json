@@ -30,6 +30,16 @@
         "class": "com/arcanc/biomorphosis/util/enumextensions/RarityExtension",
         "field": "BIO_ULTRA_RARE"
       }
+    },
+    {
+      "enum": "net/minecraft/client/gui/font/providers/GlyphProviderType",
+      "name": "BIOMORPHOSIS_BITMAP",
+      "constructor": "(Ljava/lang/String;Lcom/mojang/serialization/MapCodec;)V",
+      "parameters":
+      {
+        "class": "com/arcanc/biomorphosis/util/enumextensions/GlyphProviderTypeExtension",
+        "field": "BIO_BITMAP"
+      }
     }
   ]
 }

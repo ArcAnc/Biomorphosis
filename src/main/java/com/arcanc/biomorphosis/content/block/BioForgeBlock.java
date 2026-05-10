@@ -45,6 +45,7 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
@@ -101,10 +102,13 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
     public BioForgeBlock(Properties props)
     {
         super(Registration.BETypeReg.BE_FORGE, props);
-
-        for (Direction dir : DIRECTIONS)
-            for (Boolean flag : FLAGS)
-                SHAPES.put(dir, flag, getRotatedShape(dir, flag));
+        
+        for (Boolean flag : FLAGS)
+        {
+            Map<Direction, VoxelShape> map = getRotatedShapes(flag);
+            for (Map.Entry<Direction, VoxelShape> entry : map.entrySet())
+                SHAPES.put(entry.getKey(), flag, entry.getValue());
+        }
     }
 
     @Override
@@ -243,10 +247,10 @@ public class BioForgeBlock extends BioNorphDependentBlock<BioForge>
         return RenderShape.INVISIBLE;
     }
 
-    private VoxelShape getRotatedShape (Direction direction, boolean flag)
+    private Map<Direction, VoxelShape> getRotatedShapes (boolean flag)
     {
         VoxelShape shape = flag ? SHAPE_DOUBLE : SHAPE;
-        return direction == Direction.NORTH ? shape : VoxelShapeHelper.rotateHorizontal(shape, direction);
+        return VoxelShapeHelper.rotateHorizontal(shape);
     }
 
     @Override

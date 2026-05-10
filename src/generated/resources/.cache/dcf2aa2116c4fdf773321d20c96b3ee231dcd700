@@ -1,4 +1,4 @@
-// 1.21.1	2026-02-21T02:20:25.747958207	Biomorphosis Item Models
+// 1.21.1	2026-05-06T05:12:33.929036835	Biomorphosis Item Models
 c9834275952415d3146de7b5231a09972964d9d3 assets/biomorphosis/models/item/antennas.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
@@ -10,7 +10,6 @@ b4f3f4d76287d781b1e9554929dc36f185190ed8 assets/biomorphosis/models/item/forge_u
 89c56a9169a80a3a7bcc95f2a96544fc5ca66a8a assets/biomorphosis/models/item/guard_armor_piece.json
 fe5f1dad0d6a5f17788abfb2d0143b36ae17bedd assets/biomorphosis/models/item/infestor_sting.json
 e283b7be1d890e5e481daefe2c5544f4bec99fb9 assets/biomorphosis/models/item/injector.json
-c35f11d0d5ace861783651aaeaeb85d9bd69a057 assets/biomorphosis/models/item/multiblock_morpher.json
 b301e9dceb6504c676af214d83b5865f5efce02c assets/biomorphosis/models/item/queens_brain.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_blacksmith.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_captain.json

@@ -41,7 +41,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.items.ItemHandlerHelper;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
@@ -90,15 +89,16 @@ public class BioStomachBlock extends BioNorphDependentBlock<BioStomach>
             Shapes.box(0.59375, 0.65625, 0.140625, 0.65625, 0.71875, 0.203125),
             Shapes.box(0.46875, 0.59375, 0.125, 0.90625, 0.65625, 0.1875));
 
-    private static final Map<Direction, VoxelShape> BY_DIRECTION = new EnumMap<>(Direction.class);
+    private final Map<Direction, VoxelShape> BY_DIRECTION;// = new EnumMap<>(Direction.class);
 
     public BioStomachBlock(Properties blockProps)
     {
         super(Registration.BETypeReg.BE_STOMACH, blockProps);
-        BY_DIRECTION.put(Direction.NORTH, SHAPE);
+        BY_DIRECTION = VoxelShapeHelper.rotateHorizontal(SHAPE);
+        /*BY_DIRECTION.put(Direction.NORTH, SHAPE);
         BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
         BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
-        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
+        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));*/
     }
 
     @Override

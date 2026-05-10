@@ -52,7 +52,7 @@ public class BioItemModelProvider extends ItemModelProvider
 		/*createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_TURRET.asItem());
-		*/createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());
+		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());*/
 		
 		spawnEggItem(Registration.EntityReg.MOB_QUEEN.getEggHolder().get());
 		spawnEggItem(Registration.EntityReg.MOB_KSIGG.getEggHolder().get());

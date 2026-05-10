@@ -72,15 +72,16 @@ public class BioCrusherBlock extends BioNorphDependentBlock<BioCrusher>
             Shapes.box(0.875, 1.0625, 0.1875, 0.9375, 1.25, 0.25),
             Shapes.box(0.875, 1.0625, 0.5625, 0.9375, 1.25, 0.625));
 
-    private static final Map<Direction, VoxelShape> BY_DIRECTION = new EnumMap<>(Direction.class);
+    private final Map<Direction, VoxelShape> BY_DIRECTION;//= new EnumMap<>(Direction.class);
 
     public BioCrusherBlock(Properties blockProps)
     {
         super(Registration.BETypeReg.BE_CRUSHER, blockProps);
-        BY_DIRECTION.put(Direction.NORTH, SHAPE);
+        BY_DIRECTION = VoxelShapeHelper.rotateHorizontal(SHAPE);
+        /*BY_DIRECTION.put(Direction.NORTH, SHAPE);
         BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
         BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
-        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
+        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));*/
     }
 
     @Override

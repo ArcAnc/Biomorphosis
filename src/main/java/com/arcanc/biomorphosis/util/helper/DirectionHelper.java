@@ -64,8 +64,8 @@ public class DirectionHelper
         return switch (direction)
         {
             case SOUTH -> new BlockPos(-pos.getX(), pos.getY(), -pos.getZ());
-            case WEST  -> new BlockPos(pos.getZ(), pos.getY(), -pos.getX());
-            case EAST  -> new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
+            case EAST  -> new BlockPos(pos.getZ(), pos.getY(), -pos.getX());
+            case WEST  -> new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
             default    -> pos;
         };
     }

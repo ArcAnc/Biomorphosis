@@ -13,26 +13,62 @@ import com.arcanc.biomorphosis.content.block.block_entity.tick.ServerTickableBE;
 import com.arcanc.biomorphosis.content.block.multiblock.base.BioMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock;
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
+import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class StaticMultiblockPart extends BioMultiblockPart implements ServerTickableBE
 {
-
+    @Nullable private Map<Direction, VoxelShape> shapeCache;
+    
     public StaticMultiblockPart(BlockEntityType<?> type, BlockPos pos, BlockState blockState)
     {
         super(type, pos, blockState);
     }
 
+    public void generateVoxelShapes(VoxelShape north)
+    {
+        this.shapeCache = VoxelShapeHelper.rotateHorizontal(north);
+    }
+    
+    public VoxelShape getVoxelShape(Direction dir)
+    {
+        if (this.shapeCache == null)
+        {
+            BlockPos masterPos = getMasterPos().orElse(null);
+            if (masterPos == null)
+                return Shapes.block();
+            StaticMultiblockPart master = BlockHelper.castTileEntity(this.level, masterPos, this.getClass()).orElse(null);
+            if (master == null)
+                return Shapes.block();
+            IMultiblockDefinition def = master.getDefinition().orElse(null);
+            if (def == null)
+               return Shapes.block();
+            PartsMap.MultiblockPart part = def.getStructure(this.level, masterPos).
+                    getParts().
+                    get(this.roleBehavior.getLocalPos().orElse(null));
+            if (part == null)
+                return Shapes.block();
+            generateVoxelShapes(part.shape());
+        }
+        return this.shapeCache.get(dir);
+    }
+    
     @Override
     public void tickServer()
     {

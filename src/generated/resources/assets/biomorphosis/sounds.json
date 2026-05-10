@@ -30,6 +30,12 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.block.hive_deco"
   },
+  "block_morph_complete": {
+    "sounds": [
+      "biomorphosis:block/morph_complete"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.block.morph_complete"
+  },
   "block_place": {
     "sounds": [
       "biomorphosis:block/place_0",

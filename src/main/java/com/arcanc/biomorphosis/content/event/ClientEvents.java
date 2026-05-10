@@ -24,6 +24,7 @@ import com.arcanc.biomorphosis.content.entity.renderer.srf.model.SoldierModel;
 import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
+import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.item.MultiblockMorpherBlockItem;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -80,6 +81,8 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: setupModels);
         modEventBus.addListener(ClientEvents :: registerMenuScreens);
 		modEventBus.addListener(OverlayRenderHandler :: registerGuiLayers);
+
+	    BioGlyphRenderTypes.register(modEventBus);
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();
@@ -140,9 +143,6 @@ public final class ClientEvents
             map(fluidType -> (BioFluidType)fluidType).
             forEach(fluidType ->
             event.registerFluidType(fluidType.registerClientExtensions(), fluidType));
-	    
-	    MultiblockMorpherBlockItem morpherBlockItem = ((MultiblockMorpherBlockItem)Registration.BlockReg.MULTIBLOCK_MORPHER.asItem());
-		event.registerItem(morpherBlockItem.registerMorpherExtension(), morpherBlockItem);
     }
 
     private static void clientSetup (final FMLClientSetupEvent event)

@@ -27,6 +27,10 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 	@Override
 	public void registerSounds()
 	{
+		add(Registration.SoundReg.BLOCK_MORPH_COMPLETE, SoundDefinition.definition().
+				with(sound(Database.rl("block/morph_complete"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.MULTIBLOCK_MORPH_COMPLETE));
+		
 		add(Registration.SoundReg.ADVANCEMENT, SoundDefinition.definition().
 				with(sound(Database.rl("advancement/0"), SoundDefinition.SoundType.SOUND)).
 				subtitle(Database.GUI.Sounds.ADVANCEMENT_RECEIVE));

@@ -12,6 +12,7 @@ package com.arcanc.biomorphosis.content.block;
 import com.arcanc.biomorphosis.content.block.block_entity.BioFluidTransmitter;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
+import com.mojang.math.OctahedralGroup;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -60,11 +61,11 @@ public class BioFluidTransmitterBlock extends BioNorphDependentBlock<BioFluidTra
         super(BioFluidTransmitter :: new, blockProps);
 
         BY_DIRECTION.put(Direction.DOWN, SHAPE);
-        BY_DIRECTION.put(Direction.UP, VoxelShapeHelper.rotate(SHAPE, Direction.UP));
-        BY_DIRECTION.put(Direction.NORTH, VoxelShapeHelper.rotate(SHAPE, Direction.NORTH));
-        BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotate(SHAPE, Direction.SOUTH));
-        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotate(SHAPE, Direction.EAST));
-        BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotate(SHAPE, Direction.WEST));
+        BY_DIRECTION.put(Direction.UP, VoxelShapeHelper.rotate(SHAPE, OctahedralGroup.INVERT_Y));
+        BY_DIRECTION.put(Direction.NORTH, VoxelShapeHelper.rotate(SHAPE, VoxelShapeHelper.BLOCK_ROT_X_90));
+        BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotate(SHAPE, VoxelShapeHelper.BLOCK_ROT_X_270));
+        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotate(SHAPE, VoxelShapeHelper.BLOCK_ROT_Z_270));
+        BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotate(SHAPE, VoxelShapeHelper.BLOCK_ROT_Z_90));
     }
 
     @Override

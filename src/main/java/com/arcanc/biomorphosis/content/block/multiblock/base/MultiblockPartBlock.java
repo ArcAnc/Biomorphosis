@@ -10,11 +10,10 @@
 package com.arcanc.biomorphosis.content.block.multiblock.base;
 
 import com.arcanc.biomorphosis.content.block.BioNorphDependentBlock;
-import com.arcanc.biomorphosis.content.block.multiblock.base.role.IMultiblockRoleBehavior;
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.DynamicMultiblockPart;
+import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPart;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.MultiblockType;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
-import com.arcanc.biomorphosis.util.helper.VoxelShapeHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -103,41 +102,14 @@ public abstract class MultiblockPartBlock<T extends BioMultiblockPart> extends B
                                   CollisionContext context)
     {
 		BioMultiblockPart part = BlockHelper.castTileEntity(level, pos, BioMultiblockPart.class).orElse(null);
-        if (part == null)
-            return Shapes.block();
-        //FIXME: Это временная заплатка, для динамики нужно придумать другую форму. Если она вообще имеет смысл
-		if (part instanceof DynamicMultiblockPart)
-			return Shapes.block();
-		
-        IMultiblockRoleBehavior role = part.getRoleBehavior().orElse(null);
-        if (role == null)
-            return Shapes.block();
-        
-        BlockPos masterPos = role.getMasterPos().orElse(null);
-        if (masterPos == null)
-            return Shapes.block();
-        
-        BlockPos localPos = role.getLocalPos().orElse(null);
-        if (localPos == null)
-            return Shapes.block();
-        
-        BioMultiblockPart master = BlockHelper.castTileEntity(level, masterPos, BioMultiblockPart.class).orElse(null);
-        if (master == null || master.definition == null)
-            return Shapes.block();
-        
-        VoxelShape shape = master.definition.
-				        getStructure(level, masterPos).
-				        getParts().
-		                get(localPos).
-		                shape();
-        
-		if (shape == null)
-			return Shapes.block();
-		
-		BlockState masterState = master.getBlockState();
-		if (masterState.hasProperty(HORIZONTAL_FACING))
-			return VoxelShapeHelper.rotateHorizontal(shape, masterState.getValue(HORIZONTAL_FACING));
-        return shape;
+	    return switch (part)
+	    {
+		    //FIXME: Это временная заплатка, для динамики нужно придумать другую форму. Если она вообще имеет смысл
+		    case DynamicMultiblockPart dynamicMultiblockPart -> Shapes.block();
+		    case StaticMultiblockPart staticPart ->
+				    staticPart.getVoxelShape(state.hasProperty(HORIZONTAL_FACING) ? state.getValue(HORIZONTAL_FACING) : Direction.NORTH);
+		    case null, default -> Shapes.block();
+	    };
     }
     
     @Override

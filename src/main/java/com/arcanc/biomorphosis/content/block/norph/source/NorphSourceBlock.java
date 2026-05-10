@@ -35,7 +35,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.EnumMap;
 import java.util.Map;
 
 public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
@@ -53,7 +52,7 @@ public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
             Shapes.box(0.18125, -0.25, 0.8125, 0.18125, 0.5625, 1),
             Shapes.box(0.125, 0.5, 0.75, 0.25, 0.625, 0.9375));
 
-    private static final Map<Direction, VoxelShape> BY_DIRECTION = new EnumMap<>(Direction.class);
+    private final Map<Direction, VoxelShape> BY_DIRECTION;// = new EnumMap<>(Direction.class);
 
     public static final EnumProperty<Direction> HORIZONTAL_FACING = BlockHelper.BlockProperties.HORIZONTAL_FACING;
 
@@ -63,10 +62,12 @@ public class NorphSourceBlock extends BioBaseEntityBlock<NorphSource>
     {
         super(Registration.BETypeReg.BE_NORPH_SOURCE, props);
 
-        BY_DIRECTION.put(Direction.NORTH, SHAPE);
+        this.BY_DIRECTION = VoxelShapeHelper.rotateHorizontal(SHAPE);
+        
+        /*BY_DIRECTION.put(Direction.NORTH, SHAPE);
         BY_DIRECTION.put(Direction.SOUTH, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.SOUTH));
         BY_DIRECTION.put(Direction.WEST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.WEST));
-        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));
+        BY_DIRECTION.put(Direction.EAST, VoxelShapeHelper.rotateHorizontal(SHAPE, Direction.EAST));*/
     }
 
     @Override
