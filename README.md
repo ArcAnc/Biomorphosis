@@ -12,7 +12,7 @@
 ## TechStack
 - [NeoForge](https://github.com/neoforged/NeoForge) (modding API for Minecraft)
 - [SpongePowered Mixin](https://github.com/SpongePowered/Mixin) (mixin and bytecode weaving framework)
-- [GeckoLib](https://github.com/bernie-g/geckolib) (animation library)
+- [PulseLib](https://github.com/ArcAnc/PulseLib) (animation library)
 
 ### Integration with other Mods
 - [JEI](https://www.curseforge.com/minecraft/mc-mods/jei)
@@ -26,12 +26,12 @@ All code and artwork is licensed under the [Arc's License of Common Sence](/LICE
 ### Setup
 
 - open the repository with IntelliJ IDEA
-- wait for gradle project import to finish, you might have to cancel it if it gets stuck and reload the gradle project
+- wait for Gradle project import to finish, you might have to cancel it if it gets stuck and reload the gradle project
 
 > The repository will not contain most resource and data pack assets.
 > These need to be generated on demand and requires you to run
 > the `clientData` **configuration** to generate the missing recipes, tags and other things.
-> You can checkout the `main/java/com/arcanc/biomorphosis/data` to see which assets are generated.
+> You can check out the `main/java/com/arcanc/biomorphosis/data` to see which assets are generated.
 
 ### Maven
 

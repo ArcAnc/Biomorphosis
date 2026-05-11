@@ -212,7 +212,7 @@ public class MultiblockMorpher extends StaticMultiblockPart implements PAnimatab
 						serverLevel.sendParticles(
 								new BlockParticleOption(
 										ParticleTypes.BLOCK,
-										Blocks.WATER.defaultBlockState()
+										Blocks.SLIME_BLOCK.defaultBlockState()
 								),
 								center.x + normal.x * 0.45,
 								center.y + normal.y * 0.45,
