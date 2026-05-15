@@ -19,7 +19,9 @@ public class BioBlockTags
     public static final TagKey<Block> NORPH = create("norph");
     public static final TagKey<Block> NORPH_AVOID = create("norph_avoid");
     public static final TagKey<Block> NORPH_SOURCE = create("norph_source");
+    public static final TagKey<Block> NORPHED_BLOCKS = create("norphed_blocks");
     public static final TagKey<Block> NORPHED_STAIRS = create("norphed_stairs");
+    public static final TagKey<Block> MAINTAINS_SWARM_FARMLAND = create("maintains_swarm_farmland");
 
     private static TagKey<Block> create(String name)
     {

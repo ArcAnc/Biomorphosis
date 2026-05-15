@@ -11,9 +11,12 @@ package com.arcanc.biomorphosis.content.gui.font;
 
 
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.font.GlyphRenderTypes;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
@@ -147,12 +150,13 @@ public class BioGlyphRenderTypes
 	
 	public static class ShadersProvider
 	{
+		private static final float CYCLE_TICKS = 100f;
 		public static class StateShard
 		{
-			private static final RenderStateShard.ShaderStateShard BIO_TEXT_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> BIO_TEXT_SHADER);
-			private static final RenderStateShard.ShaderStateShard BIO_TEXT_INTENSITY_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> BIO_TEXT_INTENSITY_SHADER);
-			private static final RenderStateShard.ShaderStateShard BIO_TEXT_SEE_THROUGH_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> BIO_TEXT_SEE_THROUGH_SHADER);
-			private static final RenderStateShard.ShaderStateShard BIO_TEXT_INTENSITY_SEE_THROUGH_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> BIO_TEXT_INTENSITY_SEE_THROUGH_SHADER);
+			private static final RenderStateShard.ShaderStateShard BIO_TEXT_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> prepareShader(BIO_TEXT_SHADER));
+			private static final RenderStateShard.ShaderStateShard BIO_TEXT_INTENSITY_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> prepareShader(BIO_TEXT_INTENSITY_SHADER));
+			private static final RenderStateShard.ShaderStateShard BIO_TEXT_SEE_THROUGH_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> prepareShader(BIO_TEXT_SEE_THROUGH_SHADER));
+			private static final RenderStateShard.ShaderStateShard BIO_TEXT_INTENSITY_SEE_THROUGH_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> prepareShader(BIO_TEXT_INTENSITY_SEE_THROUGH_SHADER));
 		}
 		
 		@Nullable
@@ -163,6 +167,26 @@ public class BioGlyphRenderTypes
 		public static ShaderInstance BIO_TEXT_SEE_THROUGH_SHADER;
 		@Nullable
 		public static ShaderInstance BIO_TEXT_INTENSITY_SEE_THROUGH_SHADER;
+		
+		private static @Nullable ShaderInstance prepareShader(@Nullable ShaderInstance shader)
+		{
+			if (shader == null)
+				return null;
+			Minecraft mc = RenderHelper.mc();
+			if (mc.level == null)
+				shader.safeGetUniform("GameTime").set((Util.getMillis() % CYCLE_TICKS) / CYCLE_TICKS);
+			else
+			{
+				long levelTick = mc.level.getGameTime();
+				float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
+				float f = (levelTick % CYCLE_TICKS + partialTicks) / CYCLE_TICKS;
+				shader.safeGetUniform("GameTime").set(f);
+			}
+			
+			shader.safeGetUniform("MsdfRange").set(4f);
+			shader.safeGetUniform("DeformationStrength").set(0.7f);
+			return shader;
+		}
 		
 		private static void registerShaders(final RegisterShadersEvent event)
 		{

@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.gui.font;
 
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.font.GlyphRenderTypes;
@@ -43,10 +44,10 @@ public class BioBakedGlyph extends BakedGlyph
 	                   float alpha,
 	                   int packedLight)
 	{
-		float delLeft = this.delegate.left / 3f;
-		float delRight = this.delegate.right / 3f;
-		float delUp = this.delegate.up / 3f;
-		float delDown = this.delegate.down / 3f;
+		float delLeft = this.delegate.left;
+		float delRight = this.delegate.right;
+		float delUp = this.delegate.up;
+		float delDown = this.delegate.down;
 		
 		float left = x + delLeft;
 		float right = x + delRight;

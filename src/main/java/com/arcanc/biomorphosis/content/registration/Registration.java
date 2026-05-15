@@ -1076,6 +1076,16 @@ public final class Registration
                         andThen(BlockBehaviour.Properties :: noOcclusion).
                         accept(properties),
                 ItemReg.baseProps);
+		
+		public static final DeferredBlock<BioFarmland> BIO_FARMLAND = register("flesh_farmland", BioFarmland :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								randomTicks().
+								sound(SoundType.GRAVEL).
+								isViewBlocking((state, level, pos) -> true).
+								isSuffocating((state, level, pos) -> true)).
+						accept(properties),
+				ItemReg.baseProps);
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
@@ -1419,7 +1429,7 @@ public final class Registration
                         rarity(RarityExtension.BIO_COMMON.getValue()).
                         canSwim(true).
                         canExtinguish(true).
-                        canHydrate(true).
+                        canHydrate(false).
                         fallDistanceModifier(0f));
 
         public static final FluidEntry ACID = FluidEntry.make("acid",

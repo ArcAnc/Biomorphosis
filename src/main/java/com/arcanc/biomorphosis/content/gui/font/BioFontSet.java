@@ -165,7 +165,7 @@ public class BioFontSet extends FontSet
 		for (GlyphProvider glyphProvider : this.activeProviders)
 		{
 			GlyphInfo glyphInfo = glyphProvider.getGlyph(character);
-			if (glyphInfo instanceof BioGlyphInfo)
+			if (glyphProvider instanceof BioGlyphProvider && glyphInfo != null)
 				return glyphInfo.bake(this :: stitch);
 		}
 		

@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.book_data.page.component;
 
+import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
@@ -26,7 +27,7 @@ public class TextPageComponent extends AbstractPageComponent
     @Override
     protected void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
     {
-		Component comp = getMessage().copy();//.withStyle(style -> style.withFont(GuideScreen.BIOFONT));
+		Component comp = getMessage().copy().withStyle(style -> style.withFont(GuideScreen.BIOFONT));
         if (!comp.getString().isBlank())
             guiGraphics.drawWordWrap(RenderHelper.mc().font, comp, getX(), getY(), getWidth(), Color.black.getRGB());
     }

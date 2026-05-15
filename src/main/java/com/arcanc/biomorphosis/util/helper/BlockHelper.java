@@ -14,7 +14,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -107,6 +109,15 @@ public class BlockHelper
             return state.setValue(BlockProperties.HORIZONTAL_FACING, Direction.from2DDataValue((dirIndex + 1) % 4));
         }
         return state;
+    }
+    
+    public static BlockState getRandomStateFromTag(TagKey<Block> tag, Level level)
+    {
+        return BuiltInRegistries.BLOCK.getTag(tag).map(holders -> holders.
+                getRandomElement(level.random).orElseThrow()).
+                orElseThrow().
+                value().
+                defaultBlockState();
     }
 
     public static boolean statesEquivalent(BlockState expected, BlockState actual)

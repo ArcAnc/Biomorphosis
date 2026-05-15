@@ -14,6 +14,8 @@
         { "name": "FogColor", "type": "float", "count": 4, "values": [ 0.0, 0.0, 0.0, 0.0 ] },
         { "name": "FogShape", "type": "int", "count": 1, "values": [ 0 ] },
 
-        { "name": "GameTime", "type": "float", "count": 1, "values": [1.0] }
+        { "name": "GameTime", "type": "float", "count": 1, "values": [1.0] },
+        { "name": "MsdfRange", "type": "float", "count": 1, "values": [4.0] },
+        { "name": "DeformationStrength", "type": "float", "count": 1, "values": [1.0] }
     ]
 }

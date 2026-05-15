@@ -33,15 +33,14 @@ import net.neoforged.api.distmarker.OnlyIn;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 public class BioGlyphProvider implements GlyphProvider
 {
 	private final NativeImage image;
-	private final CodepointMap<BioGlyphInfo> glyphs;
+	private final CodepointMap<GlyphInfo> glyphs;
 	
-	BioGlyphProvider(NativeImage image, CodepointMap<BioGlyphInfo> glyphs)
+	BioGlyphProvider(NativeImage image, CodepointMap<GlyphInfo> glyphs)
 	{
 		this.image = image;
 		this.glyphs = glyphs;
@@ -67,72 +66,25 @@ public class BioGlyphProvider implements GlyphProvider
 	}
 	
 	@OnlyIn (Dist.CLIENT)
-	public record Definition(ResourceLocation file, int height, int ascent, int[][] codepointGrid) implements GlyphProviderDefinition
+	public record Definition(ResourceLocation file,
+	                         int height,
+	                         Optional<Integer> ascent) implements GlyphProviderDefinition
 	{
-		private static final Codec<int[][]> CODEPOINT_GRID_CODEC = Codec.STRING.listOf().xmap(list ->
-		{
-			int i = list.size();
-			int[][] aint = new int[i][];
-			
-			for (int j = 0; j < i; j++)
-				aint[j] = list.get(j).codePoints().toArray();
-			
-			return aint;
-		}, array ->
-		{
-			List<String> list = new ArrayList<>(array.length);
-			
-			for (int[] aint : array)
-				list.add(new String(aint, 0, aint.length));
-			
-			return list;
-		}).validate(Definition :: validateDimensions);
-		
 		public static final MapCodec<Definition> CODEC = RecordCodecBuilder.<Definition>mapCodec(
 						instance -> instance.group(
 										ResourceLocation.CODEC.fieldOf("file").forGetter(Definition :: file),
 										Codec.INT.optionalFieldOf("height", 8).forGetter(Definition :: height),
-										Codec.INT.fieldOf("ascent").forGetter(Definition :: ascent),
-										CODEPOINT_GRID_CODEC.fieldOf("chars").forGetter(Definition :: codepointGrid)
+										Codec.INT.optionalFieldOf("ascent").forGetter(Definition :: ascent)
 								)
 								.apply(instance, Definition::new)
 				)
 				.validate(Definition :: validate);
 		
-		private static DataResult<int[][]> validateDimensions(int[][] dimensions)
-		{
-			int i = dimensions.length;
-			if (i == 0) {
-				return DataResult.error(() -> "Expected to find data in codepoint grid");
-			} else {
-				int[] aint = dimensions[0];
-				int j = aint.length;
-				if (j == 0) {
-					return DataResult.error(() -> "Expected to find data in codepoint grid");
-				} else {
-					for (int k = 1; k < i; k++) {
-						int[] aint1 = dimensions[k];
-						if (aint1.length != j) {
-							return DataResult.error(
-									() -> "Lines in codepoint grid have to be the same length (found: "
-											+ aint1.length
-											+ " codepoints, expected: "
-											+ j
-											+ "), pad with \\u0000"
-							);
-						}
-					}
-					
-					return DataResult.success(dimensions);
-				}
-			}
-		}
-		
 		private static DataResult<BioGlyphProvider.Definition> validate(BioGlyphProvider.Definition definition)
 		{
-			return definition.ascent > definition.height
-					? DataResult.error(() -> "Ascent " + definition.ascent + " higher than height " + definition.height)
-					: DataResult.success(definition);
+			if (definition.ascent.isPresent() && definition.ascent.get() > definition.height)
+				return DataResult.error(() -> "Ascent " + definition.ascent.get() + " higher than height " + definition.height);
+			return DataResult.success(definition);
 		}
 		
 		@Override
@@ -155,30 +107,11 @@ public class BioGlyphProvider implements GlyphProvider
 			try (InputStream inputstream = resourceManager.open(resourcelocation))
 			{
 				NativeImage nativeimage = NativeImage.read(NativeImage.Format.RGBA, inputstream);
-				int i = nativeimage.getWidth();
-				int j = nativeimage.getHeight();
-				int k = i / this.codepointGrid[0].length;
-				int l = j / this.codepointGrid.length;
-				float f = (float)this.height / (float)l;
-				CodepointMap<BioGlyphInfo> codepointmap = new CodepointMap<>(BioGlyphInfo[] :: new, BioGlyphInfo[][] :: new);
+				CodepointMap<GlyphInfo> codepointmap = new CodepointMap<>(GlyphInfo[] :: new, GlyphInfo[][] :: new);
+				BioMsdfAtlas msdfAtlas = BioMsdfAtlas.load(resourceManager, resourcelocation);
 				
-				for (int i1 = 0; i1 < this.codepointGrid.length; i1++)
-				{
-					int j1 = 0;
-					
-					for (int k1 : this.codepointGrid[i1])
-					{
-						int l1 = j1++;
-						if (k1 != 0) {
-							int i2 = this.getActualGlyphWidth(nativeimage, k, l, l1, i1);
-							BioGlyphInfo glyphInfo = codepointmap.put(
-									k1, new BioGlyphInfo(f, nativeimage, l1 * k, i1 * l, k, l, (int)(0.5 + (double)((float)i2 * f)) + 1, this.ascent)
-							);
-							if (glyphInfo != null)
-								Database.LOGGER.warn("Codepoint '{}' declared multiple times in {}", Integer.toHexString(k1), resourcelocation);
-						}
-					}
-				}
+				this.loadMsdfGlyphs(msdfAtlas, nativeimage, codepointmap, resourcelocation);
+				this.loadMissingWhitespace(msdfAtlas, codepointmap);
 				
 				glyphProvider = new BioGlyphProvider(nativeimage, codepointmap);
 			}
@@ -186,22 +119,30 @@ public class BioGlyphProvider implements GlyphProvider
 			return glyphProvider;
 		}
 		
-		private int getActualGlyphWidth(NativeImage image, int width, int height, int x, int y)
+		private void loadMsdfGlyphs(BioMsdfAtlas atlas,
+		                            NativeImage image,
+		                            CodepointMap<GlyphInfo> glyphs,
+		                            ResourceLocation textureLocation)
 		{
-			int i;
-			for (i = width - 1; i >= 0; i--)
+			atlas.supportedCodepoints().forEach(codepoint ->
 			{
-				int j = x * width + i;
-				
-				for (int k = 0; k < height; k++)
+				Optional<BioMsdfAtlas.Glyph> glyph = atlas.glyph(codepoint);
+				if (glyph.isEmpty())
 				{
-					int l = y * height + k;
-					if (image.getLuminanceOrAlpha(j, l) != 0)
-						return i + 1;
+					Database.LOGGER.warn("Codepoint '{}' was indexed in {}, but missing in {}", Integer.toHexString(codepoint), textureLocation, atlas.source());
+					return;
 				}
-			}
-			
-			return i + 1;
+				
+				GlyphInfo glyphInfo = glyphs.put(codepoint, atlas.toGlyphInfo(image, glyph.get(), this.height));
+				if (glyphInfo != null)
+					Database.LOGGER.warn("Codepoint '{}' declared multiple times in {}", Integer.toHexString(codepoint), textureLocation);
+			});
+		}
+		
+		private void loadMissingWhitespace(BioMsdfAtlas atlas, CodepointMap<GlyphInfo> glyphs)
+		{
+			if (glyphs.get(atlas.spaceCodepoint()) == null)
+				glyphs.put(atlas.spaceCodepoint(), atlas.spaceGlyphInfo(this.height));
 		}
 	}
 }

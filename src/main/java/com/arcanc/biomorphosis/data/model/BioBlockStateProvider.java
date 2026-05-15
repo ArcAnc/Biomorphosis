@@ -87,6 +87,83 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createChestModel();
 		createHangingMoss();
 		createEggsModel();
+		
+		createBioFarmLand();
+	}
+	
+	private void createBioFarmLand()
+	{
+		BioFarmland block = Registration.BlockReg.BIO_FARMLAND.get();
+		
+		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation dirtTexture = blockTexture(Registration.BlockReg.NORPHED_DIRT_0.get());
+		
+		ModelFile modelMoist = models().withExistingParent(blockPrefix(name(block)) + "_moist", mcLoc(blockPrefix("block"))).
+				renderType(RenderType.solid().name).
+				texture("down", blockTexture.withSuffix("_moist")).
+				texture("all", dirtTexture).
+				texture("particle", dirtTexture).
+				guiLight(BlockModel.GuiLight.SIDE).
+				element().
+						from(0, 1, 0).
+						to(16, 16, 16).
+						allFaces((direction, faceBuilder) ->
+						{
+							if (direction.getAxis().isHorizontal())
+								faceBuilder.uvs(0, 0, 16, 15).
+										texture("#all");
+							else
+							{
+								if (direction.getAxis().isVertical())
+								{
+									faceBuilder.uvs(0, 0, 16, 16);
+									if (direction == Direction.UP)
+										faceBuilder.texture("#all");
+									else
+										faceBuilder.texture("#down");
+								}
+							}
+						}).
+				end();
+		
+		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
+				renderType(RenderType.solid().name).
+				texture("down", blockTexture).
+				texture("all", dirtTexture).
+				texture("particle", dirtTexture).
+				guiLight(BlockModel.GuiLight.SIDE).
+				element().
+						from(0, 1, 0).
+						to(16, 16, 16).
+						allFaces((direction, faceBuilder) ->
+						{
+							if (direction.getAxis().isHorizontal())
+								faceBuilder.uvs(0, 0, 16, 15).
+										texture("#all");
+							else
+							{
+								if (direction.getAxis().isVertical())
+								{
+									faceBuilder.uvs(0, 0, 16, 16);
+									if (direction == Direction.UP)
+										faceBuilder.texture("#all");
+									else
+										faceBuilder.texture("#down");
+								}
+							}
+						}).
+				end();
+		
+		getVariantBuilder(block).forAllStates(state ->
+		{
+			int moisure = state.getValue(BioFarmland.MOISTURE);
+			return ConfiguredModel.builder().
+					modelFile(moisure < BioFarmland.MAX_MOISTURE ? model : modelMoist).
+					build();
+		});
+		
+		itemModels().getBuilder(itemPrefix(name(block))).
+				parent(modelMoist);
 	}
 	
 	private void createEggsModel()

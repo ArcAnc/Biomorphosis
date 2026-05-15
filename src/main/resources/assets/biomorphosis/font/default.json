@@ -3,15 +3,8 @@
   [
     {
       "type": "biomorphosis:bio_bitmap",
-      "file": "biomorphosis:font/default.png",
-      "ascent": 24,
-      "height": 24,
-      "chars":
-      [
-        "abcdefghijklmnop",
-        "qrstuvwxyz012345",
-        "6789-.,:;\u0000\u0000\u0000\u0000\u0000\u0000\u0000"
-      ]
+      "file": "biomorphosis:font/font.png",
+      "height": 9
     }
   ]
 }

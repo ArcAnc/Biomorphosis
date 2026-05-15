@@ -56,9 +56,7 @@ public class BioBaseBlock extends Block implements SimpleWaterloggedBlock, Block
     {
         BlockState state = this.defaultBlockState();
         if (state.hasProperty(BlockHelper.BlockProperties.WATERLOGGED))
-        {
             return state.setValue(BlockHelper.BlockProperties.WATERLOGGED, context.getLevel().getFluidState(context.getClickedPos()).getType() == Fluids.WATER);
-        }
         return state;
     }
     

@@ -66,5 +66,9 @@ public class BioBlockTagsProvider extends BlockTagsProvider
 		this.tag(BioBlockTags.NORPHED_STAIRS).
 				add(Registration.BlockReg.NORPHED_DIRT_STAIR_0.get()).
 				add(Registration.BlockReg.NORPHED_DIRT_STAIR_1.get());
+		
+		this.tag(BioBlockTags.NORPHED_BLOCKS).
+				add(Registration.BlockReg.NORPHED_DIRT_0.get()).
+				add(Registration.BlockReg.NORPHED_DIRT_1.get());
     }
 }

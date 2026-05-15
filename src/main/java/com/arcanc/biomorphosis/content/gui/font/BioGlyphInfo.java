@@ -17,19 +17,38 @@ import net.minecraft.client.gui.font.glyphs.BakedGlyph;
 
 import java.util.function.Function;
 
-public record BioGlyphInfo(float scale,
+public record BioGlyphInfo(float oversample,
                            NativeImage image,
                            int offsetX,
                            int offsetY,
                            int width,
                            int height,
-                           int advance,
-                           int ascent) implements GlyphInfo
+                           float advance,
+                           float bearingLeft,
+                           float bearingTop) implements GlyphInfo
 {
+	public static BioGlyphInfo bitmap(float scale,
+	                                  NativeImage image,
+	                                  int offsetX,
+	                                  int offsetY,
+	                                  int width,
+	                                  int height,
+	                                  float advance,
+	                                  float bearingLeft,
+	                                  float bearingTop)
+	{
+		return new BioGlyphInfo(1.0F / scale, image, offsetX, offsetY, width, height, advance, bearingLeft, bearingTop);
+	}
+	
+	public static GlyphInfo empty(float advance)
+	{
+		return new Empty(advance);
+	}
+	
 	@Override
 	public float getAdvance()
 	{
-		return (float)this.advance;
+		return this.advance;
 	}
 	
 	@Override
@@ -39,7 +58,7 @@ public record BioGlyphInfo(float scale,
 		{
 			@Override
 			public float getOversample() {
-				return 1.0F / BioGlyphInfo.this.scale;
+				return BioGlyphInfo.this.oversample;
 			}
 			
 			@Override
@@ -54,7 +73,12 @@ public record BioGlyphInfo(float scale,
 			
 			@Override
 			public float getBearingTop() {
-				return (float) BioGlyphInfo.this.ascent;
+				return BioGlyphInfo.this.bearingTop;
+			}
+			
+			@Override
+			public float getBearingLeft() {
+				return BioGlyphInfo.this.bearingLeft;
 			}
 			
 			@Override
@@ -76,5 +100,56 @@ public record BioGlyphInfo(float scale,
 				return BioGlyphInfo.this.image.format().components() > 1;
 			}
 		});
+	}
+	
+	private record Empty(float advance) implements GlyphInfo
+	{
+		@Override
+		public float getAdvance()
+		{
+			return this.advance;
+		}
+		
+		@Override
+		public BakedGlyph bake(Function<SheetGlyphInfo, BakedGlyph> glyphProvider)
+		{
+			return glyphProvider.apply(new SheetGlyphInfo()
+			{
+				@Override
+				public float getOversample()
+				{
+					return 1.0F;
+				}
+				
+				@Override
+				public int getPixelWidth()
+				{
+					return 1;
+				}
+				
+				@Override
+				public int getPixelHeight()
+				{
+					return 1;
+				}
+				
+				@Override
+				public float getBearingTop()
+				{
+					return 0.0F;
+				}
+				
+				@Override
+				public void upload(int xOffset, int yOffset)
+				{
+				}
+				
+				@Override
+				public boolean isColored()
+				{
+					return false;
+				}
+			});
+		}
 	}
 }
