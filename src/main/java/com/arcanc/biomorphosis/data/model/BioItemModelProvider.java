@@ -44,6 +44,8 @@ public class BioItemModelProvider extends ItemModelProvider
 		basicItem(Registration.ItemReg.BOOK.get());
 		basicItem(Registration.ItemReg.FORGE_UPGRADE.get());
 		handheldItem(Registration.ItemReg.INJECTOR.get());
+		basicItem(Registration.ItemReg.MEAT_MELON_SEEDS.get());
+		handheldItem(Registration.ItemReg.FLESH_HOE.get());
 		
 		createBucket(Registration.FluidReg.BIOMASS);
 		createBucket(Registration.FluidReg.ACID);

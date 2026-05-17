@@ -184,7 +184,7 @@ public class BioGlyphRenderTypes
 			}
 			
 			shader.safeGetUniform("MsdfRange").set(4f);
-			shader.safeGetUniform("DeformationStrength").set(0.7f);
+			shader.safeGetUniform("DeformationStrength").set(0.5f);
 			return shader;
 		}
 		

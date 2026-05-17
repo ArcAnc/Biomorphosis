@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "age=0": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_0"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_0"
+      }
+    ],
+    "age=1": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_1"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_1"
+      }
+    ],
+    "age=2": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_2"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_2"
+      }
+    ],
+    "age=3": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_3"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_3"
+      }
+    ],
+    "age=4": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_4"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_4"
+      }
+    ],
+    "age=5": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_5"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_5"
+      }
+    ],
+    "age=6": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_6"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_6"
+      }
+    ],
+    "age=7": [
+      {
+        "model": "biomorphosis:block/meat_melon_stem_0_7"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon_stem_1_7"
+      }
+    ]
+  }
+}

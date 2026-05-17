@@ -132,7 +132,17 @@ public class BioRecipeProvider extends RecipeProvider
                 unlockedBy(getHasName(Items.STONE), has(Tags.Items.STONES)).
                 unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
                 save(output);
-
+	    
+	    ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.ItemReg.FLESH_HOE).
+			    define('#', Tags.Items.RODS_WOODEN).
+				define('X', Registration.ItemReg.FLESH_PIECE).
+				pattern("XX").
+				pattern(" #").
+				pattern(" #").
+				unlockedBy("has_" + Tags.Items.RODS_WOODEN.location().getPath(), has(Tags.Items.RODS_WOODEN)).
+			    unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+			    save(output);
+		
 		generateCrusherRecipes(output);
 		generateChamberRecipes(output);
         generateBioForgeVanillaEnhancedRecipes(output);
@@ -286,9 +296,19 @@ public class BioRecipeProvider extends RecipeProvider
 				setResult(new ItemStack(Registration.ItemReg.INJECTOR.get())).
 				unlockedBy("has_" + BioItemTags.WRENCH.location().getPath(), has(BioItemTags.WRENCH)).
 				unlockedBy("has_" + Tags.Items.GLASS_PANES.location().getPath(), has(Tags.Items.GLASS_PANES)).
-				unlockedBy("has_ " + Registration.ItemReg.FLESH_PIECE, has(Registration.ItemReg.FLESH_PIECE)).
+				unlockedBy("has_" + Registration.ItemReg.FLESH_PIECE, has(Registration.ItemReg.FLESH_PIECE)).
 				group(group).
 				save(output, Database.rlStr("injector_from_chamber"));
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Tags.Items.SEEDS_MELON))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.MEAT_MELON_SEEDS.get())).
+				unlockedBy("has_" + Tags.Items.SEEDS_MELON.location().getPath(), has(Tags.Items.SEEDS_MELON)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rl("meat_melon_seeds_from_chamber"));
 	}
 	
 	private void generateCrusherRecipes(RecipeOutput output)

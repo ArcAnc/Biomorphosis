@@ -1,4 +1,6 @@
-// 1.21.1	2026-05-13T00:17:00.105318585	Tags for minecraft:block mod id biomorphosis
+// 1.21.1	2026-05-17T15:00:04.807093389	Tags for minecraft:block mod id biomorphosis
+bfa9c588227fb6bb45666dc079e5e9eb6a742990 data/biomorphosis/tags/block/incorrect_for_flesh_tool.json
+2714d3f89a6f0099f9cbafabc5d789cb4f747995 data/biomorphosis/tags/block/needs_flesh_tool.json
 08867b0d329451b1ddd7cebf3e1e5576748e34f3 data/biomorphosis/tags/block/norph.json
 899197d19e62fe2eb7d8da71eca4ab48b622eeed data/biomorphosis/tags/block/norph_avoid.json
 9d842c4dc0b0ff676fa8409a04dfb4e6ff32d7fe data/biomorphosis/tags/block/norph_source.json

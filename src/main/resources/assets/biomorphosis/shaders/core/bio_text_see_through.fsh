@@ -64,7 +64,7 @@ float msdfAlpha(vec2 uv)
 void main()
 {
     float phase = fract(GameTime);
-    float animSpeed = 5;
+    float animSpeed = 20;
     float t = phase * TAU * animSpeed;
     vec2 loopTime = vec2(cos(t), sin(t));
 

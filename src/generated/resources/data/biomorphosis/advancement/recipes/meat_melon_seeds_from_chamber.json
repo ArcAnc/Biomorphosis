@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_flesh_piece": {
+      "conditions": {
+        "items": [
+          {
+            "items": "biomorphosis:flesh_piece"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_seeds/melon": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:seeds/melon"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "biomorphosis:meat_melon_seeds_from_chamber"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_seeds/melon",
+      "has_flesh_piece"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "biomorphosis:meat_melon_seeds_from_chamber"
+    ]
+  }
+}

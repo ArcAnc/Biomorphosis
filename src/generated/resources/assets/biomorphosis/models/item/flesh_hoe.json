@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "biomorphosis:item/flesh_hoe"
+  }
+}

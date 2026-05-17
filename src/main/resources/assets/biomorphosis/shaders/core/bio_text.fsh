@@ -75,7 +75,7 @@ void main()
     // Ускорение внутри одного цикла.
     // 1.0 = один полный оборот за весь GameTime 0..1
     // 3.5 = 3.5 внутренних оборота за один цикл GameTime
-    float animSpeed = 5;
+    float animSpeed = 20;
 
     float t = phase * TAU * animSpeed;
 

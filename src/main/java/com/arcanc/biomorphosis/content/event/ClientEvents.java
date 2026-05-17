@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.block.BioStemBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
 import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChamberRenderer;
 import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChrysalisRenderer;
@@ -26,7 +27,6 @@ import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
-import com.arcanc.biomorphosis.content.item.MultiblockMorpherBlockItem;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
@@ -40,6 +40,7 @@ import com.arcanc.biomorphosis.data.recipe.*;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.*;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -48,6 +49,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
+import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -76,6 +78,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerRenderers);
 		modEventBus.addListener(ClientEvents :: registerItemColors);
+	    modEventBus.addListener(ClientEvents :: registerBlockColors);
         modEventBus.addListener(ClientEvents :: registerLayerDefinitions);
         modEventBus.addListener(ClientEvents :: registerClientExtensions);
         modEventBus.addListener(ClientEvents :: setupModels);
@@ -123,6 +126,17 @@ public final class ClientEvents
                 map(RecipeHolder :: value).
                 toList());
     }
+	
+	private static void registerBlockColors(final RegisterColorHandlersEvent.Block event)
+	{
+		event.register((state, level, pos, tintIndex) ->
+		{
+			int age = state.getValue(BioStemBlock.AGE);
+			return MathHelper.ColorHelper.color(255 - age * 8, age * 32, age * 4);
+		}, Registration.BlockReg.MEAT_MELON_STEM.get());
+		
+		event.getBlockColors().addColoringState(BioStemBlock.AGE, Registration.BlockReg.MEAT_MELON_STEM.get());
+	}
 	
 	private static void registerItemColors(final RegisterColorHandlersEvent.Item event)
 	{

@@ -25,6 +25,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.FarmBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.piston.MovingPistonBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -142,6 +143,12 @@ public class BioFarmland extends BioBaseBlock
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public boolean isFertile(BlockState state, BlockGetter level, BlockPos pos)
+	{
+		return state.getValue(FarmBlock.MOISTURE) > 0;
 	}
 	
 	@Override

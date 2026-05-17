@@ -1,0 +1,99 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "north": {
+          "texture": "#stem",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            16.0,
+            16.0,
+            4.0
+          ]
+        },
+        "south": {
+          "texture": "#stem",
+          "tintindex": 0,
+          "uv": [
+            16.0,
+            16.0,
+            0.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        5,
+        8
+      ],
+      "rotation": {
+        "angle": 45.0,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "rescale": true
+      },
+      "to": [
+        16,
+        17,
+        8
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "texture": "#stem",
+          "tintindex": 0,
+          "uv": [
+            16.0,
+            16.0,
+            0.0,
+            4.0
+          ]
+        },
+        "west": {
+          "texture": "#stem",
+          "tintindex": 0,
+          "uv": [
+            0.0,
+            16.0,
+            16.0,
+            4.0
+          ]
+        }
+      },
+      "from": [
+        8,
+        5,
+        0
+      ],
+      "rotation": {
+        "angle": 45.0,
+        "axis": "y",
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "rescale": true
+      },
+      "to": [
+        8,
+        17,
+        16
+      ]
+    }
+  ],
+  "gui_light": "side",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "particle": "biomorphosis:block/meat_melon_stem_0",
+    "stem": "biomorphosis:block/meat_melon_stem_0"
+  }
+}

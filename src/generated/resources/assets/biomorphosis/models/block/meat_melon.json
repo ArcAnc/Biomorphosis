@@ -1,0 +1,153 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#all",
+          "uv": [
+            9.0,
+            7.0,
+            6.0,
+            10.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            10.0,
+            3.0,
+            14.0
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            3.0,
+            10.0,
+            6.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            9.0,
+            10.0,
+            12.0,
+            14.0
+          ]
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#all",
+          "uv": [
+            6.0,
+            10.0,
+            3.0,
+            7.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            6.0,
+            10.0,
+            9.0,
+            14.0
+          ]
+        }
+      },
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        16,
+        14
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            12.0,
+            0.0,
+            8.0,
+            4.0
+          ]
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#all",
+          "uv": [
+            0.0,
+            4.0,
+            4.0,
+            7.0
+          ]
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#all",
+          "uv": [
+            4.0,
+            4.0,
+            8.0,
+            7.0
+          ]
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#all",
+          "uv": [
+            12.0,
+            4.0,
+            16.0,
+            7.0
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            8.0,
+            4.0,
+            4.0,
+            0.0
+          ]
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#all",
+          "uv": [
+            8.0,
+            4.0,
+            12.0,
+            7.0
+          ]
+        }
+      },
+      "from": [
+        0,
+        2,
+        0
+      ],
+      "to": [
+        16,
+        14,
+        16
+      ]
+    }
+  ],
+  "gui_light": "side",
+  "render_type": "minecraft:solid",
+  "textures": {
+    "all": "biomorphosis:block/meat_melon",
+    "particle": "biomorphosis:block/meat_melon"
+  }
+}

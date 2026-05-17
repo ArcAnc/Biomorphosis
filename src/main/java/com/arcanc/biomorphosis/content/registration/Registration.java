@@ -94,6 +94,7 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeInput;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -122,6 +123,8 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
+import net.neoforged.neoforge.common.ItemAbilities;
+import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.crafting.IngredientType;
 import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
@@ -839,7 +842,22 @@ public final class Registration
                 ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_0 = register("norphed_dirt_0",
-                BioBaseBlock :: new,
+                props -> new BioBaseBlock(props)
+                {
+	                @Override
+	                public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate)
+	                {
+		                ItemStack itemStack = context.getItemInHand();
+		                if (!itemStack.canPerformAction(itemAbility))
+			                return null;
+						
+						if (itemAbility == BioHoeItem.BIO_HOE_TILL &&
+								context.getLevel().getBlockState(context.getClickedPos().below()).isEmpty())
+							return BlockReg.BIO_FARMLAND.get().defaultBlockState();
+						else
+							return null;
+	                }
+                },
                 baseProps,
                 ItemReg.baseProps);
 
@@ -859,7 +877,23 @@ public final class Registration
                 ItemReg.baseProps);
 
         public static final DeferredBlock<BioBaseBlock> NORPHED_DIRT_1 = register("norphed_dirt_1",
-                BioBaseBlock :: new,
+                props ->  new BioBaseBlock(props)
+                {
+	                @Override
+	                public @Nullable BlockState getToolModifiedState(BlockState state, UseOnContext context, ItemAbility itemAbility, boolean simulate)
+	                {
+		                ItemStack itemStack = context.getItemInHand();
+		                if (!itemStack.canPerformAction(itemAbility))
+			                return null;
+		                
+		                if (itemAbility == BioHoeItem.BIO_HOE_TILL &&
+				                !simulate &&
+				                context.getLevel().getBlockState(context.getClickedPos().below()).isEmpty())
+			                return BlockReg.BIO_FARMLAND.get().defaultBlockState();
+		                else
+			                return null;
+	                }
+                },
                 baseProps,
                 ItemReg.baseProps);
 
@@ -1077,7 +1111,7 @@ public final class Registration
                         accept(properties),
                 ItemReg.baseProps);
 		
-		public static final DeferredBlock<BioFarmland> BIO_FARMLAND = register("flesh_farmland", BioFarmland :: new,
+		public static final DeferredBlock<BioFarmland> BIO_FARMLAND = register("norphed_farmland", BioFarmland :: new,
 				properties -> baseProps.
 						andThen(props -> props.
 								randomTicks().
@@ -1085,7 +1119,34 @@ public final class Registration
 								isViewBlocking((state, level, pos) -> true).
 								isSuffocating((state, level, pos) -> true)).
 						accept(properties),
+				ItemReg.baseProps,
+				false);
+		
+		public static final DeferredBlock<BioBaseBlock> MEAT_MELON_BLOCK = register("meat_melon", BioBaseBlock :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								strength(1.0f).
+								sound(SoundType.WOOD).
+								pushReaction(PushReaction.DESTROY).
+								noOcclusion()).
+						accept(properties),
 				ItemReg.baseProps);
+		
+		public static final DeferredBlock<BioStemBlock> MEAT_MELON_STEM = register("meat_melon_stem", properties -> new BioStemBlock(
+				MEAT_MELON_BLOCK.getKey(),
+				ItemReg.MEAT_MELON_SEEDS.getKey(),
+				properties),
+				properties -> baseProps.
+						andThen(props -> props.
+								noOcclusion().
+								noCollission().
+								randomTicks().
+								instabreak().
+								sound(SoundType.HARD_CROP).
+								pushReaction(PushReaction.DESTROY)).
+						accept(properties),
+				ItemReg.baseProps,
+				false);
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
@@ -1354,6 +1415,20 @@ public final class Registration
 						).
 						build()).
 						rarity(RarityExtension.BIO_COMMON.getValue()));
+		
+		public static final DeferredItem<BioBaseBlockItem> MEAT_MELON_SEEDS = register("meat_melon_seeds", props -> new BioBaseBlockItem(BlockReg.MEAT_MELON_STEM.get(), props)
+				{
+					@Override
+					public String getDescriptionId()
+					{
+						return this.getOrCreateDescriptionId();
+					}
+				},
+				properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+		
+		public static final DeferredItem<BioHoeItem> FLESH_HOE = register("flesh_hoe", properties -> new BioHoeItem(BioTiers.FLESH, properties),
+				properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).
+						attributes(HoeItem.createAttributes(BioTiers.FLESH, 0, -3)));
 				
         private static DeferredItem<BioIconItem> registerIcon(String name)
         {

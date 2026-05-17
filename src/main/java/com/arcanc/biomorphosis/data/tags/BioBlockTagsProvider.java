@@ -15,7 +15,9 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -70,5 +72,9 @@ public class BioBlockTagsProvider extends BlockTagsProvider
 		this.tag(BioBlockTags.NORPHED_BLOCKS).
 				add(Registration.BlockReg.NORPHED_DIRT_0.get()).
 				add(Registration.BlockReg.NORPHED_DIRT_1.get());
+		
+		this.tag(BioBlockTags.NEEDS_FLESH_TOOL).addOptionalTag(Tags.Blocks.NEEDS_WOOD_TOOL.location());
+		
+		this.tag(BioBlockTags.INCORRECT_FOR_FLESH_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
     }
 }

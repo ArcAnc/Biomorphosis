@@ -38,7 +38,7 @@
   "render_type": "minecraft:solid",
   "textures": {
     "all": "biomorphosis:block/norphed_dirt_0",
-    "down": "biomorphosis:block/flesh_farmland_moist",
+    "down": "biomorphosis:block/norphed_farmland",
     "particle": "biomorphosis:block/norphed_dirt_0"
   }
 }

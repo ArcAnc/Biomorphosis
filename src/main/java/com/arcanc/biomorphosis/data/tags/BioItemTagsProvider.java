@@ -16,6 +16,7 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
+import net.minecraft.tags.ItemTags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
@@ -42,5 +43,7 @@ public class BioItemTagsProvider extends ItemTagsProvider
         copy(BioBlockTags.NORPH_SOURCE, BioItemTags.NORPH_SOURCE);
         tag(BioItemTags.WRENCH).add(Registration.ItemReg.WRENCH.get());
         tag(BioItemTags.KSIGG_FOOD).add(Registration.ItemReg.FLESH_PIECE.get());
+        
+        tag(ItemTags.HOES).add(Registration.ItemReg.FLESH_HOE.get());
     }
 }

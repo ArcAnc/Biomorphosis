@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 
 public class GeneInjector extends BioBaseItem
 {
-	public static final ItemAbility INJECTOR_INJECT = ItemAbility.get(Database.rl("injector_inject").toString());
+	public static final ItemAbility INJECTOR_INJECT = ItemAbility.get(Database.rlStr("injector_inject"));
 	public static final Set<ItemAbility> INJECTOR_ACTIONS = Stream.of(INJECTOR_INJECT).collect(Collectors.toCollection(Sets :: newIdentityHashSet));
 	
 	public GeneInjector(Properties properties)

@@ -46,6 +46,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
         this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
 		this.addItem(Registration.ItemReg.INJECTOR, "Injector");
+		this.addItem(Registration.ItemReg.MEAT_MELON_SEEDS, "Meat Melon Seeds");
+		this.addItem(Registration.ItemReg.FLESH_HOE, "Flesh Hoe");
 		
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");
@@ -85,6 +87,9 @@ public class EnUsProvider extends LanguageProvider
         this.addBlock(Registration.BlockReg.CHEST, "Swarm Chest");
 		this.addBlock(Registration.BlockReg.MULTIBLOCK_TURRET, "Turret");
 		this.addBlock(Registration.BlockReg.MULTIBLOCK_CHRYSALIS, "Chrysalis");
+		this.addBlock(Registration.BlockReg.MEAT_MELON_BLOCK, "Meat Melon");
+		this.addBlock(Registration.BlockReg.MEAT_MELON_STEM,  "Meat Melon Stem");
+		this.addBlock(Registration.BlockReg.BIO_FARMLAND, "Norhed Farmland");
 		
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.ACID, "Acid");

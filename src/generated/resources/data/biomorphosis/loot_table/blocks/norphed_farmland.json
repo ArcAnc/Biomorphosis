@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "biomorphosis:flesh_farmland"
+          "name": "biomorphosis:norphed_farmland"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "biomorphosis:blocks/flesh_farmland"
+  "random_sequence": "biomorphosis:blocks/norphed_farmland"
 }

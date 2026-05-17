@@ -31,6 +31,6 @@ public class BioBaseItem extends Item implements ItemInterfaces.IMustAddToCreati
     @Override
     public StyleData getStyle()
     {
-        return style;
+        return this.style;
     }
 }

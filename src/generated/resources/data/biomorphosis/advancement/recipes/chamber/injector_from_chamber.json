@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_ DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}": {
+    "has_DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}": {
       "conditions": {
         "items": [
           {
@@ -43,7 +43,7 @@
       "has_the_recipe",
       "has_wrench",
       "has_glass_panes",
-      "has_ DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}"
+      "has_DeferredHolder{ResourceKey[minecraft:item / biomorphosis:flesh_piece]}"
     ]
   ],
   "rewards": {

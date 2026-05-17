@@ -89,6 +89,117 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createEggsModel();
 		
 		createBioFarmLand();
+		createMeatMelonStem();
+		createMeatMelonBlock();
+	}
+	
+	private void createMeatMelonBlock()
+	{
+		BioBaseBlock block = Registration.BlockReg.MEAT_MELON_BLOCK.get();
+		
+		ResourceLocation texture = blockTexture(block);
+		
+		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
+				renderType(RenderType.SOLID.name).
+				texture("all", texture).
+				texture("particle", texture).
+				guiLight(BlockModel.GuiLight.SIDE).
+				element().
+						from(2, 0, 2).
+						to(14, 16, 14).
+						face(Direction.NORTH).uvs(3, 10, 6, 16).end().
+						face(Direction.EAST).uvs(0, 10, 3, 14).end().
+						face(Direction.SOUTH).uvs(9, 10, 12, 14).end().
+						face(Direction.WEST).uvs(6, 10, 9, 14).end().
+						face(Direction.UP).uvs(6, 10, 3, 7).cullface(Direction.UP).end().
+						face(Direction.DOWN).uvs(9, 7, 6, 10).cullface(Direction.DOWN).end().
+						texture("#all").
+				end().
+				element().
+						from(0, 2, 0).
+						to(16, 14, 16).
+						face(Direction.NORTH).uvs(4, 4, 8, 7).cullface(Direction.NORTH).end().
+						face(Direction.EAST).uvs(0, 4, 4, 7).cullface(Direction.EAST).end().
+						face(Direction.SOUTH).uvs(12, 4, 16, 7).cullface(Direction.SOUTH).end().
+						face(Direction.WEST).uvs(8, 4, 12, 7).cullface(Direction.WEST).end().
+						face(Direction.UP).uvs(8, 4, 4, 0).end().
+						face(Direction.DOWN).uvs(12, 0, 8, 4).end().
+						texture("#all").
+				end();
+		
+		registerModels(block, model);
+	}
+	
+	private void createMeatMelonStem()
+	{
+		BioStemBlock block = Registration.BlockReg.MEAT_MELON_STEM.get();
+		
+		int ageCount = BioStemBlock.MAX_AGE + 1;
+		int variantCount = 2;
+		
+		ResourceLocation texture = blockTexture(block);
+		
+		ModelFile[] models = new ModelFile[ageCount * 2];
+		
+		for (int variant = 0; variant < variantCount; variant++)
+		{
+			for (int q = 0; q < ageCount; q++)
+				models[variant * ageCount + q] = models().withExistingParent(blockPrefix(name(block)) + "_" + variant + "_" + q, mcLoc(blockPrefix("block"))).
+						renderType(RenderType.cutout().name).
+						texture("stem", texture + "_" + variant).
+						texture("particle", texture + "_" + variant).
+						guiLight(BlockModel.GuiLight.SIDE).
+						element().
+								from(0, 17 - 2 * (q + 1), 8).
+								to(16, 17, 8).
+								rotation().
+										origin(8, 8, 8).
+										axis(Direction.Axis.Y).
+										angle(45f).
+										rescale(true).
+								end().
+								face(Direction.NORTH).
+										uvs(0, 16, 16, 16 - 2 * (q + 1)).
+										texture("#stem").
+										tintindex(0).
+								end().
+								face(Direction.SOUTH).
+										uvs(16, 16, 0, 16 - 2 * (q + 1)).
+										texture("#stem").
+										tintindex(0).
+								end().
+						end().
+						element().
+								from(8, 17 - 2 * (q + 1), 0).
+								to(8, 17, 16).
+								rotation().
+										origin(8, 8, 8).
+										axis(Direction.Axis.Y).
+										angle(45f).
+										rescale(true).
+								end().
+								face(Direction.WEST).
+										uvs(0, 16, 16, 16 - 2 * (q + 1)).
+										texture("#stem").
+										tintindex(0).
+								end().
+								face(Direction.EAST).
+										uvs(16, 16, 0, 16 - 2 * (q + 1)).
+										texture("#stem").
+										tintindex(0).
+								end().
+						end();
+		}
+		
+		getVariantBuilder(block).forAllStates(state ->
+		{
+			int age = state.getValue(BioStemBlock.AGE);
+			return ConfiguredModel.builder().
+					modelFile(models[age]).
+					nextModel().
+					modelFile(models[age + ageCount]).
+					build();
+		});
 	}
 	
 	private void createBioFarmLand()

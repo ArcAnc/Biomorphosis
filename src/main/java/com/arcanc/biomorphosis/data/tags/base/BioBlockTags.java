@@ -22,6 +22,9 @@ public class BioBlockTags
     public static final TagKey<Block> NORPHED_BLOCKS = create("norphed_blocks");
     public static final TagKey<Block> NORPHED_STAIRS = create("norphed_stairs");
     public static final TagKey<Block> MAINTAINS_SWARM_FARMLAND = create("maintains_swarm_farmland");
+    
+    public static final TagKey<Block> INCORRECT_FOR_FLESH_TOOL = create("incorrect_for_flesh_tool");
+    public static final TagKey<Block> NEEDS_FLESH_TOOL  = create("needs_flesh_tool");
 
     private static TagKey<Block> create(String name)
     {
