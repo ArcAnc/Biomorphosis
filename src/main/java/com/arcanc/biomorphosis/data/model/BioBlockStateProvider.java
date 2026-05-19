@@ -114,7 +114,6 @@ public class BioBlockStateProvider extends BlockStateProvider
 					texture("cross", texture).
 					texture("particle", texture).
 					guiLight(BlockModel.GuiLight.SIDE);
-			
 		}
 		
 		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
