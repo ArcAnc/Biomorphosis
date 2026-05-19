@@ -90,6 +90,7 @@ public class EnUsProvider extends LanguageProvider
 		this.addBlock(Registration.BlockReg.MEAT_MELON_BLOCK, "Meat Melon");
 		this.addBlock(Registration.BlockReg.MEAT_MELON_STEM,  "Meat Melon Stem");
 		this.addBlock(Registration.BlockReg.BIO_FARMLAND, "Norhed Farmland");
+		this.addBlock(Registration.BlockReg.BIO_SHIT, "Shit");
 		
         this.addFluidDescription(Registration.FluidReg.BIOMASS, "Biomass");
         this.addFluidDescription(Registration.FluidReg.ACID, "Acid");

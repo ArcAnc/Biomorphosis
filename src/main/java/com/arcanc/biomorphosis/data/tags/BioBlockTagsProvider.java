@@ -15,7 +15,6 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.common.data.BlockTagsProvider;
@@ -53,15 +52,22 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.PROP_1.get()).
                 add(Registration.BlockReg.PROP_2.get()).
                 add(Registration.BlockReg.HIVE_DECO.get()).
-                add(Registration.BlockReg.CHEST.get());
-        this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
-        this.tag(BioBlockTags.NORPH_AVOID).
+                add(Registration.BlockReg.CHEST.get()).
+                add(Registration.BlockReg.BIO_FARMLAND.get()).
+                add(Registration.BlockReg.MEAT_MELON_STEM.get()).
+                add(Registration.BlockReg.MEAT_MELON_BLOCK.get()).
+                add(Registration.BlockReg.BIO_SHIT.get());
+        
+		this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
+  
+		this.tag(BioBlockTags.NORPH_AVOID).
                 add(Blocks.LAVA).
                 add(Registration.BlockReg.MULTIBLOCK_CHAMBER.get()).
                 add(Registration.BlockReg.MULTIBLOCK_FLUID_STORAGE.get()).
                 add(Registration.BlockReg.MULTIBLOCK_TURRET.get()).
                 add(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.get());
-        this.tag(BlockTags.CLIMBABLE).
+        
+		this.tag(BlockTags.CLIMBABLE).
                 add(Registration.BlockReg.GLOW_MOSS.get()).
                 add(Registration.BlockReg.MOSS.get());
 		

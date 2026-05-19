@@ -32,7 +32,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -91,6 +90,59 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createBioFarmLand();
 		createMeatMelonStem();
 		createMeatMelonBlock();
+		
+		createShitBlock();
+	}
+	
+	private void createShitBlock()
+	{
+		BioShitBlock block = Registration.BlockReg.BIO_SHIT.get();
+		
+		int variations = 3;
+		
+		ModelFile[] models = new ModelFile[variations];
+		
+		for (int q = 0; q < variations; q++)
+		{
+			ResourceLocation texture = blockTexture(block).withSuffix("_" + q);
+			models[q] = models().withExistingParent(blockPrefix(name(block)) + "_" + q, mcLoc(blockPrefix("block"))).
+					renderType(RenderType.translucent().name).
+					texture("all", texture).
+					texture("particle", texture).
+					guiLight(BlockModel.GuiLight.SIDE).
+					element().
+							from(0, 0, 0).
+							to(16, 1, 16).
+							allFaces((direction, faceBuilder) ->
+							{
+								faceBuilder.texture("#all");
+								if (direction.getAxis().isHorizontal())
+									faceBuilder.cullface(direction).uvs(0, 0, 16, 1);
+								else
+								{
+									faceBuilder.uvs(0, 0, 16, 16);
+									if (direction == Direction.DOWN)
+										faceBuilder.cullface(Direction.DOWN);
+								}
+							}).
+					end();
+		}
+		
+		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+		
+		for (int q = 0; q < variations; q++)
+		{
+			builder = builder.modelFile(models[q]);
+			if (q != variations - 1)
+				builder = builder.nextModel();
+		}
+		
+		ConfiguredModel[] result = builder.build();
+		
+		getVariantBuilder(block).forAllStates(state -> result);
+		
+		itemModels().getBuilder(itemPrefix(name(block))).
+				parent(models[0]);
 	}
 	
 	private void createMeatMelonBlock()
@@ -1425,7 +1477,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	private void createDecoHiveModel()
 	{
 		BioBaseEntityBlock<HiveDeco> block = Registration.BlockReg.HIVE_DECO.get();
-		ResourceLocation blockTexture = blockTexture(block);
+		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
 				renderType(RenderType.solid().name).

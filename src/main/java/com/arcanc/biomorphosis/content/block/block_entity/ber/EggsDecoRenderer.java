@@ -21,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class EggsDecoRenderer extends PBlockRenderer<EggsDeco>
 {
-	private static final ResourceLocation TEXTURE = Database.rl("block/egges/0");
+	private static final ResourceLocation TEXTURE = Database.rl("block/eggs/0");
 	
 	public EggsDecoRenderer(final BlockEntityRendererProvider.Context ctx)
 	{

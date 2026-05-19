@@ -123,7 +123,6 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.attachment.AttachmentType;
-import net.neoforged.neoforge.common.ItemAbilities;
 import net.neoforged.neoforge.common.ItemAbility;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.common.crafting.IngredientType;
@@ -1147,6 +1146,17 @@ public final class Registration
 						accept(properties),
 				ItemReg.baseProps,
 				false);
+		
+		public static final DeferredBlock<BioShitBlock> BIO_SHIT = register("shit", BioShitBlock :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								mapColor(MapColor.COLOR_ORANGE).
+								sound(SoundType.MOSS_CARPET).
+								pushReaction(PushReaction.DESTROY).
+								noOcclusion().
+								replaceable()).
+						accept(properties),
+				ItemReg.baseProps);
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {
