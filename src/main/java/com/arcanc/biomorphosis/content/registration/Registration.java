@@ -1157,6 +1157,19 @@ public final class Registration
 								replaceable()).
 						accept(properties),
 				ItemReg.baseProps);
+		
+		public static final DeferredBlock<BioBushBlock> BIO_BUSH = register("bush", BioBushBlock :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								mapColor(MapColor.COLOR_BLACK).
+								sound(SoundType.GRASS).
+								replaceable().
+								noCollission().
+								instabreak().
+								ignitedByLava().
+								pushReaction(PushReaction.DESTROY)).
+						accept(properties),
+				ItemReg.baseProps);
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {

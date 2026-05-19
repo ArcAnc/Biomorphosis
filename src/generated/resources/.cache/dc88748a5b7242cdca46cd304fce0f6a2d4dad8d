@@ -1,4 +1,5 @@
-// 1.21.1	2026-05-19T19:33:14.013192349	Biomorphosis Block Models
+// 1.21.1	2026-05-19T21:01:16.185981111	Biomorphosis Block Models
+2188ff95ce3d72d5dc39c321ecc36228e142ec9d assets/biomorphosis/blockstates/bush.json
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
 db53942552aaf8d9e76ec3345b5388f01647fd86 assets/biomorphosis/blockstates/crusher.json
@@ -45,6 +46,9 @@ c2f9945bb3bc7b48c66941ff485d2d708d05f93b assets/biomorphosis/blockstates/roof_di
 fdacfd1d127a0713f2e2aa0111a04a076657b046 assets/biomorphosis/blockstates/squeezer.json
 1e1c745a36be240e839dcd9623e3a384445968c7 assets/biomorphosis/blockstates/stomach.json
 ed18736ddc17c85fdb468f2837da0892393ca016 assets/biomorphosis/blockstates/trampled_dirt.json
+1fc3fb419cd1d8196ec3e529003c2496078f61af assets/biomorphosis/models/block/bush_0.json
+cf8c8573d1f3a26512eef6f69c64758b571e1978 assets/biomorphosis/models/block/bush_1.json
+accd8eff4e05014f3597decfe6d7bc0063a90b5b assets/biomorphosis/models/block/bush_2.json
 71c22a83dfa43280cc1e5b7c64f2b47d51fb668d assets/biomorphosis/models/block/catcher.json
 09d2c4b3cb1fff83f5d4491c2f07b5044f8b982f assets/biomorphosis/models/block/chest.json
 935b79dbc6bf13548455ddf550767c7290a48e0f assets/biomorphosis/models/block/crusher.json
@@ -156,6 +160,7 @@ e2eea4ef64d4a4dc764acbe6c45dbcdbe92ef0b8 assets/biomorphosis/models/block/shit_1
 226552375d42ae8237665f173070f496f9598831 assets/biomorphosis/models/block/squeezer.json
 c9f56a1c39a94a6adba7b30cb55e0199664fb4bc assets/biomorphosis/models/block/stomach.json
 a27a6aea89e51fbf95639365d745d2e9b381d63b assets/biomorphosis/models/block/trampled_dirt.json
+c2a29d211cab8ab5a2e10c971b9f075920a332c5 assets/biomorphosis/models/item/bush.json
 4904049fa273d0e15d505c56ca5931db4575757e assets/biomorphosis/models/item/catcher.json
 27b7ea14222853d7ad53777eb3d5c4461fdd57d3 assets/biomorphosis/models/item/chest.json
 b47ed2a464c1d1cb3ced1fdf36b6a5a7939f70b1 assets/biomorphosis/models/item/crusher.json

@@ -1,0 +1,15 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "biomorphosis:block/bush_0"
+      },
+      {
+        "model": "biomorphosis:block/bush_1"
+      },
+      {
+        "model": "biomorphosis:block/bush_2"
+      }
+    ]
+  }
+}

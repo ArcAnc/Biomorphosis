@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cross",
+  "gui_light": "side",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cross": "biomorphosis:block/bush_0",
+    "particle": "biomorphosis:block/bush_0"
+  }
+}

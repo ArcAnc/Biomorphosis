@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.registries.DeferredBlock;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -92,6 +94,42 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createMeatMelonBlock();
 		
 		createShitBlock();
+		createBushModel();
+	}
+	
+	private void createBushModel()
+	{
+		BioBushBlock block = Registration.BlockReg.BIO_BUSH.get();
+		
+		int variations = 3;
+		
+		ModelFile[] models = new ModelFile[variations];
+		
+		for (int q = 0; q < variations; q++)
+		{
+			ResourceLocation texture = blockTexture(block).withSuffix("_" + q);
+			
+			models[q] = models().withExistingParent(blockPrefix(name(block)) + "_" + q, mcLoc(blockPrefix("cross"))).
+					renderType(RenderType.cutout().name).
+					texture("cross", texture).
+					texture("particle", texture).
+					guiLight(BlockModel.GuiLight.SIDE);
+			
+		}
+		
+		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+		
+		for (int q = 0; q < variations; q++)
+		{
+			builder = builder.modelFile(models[q]);
+			if (q != variations - 1)
+				builder = builder.nextModel();
+		}
+		
+		getVariantBuilder(block).partialState().addModels(builder.build());
+		
+		itemModels().getBuilder(itemPrefix(name(block))).
+				parent(models[0]);
 	}
 	
 	private void createShitBlock()
@@ -137,9 +175,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 				builder = builder.nextModel();
 		}
 		
-		ConfiguredModel[] result = builder.build();
-		
-		getVariantBuilder(block).forAllStates(state -> result);
+		getVariantBuilder(block).partialState().addModels(builder.build());
 		
 		itemModels().getBuilder(itemPrefix(name(block))).
 				parent(models[0]);
