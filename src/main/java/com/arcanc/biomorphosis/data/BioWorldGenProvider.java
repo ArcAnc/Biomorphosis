@@ -10,6 +10,8 @@
 package com.arcanc.biomorphosis.data;
 
 
+import com.arcanc.biomorphosis.content.worldgen.biome.BioBiomes;
+import com.arcanc.biomorphosis.content.worldgen.biome.BioFeatures;
 import com.arcanc.biomorphosis.content.worldgen.srf.SwarmResistanceForces;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillage;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
@@ -35,8 +37,9 @@ public class BioWorldGenProvider extends BioRegistryData
 	@Override
 	protected void registerContent(RegistrySetBuilder registrySetBuilder)
 	{
-		//FIXME: придумать адекватный метод впилить биом
-		//registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
+		registrySetBuilder.add(Registries.BIOME, BioBiomes :: bootstrap);
+		registrySetBuilder.add(Registries.CONFIGURED_FEATURE, BioFeatures :: configuredFeatures);
+		registrySetBuilder.add(Registries.PLACED_FEATURE, BioFeatures :: placedFeatures);
 		
 		SwarmResistanceForces.init();
 		

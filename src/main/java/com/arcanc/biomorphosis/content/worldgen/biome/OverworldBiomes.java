@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 public class OverworldBiomes
 {
 	/*FIXME: заменить музыку в биоме пустошей*/
+	private static final float WASTES_TEMPERATURE = 1.35f;
+	private static final float WASTES_DOWNFALL = 0.0F;
 
 	private static void addFeature(BiomeGenerationSettings.Builder builder, GenerationStep.Decoration step, ResourceKey<PlacedFeature> feature)
 	{
@@ -35,27 +37,28 @@ public class OverworldBiomes
 
 	public static Biome wastes (HolderGetter<PlacedFeature> placedFeatureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter)
 	{
-		MobSpawnSettings.Builder builder = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.desertSpawns(builder);
-		BiomeGenerationSettings.Builder settingsBuilder = new BiomeGenerationSettings.Builder(placedFeatureGetter, carverGetter);
-		BiomeDefaultFeatures.addFossilDecoration(settingsBuilder);
+		MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
+		BiomeDefaultFeatures.desertSpawns(spawnBuilder);
+		BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(placedFeatureGetter, carverGetter);
+		BiomeDefaultFeatures.addFossilDecoration(biomeBuilder);
 		
-		BiomeDefaultFeatures.addDefaultCarversAndLakes(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultCrystalFormations(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultMonsterRoom(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultUndergroundVariety(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultSprings(settingsBuilder);
-		BiomeDefaultFeatures.addSurfaceFreezing(settingsBuilder);
+		BiomeDefaultFeatures.addDefaultCarversAndLakes(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultCrystalFormations(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultMonsterRoom(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultUndergroundVariety(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultSprings(biomeBuilder);
+		BiomeDefaultFeatures.addSurfaceFreezing(biomeBuilder);
 
-		BiomeDefaultFeatures.addDefaultOres(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultSoftDisks(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultFlowers(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultGrass(settingsBuilder);
-		BiomeDefaultFeatures.addDesertVegetation(settingsBuilder);
-		BiomeDefaultFeatures.addDefaultMushrooms(settingsBuilder);
-		BiomeDefaultFeatures.addDesertExtraVegetation(settingsBuilder);
-		BiomeDefaultFeatures.addDesertExtraDecoration(settingsBuilder);
-		return biome(false, 2.0F, 0.0F, builder, settingsBuilder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DESERT));
+		BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultSoftDisks(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultFlowers(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultGrass(biomeBuilder);
+		BiomeDefaultFeatures.addDesertVegetation(biomeBuilder);
+		BiomeDefaultFeatures.addDefaultMushrooms(biomeBuilder);
+		BiomeDefaultFeatures.addDesertExtraVegetation(biomeBuilder);
+		BiomeDefaultFeatures.addDesertExtraDecoration(biomeBuilder);
+		addFeature(biomeBuilder, GenerationStep.Decoration.SURFACE_STRUCTURES, BioFeatures.WASTES_SPIRE_PLACED);
+		return biome(false, WASTES_TEMPERATURE, WASTES_DOWNFALL, spawnBuilder, biomeBuilder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DESERT));
 	}
 
 	private static Biome biome(
@@ -81,27 +84,27 @@ public class OverworldBiomes
 			BiomeGenerationSettings.Builder generationSettings,
 			@Nullable Music backgroundMusic
 	) {
-		BiomeSpecialEffects.Builder biomespecialeffects$builder = new BiomeSpecialEffects.Builder()
-				.waterColor(waterColor)
-				.waterFogColor(waterFogColor)
-				.fogColor(12638463)
-				.skyColor(calculateSkyColor(temperature))
-				.ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS)
-				.backgroundMusic(backgroundMusic);
+		BiomeSpecialEffects.Builder biomespecialeffects$builder = new BiomeSpecialEffects.Builder().
+						waterColor(waterColor).
+						waterFogColor(waterFogColor).
+						fogColor(12638463).
+						skyColor(calculateSkyColor(temperature)).
+						ambientMoodSound(AmbientMoodSettings.LEGACY_CAVE_SETTINGS).
+						backgroundMusic(backgroundMusic);
 		if (grassColorOverride != null)
 			biomespecialeffects$builder.grassColorOverride(grassColorOverride);
 
 		if (foliageColorOverride != null)
 			biomespecialeffects$builder.foliageColorOverride(foliageColorOverride);
 
-		return new Biome.BiomeBuilder()
-				.hasPrecipitation(hasPrecipitation)
-				.temperature(temperature)
-				.downfall(downfall)
-				.specialEffects(biomespecialeffects$builder.build())
-				.mobSpawnSettings(mobSpawnSettings.build())
-				.generationSettings(generationSettings.build())
-				.build();
+		return new Biome.BiomeBuilder().
+						hasPrecipitation(hasPrecipitation).
+						temperature(temperature).
+						downfall(downfall).
+						specialEffects(biomespecialeffects$builder.build()).
+						mobSpawnSettings(mobSpawnSettings.build()).
+						generationSettings(generationSettings.build()).
+						build();
 	}
 
 	protected static int calculateSkyColor(float temperature)

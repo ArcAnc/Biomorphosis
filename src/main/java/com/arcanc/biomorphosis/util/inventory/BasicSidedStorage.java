@@ -16,6 +16,7 @@ import org.joml.Vector4f;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * MUST implement a storage type as an interface. For example, ItemSidedStorage{IItemHandler, ItemStackHolder, ItemStack} MUST implement IItemHandler
@@ -32,6 +33,9 @@ public abstract class BasicSidedStorage<STORAGE, HOLDER, UNIT>
         this.holders.add(Preconditions.checkNotNull(holder));
         this.BY_SIDE.computeIfAbsent(Preconditions.checkNotNull(mode), key -> new ArrayList<>()).add(id);
         this.SLOT_TO_MODE.put(id, mode);
+        if (mode == FaceMode.ALL)
+            List.of(FaceMode.INPUT, FaceMode.OUTPUT).forEach(faceMode ->
+                this.BY_SIDE.computeIfAbsent(faceMode, key -> new ArrayList<>()).add(id));
         return getStorage();
     }
 
@@ -47,9 +51,9 @@ public abstract class BasicSidedStorage<STORAGE, HOLDER, UNIT>
     {
         if (mode == FaceMode.BLOCKED)
             return List.of();
-        if (mode == null || mode == FaceMode.INTERNAL)
+        else if (mode == null || mode == FaceMode.INTERNAL)
             return this.holders;
-        return BY_SIDE.get(mode).stream().map(this.holders :: get).toList();
+        return this.BY_SIDE.get(mode).stream().map(this.holders :: get).toList();
     }
 
     public Optional<HOLDER> getHolderAt(@Nullable FaceMode mode, int id)

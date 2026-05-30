@@ -21,6 +21,16 @@
       },
       "trigger": "minecraft:inventory_changed"
     },
+    "has_shears": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:shears"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
     "has_stone": {
       "conditions": {
         "items": [
@@ -43,7 +53,8 @@
       "has_the_recipe",
       "has_flesh",
       "has_stone",
-      "has_chest"
+      "has_chest",
+      "has_shears"
     ]
   ],
   "rewards": {

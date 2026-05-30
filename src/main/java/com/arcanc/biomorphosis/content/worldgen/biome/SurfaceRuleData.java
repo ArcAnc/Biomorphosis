@@ -10,27 +10,36 @@
 package com.arcanc.biomorphosis.content.worldgen.biome;
 
 
+import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.SurfaceRules;
+import net.minecraft.world.level.levelgen.placement.CaveSurface;
+
 public class SurfaceRuleData
 {
-/*	private static final SurfaceRules.RuleSource DIRT = makeStateRule(Blocks.DIRT);
-	private static final SurfaceRules.RuleSource GRASS_BLOCK = makeStateRule(Blocks.GRASS_BLOCK);
-	private static final SurfaceRules.RuleSource SWARM_GRASS = makeStateRule(Registration.BlockReg.NORPHED_DIRT_0.get());
+	private static final int MAX_WASTES_SURFACE_DEPTH = 10;
+	private static final SurfaceRules.RuleSource NORPHED_SURFACE = new TagRandomStateRuleSource(BioBlockTags.NORPHED_BLOCKS);
+	private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
 	
-	public static SurfaceRules.@NotNull RuleSource makeRules()
+	public static SurfaceRules.RuleSource makeRules()
 	{
-		SurfaceRules.ConditionSource isAtOrAboveWaterLevel = SurfaceRules.waterBlockCheck(-1, 0);
-		SurfaceRules.RuleSource grassSurface = SurfaceRules.sequence(SurfaceRules.ifTrue(isAtOrAboveWaterLevel, GRASS_BLOCK), DIRT);
-		
 		return SurfaceRules.sequence(
-					SurfaceRules.ifTrue(SurfaceRules.isBiome(BioBiomes.WASTES), SWARM_GRASS),
-		
-					SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, grassSurface)
+				SurfaceRules.ifTrue(
+						SurfaceRules.isBiome(BioBiomes.WASTES),
+						SurfaceRules.sequence(
+								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, NORPHED_SURFACE),
+								SurfaceRules.ifTrue(
+										SurfaceRules.stoneDepthCheck(MAX_WASTES_SURFACE_DEPTH - 1, false, CaveSurface.FLOOR),
+										SANDSTONE
+								)
+						)
+				)
 		);
 	}
 	
-	private static SurfaceRules.@NotNull RuleSource makeStateRule(@NotNull Block block)
+	private static SurfaceRules.RuleSource makeStateRule(Block block)
 	{
 		return SurfaceRules.state(block.defaultBlockState());
 	}
-	*/
 }

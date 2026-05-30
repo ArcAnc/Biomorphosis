@@ -31,6 +31,12 @@
       "ingredient": {
         "item": "minecraft:chest"
       }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "minecraft:shears"
+      }
     }
   ],
   "resources": {

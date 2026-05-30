@@ -11,19 +11,17 @@ package com.arcanc.biomorphosis.content.worldgen.swarm_village;
 
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
+import net.minecraft.core.QuartPos;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.WorldGenLevel;
-import net.minecraft.world.level.chunk.ChunkGenerator;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.level.levelgen.WorldGenerationContext;
 import net.minecraft.world.level.levelgen.heightproviders.HeightProvider;
@@ -32,6 +30,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.PiecesContainer;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePiecesBuilder;
 import net.minecraft.world.level.levelgen.structure.pools.DimensionPadding;
 import net.minecraft.world.level.levelgen.structure.pools.JigsawPlacement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
@@ -61,9 +60,9 @@ public class SwarmVillageStructure extends Structure
 					Heightmap.Types.CODEC.optionalFieldOf("project_start_to_heightmap").forGetter(structure -> structure.projectStartToHeightmap),
 					Codec.intRange(1, MAX_TOTAL_STRUCTURE_RANGE).fieldOf("max_distance_from_center").forGetter(structure -> structure.maxDistanceFromCenter),
 					Codec.list(PoolAliasBinding.CODEC).optionalFieldOf("pool_aliases", List.of()).forGetter(structure -> structure.poolAliases),
-					DimensionPadding.CODEC
-							.optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING)
-							.forGetter(structure -> structure.dimensionPadding),
+					DimensionPadding.CODEC.
+							optionalFieldOf("dimension_padding", DEFAULT_DIMENSION_PADDING).
+							forGetter(structure -> structure.dimensionPadding),
 					LiquidSettings.CODEC.optionalFieldOf("liquid_settings", DEFAULT_LIQUID_SETTINGS).forGetter(structure -> structure.liquidSettings)
 			).apply(instance, SwarmVillageStructure :: new)).
 			validate(SwarmVillageStructure :: verifyRange);
@@ -145,8 +144,12 @@ public class SwarmVillageStructure extends Structure
 	protected Optional<GenerationStub> findGenerationPoint(GenerationContext context)
 	{
 		ChunkPos chunkpos = context.chunkPos();
-		int i = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
-		BlockPos blockpos = new BlockPos(chunkpos.getMinBlockX(), i, chunkpos.getMinBlockZ());
+		int height = this.startHeight.sample(context.random(), new WorldGenerationContext(context.chunkGenerator(), context.heightAccessor()));
+		BlockPos blockpos = new BlockPos(chunkpos.getMiddleBlockX(), height, chunkpos.getMiddleBlockZ());
+
+		//if (!hasBiomeArea(context, blockpos, this.maxDistanceFromCenter, 16))
+		//	return Optional.empty();
+		
 		return JigsawPlacement.addPieces(
 				context,
 				this.startPool,
@@ -160,9 +163,66 @@ public class SwarmVillageStructure extends Structure
 				this.dimensionPadding,
 				this.liquidSettings
 		);
+		
+		/*if (stub.isEmpty())
+			return Optional.empty();
+		
+		Structure.GenerationStub generation = stub.get();
+		StructurePiecesBuilder piecesBuilder = generation.getPiecesBuilder();
+		PiecesContainer pieces = piecesBuilder.build();
+		
+		return arePiecesInsideValidBiome(context, pieces)
+				? Optional.of(new GenerationStub(generation.position(), Either.right(piecesBuilder)))
+				: Optional.empty();*/
 	}
 	
-	@Override
+	private static boolean hasBiomeArea(GenerationContext context, BlockPos blockpos, int maxDistanceFromCenter, int offset)
+	{
+		int distance = maxDistanceFromCenter + offset;
+		int biomeY = QuartPos.fromBlock(context.chunkGenerator().getSeaLevel());
+		
+		for (int q = 0; q < 4; q++)
+		{
+			BlockPos newPos = blockpos.offset(q % 2 == 0 ? distance : -1 * distance,
+					0,
+					q / 2 == 0 ? distance : -1 * distance);
+			
+			if (!isValidBiomeAt(context, newPos.getX(), biomeY, newPos.getZ()))
+				return false;
+		}
+		return true;
+	}
+	
+	private static boolean arePiecesInsideValidBiome(GenerationContext context, PiecesContainer pieces)
+	{
+		for (StructurePiece piece : pieces.pieces())
+			if (!hasValidBiomeCorners(context, piece.getBoundingBox()))
+				return false;
+		
+		return true;
+	}
+	
+	private static boolean hasValidBiomeCorners(GenerationContext context, BoundingBox boundingBox)
+	{
+		int biomeY = QuartPos.fromBlock(boundingBox.minY());
+
+		return isValidBiomeAt(context, boundingBox.minX(), biomeY, boundingBox.minZ()) &&
+				isValidBiomeAt(context, boundingBox.minX(), biomeY, boundingBox.maxZ()) &&
+				isValidBiomeAt(context, boundingBox.maxX(), biomeY, boundingBox.minZ()) &&
+				isValidBiomeAt(context, boundingBox.maxX(), biomeY, boundingBox.maxZ());
+	}
+	
+	private static boolean isValidBiomeAt(GenerationContext context, int blockX, int biomeY, int blockZ)
+	{
+		Holder<Biome> biome = context.biomeSource().getNoiseBiome(
+				QuartPos.fromBlock(blockX),
+				biomeY,
+				QuartPos.fromBlock(blockZ),
+				context.randomState().sampler());
+		return context.validBiome().test(biome);
+	}
+	
+	/*@Override
 	public void afterPlace(WorldGenLevel level,
 						   StructureManager structureManager,
 						   ChunkGenerator chunkGenerator,
@@ -198,9 +258,7 @@ public class SwarmVillageStructure extends Structure
 				}
 			}
 		}
-	}
-	
-	
+	}*/
 	
 	@Override
 	public StructureType<?> type()

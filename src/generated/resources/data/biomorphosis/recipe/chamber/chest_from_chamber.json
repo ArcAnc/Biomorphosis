@@ -25,6 +25,12 @@
       "ingredient": {
         "item": "biomorphosis:flesh"
       }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "minecraft:clay_ball"
+      }
     }
   ],
   "resources": {

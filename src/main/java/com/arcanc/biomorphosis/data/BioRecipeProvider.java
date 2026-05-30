@@ -65,6 +65,20 @@ public class BioRecipeProvider extends RecipeProvider
                 requires(Registration.ItemReg.QUEENS_BRAIN).
                 requires(Items.WRITABLE_BOOK).
                 save(output);
+		
+		ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.LURE_CAMPFIRE).
+				pattern(" I ").
+				pattern("S S").
+				pattern("PCP").
+				define('I', Tags.Items.INGOTS_IRON).
+				define('S', Tags.Items.RODS_WOODEN).
+				define('P', ItemTags.PLANKS).
+				define('C', Blocks.CAMPFIRE).
+				unlockedBy("has_" + Tags.Items.INGOTS_IRON.location().getPath(), has(Tags.Items.INGOTS_IRON)).
+				unlockedBy("has_" + Tags.Items.RODS_WOODEN.location().getPath(), has(Tags.Items.RODS_WOODEN)).
+				unlockedBy("has_" + ItemTags.PLANKS.location().getPath(), has(ItemTags.PLANKS)).
+				unlockedBy(getHasName(Blocks.CAMPFIRE), has(Blocks.CAMPFIRE)).
+				save(output);
 	    
 	    ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.NORPHED_DIRT_STAIR_0).
 			    pattern("FS").
@@ -169,9 +183,11 @@ public class BioRecipeProvider extends RecipeProvider
 				addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
 				addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
 				addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
+				addInput(new IngredientWithSize(Ingredient.of(Items.CLAY_BALL))).
 				setResult(new ItemStack(Registration.BlockReg.CHEST)).
 				unlockedBy(getHasName(Items.CHEST), has(Tags.Items.CHESTS)).
 				unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
+				unlockedBy(getHasName(Items.CLAY_BALL), has(Items.CLAY_BALL)).
 				group(group).
 				save(output, Database.rlStr("chest_from_chamber"));
 		
@@ -194,10 +210,12 @@ public class BioRecipeProvider extends RecipeProvider
 				addInput(new IngredientWithSize(Ingredient.of(Registration.BlockReg.FLESH))).
 				addInput(new IngredientWithSize(Ingredient.of(Items.STONE))).
 				addInput(new IngredientWithSize(Ingredient.of(Items.CHEST))).
+				addInput(new IngredientWithSize(Ingredient.of(Items.SHEARS))).
 				setResult(new ItemStack(Registration.BlockReg.STOMACH)).
 				unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
 				unlockedBy(getHasName(Items.STONE), has(Items.STONE)).
 				unlockedBy(getHasName(Items.CHEST), has(Items.CHEST)).
+				unlockedBy(getHasName(Items.SHEARS), has(Items.SHEARS)).
 				group(group).
 				save(output, Database.rlStr("stomach_from_chamber"));
 		

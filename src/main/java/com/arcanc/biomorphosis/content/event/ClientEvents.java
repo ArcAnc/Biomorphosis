@@ -218,7 +218,6 @@ public final class ClientEvents
         gen.addProvider(true, btp);
         gen.addProvider(true, new BioItemTagsProvider(packOutput, lookupProvider, btp, ext));
         gen.addProvider(true, new BioEntityTagsProvider(packOutput, lookupProvider, ext));
-		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, lookupProvider, ext));
         gen.addProvider(true, new BioRecipeProvider(packOutput, lookupProvider));
         gen.addProvider(true, new BioSpriteSourceProvider(packOutput, lookupProvider, ext));
 	    gen.addProvider(true, new BioMultiblockProvider.Runner(packOutput, lookupProvider));
@@ -246,6 +245,7 @@ public final class ClientEvents
 	    
 	    gen.addProvider(true, new EnUsProvider(packOutput, entries.getRegistryProvider()));
 	    
+		gen.addProvider(true, new BioBiomeTagsProvider(packOutput, entries.getRegistryProvider(), ext));
 		gen.addProvider(true, new BioDamageTypeTagsProvider(packOutput, entries.getRegistryProvider(), ext));
 	    
 	    BioRegistryData.clear();

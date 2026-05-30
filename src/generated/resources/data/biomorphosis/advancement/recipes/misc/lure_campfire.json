@@ -1,31 +1,41 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_chest": {
+    "has_campfire": {
       "conditions": {
         "items": [
           {
-            "items": "#c:chests"
+            "items": "minecraft:campfire"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_clay_ball": {
+    "has_ingots/iron": {
       "conditions": {
         "items": [
           {
-            "items": "minecraft:clay_ball"
+            "items": "#c:ingots/iron"
           }
         ]
       },
       "trigger": "minecraft:inventory_changed"
     },
-    "has_flesh": {
+    "has_planks": {
       "conditions": {
         "items": [
           {
-            "items": "biomorphosis:flesh"
+            "items": "#minecraft:planks"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_rods/wooden": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#c:rods/wooden"
           }
         ]
       },
@@ -33,7 +43,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomorphosis:chamber/chest_from_chamber"
+        "recipe": "biomorphosis:lure_campfire"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -41,14 +51,15 @@
   "requirements": [
     [
       "has_the_recipe",
-      "has_chest",
-      "has_flesh",
-      "has_clay_ball"
+      "has_ingots/iron",
+      "has_rods/wooden",
+      "has_planks",
+      "has_campfire"
     ]
   ],
   "rewards": {
     "recipes": [
-      "biomorphosis:chamber/chest_from_chamber"
+      "biomorphosis:lure_campfire"
     ]
   }
 }

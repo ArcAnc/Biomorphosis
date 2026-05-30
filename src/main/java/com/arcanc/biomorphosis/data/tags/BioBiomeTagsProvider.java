@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.data.tags;
 
 
+import com.arcanc.biomorphosis.content.worldgen.biome.BioBiomes;
 import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
@@ -31,10 +32,7 @@ public class BioBiomeTagsProvider extends BiomeTagsProvider
 	protected void addTags(HolderLookup.Provider provider)
 	{
 		this.tag(BioBiomesTags.HAS_SWARM_VILLAGE).
-				addTag(BiomeTags.IS_FOREST).
-				addTag(BiomeTags.IS_JUNGLE).
-				addTag(BiomeTags.IS_SAVANNA).
-				addTag(BiomeTags.HAS_VILLAGE_PLAINS);
+				add(BioBiomes.WASTES);
 		
 		this.tag(BioBiomesTags.HAS_SRF_HEADQUARTERS).
 				addTag(BiomeTags.IS_FOREST).

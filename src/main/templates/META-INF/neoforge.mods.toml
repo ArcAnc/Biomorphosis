@@ -44,6 +44,12 @@ file="META-INF/accesstransformer.cfg"
     ordering = "AFTER"
     side = "BOTH"
 [[dependencies.${ mod_id }]]
+    modId="terrablender"
+    type="required"
+    versionRange = "[${terrablender_version},)"
+    ordering = "AFTER"
+    side = "BOTH"
+[[dependencies.${ mod_id }]]
     modId="jei"
     type="optional"
     versionRange = "${jei_version}"

@@ -22,13 +22,19 @@ import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.content.worldgen.biome.SurfaceRuleData;
+import com.arcanc.biomorphosis.content.worldgen.biome.OverworldRegion;
+import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.fluids.capability.wrappers.FluidBucketWrapper;
 import net.neoforged.neoforge.registries.DeferredHolder;
+import terrablender.api.Regions;
+import terrablender.api.SurfaceRuleManager;
 
 public class CommonEvents
 {
@@ -43,20 +49,18 @@ public class CommonEvents
 		ChestMenu.registerEvents();
 	    Trades.register(modEventBus);
 		
-		/*FIXME: придумать адекватный метод добавления биома, без терраблендера, ибо лютая какая-то хуйня получается
-        *  Ну или придумать способ, адекватной настройки. Как вариант можно выдрать из <a href="https://github.com/Glitchfiend/BiomesOPlenty/blob/1.21.8/common/src/main/java/biomesoplenty/init/ModBiomes.java">биомес о пленти</a>*/
-        //modEventBus.addListener(CommonEvents :: commonSetupEvent);
+        modEventBus.addListener(CommonEvents :: commonSetupEvent);
    }
     
-    /*private static void commonSetupEvent(FMLCommonSetupEvent event)
+    private static void commonSetupEvent(FMLCommonSetupEvent event)
     {
         event.enqueueWork(() ->
         {
-            Regions.register(new WastesRegion(Database.rl("wastes"), 6));
+            Regions.register(new OverworldRegion(6));
             
             SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Database.MOD_ID, SurfaceRuleData.makeRules());
         });
-    }*/
+    }
     
     @SuppressWarnings("unchecked")
     private static void registerEntityAttributes(final EntityAttributeCreationEvent event)

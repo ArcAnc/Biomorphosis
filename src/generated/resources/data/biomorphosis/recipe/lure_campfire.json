@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:campfire"
+    },
+    "I": {
+      "tag": "c:ingots/iron"
+    },
+    "P": {
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "tag": "c:rods/wooden"
+    }
+  },
+  "pattern": [
+    " I ",
+    "S S",
+    "PCP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:lure_campfire"
+  }
+}

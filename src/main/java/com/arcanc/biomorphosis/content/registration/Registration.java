@@ -42,9 +42,9 @@ import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.*;
+import com.arcanc.biomorphosis.content.worldgen.biome.WastesSpireFeature;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
-import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageFloorProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
 import com.arcanc.biomorphosis.data.recipe.*;
@@ -111,8 +111,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.NoteBlockInstrument;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructureType;
-import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -2051,16 +2052,16 @@ public final class Registration
 		}
 	}
 
-    public static class StructureProcessorTypeReg
+    public static class FeatureReg
     {
-        public static final DeferredRegister<StructureProcessorType<?>> STRUCTURE_PROCESSOR_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PROCESSOR, Database.MOD_ID);
-        
-        public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SwarmVillageFloorProcessor>> VILLAGE_FLOOR_REPLACE = STRUCTURE_PROCESSOR_TYPES.register("void_replacer",
-                () -> () -> SwarmVillageFloorProcessor.CODEC);
-        
+        public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(BuiltInRegistries.FEATURE, Database.MOD_ID);
+
+        public static final DeferredHolder<Feature<?>, WastesSpireFeature> SPIRE = FEATURES.register("spire",
+                () -> new WastesSpireFeature(NoneFeatureConfiguration.CODEC));
+
         private static void init (final IEventBus bus)
         {
-            STRUCTURE_PROCESSOR_TYPES.register(bus);
+            FEATURES.register(bus);
         }
     }
 	
@@ -2097,11 +2098,11 @@ public final class Registration
 	    GenomeReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);
+	    FeatureReg.init(bus);
         MenuTypeReg.init(bus);
         CreativeTabReg.init(bus);
         StructureTypeReg.init(bus);
 	    PalladinOrderReg.init(bus);
-        //StructureProcessorTypeReg.init(bus);
     }
 
     private static <T> void makeRegistry(RegistryBuilder<T> registryBuilder, ResourceKey<? extends Registry<T>> key)

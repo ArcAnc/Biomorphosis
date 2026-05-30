@@ -136,12 +136,12 @@ public class BioSqueezer extends BioSidedAccessBlockEntity implements PAnimatabl
 		findInput();
 		
 		ItemStack input = this.itemHandler.getStackInSlot(0);
-		FluidStack lymph = this.fluidHandler.getFluidInTank(0);
+		FluidStack acid = this.fluidHandler.getFluidInTank(0);
 		FluidStack adrenaline = this.fluidHandler.getFluidInTank(1);
 		this.adrenalineUsedThisTick = false;
 		boolean lastWorkingState = this.isWorking;
 		this.isWorking = this.fluidHandler.getHolderAt(BasicSidedStorage.FaceMode.OUTPUT, 2).map(holder -> !holder.isFull()).orElse(false) &&
-				this.quickCheck.getRecipeFor(new SqueezerRecipeInput(input, lymph, adrenaline), (ServerLevel)this.getLevel()).
+				this.quickCheck.getRecipeFor(new SqueezerRecipeInput(input, acid, adrenaline), this.getLevel()).
 						map(recipeHolder ->
 				{
 					this.workedTime++;

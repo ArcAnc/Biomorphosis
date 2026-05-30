@@ -147,7 +147,7 @@ public class BioCatcher extends BioSidedAccessBlockEntity implements PAnimatable
             return;
         if (this.level.getGameTime() % TICK_PERIOD != 0)
             return;
-        DamageHelper.dealDamage(this.level.damageSources().stalagmite(), 1.0f, this.entity);
+        DamageHelper.dealDamage(this.level.damageSources().dryOut(), 1.0f, this.entity);
         this.fluidHandler.fill(new FluidStack(Registration.FluidReg.ADRENALINE.still(), 5), IFluidHandler.FluidAction.EXECUTE);
         markDirty();
     }

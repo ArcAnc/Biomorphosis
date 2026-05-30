@@ -15,6 +15,9 @@ import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
+import com.arcanc.biomorphosis.util.inventory.BasicSidedStorage;
+import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
+import com.arcanc.biomorphosis.util.inventory.fluid.FluidStackHolder;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -35,6 +38,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,17 +77,45 @@ public class BioFluidTransmitter extends BioBaseBlockEntity implements BlockInte
                     {
                         if (FluidHelper.isEmpty(handler))
                             return;
-                        FluidHelper.getFluidHandler(this.level, data.finish()).ifPresent(finishHandler ->
+                        if (handler instanceof FluidSidedStorage storage)
                         {
-                            if (FluidHelper.isFull(finishHandler))
+                            List<FluidStackHolder> holders = storage.getHoldersForAccess(BasicSidedStorage.FaceMode.OUTPUT);
+                            if (holders.isEmpty())
                                 return;
-                            FluidTransportHandler.addTransport(this.level, new FluidTransportHandler.FluidTransport(
-                                    data.start().getBottomCenter(),
-                                    getBlockPos().getBottomCenter(),
-                                    data.finish().getBottomCenter(),
-                                    handler.drain(sendAmount, IFluidHandler.FluidAction.EXECUTE),
-                                    data.edgePath()));
-                        });
+                            FluidHelper.getFluidHandler(this.level, data.finish()).ifPresent(finishHandler ->
+                            {
+                                if (FluidHelper.isFull(finishHandler))
+                                    return;
+                                
+                                for (FluidStackHolder holder : holders)
+                                {
+                                    FluidStack fluidStack = holder.drain(this.sendAmount, IFluidHandler.FluidAction.SIMULATE);
+                                    
+                                    if (finishHandler.fill(fluidStack, IFluidHandler.FluidAction.SIMULATE) > 0)
+                                        FluidTransportHandler.addTransport(this.level,
+                                                new FluidTransportHandler.FluidTransport(
+                                                        data.start().getBottomCenter(),
+                                                        getBlockPos().getBottomCenter(),
+                                                        data.finish().getBottomCenter(),
+                                                        holder.drain(this.sendAmount, IFluidHandler.FluidAction.EXECUTE),
+                                                        data.edgePath()));
+                                }
+                            });
+                        }
+                        else
+                        {
+                            FluidHelper.getFluidHandler(this.level, data.finish()).ifPresent(finishHandler ->
+                            {
+                                if (FluidHelper.isFull(finishHandler))
+                                    return;
+                                FluidTransportHandler.addTransport(this.level, new FluidTransportHandler.FluidTransport(
+                                        data.start().getBottomCenter(),
+                                        getBlockPos().getBottomCenter(),
+                                        data.finish().getBottomCenter(),
+                                        handler.drain(this.sendAmount, IFluidHandler.FluidAction.EXECUTE),
+                                        data.edgePath()));
+                            });
+                        }
                     });
         }
 

@@ -61,19 +61,19 @@ public class SwarmVillage
 										StructureSpawnOverride.BoundingBoxType.STRUCTURE,
 										WeightedRandomList.create(
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 2, 2),
+														Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 1, 2),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), 1, 8, 8),
+														Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), 1, 4, 8),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), 1, 3, 3),
+														Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), 1, 1, 3),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), 1, 4, 4),
+														Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), 1, 2, 4),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), 1, 4, 4),
+														Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), 1, 2, 4),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_WORKER.getEntityHolder().get(), 1, 8, 8),
+														Registration.EntityReg.MOB_WORKER.getEntityHolder().get(), 1, 4, 6),
 												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get(), 1, 8, 8)
+														Registration.EntityReg.MOB_QUEEN_GUARD.getEntityHolder().get(), 1, 1, 2)
 										)
 								)
 				)).build(),
@@ -90,7 +90,7 @@ public class SwarmVillage
 		
 		context.register (VILLAGE.structureSet(),
 				new StructureSet (structures.getOrThrow (VILLAGE.structure()),
-						new RandomSpreadStructurePlacement (34, 8, RandomSpreadType.LINEAR, 65295359)));
+						new RandomSpreadStructurePlacement (16, 4, RandomSpreadType.LINEAR, 65295359)));
 	}
 
 	public static void templatePools(BootstrapContext<StructureTemplatePool> context)
@@ -116,16 +116,16 @@ public class SwarmVillage
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fl")), 2),
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/fr")), 2),
 								Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/straight")), 2),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/0")), 5),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/1")), 5),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/2")), 4),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/3")), 4),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/4")), 3),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/5")), 2),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/6")), 1)
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/0")), 10),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/1")), 10),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/2")), 20),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/3")), 40),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/4")), 60),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/5")), 80),
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/house/6")), 100)
 								/*Pair.of(SwarmLegacySinglePoolElement.terrainMatching(Database.rl("village/road/to_spire")), 1)*/)));
 		
-		context.register(VILLAGE.pools().getPoolKey(CellType.SPIRE),
+		/*context.register(VILLAGE.pools().getPoolKey(CellType.SPIRE),
 				new StructureTemplatePool(
 						empty,
 						ImmutableList.of(
@@ -138,7 +138,7 @@ public class SwarmVillage
 								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/6")), 1),
 								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/7")), 1),
 								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/8")), 1),
-								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/9")), 1))));
+								Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/spire/9")), 1))));*/
 		
 		context.register(VILLAGE.pools().getPoolKey(CellType.WORKER), new StructureTemplatePool(
 						empty,

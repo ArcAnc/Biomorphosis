@@ -15,16 +15,21 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.CustomEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.renderer.PEntityRenderLayer;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
@@ -39,11 +44,39 @@ public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
 	}
 	
 	@Override
-	protected void perBoneSubmit(TurretProjectile animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<TurretProjectile>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick, @Nullable HeadRotation headRotation)
+	protected void perBoneSubmit(TurretProjectile animatable,
+	                             PoseStack poseStack,
+	                             PBakedBone bone,
+	                             Collection<PAnimationController<TurretProjectile>> pAnimationControllers,
+	                             PModelData data,
+	                             Function<ResourceLocation, RenderType> renderType,
+	                             int packedColor,
+	                             int packedLight,
+	                             int packedOverlay,
+	                             float partialTick,
+	                             @Nullable HeadRotation headRotation,
+	                             @Nullable PEntityRenderLayer<TurretProjectile> renderLayer,
+	                             @Nullable Map<String, Matrix4f> entityBonePoses,
+	                             @Nullable Matrix4f layerTransform,
+	                             @Nullable List<DeferredLayerSubmit> deferredLayers)
 	{
 		if (animatable.getEffect() != null)
 			packedColor = animatable.getEffect().getColor();
-		super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick, headRotation);
+		super.perBoneSubmit(animatable,
+				poseStack,
+				bone,
+				pAnimationControllers,
+				data,
+				renderType,
+				packedColor,
+				packedLight,
+				packedOverlay,
+				partialTick,
+				headRotation,
+				renderLayer,
+				entityBonePoses,
+				layerTransform,
+				deferredLayers);
 	}
 	
 	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)

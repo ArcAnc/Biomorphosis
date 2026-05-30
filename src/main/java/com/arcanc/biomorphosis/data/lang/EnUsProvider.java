@@ -34,7 +34,7 @@ public class EnUsProvider extends LanguageProvider
     @Override
     protected void addTranslations()
     {
-        this.addItem(Registration.ItemReg.FLESH_PIECE, "Piece Of Flash");
+        this.addItem(Registration.ItemReg.FLESH_PIECE, "Piece Of Flesh");
         this.addBlock(Registration.BlockReg.FLESH, "Flesh Block");
         this.addItem(Registration.ItemReg.BOOK, "Guide");
         this.addItem(Registration.ItemReg.QUEENS_BRAIN, "Queen's Brain");
