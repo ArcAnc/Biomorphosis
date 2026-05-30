@@ -5,3 +5,6 @@
 * fixed Transmittter choosing wrong slots in fluid storages (reported by Herezer)
 * fixed some mobs doesn't get damage inside Fluid Extractor (reported by Herezer)
 * fixed BasicStorage code. Now it's working properly 
+* added custom biome
+* now swarm villages can generate only in wastes biome
+* added columns to wastes biome
