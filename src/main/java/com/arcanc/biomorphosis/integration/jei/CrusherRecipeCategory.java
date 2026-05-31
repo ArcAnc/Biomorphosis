@@ -31,13 +31,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
-public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
+public class CrusherRecipeCategory implements IRecipeCategory<RecipeHolder<CrusherRecipe>>
 {
-    public static final RecipeType<CrusherRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().getId().getPath(), CrusherRecipe.class);
+    public static final RecipeType<RecipeHolder<CrusherRecipe>> RECIPE_TYPE = RecipeType.createRecipeHolderType(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().getId());
 
     private final IDrawable icon;
 
@@ -47,7 +48,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     }
 
     @Override
-    public RecipeType<CrusherRecipe> getRecipeType()
+    public RecipeType<RecipeHolder<CrusherRecipe>> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -65,8 +66,10 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, CrusherRecipe recipe, IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<CrusherRecipe> holder, IFocusGroup focuses)
     {
+        CrusherRecipe recipe = holder.value();
+        
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 10, 80).addItemStack(recipe.result().copy());
 
@@ -110,8 +113,9 @@ public class CrusherRecipeCategory implements IRecipeCategory<CrusherRecipe>
     }
 
     @Override
-    public void draw(CrusherRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
+    public void draw(RecipeHolder<CrusherRecipe> holder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
     {
+        CrusherRecipe recipe = holder.value();
         Minecraft mc = RenderHelper.mc();
         Font font = mc.font;
         boolean shift = GuideScreen.hasShiftDown();

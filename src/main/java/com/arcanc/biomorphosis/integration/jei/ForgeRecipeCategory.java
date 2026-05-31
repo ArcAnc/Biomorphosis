@@ -31,13 +31,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
-public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
+public class ForgeRecipeCategory implements IRecipeCategory<RecipeHolder<ForgeRecipe>>
 {
-    public static final RecipeType<ForgeRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.FORGE_RECIPE.getRecipeType().getId().getPath(), ForgeRecipe.class);
+    public static final RecipeType<RecipeHolder<ForgeRecipe>> RECIPE_TYPE = RecipeType.createRecipeHolderType(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().getId());
     private final IDrawable icon;
     private final IDrawable arrow;
 
@@ -48,7 +49,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
     }
 
     @Override
-    public RecipeType<ForgeRecipe> getRecipeType()
+    public RecipeType<RecipeHolder<ForgeRecipe>> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -78,8 +79,9 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ForgeRecipe recipe, IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ForgeRecipe> holder, IFocusGroup focuses)
     {
+        ForgeRecipe recipe = holder.value();
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).addItemStack(recipe.result().copy());
 
@@ -108,12 +110,13 @@ public class ForgeRecipeCategory implements IRecipeCategory<ForgeRecipe>
     }
 
     @Override
-    public void draw(ForgeRecipe recipe,
+    public void draw(RecipeHolder<ForgeRecipe> holder,
                      IRecipeSlotsView recipeSlotsView,
                      GuiGraphics guiGraphics,
                      double mouseX,
                      double mouseY)
     {
+        ForgeRecipe recipe = holder.value();
         Minecraft mc = RenderHelper.mc();
         Font font = mc.font;
         boolean shift = GuideScreen.hasShiftDown();

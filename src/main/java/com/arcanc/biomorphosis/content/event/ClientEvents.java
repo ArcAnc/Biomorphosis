@@ -96,7 +96,7 @@ public final class ClientEvents
 	
 	private static void receiveRecipesEvent(final RecipesUpdatedEvent event)
     {
-        ChamberRecipe.RECIPES.clear();
+		ChamberRecipe.RECIPES.clear();
         ChamberRecipe.RECIPES.addAll(event.getRecipeManager().getAllRecipesFor(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()).
                 stream().
                 map(RecipeHolder :: value).

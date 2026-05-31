@@ -32,13 +32,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
-public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
+public class SqueezerRecipeCategory implements IRecipeCategory<RecipeHolder<SqueezerRecipe>>
 {
-	public static final RecipeType<SqueezerRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().getId().getPath(), SqueezerRecipe.class);
+	public static final RecipeType<RecipeHolder<SqueezerRecipe>> RECIPE_TYPE = RecipeType.createRecipeHolderType(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().getId());
 	private final IDrawable icon;
 	private final IDrawable arrow;
 
@@ -49,7 +50,7 @@ public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
 	}
 	
 	@Override
-	public RecipeType<SqueezerRecipe> getRecipeType()
+	public RecipeType<RecipeHolder<SqueezerRecipe>> getRecipeType()
 	{
 		return RECIPE_TYPE;
 	}
@@ -61,8 +62,9 @@ public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
 	}
 	
 	@Override
-	public void setRecipe(IRecipeLayoutBuilder builder, SqueezerRecipe recipe, IFocusGroup focuses)
+	public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<SqueezerRecipe> holder, IFocusGroup focuses)
 	{
+		SqueezerRecipe recipe = holder.value();
 		builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
 		builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).
 				setFluidRenderer(recipe.result().getAmount(), false, 16, 16).
@@ -92,12 +94,14 @@ public class SqueezerRecipeCategory implements IRecipeCategory<SqueezerRecipe>
 	}
 	
 	@Override
-	public void draw(SqueezerRecipe recipe,
+	public void draw(
+		RecipeHolder<SqueezerRecipe> holder,
 		IRecipeSlotsView recipeSlotsView,
 		GuiGraphics guiGraphics,
 	double mouseX,
 	double mouseY)
 	{
+		SqueezerRecipe recipe = holder.value();
 		Minecraft mc = RenderHelper.mc();
 		Font font = mc.font;
 		boolean shift = GuideScreen.hasShiftDown();

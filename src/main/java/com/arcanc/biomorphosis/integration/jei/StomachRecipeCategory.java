@@ -31,13 +31,14 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
-public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
+public class StomachRecipeCategory implements IRecipeCategory<RecipeHolder<StomachRecipe>>
 {
-    public static final RecipeType<StomachRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().getId().getPath(), StomachRecipe.class);
+    public static final RecipeType<RecipeHolder<StomachRecipe>> RECIPE_TYPE = RecipeType.createRecipeHolderType(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().getId());
     private final IDrawable icon;
     private final IDrawable arrow;
 
@@ -48,7 +49,7 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
     }
 
     @Override
-    public RecipeType<StomachRecipe> getRecipeType()
+    public RecipeType<RecipeHolder<StomachRecipe>> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -60,8 +61,9 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, StomachRecipe recipe, IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<StomachRecipe> holder, IFocusGroup focuses)
     {
+        StomachRecipe recipe = holder.value();
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
         builder.addSlot(RecipeIngredientRole.OUTPUT, 42, 80).
                 setFluidRenderer(recipe.result().getAmount(), false, 16, 16).
@@ -99,12 +101,13 @@ public class StomachRecipeCategory implements IRecipeCategory<StomachRecipe>
     }
 
     @Override
-    public void draw(StomachRecipe recipe,
+    public void draw(RecipeHolder<StomachRecipe> holder,
                      IRecipeSlotsView recipeSlotsView,
                      GuiGraphics guiGraphics,
                      double mouseX,
                      double mouseY)
     {
+        StomachRecipe recipe = holder.value();
         Minecraft mc = RenderHelper.mc();
         Font font = mc.font;
         boolean shift = GuideScreen.hasShiftDown();

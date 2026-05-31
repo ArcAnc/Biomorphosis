@@ -33,14 +33,15 @@ import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 
 import java.util.List;
 
-public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
+public class ChamberRecipeCategory implements IRecipeCategory<RecipeHolder<ChamberRecipe>>
 {
-    public static final RecipeType<ChamberRecipe> RECIPE_TYPE = RecipeType.create(Database.MOD_ID, Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().getId().getPath(), ChamberRecipe.class);
+    public static final RecipeType<RecipeHolder<ChamberRecipe>> RECIPE_TYPE = RecipeType.createRecipeHolderType(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().getId());
     private final IDrawable icon;
 
     private int progress;
@@ -57,7 +58,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     }
 
     @Override
-    public RecipeType<ChamberRecipe> getRecipeType()
+    public RecipeType<RecipeHolder<ChamberRecipe>> getRecipeType()
     {
         return RECIPE_TYPE;
     }
@@ -75,8 +76,10 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ChamberRecipe recipe, IFocusGroup focuses)
+    public void setRecipe(IRecipeLayoutBuilder builder, RecipeHolder<ChamberRecipe> holder, IFocusGroup focuses)
     {
+        ChamberRecipe recipe = holder.value();
+        
         builder.setShapeless();
 
         List<IngredientWithSize> inputs = recipe.input();
@@ -110,8 +113,9 @@ public class ChamberRecipeCategory implements IRecipeCategory<ChamberRecipe>
     }
 
     @Override
-    public void draw(ChamberRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
+    public void draw(RecipeHolder<ChamberRecipe> holder, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY)
     {
+        ChamberRecipe recipe = holder.value();
         List<IngredientWithSize> inputs = recipe.input();
 
         int rows = Mth.ceil(inputs.size() / (MultiblockChamber.MAX_SLOT_AMOUNT / 2f));

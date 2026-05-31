@@ -17,14 +17,18 @@ import com.arcanc.biomorphosis.integration.jei.ingredient.IngredientWithSizeRend
 import com.arcanc.biomorphosis.integration.jei.ingredient.StackWithChanceHelper;
 import com.arcanc.biomorphosis.integration.jei.ingredient.StackWithChanceRenderer;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.registration.IModIngredientRegistration;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.crafting.RecipeManager;
 
 import java.util.Set;
 
@@ -50,21 +54,27 @@ public class BioJeiPlugin implements IModPlugin
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration)
     {
-        registration.addRecipeCategories(new ChamberRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new CrusherRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-	    registration.addRecipeCategories(new SqueezerRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new StomachRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
-        registration.addRecipeCategories(new ForgeRecipeCategory(registration.getJeiHelpers().getGuiHelper()));
+        IGuiHelper guiHelper = registration.getJeiHelpers().getGuiHelper();
+        registration.addRecipeCategories(
+                new ChamberRecipeCategory(guiHelper),
+                new CrusherRecipeCategory(guiHelper),
+                new SqueezerRecipeCategory(guiHelper),
+                new StomachRecipeCategory(guiHelper),
+                new ForgeRecipeCategory(guiHelper));
     }
 
     @Override
     public void registerRecipes(IRecipeRegistration registration)
     {
-        registration.addRecipes(ChamberRecipeCategory.RECIPE_TYPE, ChamberRecipe.RECIPES);
-        registration.addRecipes(CrusherRecipeCategory.RECIPE_TYPE, CrusherRecipe.RECIPES);
-	    registration.addRecipes(SqueezerRecipeCategory.RECIPE_TYPE, SqueezerRecipe.RECIPES);
-        registration.addRecipes(StomachRecipeCategory.RECIPE_TYPE, StomachRecipe.RECIPES);
-        registration.addRecipes(ForgeRecipeCategory.RECIPE_TYPE, ForgeRecipe.RECIPES);
+        ClientLevel level = RenderHelper.mc().level;
+        if (level == null)
+            return;
+        RecipeManager recipeManager = level.getRecipeManager();
+        registration.addRecipes(ChamberRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get()));
+        registration.addRecipes(CrusherRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(Registration.RecipeReg.CRUSHER_RECIPE.getRecipeType().get()));
+	    registration.addRecipes(SqueezerRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(Registration.RecipeReg.SQUEEZER_RECIPE.getRecipeType().get()));
+        registration.addRecipes(StomachRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(Registration.RecipeReg.STOMACH_RECIPE.getRecipeType().get()));
+        registration.addRecipes(ForgeRecipeCategory.RECIPE_TYPE, recipeManager.getAllRecipesFor(Registration.RecipeReg.FORGE_RECIPE.getRecipeType().get()));
     }
 
     @Override

@@ -351,7 +351,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 10, 55, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 10, 55, 8, 8, 0, 0, 16, 16,16, 16);
             guiGraphics.drawString(mc.font, Component.literal(Integer.toString(chamberRecipe.getResources().time())), 20, 55, 0, false);
             guiGraphics.pose().popPose();
 
@@ -482,7 +482,7 @@ public class RecipeRenderHandler
 
             guiGraphics.blit(Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
 
-            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 62, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 62, 8, 8, 0, 0, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(crusherRecipe.getResources().time())), 15, 62, 0, false);
 
             guiGraphics.pose().popPose();
@@ -609,7 +609,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 8, 8, 0, 0, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(forgeRecipe.getResources().time())), 5, 65, 0, false);
 
             guiGraphics.pose().popPose();
@@ -729,7 +729,7 @@ public class RecipeRenderHandler
             this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
             guiGraphics.pose().popPose();
 
-            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+            guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 8, 8, 0, 0, 16, 16,16, 16);
             guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(stomachRecipe.getResources().time())), 5, 65, 0, false);
 
             guiGraphics.pose().popPose();
@@ -840,7 +840,7 @@ public class RecipeRenderHandler
 			this.progressArrow.render(guiGraphics, mouseX, mouseY, partialTicks);
 			guiGraphics.pose().popPose();
 			
-			guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 0, 0, 8, 8, 16, 16,16, 16);
+			guiGraphics.blit(Database.GUI.Textures.JEI.TIME, -5, 65, 8, 8, 0, 0, 16, 16,16, 16);
 			guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(squeezerRecipe.getResources().time())), 5, 65, 0, false);
 			
 			guiGraphics.pose().popPose();

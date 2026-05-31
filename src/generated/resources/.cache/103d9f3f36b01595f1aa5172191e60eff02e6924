@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-31T00:36:25.925223337	Registries
+// 1.21.1	2026-05-31T20:59:34.816634339	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -48,7 +48,7 @@ a6b06edd74137101fb10c741d3a05c3913f36c67 data/biomorphosis/worldgen/biome/wastes
 a3bb03bc12e72d4a9827cb6deef2259b860075df data/biomorphosis/worldgen/structure/village.json
 68aec96ec0618a496e1d0afe39665afaa2d5a8e6 data/biomorphosis/worldgen/structure_set/srf/orders/base/headquarters.json
 6d7945ad0de398f99fa3ce6ba701ea1e81663c88 data/biomorphosis/worldgen/structure_set/srf/orders/base/tower.json
-d95e61a139191e75a44f2bce207c384835945a02 data/biomorphosis/worldgen/structure_set/village.json
+4d572804de167764c07f8ce431d9d14876bbbb89 data/biomorphosis/worldgen/structure_set/village.json
 11705599ec23e19876a2fbbf9d884ffe2f6957e6 data/biomorphosis/worldgen/template_pool/srf/orders/base/blacksmith.json
 dad0e742b699db281f98e34196131f3fd2e53ef7 data/biomorphosis/worldgen/template_pool/srf/orders/base/captain.json
 c8b21a35cc08fc6f5ab52680446a6c9db318f949 data/biomorphosis/worldgen/template_pool/srf/orders/base/sergeant.json

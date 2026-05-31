@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.book_data.chapter.AbstractBookChapter;
 import com.arcanc.biomorphosis.content.book_data.page.component.*;
 import com.arcanc.biomorphosis.content.book_data.page.component.recipes.AbstractRecipeComponent;
+import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,14 +44,19 @@ public abstract class AbstractBookPage extends AbstractWidget
 		            "</multiblock;([\\w:]+)/>");
 
     private final BookPageData data;
-    private final List<AbstractPageComponent> components;
+    private List<AbstractPageComponent> components;
     protected final Map<Integer, List<AbstractPageComponent>> dividedComponents = new HashMap<>();
 
     public AbstractBookPage(BookPageData data)
     {
         super(0, 0, 0, 0, Component.translatable(data.title()));
         this.data = data;
-        this.components = data.text().isBlank() ? List.of() : parseComponents(Component.translatable(data.text()).getString());
+        this.components = createComponents();
+    }
+
+    private List<AbstractPageComponent> createComponents()
+    {
+        return data.text().isBlank() ? new ArrayList<>() : parseComponents(Component.translatable(data.text()).getString());
     }
 
     private List<AbstractPageComponent> parseComponents(String string)
@@ -104,6 +111,7 @@ public abstract class AbstractBookPage extends AbstractWidget
 
     public void reCalcPositions()
     {
+        this.components = createComponents();
         int subPage = 0;
         Rect2i zone = AbstractBookChapter.getPageZones().get(subPage);
         int currentY = zone.getY();
@@ -157,7 +165,8 @@ public abstract class AbstractBookPage extends AbstractWidget
 		int currentIndex = state.currentIndex;
 
         int availableHeight = zone.getY() + zone.getHeight() - currentY;
-        List<FormattedText> lines = font.getSplitter().splitLines(component.getMessage(), component.getWidth(), Style.EMPTY);
+        Component message = component.getMessage().copy().withStyle(style -> style.withFont(GuideScreen.BIOFONT));
+        List<FormattedText> lines = font.getSplitter().splitLines(message, component.getWidth(), Style.EMPTY);
         int lineHeight = font.lineHeight;
 		
 		int maxLines = availableHeight / lineHeight;
@@ -166,21 +175,10 @@ public abstract class AbstractBookPage extends AbstractWidget
             List<FormattedText> currentLines = lines.subList(0, maxLines);
             List<FormattedText> remainingLines = lines.subList(maxLines, lines.size());
 
-            MutableComponent currentText = Component.empty();
-            for (FormattedText text : currentLines)
-                currentText = currentText.append(text.getString()).append(" ");
-			
-			currentText = Component.literal(currentText.getString().trim());
-			
-			component.setMessage(currentText);
+			component.setMessage(mergeLines(currentLines));
             component.setHeight(currentLines.size() * lineHeight);
 			component.setPosition(zone.getX(), currentY);
-			MutableComponent remainingText = Component.empty();
-            for (FormattedText text : remainingLines)
-                remainingText = remainingText.append(text.getString()).append(" ");
-			
-			remainingText = Component.literal(remainingText.getString().trim());
-            TextPageComponent nextComponent = new TextPageComponent(remainingText);
+            TextPageComponent nextComponent = new TextPageComponent(mergeLines(remainingLines));
             int nextComponentHeight = remainingLines.size() * lineHeight;
 			int remainingHeight = zone.getY() + zone.getHeight() - (currentY + component.getHeight());
             if (nextComponentHeight > remainingHeight)
@@ -200,7 +198,24 @@ public abstract class AbstractBookPage extends AbstractWidget
         }
         else
             component.setHeight(lines.size() * lineHeight);
-		return state;
+        return state;
+    }
+
+    private static MutableComponent mergeLines(List<FormattedText> lines)
+    {
+        MutableComponent component = Component.empty();
+        for (int q = 0; q < lines.size(); q++)
+        {
+            lines.get(q).visit((style, text) ->
+            {
+                component.append(Component.literal(text).withStyle(style));
+                return Optional.empty();
+            }, Style.EMPTY);
+
+            if (q < lines.size() - 1)
+                component.append("\n");
+        }
+        return component;
     }
 
     @Override

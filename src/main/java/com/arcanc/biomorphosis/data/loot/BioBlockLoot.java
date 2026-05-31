@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.StemBlock;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.IntRange;
@@ -70,6 +71,8 @@ public class BioBlockLoot extends BlockLootSubProvider
                         )
                 )
         );
+        
+        this.add(Registration.BlockReg.BIO_BUSH.get(), this :: createGrassDrops);
     }
     
     public LootTable.Builder createStemDrops(Block block, Item item)

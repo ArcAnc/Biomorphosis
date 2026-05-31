@@ -8,3 +8,5 @@
 * added custom biome
 * now swarm villages can generate only in wastes biome
 * added columns to wastes biome
+* added custom font into book (as part of big book rework)
+* fixed jei compatibility. Now recipes registered correctly

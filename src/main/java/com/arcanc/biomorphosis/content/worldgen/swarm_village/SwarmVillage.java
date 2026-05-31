@@ -90,7 +90,7 @@ public class SwarmVillage
 		
 		context.register (VILLAGE.structureSet(),
 				new StructureSet (structures.getOrThrow (VILLAGE.structure()),
-						new RandomSpreadStructurePlacement (16, 4, RandomSpreadType.LINEAR, 65295359)));
+						new RandomSpreadStructurePlacement (8, 4, RandomSpreadType.LINEAR, 65295359)));
 	}
 
 	public static void templatePools(BootstrapContext<StructureTemplatePool> context)

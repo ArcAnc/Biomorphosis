@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.content.gui.font;
 
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.Util;
@@ -151,6 +150,9 @@ public class BioGlyphRenderTypes
 	public static class ShadersProvider
 	{
 		private static final float CYCLE_TICKS = 100f;
+		private static final float MSDF_RANGE = 4f;
+		private static final float DEFORMATION_STRENGTH = 0.5f;
+		
 		public static class StateShard
 		{
 			private static final RenderStateShard.ShaderStateShard BIO_TEXT_STATE_SHARD = new RenderStateShard.ShaderStateShard(() -> prepareShader(BIO_TEXT_SHADER));
@@ -183,8 +185,8 @@ public class BioGlyphRenderTypes
 				shader.safeGetUniform("GameTime").set(f);
 			}
 			
-			shader.safeGetUniform("MsdfRange").set(4f);
-			shader.safeGetUniform("DeformationStrength").set(0.5f);
+			shader.safeGetUniform("MsdfRange").set(MSDF_RANGE);
+			shader.safeGetUniform("DeformationStrength").set(DEFORMATION_STRENGTH);
 			return shader;
 		}
 		
