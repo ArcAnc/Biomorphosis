@@ -36,7 +36,7 @@
     }
   },
   "start_height": {
-    "absolute": 0
+    "absolute": 1
   },
   "start_pool": "biomorphosis:srf/orders/base/start/tower",
   "step": "surface_structures",

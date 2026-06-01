@@ -75,7 +75,7 @@ public class SwarmResistanceForces
 									build(),
 							pools.getOrThrow(orderData.pools.getStartPool(StructureType.HEADQUARTERS)),
 							3,
-							ConstantHeight.of(VerticalAnchor.absolute(-1)),
+							ConstantHeight.of(VerticalAnchor.absolute(1)),
 							true,
 							Heightmap.Types.WORLD_SURFACE_WG));
 			
@@ -100,7 +100,7 @@ public class SwarmResistanceForces
 									build(),
 							pools.getOrThrow(orderData.pools.getStartPool(StructureType.TOWER)),
 							3,
-							ConstantHeight.of(VerticalAnchor.absolute(0)),
+							ConstantHeight.of(VerticalAnchor.absolute(1)),
 							true,
 							Heightmap.Types.WORLD_SURFACE_WG));
 		});

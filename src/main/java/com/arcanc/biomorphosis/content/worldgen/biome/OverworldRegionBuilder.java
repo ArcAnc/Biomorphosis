@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.worldgen.biome;
 
 
+import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
 import com.arcanc.biomorphosis.util.helper.WorldGenHelper;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.Registry;
@@ -166,7 +167,7 @@ public class OverworldRegionBuilder
 	private final ResourceKey<Biome>[][] MIDDLE_BIOMES_BIO = new ResourceKey[][]
 			{
 					{null,                      null,                   null,           null,               null},
-					{BioBiomes.WASTES,          BioBiomes.WASTES,       null,           null,               null},
+					{ BioBiomes.WASTES,          BioBiomes.WASTES,       null,           null,               null},
 					{null,                      BioBiomes.WASTES,       null,           null,               null},
 					{null,                      null,                   null,           null,               null},
 					{null,                      null,                   null,           null,               null}

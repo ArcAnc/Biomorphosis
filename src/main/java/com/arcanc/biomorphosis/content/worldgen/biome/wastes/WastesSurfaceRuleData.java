@@ -7,16 +7,18 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.worldgen.biome;
+package com.arcanc.biomorphosis.content.worldgen.biome.wastes;
 
 
+import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
+import com.arcanc.biomorphosis.content.worldgen.biome.TagRandomStateRuleSource;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.SurfaceRules;
 import net.minecraft.world.level.levelgen.placement.CaveSurface;
 
-public class SurfaceRuleData
+public class WastesSurfaceRuleData
 {
 	private static final int MAX_WASTES_SURFACE_DEPTH = 10;
 	private static final SurfaceRules.RuleSource NORPHED_SURFACE = new TagRandomStateRuleSource(BioBlockTags.NORPHED_BLOCKS);

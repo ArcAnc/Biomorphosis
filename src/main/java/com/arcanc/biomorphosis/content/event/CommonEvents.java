@@ -22,7 +22,7 @@ import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.content.worldgen.biome.SurfaceRuleData;
+import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSurfaceRuleData;
 import com.arcanc.biomorphosis.content.worldgen.biome.OverworldRegion;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.world.entity.LivingEntity;
@@ -58,7 +58,7 @@ public class CommonEvents
         {
             Regions.register(new OverworldRegion(6));
             
-            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Database.MOD_ID, SurfaceRuleData.makeRules());
+            SurfaceRuleManager.addSurfaceRules(SurfaceRuleManager.RuleCategory.OVERWORLD, Database.MOD_ID, WastesSurfaceRuleData.makeRules());
         });
     }
     

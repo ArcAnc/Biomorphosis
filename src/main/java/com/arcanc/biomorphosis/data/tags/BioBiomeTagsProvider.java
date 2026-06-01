@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.data.tags;
 
 
-import com.arcanc.biomorphosis.content.worldgen.biome.BioBiomes;
+import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
 import com.arcanc.biomorphosis.data.tags.base.BioBiomesTags;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.HolderLookup;
@@ -45,5 +45,8 @@ public class BioBiomeTagsProvider extends BiomeTagsProvider
 				addTag(BiomeTags.IS_JUNGLE).
 				addTag(BiomeTags.IS_SAVANNA).
 				addTag(BiomeTags.HAS_VILLAGE_PLAINS);
+		
+		this.tag(BioBiomesTags.HAS_SPAWNER).
+				addTag(BiomeTags.IS_OVERWORLD);
 	}
 }

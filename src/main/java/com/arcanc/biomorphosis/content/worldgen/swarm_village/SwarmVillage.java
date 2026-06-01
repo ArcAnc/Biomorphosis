@@ -45,7 +45,7 @@ import java.util.Map;
 
 public class SwarmVillage
 {
-	public static final KeysData VILLAGE = new KeysData("village");
+	private static final KeysData VILLAGE = new KeysData("village");
 	
 	public static void structures(BootstrapContext<Structure> context)
 	{
@@ -78,7 +78,7 @@ public class SwarmVillage
 								)
 				)).build(),
 						pools.getOrThrow(VILLAGE.pools().getPoolKey(CellType.CENTER)),
-				6,
+				7,
 				ConstantHeight.of(VerticalAnchor.absolute(-1)),
 				true,
 				Heightmap.Types.WORLD_SURFACE_WG));
@@ -90,7 +90,7 @@ public class SwarmVillage
 		
 		context.register (VILLAGE.structureSet(),
 				new StructureSet (structures.getOrThrow (VILLAGE.structure()),
-						new RandomSpreadStructurePlacement (8, 4, RandomSpreadType.LINEAR, 65295359)));
+						new RandomSpreadStructurePlacement (16, 4, RandomSpreadType.LINEAR, 65295359)));
 	}
 
 	public static void templatePools(BootstrapContext<StructureTemplatePool> context)
@@ -162,7 +162,7 @@ public class SwarmVillage
 									StructureTemplatePool.Projection.RIGID));*/
 	}
 	
-	public record KeysData(ResourceKey<Structure> structure, ResourceKey<StructureSet> structureSet, SwarmVillagePools pools)
+	private record KeysData(ResourceKey<Structure> structure, ResourceKey<StructureSet> structureSet, SwarmVillagePools pools)
 	{
 		public KeysData(String name)
 		{
@@ -173,11 +173,11 @@ public class SwarmVillage
 		}
 	}
 
-	public static class SwarmVillagePools
+	private static class SwarmVillagePools
 	{
 		private final Map<CellType, ResourceKey<StructureTemplatePool>> poolsData = new EnumMap<>(CellType.class);
 		
-		public SwarmVillagePools(String name)
+		private SwarmVillagePools(String name)
 		{
 			this.poolsData.put(CellType.CENTER, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/start")));
 			this.poolsData.put(CellType.ROAD, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/road")));
@@ -187,18 +187,18 @@ public class SwarmVillage
 			this.poolsData.put(CellType.HOUSE, ResourceKey.create(Registries.TEMPLATE_POOL, Database.rl(name).withSuffix("/house")));
 		}
 		
-		public ResourceKey<StructureTemplatePool> getPoolKey(CellType type)
+		private ResourceKey<StructureTemplatePool> getPoolKey(CellType type)
 		{
 			return this.poolsData.getOrDefault(type, BioWorldGenProvider.EMPTY_POOL);
 		}
 		
-		public @Nullable StructureTemplatePool getPool(Registry<StructureTemplatePool> registry, CellType type)
+		private @Nullable StructureTemplatePool getPool(Registry<StructureTemplatePool> registry, CellType type)
 		{
 			return registry.getOptional(this.getPoolKey(type)).orElse(null);
 		}
 	}
 	
-	public enum CellType
+	private enum CellType
 	{
 		EMPTY,
 		CENTER,

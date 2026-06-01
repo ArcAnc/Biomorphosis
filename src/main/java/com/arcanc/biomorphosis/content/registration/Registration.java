@@ -42,7 +42,8 @@ import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.*;
-import com.arcanc.biomorphosis.content.worldgen.biome.WastesSpireFeature;
+import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
+import com.arcanc.biomorphosis.content.worldgen.spawner.SpawnerStructure;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
@@ -114,6 +115,7 @@ import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructureType;
+import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -2043,12 +2045,28 @@ public final class Registration
 		public static final DeferredHolder<StructureType<?>, StructureType<SwarmVillageStructure>> SWARM_VILLAGE_TYPE = STRUCTURE_TYPES.register("swarm_village",
 				() -> () -> SwarmVillageStructure.CODEC);
 		
+		public static final DeferredHolder<StructureType<?>, StructureType<SpawnerStructure>> SPAWNER_STRUCTURE = STRUCTURE_TYPES.register("spawner",
+				() -> () -> SpawnerStructure.CODEC);
+		
 		public static final DeferredHolder<StructureType<?>, StructureType<SRFHeadquarters>> SRF_HEADQUARTERS = STRUCTURE_TYPES.register("srf_headquarters",
 				() -> () -> SRFHeadquarters.CODEC);
 		
 		private static void init (final IEventBus bus)
 		{
 			STRUCTURE_TYPES.register(bus);
+		}
+	}
+	
+	public static class StructurePieceTypeReg
+	{
+		public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PIECE, Database.MOD_ID);
+		
+		public static final DeferredHolder<StructurePieceType, StructurePieceType> SPAWNER_STRUCTURE = STRUCTURE_PIECE_TYPES.register("spawner",
+				() -> (context, tag) -> new SpawnerStructure.Piece(context.structureTemplateManager(), tag));
+		
+		private static void init(final IEventBus bus)
+		{
+			STRUCTURE_PIECE_TYPES.register(bus);
 		}
 	}
 
@@ -2103,6 +2121,7 @@ public final class Registration
         CreativeTabReg.init(bus);
         StructureTypeReg.init(bus);
 	    PalladinOrderReg.init(bus);
+	    StructurePieceTypeReg.init(bus);
     }
 
     private static <T> void makeRegistry(RegistryBuilder<T> registryBuilder, ResourceKey<? extends Registry<T>> key)

@@ -10,8 +10,9 @@
 package com.arcanc.biomorphosis.data;
 
 
-import com.arcanc.biomorphosis.content.worldgen.biome.BioBiomes;
-import com.arcanc.biomorphosis.content.worldgen.biome.BioFeatures;
+import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
+import com.arcanc.biomorphosis.content.worldgen.BioFeatures;
+import com.arcanc.biomorphosis.content.worldgen.spawner.BioSpawner;
 import com.arcanc.biomorphosis.content.worldgen.srf.SwarmResistanceForces;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillage;
 import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
@@ -52,17 +53,20 @@ public class BioWorldGenProvider extends BioRegistryData
 	{
 		SwarmVillage.structures(context);
 		SwarmResistanceForces.structures(context);
+		BioSpawner.structures(context);
 	}
 	
 	private static void registerStructureSets(BootstrapContext<StructureSet> context)
 	{
 		SwarmVillage.structureSets(context);
 		SwarmResistanceForces.structureSets(context);
+		BioSpawner.structureSets(context);
 	}
 	
 	private static void registerTemplatePools(BootstrapContext<StructureTemplatePool> context)
 	{
 		SwarmVillage.templatePools(context);
 		SwarmResistanceForces.templatePools(context);
+		BioSpawner.templatePools(context);
 	}
 }

@@ -177,7 +177,7 @@ public class ForgeRecipeCategory implements IRecipeCategory<RecipeHolder<ForgeRe
         this.arrow.draw(guiGraphics);
         guiGraphics.pose().popPose();
 
-        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 0, 0, 8, 8, 16, 16,16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 8, 8, 0, 0, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 55, 0, false);
     }
 }

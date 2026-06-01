@@ -148,7 +148,7 @@ public class ChamberRecipeCategory implements IRecipeCategory<RecipeHolder<Chamb
         this.progressArrow.render(guiGraphics, (int)mouseX, (int)mouseY, 0.33f);
         guiGraphics.pose().popPose();
 
-        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 77, 0, 0, 8, 8, 16, 16,16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 77, 8, 8, 0, 0, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 77, 0, false);
     }
 

@@ -153,7 +153,7 @@ public class SqueezerRecipeCategory implements IRecipeCategory<RecipeHolder<Sque
 		this.arrow.draw(guiGraphics);
 		guiGraphics.pose().popPose();
 		
-		guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 60, 0, 0, 8, 8, 16, 16,16, 16);
+		guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 60, 8, 8, 0, 0, 16, 16,16, 16);
 		guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 60, 0, false);
 	}
 	

@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.block;
 
 
+import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,7 +39,8 @@ public class BioBushBlock extends BioBaseBlock
 	@Override
 	protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos)
 	{
-		return level.getBlockState(pos.below()).isSolid();
+		BlockState below = level.getBlockState(pos.below());
+		return below.is(BioBlockTags.NORPHED_BLOCKS);
 	}
 	
 	@Override

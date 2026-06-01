@@ -178,7 +178,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<RecipeHolder<Crush
 
         guiGraphics.blit(Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
 
-        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 0, 0, 8, 8, 16, 16,16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 8, 8, 0, 0, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 55, 0, false);
     }
 

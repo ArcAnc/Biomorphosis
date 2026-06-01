@@ -1,13 +1,13 @@
 {
   "placement": {
     "type": "minecraft:random_spread",
-    "salt": 65295359,
+    "salt": 120643834,
     "separation": 4,
     "spacing": 16
   },
   "structures": [
     {
-      "structure": "biomorphosis:village",
+      "structure": "biomorphosis:spawner",
       "weight": 1
     }
   ]

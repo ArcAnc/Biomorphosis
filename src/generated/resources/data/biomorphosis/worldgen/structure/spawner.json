@@ -1,0 +1,34 @@
+{
+  "type": "biomorphosis:spawner",
+  "biomes": "#biomorphosis:has_structure/spawner",
+  "setups": [
+    {
+      "sink": 2,
+      "template": "biomorphosis:infestor",
+      "weight": 1.0
+    },
+    {
+      "sink": 3,
+      "template": "biomorphosis:ksigg",
+      "weight": 1.0
+    },
+    {
+      "sink": 2,
+      "template": "biomorphosis:larva",
+      "weight": 1.0
+    },
+    {
+      "sink": 3,
+      "template": "biomorphosis:swarmling",
+      "weight": 1.0
+    },
+    {
+      "sink": 0,
+      "template": "biomorphosis:ziris",
+      "weight": 1.0
+    }
+  ],
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

@@ -10,6 +10,8 @@
 package com.arcanc.biomorphosis.content.worldgen.biome;
 
 
+import com.arcanc.biomorphosis.content.worldgen.BioFeatures;
+import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.data.worldgen.BiomeDefaultFeatures;
 import net.minecraft.resources.ResourceKey;
@@ -51,13 +53,8 @@ public class OverworldBiomes
 
 		BiomeDefaultFeatures.addDefaultOres(biomeBuilder);
 		BiomeDefaultFeatures.addDefaultSoftDisks(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultFlowers(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultGrass(biomeBuilder);
-		BiomeDefaultFeatures.addDesertVegetation(biomeBuilder);
-		BiomeDefaultFeatures.addDefaultMushrooms(biomeBuilder);
-		BiomeDefaultFeatures.addDesertExtraVegetation(biomeBuilder);
-		BiomeDefaultFeatures.addDesertExtraDecoration(biomeBuilder);
-		addFeature(biomeBuilder, GenerationStep.Decoration.SURFACE_STRUCTURES, BioFeatures.WASTES_SPIRE_PLACED);
+		addFeature(biomeBuilder, GenerationStep.Decoration.SURFACE_STRUCTURES, WastesSpireFeature.WASTES_SPIRE_PLACED);
+		addFeature(biomeBuilder, GenerationStep.Decoration.VEGETAL_DECORATION, BioFeatures.WASTES_GRASS_PLACED);
 		return biome(false, WASTES_TEMPERATURE, WASTES_DOWNFALL, spawnBuilder, biomeBuilder, Musics.createGameMusic(SoundEvents.MUSIC_BIOME_DESERT));
 	}
 

@@ -7,28 +7,30 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.worldgen.biome;
+package com.arcanc.biomorphosis.content.worldgen.biome.wastes;
 
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.content.worldgen.BioFeatures;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.WorldGenHelper;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.WorldGenRegion;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.StructureManager;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockIgnoreProcessor;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructurePlaceSettings;
@@ -36,6 +38,9 @@ import net.minecraft.world.level.levelgen.structure.templatesystem.StructureTemp
 
 public class WastesSpireFeature extends Feature<NoneFeatureConfiguration>
 {
+	public static final ResourceKey<ConfiguredFeature<?, ?>> WASTES_SPIRE_CONFIGURED = BioFeatures.configured("wastes_spire");
+	public static final ResourceKey<PlacedFeature> WASTES_SPIRE_PLACED = BioFeatures.placed("wastes_spire");
+	
 	private static final int SPIRES_COUNT = 10;
 	private static final int MAX_TERRAIN_DELTA = 4;
 	private static final int MAX_FOUNDATION_DEPTH = 10;

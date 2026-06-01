@@ -20,6 +20,7 @@ public class BioBiomesTags
 	public static final TagKey<Biome> HAS_SWARM_VILLAGE = create("has_structure/swarm_village");
 	public static final TagKey<Biome> HAS_SRF_HEADQUARTERS = create("has_structure/srf_headquarters");
 	public static final TagKey<Biome> HAS_SRF_TOWER = create("has_structure/srf_tower");
+	public static final TagKey<Biome> HAS_SPAWNER = create("has_structure/spawner");
 	
 	private static TagKey<Biome> create(String name)
 	{

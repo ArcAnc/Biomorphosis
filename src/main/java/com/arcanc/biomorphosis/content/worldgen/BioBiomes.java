@@ -7,9 +7,10 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.worldgen.biome;
+package com.arcanc.biomorphosis.content.worldgen;
 
 
+import com.arcanc.biomorphosis.content.worldgen.biome.OverworldBiomes;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
