@@ -33,7 +33,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
     @Override
     protected void addTags(HolderLookup.Provider provider)
     {
-        this.tag(BioBlockTags.NORPH).add(Registration.BlockReg.NORPH.get()).
+        this.tag(BioBlockTags.NORPH).
+		        add(Registration.BlockReg.NORPH.get()).
                 add(Registration.BlockReg.NORPH_OVERLAY.get()).
                 add(Registration.BlockReg.NORPH_STAIRS.get()).
                 add(Registration.BlockReg.FLUID_STORAGE.get()).
@@ -58,7 +59,8 @@ public class BioBlockTagsProvider extends BlockTagsProvider
                 add(Registration.BlockReg.MEAT_MELON_BLOCK.get()).
                 add(Registration.BlockReg.BIO_SHIT.get());
         
-		this.tag(BioBlockTags.NORPH_SOURCE).add(Registration.BlockReg.NORPH_SOURCE.get());
+		this.tag(BioBlockTags.NORPH_SOURCE).
+				add(Registration.BlockReg.NORPH_SOURCE.get());
   
 		this.tag(BioBlockTags.NORPH_AVOID).
                 add(Blocks.LAVA).
@@ -79,8 +81,12 @@ public class BioBlockTagsProvider extends BlockTagsProvider
 				add(Registration.BlockReg.NORPHED_DIRT_0.get()).
 				add(Registration.BlockReg.NORPHED_DIRT_1.get());
 		
-		this.tag(BioBlockTags.NEEDS_FLESH_TOOL).addOptionalTag(Tags.Blocks.NEEDS_WOOD_TOOL.location());
+		this.tag(BioBlockTags.NEEDS_FLESH_TOOL).
+				addOptionalTag(Tags.Blocks.NEEDS_WOOD_TOOL.location());
 		
-		this.tag(BioBlockTags.INCORRECT_FOR_FLESH_TOOL).addOptionalTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
+		this.tag(BioBlockTags.INCORRECT_FOR_FLESH_TOOL).
+				addOptionalTag(BlockTags.INCORRECT_FOR_WOODEN_TOOL);
+		this.tag(BlockTags.MINEABLE_WITH_PICKAXE).
+				add(Registration.BlockReg.NORPHED_STONE.get());
     }
 }

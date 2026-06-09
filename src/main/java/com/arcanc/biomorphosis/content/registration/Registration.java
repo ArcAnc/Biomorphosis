@@ -1173,6 +1173,15 @@ public final class Registration
 								pushReaction(PushReaction.DESTROY)).
 						accept(properties),
 				ItemReg.baseProps);
+		
+		public static final DeferredBlock<BioBaseBlock> NORPHED_STONE = register("norphed_stone", BioBaseBlock :: new,
+				properties -> baseProps.
+						andThen(props -> props.
+								requiresCorrectToolForDrops().
+								pushReaction(PushReaction.NORMAL).
+								mapColor(MapColor.COLOR_ORANGE)).
+						accept(properties),
+				ItemReg.baseProps);
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps)
         {

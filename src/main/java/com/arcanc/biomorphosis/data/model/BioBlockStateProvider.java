@@ -95,6 +95,42 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		createShitBlock();
 		createBushModel();
+		
+		createNorphedStone();
+	}
+	
+	private void createNorphedStone()
+	{
+		BioBaseBlock block = Registration.BlockReg.NORPHED_STONE.get();
+		
+		ResourceLocation baseText = blockTexture(block);
+		
+		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
+				renderType(RenderType.solid().name).
+				texture("top", baseText.withSuffix("_top")).
+				texture("side", baseText.withSuffix("_side")).
+				texture("bottom", baseText.withSuffix("_bottom")).
+				texture("particle", baseText.withSuffix("_side")).
+				guiLight(BlockModel.GuiLight.SIDE).
+				element().
+					from(0, 0, 0).
+					to(16, 16, 16).
+					allFaces((direction, faceBuilder) ->
+					{
+						faceBuilder.uvs(0, 0, 16, 16).cullface(direction);
+						if (direction.getAxis().isHorizontal())
+							faceBuilder.texture("#side");
+						else
+						{
+							if (direction == Direction.UP)
+								faceBuilder.texture("#top");
+							else
+								faceBuilder.texture("#bottom");
+						}
+					}).
+				end();
+		
+		registerModels(block, model);
 	}
 	
 	private void createBushModel()

@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "tag": "biomorphosis:norphed_blocks"
+    },
+    {
+      "tag": "biomorphosis:norphed_blocks"
+    },
+    {
+      "tag": "biomorphosis:norphed_blocks"
+    },
+    {
+      "tag": "minecraft:sand"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:norphed_stone"
+  }
+}

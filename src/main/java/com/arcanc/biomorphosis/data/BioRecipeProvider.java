@@ -13,6 +13,7 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.builders.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
+import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
@@ -33,6 +34,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
@@ -134,8 +136,7 @@ public class BioRecipeProvider extends RecipeProvider
 			    group("squeezer").
 			    save(output, Database.rlStr("biomass_from_foods"));
 
-       
-
+		
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, Registration.BlockReg.MULTIBLOCK_MORPHER).
                 pattern("SWS").
                 pattern("FSF").
@@ -146,6 +147,13 @@ public class BioRecipeProvider extends RecipeProvider
                 unlockedBy(getHasName(Items.STONE), has(Tags.Items.STONES)).
                 unlockedBy(getHasName(Registration.BlockReg.FLESH), has(Registration.BlockReg.FLESH)).
                 save(output);
+		
+		ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, Registration.BlockReg.NORPHED_STONE).
+				requires(Ingredient.of(BioItemTags.NORPHED_BLOCKS), 3).
+				requires(Ingredient.of(ItemTags.SAND)).
+				unlockedBy("has_" + BioItemTags.NORPHED_BLOCKS, has(BioItemTags.NORPHED_BLOCKS)).
+				unlockedBy("has_" + ItemTags.SAND.location().getPath(), has(ItemTags.SAND)).
+				save(output);
 	    
 	    ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, Registration.ItemReg.FLESH_HOE).
 			    define('#', Tags.Items.RODS_WOODEN).

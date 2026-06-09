@@ -1,0 +1,51 @@
+{
+  "parent": "minecraft:block/block",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "texture": "#bottom"
+        },
+        "east": {
+          "cullface": "east",
+          "texture": "#side"
+        },
+        "north": {
+          "cullface": "north",
+          "texture": "#side"
+        },
+        "south": {
+          "cullface": "south",
+          "texture": "#side"
+        },
+        "up": {
+          "cullface": "up",
+          "texture": "#top"
+        },
+        "west": {
+          "cullface": "west",
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "gui_light": "side",
+  "render_type": "minecraft:solid",
+  "textures": {
+    "bottom": "biomorphosis:block/norphed_stone_bottom",
+    "particle": "biomorphosis:block/norphed_stone_side",
+    "side": "biomorphosis:block/norphed_stone_side",
+    "top": "biomorphosis:block/norphed_stone_top"
+  }
+}

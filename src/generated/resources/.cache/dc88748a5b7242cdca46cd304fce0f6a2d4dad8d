@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-02T00:28:16.644819955	Biomorphosis Block Models
+// 1.21.1	2026-06-09T21:58:14.511980485	Biomorphosis Block Models
 2188ff95ce3d72d5dc39c321ecc36228e142ec9d assets/biomorphosis/blockstates/bush.json
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
@@ -35,6 +35,7 @@ a653147fb958dbe37cf8d37d3e2b79ce23042f26 assets/biomorphosis/blockstates/norphed
 d3731241fadf5ca768e68d0ee9e381090f1e90d3 assets/biomorphosis/blockstates/norphed_dirt_stair_0.json
 990815f2d08df365683f1015eef519660672f4fb assets/biomorphosis/blockstates/norphed_dirt_stair_1.json
 ef80cccb8d101e3bac5da13daff9d4a2692443cb assets/biomorphosis/blockstates/norphed_farmland.json
+68b64974fb17f0994125e4a30c34351538b7d49d assets/biomorphosis/blockstates/norphed_stone.json
 fc3b7639d32975c8b653ae02dccaf1a739c12869 assets/biomorphosis/blockstates/prop_0.json
 6f489520ef20f54a318414785ec5ea782d3c9dc9 assets/biomorphosis/blockstates/prop_1.json
 c4adf471770703d34e2091a32822500eb9138a89 assets/biomorphosis/blockstates/prop_2.json
@@ -144,6 +145,7 @@ edd3f9d39a3c5b8b6466ba8f30231d8fa08b8e24 assets/biomorphosis/models/block/norphe
 877a3f81fd22bbda4840754bd574f02d84a863c0 assets/biomorphosis/models/block/norphed_dirt_stair_1_outer_1.json
 8b675c13bf02a6c0509f45cf38893eccf61db1a9 assets/biomorphosis/models/block/norphed_farmland.json
 2dc8022fef4cb92acfa284a08f8819edd67d87ba assets/biomorphosis/models/block/norphed_farmland_moist.json
+aea34bc92792a2c897ae5a5d56371fda8cb2f2b0 assets/biomorphosis/models/block/norphed_stone.json
 0acd9086f5e96b1366f3973a60f0b3bd3706cbf6 assets/biomorphosis/models/block/prop_0.json
 334be4385b6fe9f11717b2e6e3d785a939859fc1 assets/biomorphosis/models/block/prop_1.json
 e8588296316d955b38c09e33e1b4646fbe4ae6b9 assets/biomorphosis/models/block/prop_2.json
@@ -191,6 +193,7 @@ f0dbc7eebd79ae52d2ed9aefacb1a54bf1d39749 assets/biomorphosis/models/item/norphed
 6934fff9f5e9f9cb32fd2a60630e834c12157539 assets/biomorphosis/models/item/norphed_dirt_stair_0.json
 a01457d982ba532c338e5ed990c7ff03a819e466 assets/biomorphosis/models/item/norphed_dirt_stair_1.json
 986351dc3e0751110ad4295d64b9cb72111e116c assets/biomorphosis/models/item/norphed_farmland.json
+b0104f30d6b56763bd693a5ae65a5ffae85e1dad assets/biomorphosis/models/item/norphed_stone.json
 fec199c031477235229f6e7a51c03d37e714ea13 assets/biomorphosis/models/item/prop_0.json
 dedf8f8b876c22bd5fa6173460213967c24c0544 assets/biomorphosis/models/item/prop_1.json
 309165dadeb345c64e5987ab04a486564e2329bd assets/biomorphosis/models/item/prop_2.json

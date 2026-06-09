@@ -29,6 +29,5 @@
     }
   ],
   "spawn_overrides": {},
-  "step": "surface_structures",
-  "terrain_adaptation": "none"
+  "step": "surface_structures"
 }

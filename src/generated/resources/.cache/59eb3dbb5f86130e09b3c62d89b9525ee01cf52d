@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-31T21:26:36.284981764	Loot Tables
+// 1.21.1	2026-06-03T00:22:39.008901582	Loot Tables
 813ac2a7d9fbaffd6decc4b5c3181acb1df96b05 data/biomorphosis/loot_table/blocks/bush.json
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
@@ -29,6 +29,7 @@ f07f12c83b796edebc2b55c4da088e9c4b291536 data/biomorphosis/loot_table/blocks/nor
 63f4ae3e921e723e0389ee92125cf4e73dfcced7 data/biomorphosis/loot_table/blocks/norphed_dirt_stair_0.json
 565dc1beebc403420ea728059465e3f7f15f9ad7 data/biomorphosis/loot_table/blocks/norphed_dirt_stair_1.json
 2467d083067546ab6d5576adf6871a3dd5e3d01c data/biomorphosis/loot_table/blocks/norphed_farmland.json
+f954d16558c4278066ddb0ab5759ae1334789a01 data/biomorphosis/loot_table/blocks/norphed_stone.json
 ff2de77723ad15e0d30be175cd1f0c164d211f6b data/biomorphosis/loot_table/blocks/prop_0.json
 7d89a47a8db509d36e3ff99a32f378d82c0093a5 data/biomorphosis/loot_table/blocks/prop_1.json
 e3b41654316c418ac325a12105267829a5359332 data/biomorphosis/loot_table/blocks/prop_2.json

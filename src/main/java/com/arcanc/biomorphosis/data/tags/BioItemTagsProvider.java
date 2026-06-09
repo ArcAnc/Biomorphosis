@@ -41,6 +41,7 @@ public class BioItemTagsProvider extends ItemTagsProvider
                 add(Registration.BlockReg.MULTIBLOCK_TURRET.asItem()).
                 add(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.asItem());*/
         copy(BioBlockTags.NORPH_SOURCE, BioItemTags.NORPH_SOURCE);
+        copy(BioBlockTags.NORPHED_BLOCKS, BioItemTags.NORPHED_BLOCKS);
         tag(BioItemTags.WRENCH).add(Registration.ItemReg.WRENCH.get());
         tag(BioItemTags.KSIGG_FOOD).add(Registration.ItemReg.FLESH_PIECE.get());
         

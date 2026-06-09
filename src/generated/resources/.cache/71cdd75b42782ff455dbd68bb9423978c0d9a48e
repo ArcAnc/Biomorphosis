@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-19T17:52:19.576853935	Tags for minecraft:block mod id biomorphosis
+// 1.21.1	2026-06-09T21:58:14.516758292	Tags for minecraft:block mod id biomorphosis
 bfa9c588227fb6bb45666dc079e5e9eb6a742990 data/biomorphosis/tags/block/incorrect_for_flesh_tool.json
 2714d3f89a6f0099f9cbafabc5d789cb4f747995 data/biomorphosis/tags/block/needs_flesh_tool.json
 3edbd6ea160422495a0b23c46d83d80e5360c76a data/biomorphosis/tags/block/norph.json
@@ -7,3 +7,4 @@ bfa9c588227fb6bb45666dc079e5e9eb6a742990 data/biomorphosis/tags/block/incorrect_
 dec43beefe1ebdb7ab732d41b6afe857ebca91c3 data/biomorphosis/tags/block/norphed_blocks.json
 cffdbb63095b8462551e781e68853782fc6c062c data/biomorphosis/tags/block/norphed_stairs.json
 04555d9fa4c8f17a0607bab2d8b2abceaaf6bb9d data/minecraft/tags/block/climbable.json
+9042687480240aeb92c56b5852a84b74bf46b50f data/minecraft/tags/block/mineable/pickaxe.json

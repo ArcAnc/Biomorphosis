@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-29T23:55:21.95485029	Recipes
+// 1.21.1	2026-06-09T21:58:14.514030298	Recipes
 6dfcf11c8f97763260ef1883cd57b5be205a4f01 data/biomorphosis/advancement/recipes/chamber/catcher_from_chamber.json
 000edacff53fd3bead7d245df5f70e1cf789411e data/biomorphosis/advancement/recipes/chamber/chest_from_chamber.json
 07bbe973e530fc89f141bbea49db03d56d1b6034 data/biomorphosis/advancement/recipes/chamber/crusher_from_chamber.json
@@ -183,6 +183,7 @@ b90212332c1286ba81fbec6c67029ba5a0f1e1ef data/biomorphosis/advancement/recipes/m
 e4e8353ef31b33d4a6f69252317e46b1391b6054 data/biomorphosis/advancement/recipes/misc/norph_source.json
 e15e5658f3ac6dc9fe2af6101158013ff4762371 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_0.json
 47bcbdeec3ae4257024cecc332e4d47a50330476 data/biomorphosis/advancement/recipes/misc/norphed_dirt_stair_1.json
+d40925fd22765c4b822b2487214631acdbe6c592 data/biomorphosis/advancement/recipes/misc/norphed_stone.json
 fb0b56c49daa5a65d612507630b061258171f679 data/biomorphosis/advancement/recipes/squeezer/biomass_from_foods.json
 6457914bd17668ae2165e48ec2ddf49a10d410f7 data/biomorphosis/advancement/recipes/stomach/acid_from_foods.json
 72d787d8d278a4d2e23178b8abc3907cc4609b69 data/biomorphosis/advancement/recipes/tools/flesh_hoe.json
@@ -371,6 +372,7 @@ b805682101987fbf2861d4049cb9ab77848904d5 data/biomorphosis/recipe/multiblock_mor
 b1071e94dbbb260cd4513782e63e52a19983e77e data/biomorphosis/recipe/norph_source.json
 4a3556df5f2555c6791c43b77976ff179857b225 data/biomorphosis/recipe/norphed_dirt_stair_0.json
 dd6886c5429ace8d2420fd927082e0b5ee8ecb7f data/biomorphosis/recipe/norphed_dirt_stair_1.json
+372fded60c7d559fb4e762302ace931f83f8493f data/biomorphosis/recipe/norphed_stone.json
 13403afacb1faa07050024d5ae33094c8dd24ec2 data/biomorphosis/recipe/squeezer/biomass_from_foods.json
 2a2be4797eada62d37006649512e89fcf79d7df8 data/biomorphosis/recipe/stomach/acid_from_foods.json
 71adc7a523c1d3e0c7972f42459cde543915eda2 data/minecraft/advancement/recipes/misc/flesh.json

@@ -19,6 +19,7 @@ public class BioItemTags
     public static final TagKey<Item> NORPH = create("norph");
     public static final TagKey<Item> NORPH_AVOID = create("norph_avoid");
     public static final TagKey<Item> NORPH_SOURCE = create("norph_source");
+    public static final TagKey<Item> NORPHED_BLOCKS = create("norphed_blocks");
     public static final TagKey<Item> NORPHED_STAIRS = create("norphed_stairs");
     public static final TagKey<Item> WRENCH = create("wrench");
 

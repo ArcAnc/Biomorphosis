@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.worldgen.biome.wastes;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
 import com.arcanc.biomorphosis.content.worldgen.biome.TagRandomStateRuleSource;
 import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
@@ -22,7 +23,7 @@ public class WastesSurfaceRuleData
 {
 	private static final int MAX_WASTES_SURFACE_DEPTH = 10;
 	private static final SurfaceRules.RuleSource NORPHED_SURFACE = new TagRandomStateRuleSource(BioBlockTags.NORPHED_BLOCKS);
-	private static final SurfaceRules.RuleSource SANDSTONE = makeStateRule(Blocks.SANDSTONE);
+	private static final SurfaceRules.RuleSource STONE = makeStateRule(Registration.BlockReg.NORPHED_STONE.get());
 	
 	public static SurfaceRules.RuleSource makeRules()
 	{
@@ -32,8 +33,7 @@ public class WastesSurfaceRuleData
 						SurfaceRules.sequence(
 								SurfaceRules.ifTrue(SurfaceRules.ON_FLOOR, NORPHED_SURFACE),
 								SurfaceRules.ifTrue(
-										SurfaceRules.stoneDepthCheck(MAX_WASTES_SURFACE_DEPTH - 1, false, CaveSurface.FLOOR),
-										SANDSTONE
+										SurfaceRules.stoneDepthCheck(MAX_WASTES_SURFACE_DEPTH - 1, false, CaveSurface.FLOOR), STONE
 								)
 						)
 				)
