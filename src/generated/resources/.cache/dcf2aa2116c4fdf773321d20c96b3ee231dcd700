@@ -1,4 +1,4 @@
-// 1.21.1	2026-05-17T15:02:58.094793906	Biomorphosis Item Models
+// 1.21.1	2026-06-10T03:27:34.631652267	Biomorphosis Item Models
 c9834275952415d3146de7b5231a09972964d9d3 assets/biomorphosis/models/item/antennas.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
@@ -19,6 +19,7 @@ b301e9dceb6504c676af214d83b5865f5efce02c assets/biomorphosis/models/item/queens_
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_infestor.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_ksigg.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_larva.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_melonmaw.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_queen.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_sergeant.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_soldier.json

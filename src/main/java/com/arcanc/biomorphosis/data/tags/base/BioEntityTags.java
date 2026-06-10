@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 public class BioEntityTags
 {
     public static final TagKey<EntityType<?>> SWARM = create("swarm");
+    public static final TagKey<EntityType<?>> MELON_MAW = create("melon_maw");
 
     private static TagKey<EntityType<?>> create(String name)
     {

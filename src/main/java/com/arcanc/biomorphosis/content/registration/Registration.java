@@ -403,6 +403,29 @@ public final class Registration
                         rendererProvider(SwarmlingRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 		
+		public static final EntityEntry<MelonMaw> MOB_MELON_MAW = makeEntityType(
+				"melonmaw",
+				MelonMaw.class,
+				MelonMaw :: new,
+				MobCategory.MONSTER,
+				builder -> builder.
+						canSpawnFarFromPlayer().
+						clientTrackingRange(6).
+						eyeHeight(0.95f).
+						sized(0.7f, 0.98f).
+						immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
+						updateInterval(4).
+						backgroundSpawnEggColor(MathHelper.ColorHelper.color(144, 159, 23)).
+						highlightSpawnEggColor(MathHelper.ColorHelper.color(223, 255, 0)).
+						attributeProvider(() -> LivingEntity.createLivingAttributes().
+								add(Attributes.MAX_HEALTH, 20).
+								add(Attributes.ATTACK_DAMAGE, 8).
+								add(Attributes.MOVEMENT_SPEED, 0.4f).
+								add(Attributes.FOLLOW_RANGE, 16).
+								add(Attributes.ARMOR, 2)).
+						rendererProvider(MelonMawRenderer :: new),
+				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
+		
 		public static final EntityEntry<TurretProjectile> PROJECTILE_TURRET = makeEntityType(
 				"projectile_turret",
 				TurretProjectile.class,
@@ -1124,7 +1147,7 @@ public final class Registration
 				ItemReg.baseProps,
 				false);
 		
-		public static final DeferredBlock<BioBaseBlock> MEAT_MELON_BLOCK = register("meat_melon", BioBaseBlock :: new,
+		public static final DeferredBlock<BioMeatMelonBlock> MEAT_MELON_BLOCK = register("meat_melon", BioMeatMelonBlock :: new,
 				properties -> baseProps.
 						andThen(props -> props.
 								strength(1.0f).

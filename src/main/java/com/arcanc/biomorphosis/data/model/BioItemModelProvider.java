@@ -64,6 +64,7 @@ public class BioItemModelProvider extends ItemModelProvider
 		spawnEggItem(Registration.EntityReg.MOB_SWARMLING.getEggHolder().get());
 		spawnEggItem(Registration.EntityReg.MOB_QUEEN_GUARD.getEggHolder().get());
 		spawnEggItem(Registration.EntityReg.MOB_WORKER.getEggHolder().get());
+		spawnEggItem(Registration.EntityReg.MOB_MELON_MAW.getEggHolder().get());
 		
 		spawnEggItem(Registration.EntityReg.MOB_BASE_SOLDIER.getEggHolder().get());
 		spawnEggItem(Registration.EntityReg.MOB_BASE_SERGEANT.getEggHolder().get());

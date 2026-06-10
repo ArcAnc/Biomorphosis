@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-03T00:22:39.008901582	Loot Tables
+// 1.21.1	2026-06-10T03:27:34.62593652	Loot Tables
 813ac2a7d9fbaffd6decc4b5c3181acb1df96b05 data/biomorphosis/loot_table/blocks/bush.json
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
@@ -47,6 +47,7 @@ fdd6c07714c151c554559ea178198069ccb9fbe5 data/biomorphosis/loot_table/entities/c
 54e10216284eeed185ae1badd16f80c681c6e366 data/biomorphosis/loot_table/entities/infestor.json
 4f39cc6af3bac5cf384aad32b3449fb99a009ff2 data/biomorphosis/loot_table/entities/ksigg.json
 b78b089d66f5654581e8976d3e09d5cf487ada3d data/biomorphosis/loot_table/entities/larva.json
+4512b6956364ba35bb0155e3db4871a444f62f18 data/biomorphosis/loot_table/entities/melonmaw.json
 a549b9c569169fb0610d35816b6245e003ae6ad1 data/biomorphosis/loot_table/entities/queen.json
 abc40f811c3698b385511353e0ce05e7a1fc719b data/biomorphosis/loot_table/entities/sergeant.json
 61f5abb3615694c8e8c031dd2c8a8b93c9eb79a8 data/biomorphosis/loot_table/entities/soldier.json

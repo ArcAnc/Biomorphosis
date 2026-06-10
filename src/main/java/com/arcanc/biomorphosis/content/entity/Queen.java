@@ -56,7 +56,7 @@ public class Queen extends Monster implements PAnimatable<Queen>
     public Queen(EntityType<? extends Monster> entityType, Level level)
     {
         super(entityType, level);
-        if (spawnPos == null)
+        if (this.spawnPos == null)
             this.spawnPos = BlockPos.ZERO;
         if (this.lurePos == null)
             this.lurePos = BlockPos.ZERO;

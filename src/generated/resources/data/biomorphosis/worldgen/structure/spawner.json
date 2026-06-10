@@ -26,6 +26,11 @@
       "sink": 0,
       "template": "biomorphosis:ziris",
       "weight": 1.0
+    },
+    {
+      "sink": 4,
+      "template": "biomorphosis:melonmaw",
+      "weight": 1.0
     }
   ],
   "spawn_overrides": {},

@@ -27,7 +27,7 @@ public class HiveDecoRenderer extends PBlockRenderer<HiveDeco>
 	{
 		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("hive_deco")).
 						build(),
-				PRenderTypes.RenderTypeProvider :: trianglesSolid);
+				PRenderTypes.RenderTypeProvider :: trianglesCutout);
 	}
 	
 	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)

@@ -290,5 +290,6 @@ public final class ClientEvents
 		modEventBus.addListener(TurretProjectileRenderer :: registerTextures);
 		modEventBus.addListener(WorkerRenderer :: registerTextures);
 		modEventBus.addListener(ZirisRenderer :: registerTextures);
+		modEventBus.addListener(MelonMawRenderer :: registerTextures);
 	}
 }

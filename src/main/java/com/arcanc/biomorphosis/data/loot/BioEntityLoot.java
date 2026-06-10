@@ -63,6 +63,7 @@ public class BioEntityLoot extends EntityLootSubProvider
                         add(LootItem.lootTableItem(Items.LEATHER).
                                 apply(SetItemCountFunction.setCount(UniformGenerator.between(1, 3)))).
                         when(LootItemKilledByPlayerCondition.killedByPlayer())));
+		
         this.add(Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), LootTable.lootTable());
         this.add(Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), LootTable.lootTable().
                 withPool(LootPool.lootPool().
@@ -129,6 +130,14 @@ public class BioEntityLoot extends EntityLootSubProvider
 		                add(LootItem.lootTableItem(Registration.ItemReg.ANTENNAS).
 		                    apply(SetItemCountFunction.setCount(UniformGenerator.between(0, 2)))).
 		                when(LootItemKilledByPlayerCondition.killedByPlayer())));
+	    
+	    this.add(Registration.EntityReg.MOB_MELON_MAW.getEntityHolder().get(), LootTable.lootTable().
+			    withPool(LootPool.lootPool().
+			            setRolls(ConstantValue.exactly(1.0f)).
+			            add(LootItem.lootTableItem(Registration.ItemReg.FLESH_PIECE).
+			                    apply(SetItemCountFunction.setCount(UniformGenerator.between(4, 8)))).
+			    when(LootItemKilledByPlayerCondition.killedByPlayer())).
+			    withPool(LootPool.lootPool()));
 		
 		this.add(Registration.EntityReg.MOB_BASE_SOLDIER.getEntityHolder().get(), LootTable.lootTable());
 	    this.add(Registration.EntityReg.MOB_BASE_SERGEANT.getEntityHolder().get(), LootTable.lootTable());

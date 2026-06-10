@@ -90,7 +90,8 @@ public class BioSpawner
 		KSIGG("ksigg", 1, 3, 1),
 		LARVA("larva", 1, 2, 1),
 		SWARMLING("swarmling", 1, 3, 1),
-		ZIRIS("ziris", 1, 0, 1);
+		ZIRIS("ziris", 1, 0, 1),
+		MELONMAW("melonmaw", 1, 4, 1);
 		
 		private final String name;
 		private final int variants;
