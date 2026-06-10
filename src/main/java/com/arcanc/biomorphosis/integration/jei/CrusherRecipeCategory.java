@@ -71,7 +71,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<RecipeHolder<Crush
         CrusherRecipe recipe = holder.value();
         
         builder.addSlot(RecipeIngredientRole.INPUT, 42, 35).addIngredient(BioIngredientTypes.INGREDIENT_WITH_SIZE_TYPE, recipe.input());
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 10, 80).addItemStack(recipe.result().copy());
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 40, 80).addItemStack(recipe.result().copy());
 
 
         int biomassAmount = (int) (recipe.getResources().time() * recipe.getResources().biomass().perSecond());
@@ -123,8 +123,8 @@ public class CrusherRecipeCategory implements IRecipeCategory<RecipeHolder<Crush
         guiGraphics.blitSprite(BioSlot.FRAME, 42 - 1, 35 - 1, 18, 18);
         guiGraphics.blitSprite(BioSlot.MASK, 42 - 1, 35 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
-        guiGraphics.blitSprite(BioSlot.FRAME, 10 - 1, 80 - 1, 18, 18);
-        guiGraphics.blitSprite(BioSlot.MASK, 10 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
+        guiGraphics.blitSprite(BioSlot.FRAME, 40 - 1, 80 - 1, 18, 18);
+        guiGraphics.blitSprite(BioSlot.MASK, 40 - 1, 80 - 1, 18, 18, MathHelper.ColorHelper.color(BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f())));
 
 
         if (!recipe.secondaryResults().isEmpty())
@@ -176,7 +176,7 @@ public class CrusherRecipeCategory implements IRecipeCategory<RecipeHolder<Crush
         }
         guiGraphics.pose().popPose();
 
-        guiGraphics.blit(Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 0, 0, 16, 16, 16, 16, 16, 16);
+        guiGraphics.blit(Database.GUI.Textures.JEI.SECONDARY_OUTPUT, 48, 60, 16, 16, 0, 0, 16, 16, 16, 16);
 
         guiGraphics.blit(Database.GUI.Textures.JEI.TIME, 5, 55, 8, 8, 0, 0, 16, 16,16, 16);
         guiGraphics.drawString(RenderHelper.mc().font, Component.literal(Integer.toString(recipe.getResources().time())), 15, 55, 0, false);
