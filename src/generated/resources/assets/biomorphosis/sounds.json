@@ -68,6 +68,63 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.block.step.trampled"
   },
+  "captain_death": {
+    "sounds": [
+      "biomorphosis:captain/death"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.captain.death"
+  },
+  "captain_hurt": {
+    "sounds": [
+      "biomorphosis:captain/hurt_0",
+      "biomorphosis:captain/hurt_1",
+      "biomorphosis:captain/hurt_2",
+      "biomorphosis:captain/hurt_3"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.captain.hurt"
+  },
+  "captain_idle": {
+    "sounds": [
+      {
+        "name": "biomorphosis:captain/idle_0",
+        "weight": 200
+      },
+      {
+        "name": "biomorphosis:captain/idle_1",
+        "weight": 200
+      },
+      {
+        "name": "biomorphosis:captain/idle_2",
+        "weight": 200
+      },
+      {
+        "name": "biomorphosis:captain/idle_3",
+        "weight": 200
+      },
+      {
+        "name": "biomorphosis:captain/idle_4",
+        "weight": 40
+      },
+      {
+        "name": "biomorphosis:captain/idle_5",
+        "weight": 40
+      },
+      {
+        "name": "biomorphosis:captain/idle_6",
+        "weight": 40
+      },
+      {
+        "name": "biomorphosis:captain/idle_7",
+        "weight": 200
+      },
+      {
+        "name": "biomorphosis:captain/idle_8",
+        "weight": 200
+      },
+      "biomorphosis:captain/idle_rare"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.captain.idle"
+  },
   "guard_death": {
     "sounds": [
       "biomorphosis:guard/death"
@@ -141,6 +198,28 @@
       "biomorphosis:larva/idle_2"
     ],
     "subtitle": "biomorphosis.sound.subtitle.larva.idle"
+  },
+  "melonmaw_death": {
+    "sounds": [
+      "biomorphosis:melonmaw/death"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.melonmaw.death"
+  },
+  "melonmaw_hurt": {
+    "sounds": [
+      "biomorphosis:melonmaw/hurt_0",
+      "biomorphosis:melonmaw/hurt_1",
+      "biomorphosis:melonmaw/hurt_2"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.melonmaw.hurt"
+  },
+  "melonmaw_idle": {
+    "sounds": [
+      "biomorphosis:melonmaw/idle_0",
+      "biomorphosis:melonmaw/idle_1",
+      "biomorphosis:melonmaw/idle_2"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.melonmaw.idle"
   },
   "queen_death": {
     "sounds": [

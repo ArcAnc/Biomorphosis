@@ -13,13 +13,14 @@
 - [NeoForge](https://github.com/neoforged/NeoForge) (modding API for Minecraft)
 - [SpongePowered Mixin](https://github.com/SpongePowered/Mixin) (mixin and bytecode weaving framework)
 - [PulseLib](https://github.com/ArcAnc/PulseLib) (animation library)
+- [Terrablender](https://modrinth.com/mod/terrablender) (library for generating custom biomes)
 
 ### Integration with other Mods
 - [JEI](https://www.curseforge.com/minecraft/mc-mods/jei)
 
 ## License
 
-All code and artwork is licensed under the [Arc's License of Common Sence](/LICENSE.txt)
+All code and artwork is licensed under the [Arc's License of Common Sense](/LICENSE.txt)
 
 ## Development
 

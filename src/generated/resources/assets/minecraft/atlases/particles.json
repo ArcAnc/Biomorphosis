@@ -1,0 +1,9 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "biomorphosis:particle/hive_deco_fly",
+      "sprite": "biomorphosis:hive_deco"
+    }
+  ]
+}

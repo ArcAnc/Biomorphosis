@@ -59,7 +59,7 @@ public class BioFeatures
 		Holder<ConfiguredFeature<?, ?>> wastesSpire = configuredFeatures.getOrThrow(WastesSpireFeature.WASTES_SPIRE_CONFIGURED);
 
 		context.register(WastesSpireFeature.WASTES_SPIRE_PLACED, new PlacedFeature(wastesSpire, List.of(
-				RarityFilter.onAverageOnceEvery(30),
+				RarityFilter.onAverageOnceEvery(40),
 				InSquarePlacement.spread(),
 				HeightmapPlacement.onHeightmap(Heightmap.Types.WORLD_SURFACE_WG),
 				BiomeFilter.biome())));

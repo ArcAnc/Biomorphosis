@@ -12,7 +12,6 @@ package com.arcanc.biomorphosis.data.model;
 
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.EggsDeco;
-import com.arcanc.biomorphosis.content.block.block_entity.HiveDeco;
 import com.arcanc.biomorphosis.content.block.multiblock.*;
 import com.arcanc.biomorphosis.content.block.norph.NorphBlock;
 import com.arcanc.biomorphosis.content.block.norph.NorphOverlay;
@@ -32,8 +31,6 @@ import net.minecraft.world.level.block.state.properties.Half;
 import net.minecraft.world.level.block.state.properties.StairsShape;
 import net.neoforged.neoforge.client.model.generators.*;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
-import net.neoforged.neoforge.registries.DeferredBlock;
-import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -1547,7 +1544,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 	
 	private void createDecoHiveModel()
 	{
-		BioBaseEntityBlock<HiveDeco> block = Registration.BlockReg.HIVE_DECO.get();
+		BioBaseBlock block = Registration.BlockReg.HIVE_DECO.get();
 		ResourceLocation blockTexture = blockTexture(block).withSuffix("/0");
 		
 		ModelFile model = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
@@ -1557,19 +1554,9 @@ public class BioBlockStateProvider extends BlockStateProvider
 				element().
 				from(0, 0, 0).
 				to(16, 16, 16).
-				face(Direction.NORTH).
-				uvs(4, 4, 8, 8).end().
-				face(Direction.EAST).
-				uvs(0, 4, 4, 8).end().
-				face(Direction.SOUTH).
-				uvs(12, 4, 16, 8).end().
-				face(Direction.WEST).
-				uvs(8, 4, 12, 8).end().
-				face(Direction.UP).
-				uvs(8, 4, 4, 0).end().
-				face(Direction.DOWN).
-				uvs(12, 0, 8, 4).end().
-				texture("#all").end();
+				allFaces((direction, faceBuilder) -> faceBuilder.uvs(0, 0, 16, 16).
+						texture("#all").
+						cullface(direction)).end();
 		
 		registerModels(block, model);
 	}

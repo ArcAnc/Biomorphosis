@@ -209,6 +209,8 @@ modrinth {
         optional.version("u6dRKJwZ", "YAcQ6elZ")
         //jade
         optional.version("nvQzSEkH", "yd8FKCmx")
+        //terrablender
+        required.project("kkmrDlKT")
     }
 }
 
@@ -230,6 +232,7 @@ tasks.register("publishCurseForge", TaskPublishCurseForge) {
     mainFile.addEnvironment("Server")
     mainFile.addJavaVersion("Java 21")
     mainFile.addRelation("pulselib", Constants.RELATION_REQUIRED)
+    mainFile.addRelation("terrablender-neoforge", Constants.RELATION_REQUIRED)
     mainFile.addRelations(Constants.RELATION_OPTIONAL, "jei", "jade")
 }
 

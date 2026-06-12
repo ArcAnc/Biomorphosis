@@ -129,8 +129,12 @@ public class SpawnerStructure extends Structure
 			int x = point[0];
 			int z = point[1];
 			int y = generator.getBaseHeight(x, z, Heightmap.Types.WORLD_SURFACE_WG, context.heightAccessor(), randomState);
+			int surfaceY = y - 1;
+			if (surfaceY < context.heightAccessor().getMinBuildHeight())
+				return Optional.empty();
+
 			NoiseColumn column = generator.getBaseColumn(x, z, context.heightAccessor(), randomState);
-			BlockState surface = column.getBlock(y);
+			BlockState surface = column.getBlock(surfaceY);
 			
 			if (surface.isAir() || !surface.getFluidState().isEmpty())
 				return Optional.empty();

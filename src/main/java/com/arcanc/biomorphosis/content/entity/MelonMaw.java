@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.entity;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.ControllerState;
@@ -17,6 +18,8 @@ import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.*;
@@ -83,5 +86,23 @@ public class MelonMaw extends Monster implements PAnimatable<MelonMaw>
 			state.controller().play(DEATH);
 			return ControllerState.PLAY;
 		});
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return Registration.EntityReg.MOB_MELON_MAW.getSounds().getDeathSound().get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource)
+	{
+		return Registration.EntityReg.MOB_MELON_MAW.getSounds().getHurtSound().get();
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return Registration.EntityReg.MOB_MELON_MAW.getSounds().getIdleSound().get();
 	}
 }

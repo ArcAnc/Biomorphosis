@@ -27,6 +27,7 @@ import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
@@ -49,7 +50,6 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.loot.LootTableProvider;
-import net.minecraft.util.FastColor;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -84,6 +84,7 @@ public final class ClientEvents
         modEventBus.addListener(ClientEvents :: setupModels);
         modEventBus.addListener(ClientEvents :: registerMenuScreens);
 		modEventBus.addListener(OverlayRenderHandler :: registerGuiLayers);
+		modEventBus.addListener(ClientEvents :: registerParticleProviders);
 
 	    BioGlyphRenderTypes.register(modEventBus);
 
@@ -206,6 +207,12 @@ public final class ClientEvents
 		event.registerLayerDefinition(BlacksmithModel.LAYER_LOCATION, BlacksmithModel :: createMesh);
     }
 
+	private static void registerParticleProviders(final RegisterParticleProvidersEvent event)
+	{
+		event.registerSprite(Registration.ParticleReg.HIVE_DECO.get(),
+				new HiveDecoParticle.Provider());
+	}
+	
     private static void gatherData(final GatherDataEvent event)
     {
         DataGenerator gen = event.getGenerator();
@@ -228,6 +235,7 @@ public final class ClientEvents
                         new LootTableProvider.SubProviderEntry(BioEntityLoot :: new, LootContextParamSets.ENTITY)),
                 packOutput,
                 lookupProvider));
+		gen.addProvider(true, new BioParticleDescriptionProvider(packOutput, ext));
 
 		BioRegistryData.register(new BioDamageTypesProvider());
         BioRegistryData.register(new BioBookProvider());
@@ -272,7 +280,6 @@ public final class ClientEvents
 		modEventBus.addListener(BioSqueezerRenderer :: registerTextures);
 		modEventBus.addListener(BioStomachRenderer :: registerTextures);
 		modEventBus.addListener(EggsDecoRenderer :: registerTextures);
-		modEventBus.addListener(HiveDecoRenderer :: registerTextures);
 		modEventBus.addListener(LureCampfireRenderer :: registerTextures);
 		modEventBus.addListener(NorphSourceRenderer ::  registerTextures);
 		// MULTIBLOCKS

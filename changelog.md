@@ -13,3 +13,5 @@
 * fixed in book recipe rendering
 * added norphed stone
 * added melonmaw
+* added sounds for SFR 
+* reworked hive model

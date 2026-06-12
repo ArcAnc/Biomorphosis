@@ -97,6 +97,29 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		addEntitySound(Registration.EntityReg.MOB_SWARMLING.getSounds(), Database.GUI.Sounds.SWARMLING, 2, 1, 1);
 		addEntitySound(Registration.EntityReg.MOB_QUEEN_GUARD.getSounds(), Database.GUI.Sounds.GUARD);
 		addEntitySound(Registration.EntityReg.MOB_WORKER.getSounds(), Database.GUI.Sounds.WORKER);
+		addEntitySound(Registration.EntityReg.MOB_MELON_MAW.getSounds(), Database.GUI.Sounds.MELONMAW, 3, 1, 3);
+		
+		add(Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getDeathSound(), SoundDefinition.definition().
+				with(sound(Database.rl("captain/death"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.CAPTAIN.getDeath()));
+		add(Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getHurtSound(), SoundDefinition.definition().
+				with(sound(Database.rl("captain/hurt_0"), SoundDefinition.SoundType.SOUND)).
+				with(sound(Database.rl("captain/hurt_1"), SoundDefinition.SoundType.SOUND)).
+				with(sound(Database.rl("captain/hurt_2"), SoundDefinition.SoundType.SOUND)).
+				with(sound(Database.rl("captain/hurt_3"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.CAPTAIN.getHurt()));
+		add(Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getIdleSound(), SoundDefinition.definition().
+				with(sound(Database.rl("captain/idle_0"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_1"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_2"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_3"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_4"), SoundDefinition.SoundType.SOUND).weight(40)).
+				with(sound(Database.rl("captain/idle_5"), SoundDefinition.SoundType.SOUND).weight(40)).
+				with(sound(Database.rl("captain/idle_6"), SoundDefinition.SoundType.SOUND).weight(40)).
+				with(sound(Database.rl("captain/idle_7"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_8"), SoundDefinition.SoundType.SOUND).weight(200)).
+				with(sound(Database.rl("captain/idle_rare"), SoundDefinition.SoundType.SOUND).weight(1)).
+				subtitle(Database.GUI.Sounds.CAPTAIN.getIdle()));
 	}
 
 	private void addEntitySound(Registration.EntityReg.EntitySoundEntry entry, Database.GUI.Sounds.EntitySoundSubtitle subtitle)

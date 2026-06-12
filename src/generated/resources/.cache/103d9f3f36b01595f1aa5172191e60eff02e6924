@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-10T03:59:18.329617697	Registries
+// 1.21.1	2026-06-12T09:43:35.878196847	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -29,6 +29,7 @@ cdf44eeeefcbf0d8f273c88494c3e8eb1716d6ab data/biomorphosis/book/page/v0081.json
 a02d4660ec2170e11205854f4eedc81a56b65c0c data/biomorphosis/book/page/v261.json
 3e111e34a1cea82ba6fb68e56424c7b4dd8d0003 data/biomorphosis/book/page/v2611.json
 f08247e998d45c197565d9c2ec2fbcb76334944d data/biomorphosis/book/page/v262.json
+4b0ca622e224eb2519de0317bdbc9b82d97c4c63 data/biomorphosis/book/page/v2631.json
 5ff9e6254461dc6f77d7ad80848d040b3e3bf843 data/biomorphosis/damage_type/impossible_mutation.json
 32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
 e5b6429b831da25f1ad45182a288e5149509445e data/biomorphosis/genome/effect/balance.json
@@ -44,12 +45,12 @@ a46ed97262c623e9247bb57d27df60a0407499ce data/biomorphosis/worldgen/biome/wastes
 5e553bcd6fd6ff8c14867c8ea1913a39366ecc56 data/biomorphosis/worldgen/configured_feature/wastes_grass.json
 345346ff08e947a0ea42fb323f93831ae3a25d35 data/biomorphosis/worldgen/configured_feature/wastes_spire.json
 134ec55223505d74bb8e3810d901aad2af686775 data/biomorphosis/worldgen/placed_feature/wastes_grass.json
-63288754b5703cb4ee4ae1d59953d10272c78f76 data/biomorphosis/worldgen/placed_feature/wastes_spire.json
+f29055686cf19081397c10386b6a7a87b4e8a88c data/biomorphosis/worldgen/placed_feature/wastes_spire.json
 dd46e84c7571a9b2b4e7ff543f42b87176ef86c9 data/biomorphosis/worldgen/structure/spawner.json
 98bc516d0d053e57ab7ab18ed4ed5eebd8d83250 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
 e6a4a08bcfe35f9facf06f2a9df01d6e000f1bdb data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
 b678022004797c52f862683fc9ce5456ec0b96ad data/biomorphosis/worldgen/structure/village.json
-557fd10a0402e0e8e0785e0eddfa2e7ea3e410cb data/biomorphosis/worldgen/structure_set/spawner.json
+ecabfec14838c069d6c01843c9016cf27f9e4007 data/biomorphosis/worldgen/structure_set/spawner.json
 68aec96ec0618a496e1d0afe39665afaa2d5a8e6 data/biomorphosis/worldgen/structure_set/srf/orders/base/headquarters.json
 6d7945ad0de398f99fa3ce6ba701ea1e81663c88 data/biomorphosis/worldgen/structure_set/srf/orders/base/tower.json
 d95e61a139191e75a44f2bce207c384835945a02 data/biomorphosis/worldgen/structure_set/village.json

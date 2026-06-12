@@ -72,6 +72,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Registry;
 import net.minecraft.core.UUIDUtil;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -1011,8 +1013,8 @@ public final class Registration
                 baseProps,
                 ItemReg.baseProps);
 
-        public static final DeferredBlock<BioBaseEntityBlock<HiveDeco>> HIVE_DECO = register("hive_deco",
-                properties -> new BioBaseEntityBlock<>(HiveDeco :: new, properties)
+        public static final DeferredBlock<BioBaseBlock> HIVE_DECO = register("hive_deco",
+                properties -> new BioBaseBlock(properties)
                 {
                     @Override
                     public void animateTick(BlockState state,
@@ -1020,7 +1022,65 @@ public final class Registration
                                             BlockPos pos,
                                             RandomSource random)
                     {
-                        if (random.nextInt(25) == 0)
+                        double centerX = pos.getX() + 0.5d;
+                        double centerY = pos.getY() + 0.5d;
+                        double centerZ = pos.getZ() + 0.5d;
+                        int particleAmount = 6 + random.nextInt(7);
+
+                        for (int q = 0; q < particleAmount; q++)
+                        {
+                            Direction side = Direction.from2DDataValue(random.nextInt(4));
+                            double normalX = side.getStepX();
+                            double normalZ = side.getStepZ();
+                            double tangentX = -normalZ;
+                            double tangentZ = normalX;
+
+                            double surfaceX = centerX + normalX * 0.501d
+                                    + tangentX * (random.nextDouble() - 0.5d);
+                            double surfaceY = pos.getY() + 0.1d + random.nextDouble() * 0.8d;
+                            double surfaceZ = centerZ + normalZ * 0.501d
+                                    + tangentZ * (random.nextDouble() - 0.5d);
+
+                            double rayX = surfaceX - centerX;
+                            double rayY = surfaceY - centerY;
+                            double rayZ = surfaceZ - centerZ;
+                            double rayLength = Math.sqrt(rayX * rayX + rayY * rayY + rayZ * rayZ);
+                            rayX /= rayLength;
+                            rayY /= rayLength;
+                            rayZ /= rayLength;
+
+                            double distance = 3.0d + random.nextDouble() * 5.0d;
+                            double remoteX = surfaceX + rayX * distance;
+                            double remoteY = surfaceY + rayY * distance;
+                            double remoteZ = surfaceZ + rayZ * distance;
+
+                            boolean movesAway = random.nextBoolean();
+                            double startX = movesAway ? surfaceX : remoteX;
+                            double startY = movesAway ? surfaceY : remoteY;
+                            double startZ = movesAway ? surfaceZ : remoteZ;
+                            double targetX = movesAway ? remoteX : centerX;
+                            double targetY = movesAway ? remoteY : centerY;
+                            double targetZ = movesAway ? remoteZ : centerZ;
+
+                            double deltaX = targetX - startX;
+                            double deltaY = targetY - startY;
+                            double deltaZ = targetZ - startZ;
+                            int travelTicks = 24 + random.nextInt(13);
+                            double friction = 0.98d;
+                            double velocityFactor = (1.0d - friction)
+                                    / (1.0d - Math.pow(friction, travelTicks));
+
+                            level.addParticle(
+                                    ParticleReg.HIVE_DECO.get(),
+                                    startX,
+                                    startY,
+                                    startZ,
+                                    deltaX * velocityFactor,
+                                    deltaY * velocityFactor,
+                                    deltaZ * velocityFactor);
+                        }
+
+                        if (random.nextInt(75) == 0)
                             level.playLocalSound(
                                     pos.getX() + 0.5d,
                                     pos.getY() + 0.5d,
@@ -1030,12 +1090,6 @@ public final class Registration
                                     0.5f,
                                     random.nextFloat() * 0.4F + 0.8F,
                                     false);
-                    }
-
-                    @Override
-                    protected RenderShape getRenderShape(BlockState state)
-                    {
-                        return RenderShape.INVISIBLE;
                     }
                 },
                 baseProps,
@@ -1348,12 +1402,6 @@ public final class Registration
 					    MenuTypeReg.TURRET,
 					    TurretScreen :: new,
 					    BlockReg.MULTIBLOCK_TURRET));
-
-        public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<HiveDeco>> BE_HIVE_DECO = BLOCK_ENTITIES.register(
-                "hive_deco",
-                makeType(HiveDeco :: new,
-                        HiveDecoRenderer :: new,
-                        BlockReg.HIVE_DECO));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EggsDeco>> BE_EGGS_DECO = BLOCK_ENTITIES.register(
                 "eggs_deco",
@@ -2021,6 +2069,19 @@ public final class Registration
         }
     }
 
+	public static class ParticleReg
+	{
+		public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(Registries.PARTICLE_TYPE, Database.MOD_ID);
+		
+		public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HIVE_DECO =
+				TYPES.register("hive_deco", () -> new SimpleParticleType(false));
+		
+		private static void init(IEventBus bus)
+		{
+			TYPES.register(bus);
+		}
+	}
+	
     public static class AIReg
     {
         public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULES = DeferredRegister.create(BuiltInRegistries.MEMORY_MODULE_TYPE, Database.MOD_ID);
@@ -2150,6 +2211,7 @@ public final class Registration
         EntityReg.init(bus);
 	    FeatureReg.init(bus);
         MenuTypeReg.init(bus);
+	    ParticleReg.init(bus);
         CreativeTabReg.init(bus);
         StructureTypeReg.init(bus);
 	    PalladinOrderReg.init(bus);

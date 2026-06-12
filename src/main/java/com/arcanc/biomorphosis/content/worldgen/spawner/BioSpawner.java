@@ -33,8 +33,8 @@ import java.util.Optional;
 public class BioSpawner
 {
 	private static final KeysData SPAWNER_KEYS = new KeysData("spawner");
-	private static final int SPACING = 16;
-	private static final int SEPARATION = 4;
+	private static final int SPACING = 12;
+	private static final int SEPARATION = 2;
 	private static final int SALT = 120643834;
 	private static final float FREQUENCY = 1f;
 	

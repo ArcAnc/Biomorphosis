@@ -10,11 +10,14 @@
 package com.arcanc.biomorphosis.content.entity.srf;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.google.common.collect.Lists;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.trading.MerchantOffer;
@@ -122,5 +125,23 @@ public class AbstractPalladin extends PathfinderMob
 	public boolean isPersistenceRequired()
 	{
 		return true;
+	}
+	
+	@Override
+	protected SoundEvent getAmbientSound()
+	{
+		return Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getIdleSound().get();
+	}
+	
+	@Override
+	protected SoundEvent getDeathSound()
+	{
+		return Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getDeathSound().get();
+	}
+	
+	@Override
+	protected SoundEvent getHurtSound(DamageSource damageSource)
+	{
+		return Registration.EntityReg.MOB_BASE_CAPTAIN.getSounds().getHurtSound().get();
 	}
 }
