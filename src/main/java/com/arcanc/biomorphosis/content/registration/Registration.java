@@ -1025,59 +1025,22 @@ public final class Registration
                         double centerX = pos.getX() + 0.5d;
                         double centerY = pos.getY() + 0.5d;
                         double centerZ = pos.getZ() + 0.5d;
-                        int particleAmount = 6 + random.nextInt(7);
+                        int particleAmount = 4 + random.nextInt(5);
 
                         for (int q = 0; q < particleAmount; q++)
                         {
-                            Direction side = Direction.from2DDataValue(random.nextInt(4));
-                            double normalX = side.getStepX();
-                            double normalZ = side.getStepZ();
-                            double tangentX = -normalZ;
-                            double tangentZ = normalX;
-
-                            double surfaceX = centerX + normalX * 0.501d
-                                    + tangentX * (random.nextDouble() - 0.5d);
-                            double surfaceY = pos.getY() + 0.1d + random.nextDouble() * 0.8d;
-                            double surfaceZ = centerZ + normalZ * 0.501d
-                                    + tangentZ * (random.nextDouble() - 0.5d);
-
-                            double rayX = surfaceX - centerX;
-                            double rayY = surfaceY - centerY;
-                            double rayZ = surfaceZ - centerZ;
-                            double rayLength = Math.sqrt(rayX * rayX + rayY * rayY + rayZ * rayZ);
-                            rayX /= rayLength;
-                            rayY /= rayLength;
-                            rayZ /= rayLength;
-
-                            double distance = 3.0d + random.nextDouble() * 5.0d;
-                            double remoteX = surfaceX + rayX * distance;
-                            double remoteY = surfaceY + rayY * distance;
-                            double remoteZ = surfaceZ + rayZ * distance;
-
-                            boolean movesAway = random.nextBoolean();
-                            double startX = movesAway ? surfaceX : remoteX;
-                            double startY = movesAway ? surfaceY : remoteY;
-                            double startZ = movesAway ? surfaceZ : remoteZ;
-                            double targetX = movesAway ? remoteX : centerX;
-                            double targetY = movesAway ? remoteY : centerY;
-                            double targetZ = movesAway ? remoteZ : centerZ;
-
-                            double deltaX = targetX - startX;
-                            double deltaY = targetY - startY;
-                            double deltaZ = targetZ - startZ;
-                            int travelTicks = 24 + random.nextInt(13);
-                            double friction = 0.98d;
-                            double velocityFactor = (1.0d - friction)
-                                    / (1.0d - Math.pow(friction, travelTicks));
+                            double initialAngle = random.nextDouble() * Math.PI * 2.0d;
+                            double angularSpeed = 0.12d + random.nextDouble() * 0.15d;
+                            double radialSpeed = 0.05d + random.nextDouble() * 0.0012d;
 
                             level.addParticle(
                                     ParticleReg.HIVE_DECO.get(),
-                                    startX,
-                                    startY,
-                                    startZ,
-                                    deltaX * velocityFactor,
-                                    deltaY * velocityFactor,
-                                    deltaZ * velocityFactor);
+                                    centerX,
+                                    centerY,
+                                    centerZ,
+                                    initialAngle,
+                                    angularSpeed,
+                                    radialSpeed);
                         }
 
                         if (random.nextInt(75) == 0)
