@@ -23,7 +23,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "biomorphosis:meat_melon_seeds_from_chamber"
+        "recipe": "biomorphosis:chamber/meat_melon_seeds_from_chamber"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -37,7 +37,7 @@
   ],
   "rewards": {
     "recipes": [
-      "biomorphosis:meat_melon_seeds_from_chamber"
+      "biomorphosis:chamber/meat_melon_seeds_from_chamber"
     ]
   }
 }

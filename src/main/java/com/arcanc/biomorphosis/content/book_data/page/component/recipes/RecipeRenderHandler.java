@@ -43,7 +43,6 @@ import org.joml.Vector4f;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class RecipeRenderHandler
 {
@@ -149,29 +148,34 @@ public class RecipeRenderHandler
             final int partW = getWidth() / 5;
             final int partH = getHeight() / 3;
             for (int yy = 0; yy < 3; yy++)
-            {
                 for (int xx = 0; xx < 3; xx++)
-                {
                     positions.add(xx+ (yy * 3), new Vec2(xPos + (xx *partW), yPos + (yy * partH)));
-                }
-            }
-
+            
             imagePos = new Vec2(xPos + 4 * partW - 10, yPos + partH);
             positions.add(new Vec2(xPos + 5 * partW, yPos + partH));
 
             ItemStack highlighted = ItemStack.EMPTY;
             ItemStack stack = ItemStack.EMPTY;
 
-            List<IngredientWithSize> ingr = recipe.pattern.ingredients().
-                    stream().
-                    map(ingredient -> ingredient != null && !ingredient.isEmpty() ? new IngredientWithSize(ingredient, 1) : null).
-                    collect(Collectors.toList());
-			if (ingr.size() < 8)
-				for (int lastPart = ingr.size(); lastPart < 9; lastPart++)
-					ingr.add(lastPart, null);
+            List<IngredientWithSize> ingr = new ArrayList<>(10);
+            for (int slot = 0; slot < 10; slot++)
+                ingr.add(null);
+
+            List<Ingredient> patternIngredients = recipe.pattern.ingredients();
+            int recipeWidth = recipe.pattern.width();
+            int recipeHeight = recipe.pattern.height();
+            for (int yy = 0; yy < recipeHeight; yy++)
+            {
+                for (int xx = 0; xx < recipeWidth; xx++)
+                {
+                    Ingredient ingredient = patternIngredients.get(xx + yy * recipeWidth);
+                    if (!ingredient.isEmpty())
+                        ingr.set(xx + yy * 3, new IngredientWithSize(ingredient, 1));
+                }
+            }
             Minecraft mc = RenderHelper.mc();
             ItemStack result = recipe.assemble(CraftingInput.EMPTY, mc.level.registryAccess());
-            ingr.add(9, new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
+            ingr.set(9, new IngredientWithSize(Ingredient.of(result.getItem()), result.getCount()));
             for (int q = 0 ; q < ingr.size(); q++)
             {
                 IngredientWithSize in = ingr.get(q);

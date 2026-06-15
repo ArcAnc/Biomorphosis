@@ -334,7 +334,7 @@ public class BioRecipeProvider extends RecipeProvider
 				unlockedBy("has_" + Tags.Items.SEEDS_MELON.location().getPath(), has(Tags.Items.SEEDS_MELON)).
 				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
 				group(group).
-				save(output, Database.rl("meat_melon_seeds_from_chamber"));
+				save(output, Database.rlStr("meat_melon_seeds_from_chamber"));
 	}
 	
 	private void generateCrusherRecipes(RecipeOutput output)

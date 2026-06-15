@@ -163,6 +163,13 @@ public class BioBookProvider extends BioRegistryData
 			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
 			    addTags("Patch Notes").
 			    end());
+	    addPage(Database.GUI.GuideBook.Pages.V2633.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.V2633.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.V2633.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+			    addTags("Patch Notes").
+			    end());
         //-----------------------------------------------------------------------
         // BASIC CHAPTER
         //-----------------------------------------------------------------------
@@ -186,6 +193,13 @@ public class BioBookProvider extends BioRegistryData
 			    setText(Database.GUI.GuideBook.Pages.CHAMBER.textLangKey()).
 			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
 			    addTags("chamber", "morpher", "morph").
+			    end());
+	    addPage(Database.GUI.GuideBook.Pages.FARMING.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.FARMING.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.FARMING.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.BASIC.location()).
+			    addTags("farm", "hoe").
 			    end());
 	    addPage(Database.GUI.GuideBook.Pages.STORAGES.location(), BookPageBuilder.newPage().
 			    setAuthor("ArcAnc").
