@@ -87,6 +87,7 @@ public final class ClientEvents
 		modEventBus.addListener(ClientEvents :: registerParticleProviders);
 
 	    BioGlyphRenderTypes.register(modEventBus);
+        BioFluidTransmitterRenderTypes.register(modEventBus);
 
         TooltipBorderHandler.registerHandler();
         RecipeRenderHandler.registerRenderers();

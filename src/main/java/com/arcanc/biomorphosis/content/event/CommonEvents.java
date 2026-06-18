@@ -16,14 +16,13 @@ import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.entity.trades.Trades;
-import com.arcanc.biomorphosis.content.fluid.FluidTransportHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSurfaceRuleData;
 import com.arcanc.biomorphosis.content.worldgen.biome.OverworldRegion;
+import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSurfaceRuleData;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.world.entity.LivingEntity;
 import net.neoforged.bus.api.IEventBus;
@@ -43,7 +42,6 @@ public class CommonEvents
     {
         modEventBus.addListener(NetworkEngine:: setupMessages);
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
-        FluidTransportHandler.registerHandler();
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
 	    GenomeHandler.register(modEventBus);
 		ChestMenu.registerEvents();

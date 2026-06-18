@@ -272,7 +272,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 			return;
 		this.fluidHandler.deserializeNBT(registries, tag.getCompound(Database.Capabilities.Fluids.HANDLER));
 		this.timer = tag.getInt("timer");
-		this.mutationTime = tag.getInt("mutation_timer");
+		this.mutationTime = tag.getInt("mutation_time");
 		if (tag.contains("player_uuid"))
 			this.playerUUID = tag.getUUID("player_uuid");
 		if (tag.contains("from_genome"))
