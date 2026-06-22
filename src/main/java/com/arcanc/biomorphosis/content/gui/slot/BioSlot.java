@@ -7,7 +7,7 @@
  * Details can be found in the license file in the root folder of this project
  */
 
-package com.arcanc.biomorphosis.content.gui;
+package com.arcanc.biomorphosis.content.gui.slot;
 
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;

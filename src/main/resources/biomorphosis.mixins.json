@@ -4,9 +4,12 @@
   "compatibilityLevel": "JAVA_21",
   "refmap": "biomorphosis.refmap.json",
   "mixins": [
+    "ArmorItemMixin",
     "DiscreteVoxelShapeExpander",
+    "EquipableMixin",
     "FluidTypeRarityAccessor",
     "GenomeEffectsHolderMixin",
+    "InventoryMenuMixin",
     "MutationTicker",
     "OctahedralGroupAccessor",
     "OctahedralGroupExpander",
@@ -14,6 +17,7 @@
   ],
   "minVersion": "0.8",
   "client": [
+    "client.AbstractContainerScreeMixin",
     "client.FontManagerMixin",
     "client.GuiGraphicsMixin",
     "client.RecipeUpdateMixin"

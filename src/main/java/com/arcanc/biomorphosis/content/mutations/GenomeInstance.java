@@ -21,57 +21,67 @@ import java.util.*;
 
 public record GenomeInstance(List<GeneInstance> geneInstances)
 {
-	public static final GenomeInstance EMPTY = new GenomeInstance(List.of());
-	
+	public static final GenomeInstance EMPTY = empty();
+
+	public GenomeInstance
+	{
+		geneInstances = List.copyOf(geneInstances);
+	}
+
+	public static GenomeInstance empty()
+	{
+		return new GenomeInstance(List.of());
+	}
+
 	public static final Codec<GenomeInstance> CODEC = RecordCodecBuilder.create(instance -> instance.
 			group(
 					GeneInstance.CODEC.listOf().fieldOf("genes").forGetter(GenomeInstance :: geneInstances)).
 			apply(instance, GenomeInstance :: new));
-	
+
 	public static final StreamCodec<FriendlyByteBuf, GenomeInstance> STREAM_CODEC = StreamCodec.composite(
 			ByteBufCodecs.<FriendlyByteBuf, GeneInstance>list().
 					apply(GeneInstance.STREAM_CODEC),
 			GenomeInstance :: geneInstances,
 			GenomeInstance :: new);
-	
+
 	public GenomeInstance copy()
 	{
 		return new GenomeInstance(List.copyOf(this.geneInstances));
 	}
-	
+
 	public int calculateDiff(GenomeInstance other)
 	{
 		Map<ResourceLocation, GeneRarity> a = new HashMap<>();
 		Map<ResourceLocation, GeneRarity> b = new HashMap<>();
-		
+
 		for (GeneInstance g : this.geneInstances())
 			a.put(g.id(), g.rarity());
-		
+
 		for (GeneInstance g : other.geneInstances())
 			b.put(g.id(), g.rarity());
-		
+
 		int diff = 0;
-		
+
 		Set<ResourceLocation> allKeys = new HashSet<>();
 		allKeys.addAll(a.keySet());
 		allKeys.addAll(b.keySet());
-		
+
 		for (ResourceLocation id : allKeys)
 		{
 			GeneRarity ra = a.get(id);
 			GeneRarity rb = b.get(id);
-			
+
 			if (ra == null)
-				diff += rb.ordinal();
+				diff += rb.ordinal() + 1;
 			else if (rb == null)
-				diff += ra.ordinal();
+				diff += ra.ordinal() + 1;
 			else
 				diff += Math.abs(ra.ordinal() - rb.ordinal());
 		}
-		
+
 		return diff;
 	}
-	
+
 	public boolean hasGene(ResourceLocation id)
 	{
 		if (this.geneInstances().isEmpty())
@@ -81,18 +91,18 @@ public record GenomeInstance(List<GeneInstance> geneInstances)
 				return true;
 		return false;
 	}
-	
+
 	public Optional<GeneInstance> getGene(ResourceLocation id)
 	{
 		if (this.geneInstances().isEmpty())
 			return Optional.empty();
-		
+
 		for (GeneInstance gene : this.geneInstances())
 			if (gene.id().equals(id))
 				return Optional.of(gene);
 		return Optional.empty();
 	}
-	
+
 	public boolean isEmpty()
 	{
 		return this.geneInstances().isEmpty();

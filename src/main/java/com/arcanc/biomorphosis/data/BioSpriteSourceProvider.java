@@ -9,12 +9,11 @@
 
 package com.arcanc.biomorphosis.data;
 
-import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotReplacement;
 import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.client.renderer.texture.atlas.sources.SingleFile;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.particles.ParticleType;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
@@ -27,6 +26,7 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
 {
     public static final ResourceLocation GUI_ATLAS = ResourceLocation.withDefaultNamespace("gui");
     public static final ResourceLocation PARTICLE_ATLAS = ResourceLocation.withDefaultNamespace("particles");
+    public static final ResourceLocation BLOCKS_ATLAS = ResourceLocation.withDefaultNamespace("blocks");
 
     public BioSpriteSourceProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper)
     {
@@ -52,12 +52,14 @@ public class BioSpriteSourceProvider extends SpriteSourceProvider
         atlas(GUI_ATLAS).addSource(new SingleFile(
                 Database.rl("gui/tooltip/special_frame"),
                 Optional.of(Database.rl("tooltip/special_frame"))));
-
         //-------------------------------------------------------------------------------
         // SLOTS
         //-------------------------------------------------------------------------------
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/frame"), Optional.of(BioSlot.FRAME)));
         atlas(GUI_ATLAS).addSource(new SingleFile(Database.rl("gui/slots/mask"), Optional.of(BioSlot.MASK)));
+        atlas(BLOCKS_ATLAS).addSource(new SingleFile(
+                Database.rl("gui/slots/blocked"),
+                Optional.of(OrganicArmorSlotReplacement.BLOCKED_SLOT)));
     }
 
     @Override

@@ -21,21 +21,27 @@ import com.arcanc.biomorphosis.content.gui.component.info.GenomeStabilityInfoAre
 import com.arcanc.biomorphosis.content.gui.container_menu.ChrysalisMenu;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 {
+	private static final EquipmentSlot[] ARMOR_SLOTS = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
+	private Tab activeTab = Tab.MUTATION;
 	private final Player player;
 	
 	private GeneChooser chooser;
@@ -56,6 +62,13 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	protected void init()
 	{
 		super.init();
+		addTabButtons();
+		if (this.activeTab == Tab.ORGANIC_ARMOR)
+		{
+			initOrganicArmorTab();
+			return;
+		}
+
 		addInfoArea(this.errorInfoArea = new ErrorInfoArea(new Rect2i(
 				this.getGuiLeft() + 11,
 				this.getGuiTop() + 75,
@@ -122,18 +135,22 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 				Tooltip.create(Component.literal("Remove gene")))
 		);
 		
-		addRenderableWidget(new TexturedButton(
-				this.getGuiLeft() + 95,
-				this.getGuiTop() + 151,
-				16, 16,
-				new WidgetSprites(
-						Database.rl("textures/gui/elements/buttons/ok.png"),
-						Database.rl("textures/gui/elements/buttons/ok_disabled.png")),
-				button ->
+			addRenderableWidget(new TexturedButton(
+					this.getGuiLeft() + 95,
+					this.getGuiTop() + 151,
+					16, 16,
+					new WidgetSprites(
+							Database.rl("textures/gui/elements/buttons/ok.png"),
+							Database.rl("textures/gui/elements/buttons/ok_disabled.png")),
+					button ->
+					{
+						if (!this.chooser.canUseGenome())
+							return;
 						sendUpdateToServer(tag -> GenomeInstance.CODEC.
 								encodeStart(NbtOps.INSTANCE, this.chooser.getGenome()).
-								map(written -> tag.put("genome", written))),
-				Tooltip.create(Component.literal("Start Mutation"))));
+								map(written -> tag.put("genome", written)));
+					},
+					Tooltip.create(Component.literal("Start Mutation"))));
 		
 		BlockHelper.castTileEntity(this.minecraft.level, this.menu.getBlockPos(), MultiblockChrysalis.class).ifPresent(chrysalis ->
 		{
@@ -149,10 +166,68 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 					addInfoArea(new FluidInfoArea(adrenaline, new Rect2i(this.getGuiLeft() + 220, this.getGuiTop() + 17, 21, 46))));
 		});
 	}
+
+	private void addTabButtons()
+	{
+		addRenderableWidget(Button.builder(Component.literal("Mutation"), button ->
+		{
+			this.activeTab = Tab.MUTATION;
+			this.rebuildWidgets();
+		}).bounds(this.getGuiLeft() + 8, this.getGuiTop() - 18, 70, 18).build());
+		addRenderableWidget(Button.builder(Component.literal("Armor"), button ->
+		{
+			this.activeTab = Tab.ORGANIC_ARMOR;
+			this.rebuildWidgets();
+		}).bounds(this.getGuiLeft() + 80, this.getGuiTop() - 18, 58, 18).build());
+	}
+
+	private void initOrganicArmorTab()
+	{
+		int x = this.getGuiLeft() + 26;
+		int y = this.getGuiTop() + 34;
+		for (int q = 0; q < ARMOR_SLOTS.length; q++)
+		{
+			EquipmentSlot slot = ARMOR_SLOTS[q];
+			ItemStack stack = this.player.getItemBySlot(slot);
+			boolean installed = OrganicArmorHelper.hasArmor(this.player, slot);
+			boolean canInstall = !installed && !stack.isEmpty();
+			MultiblockChrysalis.ArmorAction action = installed ?
+					MultiblockChrysalis.ArmorAction.UNEQUIP :
+					MultiblockChrysalis.ArmorAction.EQUIP;
+			Button button = Button.builder(Component.literal(slot.getName()), btn ->
+					sendUpdateToServer(tag ->
+					{
+						tag.putString("organic_armor_slot", slot.getName());
+						tag.putString("organic_armor_action", action.name());
+					})).
+					bounds(x, y + q * 24, 96, 20).
+					build();
+			button.active = installed || canInstall;
+			button.setTooltip(Tooltip.create(installed ?
+					Component.literal("Remove organic armor") :
+					stack.isEmpty() ? Component.literal("No armor equipped") : stack.getHoverName()));
+			addRenderableWidget(button);
+		}
+	}
 	
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
+		if (this.activeTab == Tab.ORGANIC_ARMOR)
+		{
+			guiGraphics.drawString(this.minecraft.font, Component.literal("Organic Armor"), 26, 16, -1, false);
+			for (int q = 0; q < ARMOR_SLOTS.length; q++)
+			{
+				EquipmentSlot slot = ARMOR_SLOTS[q];
+				ItemStack stack = this.player.getItemBySlot(slot);
+				Component status = OrganicArmorHelper.hasArmor(this.player, slot) ?
+						Component.literal("installed") :
+						stack.isEmpty() ? Component.literal("empty") : stack.getHoverName();
+				guiGraphics.drawString(this.minecraft.font, status, 130, 39 + q * 24, -1, false);
+			}
+			return;
+		}
+
 		guiGraphics.pose().pushPose();
 		guiGraphics.pose().translate(138, 72, 0);
 		guiGraphics.pose().scale(0.7f, 0.7f, 1);
@@ -176,6 +251,12 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 				-1,
 				false);
 		guiGraphics.pose().popPose();
+	}
+
+	private enum Tab
+	{
+		MUTATION,
+		ORGANIC_ARMOR
 	}
 	
 	@Override

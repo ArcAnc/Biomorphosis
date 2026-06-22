@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.mixin;
 
 
 import com.arcanc.biomorphosis.content.mutations.GenomeEffectsHolder;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorEffectHandler;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -28,12 +29,14 @@ public class MutationTicker
 		if (!(entity.level() instanceof ServerLevel serverLevel))
 			return;
 
+		OrganicArmorEffectHandler.tickArmor(entity);
+
 		if (!(entity instanceof GenomeEffectsHolder holder))
 			return;
-		
+
 		if (holder.biomorphosis$getGeneEffects().isEmpty())
 			return;
 		holder.biomorphosis$getGeneEffects().
-				forEach(entry -> entry.type().tick(entity, entry.params()));
+				forEach(effect -> effect.entry().type().tick(entity, effect.entry().params(), effect.data()));
 	}
 }

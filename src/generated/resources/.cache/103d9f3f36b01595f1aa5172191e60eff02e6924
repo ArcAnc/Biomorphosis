@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-15T13:21:58.339561626	Registries
+// 1.21.1	2026-06-21T17:39:12.676879172	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -42,6 +42,10 @@ ae2d864cd0ee1afc1ef238add0d3e13fd7cdcdc1 data/biomorphosis/genome/effect/protect
 32a7616e4a891ed73a64a369b5b4a1e262d00142 data/biomorphosis/genome/effect/speed.json
 f1e6330501e1f5f5ab6ff548d7c327861f32a9f5 data/biomorphosis/genome/effect/swim_speed.json
 25257d2b060679fa6431a2ca0b6338acf30b2b79 data/biomorphosis/genome/effect/vampirism.json
+c78cadd35ebf7294631e570bba647f1c431c432c data/biomorphosis/organic_armor/type/lifeless_chest.json
+4c43a0b7185c71f5858c285723567bcf04ec5bfb data/biomorphosis/organic_armor/type/lifeless_feet.json
+4d8d82a587b32266f49fa18ef28c7676f83d131d data/biomorphosis/organic_armor/type/lifeless_head.json
+1adfcbc4719c61967ca36f3c95c6f1ac0e9a9695 data/biomorphosis/organic_armor/type/lifeless_legs.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
 a46ed97262c623e9247bb57d27df60a0407499ce data/biomorphosis/worldgen/biome/wastes.json
 5e553bcd6fd6ff8c14867c8ea1913a39366ecc56 data/biomorphosis/worldgen/configured_feature/wastes_grass.json

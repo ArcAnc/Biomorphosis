@@ -35,8 +35,10 @@ public class NetworkEngine
         registerMessage(registrar, C2SGuiData.STREAM_CODEC, C2SGuiData.TYPE, PacketFlow.SERVERBOUND);
 		registerMessage(registrar, C2SAddUnlockedGenes.STREAM_CODEC, C2SAddUnlockedGenes.TYPE, PacketFlow.SERVERBOUND);
 		
-        registerMessage(registrar, S2CRecipeResponse.STREAM_CODEC, S2CRecipeResponse.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CRecipeResponse.STREAM_CODEC, S2CRecipeResponse.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CGenomeSync.STREAM_CODEC, S2CGenomeSync.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CGenomeEffectsSync.STREAM_CODEC, S2CGenomeEffectsSync.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2COrganicArmorSync.STREAM_CODEC, S2COrganicArmorSync.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CUnlockedGenomeSync.STREAM_CODEC, S2CUnlockedGenomeSync.TYPE, PacketFlow.CLIENTBOUND);
     }
 

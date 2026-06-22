@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.content.gui.container_menu;
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
-import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;

@@ -17,7 +17,7 @@ import net.minecraft.world.item.Item;
 
 public class BioBaseItem extends Item implements ItemInterfaces.IMustAddToCreativeTab, ICustomTooltip
 {
-    private final StyleData style = new StyleData(true, (player, stack) -> new TooltipData(
+    public static final StyleData STYLE = new StyleData(true, (player, stack) -> new TooltipData(
             true,
             Database.GUI.Textures.Tooltip.TOOLTIP_BACKGROUND,
             Database.GUI.Textures.Tooltip.TOOLTIP_DECORATIONS,
@@ -31,6 +31,6 @@ public class BioBaseItem extends Item implements ItemInterfaces.IMustAddToCreati
     @Override
     public StyleData getStyle()
     {
-        return this.style;
+        return STYLE;
     }
 }

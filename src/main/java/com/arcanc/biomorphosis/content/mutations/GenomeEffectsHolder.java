@@ -10,10 +10,18 @@
 package com.arcanc.biomorphosis.content.mutations;
 
 
+import net.minecraft.nbt.CompoundTag;
+
 import java.util.List;
 
 public interface GenomeEffectsHolder
 {
-	List<GeneDefinition.GeneEffectEntry> biomorphosis$getGeneEffects();
+	List<GeneEffectInstance> biomorphosis$getGeneEffects();
+	CompoundTag biomorphosis$getGeneEffectData();
+	void biomorphosis$setGeneEffectData(CompoundTag data);
 	void biomorphosis$rebuildEffects();
+
+	record GeneEffectInstance(String key, GeneDefinition.GeneEffectEntry entry, CompoundTag data)
+	{
+	}
 }

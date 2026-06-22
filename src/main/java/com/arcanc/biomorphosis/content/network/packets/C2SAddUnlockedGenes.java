@@ -25,7 +25,6 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +37,7 @@ public record C2SAddUnlockedGenes(UUID playerUUID, GenomeInstance genome) implem
 			GenomeInstance.STREAM_CODEC,
 			C2SAddUnlockedGenes :: genome,
 			C2SAddUnlockedGenes :: new);
-	
+
 	@Override
 	public void process(IPayloadContext context)
 	{
@@ -53,19 +52,17 @@ public record C2SAddUnlockedGenes(UUID playerUUID, GenomeInstance genome) implem
 			ServerPlayer targetPlayer  = server.getPlayerList().getPlayer(this.playerUUID());
 			if (targetPlayer == null)
 				return;
-			
+
 			UnlockedGenome unlockedGenome = GenomeHelper.getUnlockedGenome(targetPlayer);
-			
+
 			for (GeneInstance gene : genome().geneInstances())
-				if (unlockedGenome.hasGene(gene))
-					unlockedGenome.unlockedGenes().get(gene.id()).add(gene.rarity());
-				else
-					unlockedGenome.unlockedGenes().putIfAbsent(gene.id(), EnumSet.of(gene.rarity()));
+				unlockedGenome = unlockedGenome.unlock(gene);
+
 			targetPlayer.setData(Registration.DataAttachmentsReg.UNLOCKED_GENOME, unlockedGenome);
 			NetworkEngine.sendToPlayer(targetPlayer, new S2CUnlockedGenomeSync(unlockedGenome, List.of()));
 		});
 	}
-	
+
 	@Override
 	public Type<C2SAddUnlockedGenes> type()
 	{

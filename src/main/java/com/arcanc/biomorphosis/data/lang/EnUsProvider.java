@@ -242,6 +242,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.InfoArea.ErrorInfoArea.UNKNOWN_RARITY_DATA, "Gene %s have no such rarity %s");
 	    this.add(Database.GUI.InfoArea.ErrorInfoArea.INCOMPATIBLE_GENES, "Gene %s is incompatible with gene %s");
 		this.add(Database.GUI.InfoArea.ErrorInfoArea.MORE_POWERFUL_GENE, "Gene %s is more powerful than %s");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.LOCKED_GENE, "Gene %s with rarity %s is not unlocked");
+		this.add(Database.GUI.InfoArea.ErrorInfoArea.DUPLICATE_GENE, "Genome already contains gene %s");
 		
         this.add(Database.GUI.ChamberButton.START, "Start Process");
         this.add(Database.GUI.ChamberButton.PROCESS, "Processing...");
@@ -305,6 +307,16 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Height");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.VAMPIRISM.id()), "Vampirism");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_head")), "Head Organic Armor");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_chest")), "Chest Organic Armor");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_legs")), "Legs Organic Armor");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_feet")), "Feet Organic Armor");
+		this.add(Database.GUI.OrganicArmor.Tooltip.STATS, "Organic armor: %s armor, %s mB capacity");
+	    this.add(Database.GUI.OrganicArmor.Tooltip.EMPTY, "No fluid loaded");
+	    this.add(Database.GUI.OrganicArmor.Tooltip.EFFECTS, "Armor effects:");
+	    this.add(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(Database.rl("acid")), "Poisons and slows melee attackers");
+	    this.add(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(Database.rl("adrenaline")), "Increases movement speed and attack speed");
+	    this.add(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(Database.rl("biomass")), "Improves resistance, knockback resistance, and armor toughness");
 	    
 	    //-----------------------------
 	    //DAMAGE TYPES

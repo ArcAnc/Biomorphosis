@@ -12,16 +12,22 @@ package com.arcanc.biomorphosis.content.gui.container_menu;
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChrysalis;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 public class ChrysalisMenu extends BioContainerMenu
@@ -68,13 +74,61 @@ public class ChrysalisMenu extends BioContainerMenu
 	{
 		ServerLevel level = player.serverLevel();
 		BlockPos bePos = TagHelper.readBlockPos(tag, "block_entity_pos");
+		if (!bePos.equals(this.pos))
+			return;
+
+		if (tag.contains("organic_armor_slot") && tag.contains("organic_armor_action"))
+		{
+			handleOrganicArmorAction(player, tag.getString("organic_armor_slot"), tag.getString("organic_armor_action"));
+			return;
+		}
+
 		if (!tag.contains("genome"))
 			return;
 		GenomeInstance genome = GenomeInstance.CODEC.
 				parse(NbtOps.INSTANCE, tag.getCompound("genome")).
 				getOrThrow();
+		if (!GenomeHelper.validateMutation(player, genome).valid())
+			return;
 		BlockHelper.castTileEntity(level, bePos, MultiblockChrysalis.class).
 				ifPresent(chrysalis -> chrysalis.tryStartMutation(player, genome));
+	}
+
+	private void handleOrganicArmorAction(ServerPlayer player, String slotName, String actionName)
+	{
+		EquipmentSlot slot;
+		try
+		{
+			slot = EquipmentSlot.byName(slotName);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return;
+		}
+		if (slot.getType() != EquipmentSlot.Type.HUMANOID_ARMOR)
+			return;
+
+		MultiblockChrysalis.ArmorAction action;
+		try
+		{
+			action = MultiblockChrysalis.ArmorAction.valueOf(actionName);
+		}
+		catch (IllegalArgumentException ex)
+		{
+			return;
+		}
+
+		switch (action)
+		{
+			case EQUIP ->
+			{
+				ItemStack stack = player.getItemBySlot(slot);
+				ResourceKey<OrganicArmorType> typeKey = OrganicArmorHelper.findTypeForSource(player.registryAccess(), stack).orElse(null);
+				if (typeKey != null)
+					OrganicArmorHelper.install(player, typeKey, stack);
+			}
+			case UNEQUIP -> OrganicArmorHelper.uninstall(player, slot);
+		}
 	}
 	
 	@Override

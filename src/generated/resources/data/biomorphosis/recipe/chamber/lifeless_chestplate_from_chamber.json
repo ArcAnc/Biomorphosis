@@ -1,0 +1,41 @@
+{
+  "type": "biomorphosis:chamber",
+  "id": "chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "minecraft:leather_chestplate"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:lifeless_chestplate"
+  }
+}

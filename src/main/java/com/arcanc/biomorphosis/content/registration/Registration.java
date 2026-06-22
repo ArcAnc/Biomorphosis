@@ -42,6 +42,8 @@ import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.*;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorState;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
 import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
 import com.arcanc.biomorphosis.content.worldgen.spawner.SpawnerStructure;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
@@ -67,10 +69,7 @@ import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
-import net.minecraft.core.UUIDUtil;
+import net.minecraft.core.*;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
@@ -98,10 +97,7 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.component.ItemAttributeModifiers;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeInput;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
@@ -174,40 +170,47 @@ public final class Registration
 	public static class DataAttachmentsReg
 	{
 		public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Database.MOD_ID);
-		
+
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<GenomeInstance>> GENOME = TYPES.register(
 				"genome",
-				() -> AttachmentType.builder(() -> GenomeInstance.EMPTY).
+				() -> AttachmentType.builder(GenomeInstance :: empty).
 						serialize(GenomeInstance.CODEC).
 						copyOnDeath().
 						build());
-		
+
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<UnlockedGenome>> UNLOCKED_GENOME = TYPES.register(
 				"unlocked_genome",
-				() -> AttachmentType.builder(() -> UnlockedGenome.EMPTY).
+				() -> AttachmentType.builder(UnlockedGenome :: empty).
 						serialize(UnlockedGenome.CODEC).
 						copyOnDeath().
 						build());
-		
+
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<OrganicArmorState>> ORGANIC_ARMOR = TYPES.register(
+				"organic_armor",
+				() -> AttachmentType.builder(OrganicArmorState :: empty).
+						serialize(OrganicArmorState.CODEC).
+						copyOnDeath().
+						build());
+
 		private static void init (final IEventBus bus)
 		{
 			TYPES.register(bus);
 		}
 	}
-	
+
 	public static class GlobalLootModifiersReg
 	{
 		public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> MODIFIERS = DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, Database.MOD_ID);
-		
+
 		public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<FleshLootModifier>> FLESH_MODIFIER = MODIFIERS.register(
 				"flesh_modifier", () -> FleshLootModifier.CODEC);
-		
+
 		private static void init (final IEventBus bus)
 		{
 			MODIFIERS.register(bus);
 		}
 	}
-	
+
     public static class EntityReg
     {
 
@@ -404,7 +407,7 @@ public final class Registration
                                 add(Attributes.ARMOR, 2)).
                         rendererProvider(SwarmlingRenderer :: new),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-		
+
 		public static final EntityEntry<MelonMaw> MOB_MELON_MAW = makeEntityType(
 				"melonmaw",
 				MelonMaw.class,
@@ -427,7 +430,7 @@ public final class Registration
 								add(Attributes.ARMOR, 2)).
 						rendererProvider(MelonMawRenderer :: new),
 				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-		
+
 		public static final EntityEntry<TurretProjectile> PROJECTILE_TURRET = makeEntityType(
 				"projectile_turret",
 				TurretProjectile.class,
@@ -440,7 +443,7 @@ public final class Registration
 						updateInterval(20).
 						rendererProvider(TurretProjectileRenderer :: new),
 				null);
-		
+
 		public static final EntityEntry<Soldier> MOB_BASE_SOLDIER = makeEntityType(
 				"soldier",
 				Soldier.class,
@@ -460,7 +463,7 @@ public final class Registration
 								add(Attributes.ARMOR, 4)).
 						rendererProvider(SoldierRenderer :: new),
 				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-	    
+
 	    public static final EntityEntry<Sergeant> MOB_BASE_SERGEANT = makeEntityType(
 			    "sergeant",
 			    Sergeant.class,
@@ -480,7 +483,7 @@ public final class Registration
 					            add(Attributes.ARMOR, 6)).
 					    rendererProvider(SergeantRenderer :: new),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-	    
+
 	    public static final EntityEntry<Captain> MOB_BASE_CAPTAIN = makeEntityType(
 			    "captain",
 			    Captain.class,
@@ -500,7 +503,7 @@ public final class Registration
 					            add(Attributes.ARMOR, 8)).
 					    rendererProvider(CaptainRenderer :: new),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-	    
+
 	    public static final EntityEntry<Blacksmith> MOB_BASE_BLACKSMITH = makeEntityType(
 			    "blacksmith",
 			    Blacksmith.class,
@@ -520,7 +523,7 @@ public final class Registration
 					            add(Attributes.ARMOR, 4)).
 					    rendererProvider(BlacksmithRenderer :: new),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
-				
+
         private static <T extends Entity> EntityEntry<T> makeEntityType(String name,
                                                                       Class<T> entityClass,
                                                                       EntityType.EntityFactory<T> factory,
@@ -577,20 +580,20 @@ public final class Registration
             {
                 return this.eggHolder;
             }
-	        
+
 	        public EntitySoundEntry getSounds()
 	        {
 		        return this.sounds;
 	        }
         }
-	    
+
 	    public static class EntitySoundEntry
 	    {
 		    private final DeferredHolder<SoundEvent, SoundEvent> DEATH;
 		    private final DeferredHolder<SoundEvent, SoundEvent> IDLE;
 		    private final DeferredHolder<SoundEvent, SoundEvent> HURT;
 		    private final String name;
-		    
+
 		    public EntitySoundEntry(String name)
 		    {
 			    this.DEATH = SoundReg.variable(name + "_death");
@@ -598,28 +601,28 @@ public final class Registration
 			    this.HURT = SoundReg.variable(name + "_hurt");
 			    this.name = name;
 		    }
-		    
+
 		    public DeferredHolder<SoundEvent, SoundEvent> getDeathSound()
 		    {
 			    return this.DEATH;
 		    }
-		    
+
 		    public DeferredHolder<SoundEvent, SoundEvent> getHurtSound()
 		    {
 			    return this.HURT;
 		    }
-		    
+
 		    public DeferredHolder<SoundEvent, SoundEvent> getIdleSound()
 		    {
 			    return this.IDLE;
 		    }
-		    
+
 		    public String getName()
 		    {
 			    return this.name;
 		    }
 	    }
-		
+
         public static void init(IEventBus bus)
         {
             ENTITY_TYPES.register(bus);
@@ -708,7 +711,7 @@ public final class Registration
                         andThen(BlockBehaviour.Properties :: noOcclusion).
                         accept(properties),
                 ItemReg.baseProps);
-	    
+
 	    public static final DeferredBlock<BioSqueezerBlock> SQUEEZER = register("squeezer", BioSqueezerBlock :: new,
 			    properties -> baseProps.
 					    andThen(BlockBehaviour.Properties :: noOcclusion).
@@ -750,7 +753,7 @@ public final class Registration
                 ItemReg.baseProps.andThen(props -> props.
                         rarity(RarityExtension.BIO_RARE.getValue())),
                 false);
-		
+
 		public static final DeferredBlock<MultiblockChrysalisBlock> MULTIBLOCK_CHRYSALIS = register("multiblock_chrysalis",
 				MultiblockChrysalisBlock :: new,
 				properties -> baseProps.
@@ -761,7 +764,7 @@ public final class Registration
 				MultiblockChrysalisBlockItem :: new,
 				ItemReg.baseProps.andThen(props -> props.rarity(RarityExtension.BIO_RARE.getValue())),
 				false);
-	    
+
 		public static final DeferredBlock<MultiblockTurretBlock> MULTIBLOCK_TURRET = register("multiblock_turret", MultiblockTurretBlock :: new,
 			    properties -> baseProps.
 					    andThen(props -> props.
@@ -877,7 +880,7 @@ public final class Registration
 		                ItemStack itemStack = context.getItemInHand();
 		                if (!itemStack.canPerformAction(itemAbility))
 			                return null;
-						
+
 						if (itemAbility == BioHoeItem.BIO_HOE_TILL &&
 								context.getLevel().getBlockState(context.getClickedPos().below()).isEmpty())
 							return BlockReg.BIO_FARMLAND.get().defaultBlockState();
@@ -912,7 +915,7 @@ public final class Registration
 		                ItemStack itemStack = context.getItemInHand();
 		                if (!itemStack.canPerformAction(itemAbility))
 			                return null;
-		                
+
 		                if (itemAbility == BioHoeItem.BIO_HOE_TILL &&
 				                !simulate &&
 				                context.getLevel().getBlockState(context.getClickedPos().below()).isEmpty())
@@ -1152,7 +1155,7 @@ public final class Registration
                         andThen(BlockBehaviour.Properties :: noOcclusion).
                         accept(properties),
                 ItemReg.baseProps);
-		
+
 		public static final DeferredBlock<BioFarmland> BIO_FARMLAND = register("norphed_farmland", BioFarmland :: new,
 				properties -> baseProps.
 						andThen(props -> props.
@@ -1162,8 +1165,9 @@ public final class Registration
 								isSuffocating((state, level, pos) -> true)).
 						accept(properties),
 				ItemReg.baseProps,
+				false,
 				false);
-		
+
 		public static final DeferredBlock<BioMeatMelonBlock> MEAT_MELON_BLOCK = register("meat_melon", BioMeatMelonBlock :: new,
 				properties -> baseProps.
 						andThen(props -> props.
@@ -1173,7 +1177,7 @@ public final class Registration
 								noOcclusion()).
 						accept(properties),
 				ItemReg.baseProps);
-		
+
 		public static final DeferredBlock<BioStemBlock> MEAT_MELON_STEM = register("meat_melon_stem", properties -> new BioStemBlock(
 				MEAT_MELON_BLOCK.getKey(),
 				ItemReg.MEAT_MELON_SEEDS.getKey(),
@@ -1188,8 +1192,9 @@ public final class Registration
 								pushReaction(PushReaction.DESTROY)).
 						accept(properties),
 				ItemReg.baseProps,
+				false,
 				false);
-		
+
 		public static final DeferredBlock<BioShitBlock> BIO_SHIT = register("shit", BioShitBlock :: new,
 				properties -> baseProps.
 						andThen(props -> props.
@@ -1200,7 +1205,7 @@ public final class Registration
 								replaceable()).
 						accept(properties),
 				ItemReg.baseProps);
-		
+
 		public static final DeferredBlock<BioBushBlock> BIO_BUSH = register("bush", BioBushBlock :: new,
 				properties -> baseProps.
 						andThen(props -> props.
@@ -1213,7 +1218,7 @@ public final class Registration
 								pushReaction(PushReaction.DESTROY)).
 						accept(properties),
 				ItemReg.baseProps);
-		
+
 		public static final DeferredBlock<BioBaseBlock> NORPHED_STONE = register("norphed_stone", BioBaseBlock :: new,
 				properties -> baseProps.
 						andThen(props -> props.
@@ -1230,19 +1235,35 @@ public final class Registration
 
         private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
         {
+            return register(name, block, additionalProps, itemAddProps, addItemToCreative, true);
+        }
+
+        private static <B extends Block> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative, boolean createBlockItem)
+        {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
-            Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
             DeferredBlock<B> blockGetter = BLOCKS.register(name, ()-> block.apply(props));
-            ItemReg.ITEMS.register(name, () -> new BioBaseBlockItem(blockGetter.get(), itemProps, addItemToCreative));
+            if (createBlockItem)
+            {
+                Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
+                ItemReg.ITEMS.register(name, () -> new BioBaseBlockItem(blockGetter.get(), itemProps, addItemToCreative));
+            }
             return blockGetter;
         }
 
         private static <B extends Block, I extends BioBaseBlockItem> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, BlockItemFactory<I> itemFactory, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative)
         {
+            return register(name, block, additionalProps, itemFactory, itemAddProps, addItemToCreative, true);
+        }
+
+        private static <B extends Block, I extends BioBaseBlockItem> DeferredBlock<B> register (String name, Function<BlockBehaviour.Properties, B> block, Consumer<BlockBehaviour.Properties> additionalProps, BlockItemFactory<I> itemFactory, Consumer<Item.Properties> itemAddProps, boolean addItemToCreative, boolean createBlockItem)
+        {
             BlockBehaviour.Properties props = setId(name, props(additionalProps));
-            Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
             DeferredBlock<B> blockGetter = BLOCKS.register(name, ()-> block.apply(props));
-            ItemReg.ITEMS.register(name, () -> itemFactory.create(blockGetter.get(), itemProps, addItemToCreative));
+            if (createBlockItem)
+            {
+                Item.Properties itemProps = ItemReg.setId(name, ItemReg.props(itemAddProps), true);
+                ItemReg.ITEMS.register(name, () -> itemFactory.create(blockGetter.get(), itemProps, addItemToCreative));
+            }
             return blockGetter;
         }
 
@@ -1305,7 +1326,7 @@ public final class Registration
                 makeType(BioCrusher :: new,
                         BioCrusherRenderer :: new,
                         BlockReg.CRUSHER));
-	    
+
 	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioSqueezer>> BE_SQUEEZER = BLOCK_ENTITIES.register(
 			    "squeezer",
 			    makeType(BioSqueezer :: new,
@@ -1349,7 +1370,7 @@ public final class Registration
                         MenuTypeReg.CHAMBER,
                         ChamberScreen :: new,
                         BlockReg.MULTIBLOCK_CHAMBER));
-		
+
 		public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChrysalis>> BE_MULTIBLOCK_CHRYSALIS = BLOCK_ENTITIES.register(
 				"multiblock_chrysalis",
 				makeType(MultiblockChrysalis :: new,
@@ -1357,7 +1378,7 @@ public final class Registration
 						MenuTypeReg.CHRYSALIS,
 						ChrysalisScreen :: new,
 						BlockReg.MULTIBLOCK_CHRYSALIS));
-	    
+
 	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockTurret>> BE_MULTIBLOCK_TURRET = BLOCK_ENTITIES.register(
 			    "multiblock_turret",
 			    makeType(MultiblockTurret :: new,
@@ -1454,6 +1475,70 @@ public final class Registration
         }
     }
 
+	public static class ArmorMaterialReg
+	{
+		public static final DeferredRegister<ArmorMaterial> MATERIALS = DeferredRegister.create(BuiltInRegistries.ARMOR_MATERIAL, Database.MOD_ID);
+		
+		public static final DeferredHolder<ArmorMaterial, ArmorMaterial> LIFELESS = register("lifeless",
+				Util.make(new EnumMap<>(ArmorItem.Type.class), map ->
+						{
+							map.put(ArmorItem.Type.BOOTS, 1);
+							map.put(ArmorItem.Type.LEGGINGS, 2);
+							map.put(ArmorItem.Type.CHESTPLATE, 3);
+							map.put(ArmorItem.Type.HELMET, 1);
+							map.put(ArmorItem.Type.BODY, 3);
+						}),
+				SoundEvents.ARMOR_EQUIP_LEATHER,
+				() -> Ingredient.of(ItemReg.FLESH_PIECE.get()),
+				0,
+				0,
+				0);
+		
+		private static DeferredHolder<ArmorMaterial, ArmorMaterial> register(
+				String name,
+				Map<ArmorItem.Type, Integer> map,
+				Holder<SoundEvent> sound,
+				Supplier<Ingredient> repairIngredient,
+				int enchantmentValue,
+				float toughness,
+				float knockbackResistance)
+		{
+			return register(name,
+							map,
+							sound,
+							repairIngredient,
+							List.of(new ArmorMaterial.Layer(Database.rl(name))),
+							enchantmentValue,
+							toughness,
+							knockbackResistance);
+		}
+		
+		private static DeferredHolder<ArmorMaterial, ArmorMaterial> register(
+				String name,
+				Map<ArmorItem.Type, Integer> map,
+				Holder<SoundEvent> sound,
+				Supplier<Ingredient> repairIngredient,
+				List<ArmorMaterial.Layer> layers,
+				int enchantmentValue,
+				float toughness,
+				float knockbackResistance)
+		{
+			return MATERIALS.register(name, () ->
+					new ArmorMaterial(map,
+							enchantmentValue,
+							sound,
+							repairIngredient,
+							layers,
+							toughness,
+							knockbackResistance));
+		}
+		
+		private static void init (final IEventBus bus)
+		{
+			MATERIALS.register(bus);
+		}
+	}
+	
     public static class ItemReg
     {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(Database.MOD_ID);
@@ -1484,7 +1569,7 @@ public final class Registration
 						).
 						build()).
 						rarity(RarityExtension.BIO_COMMON.getValue()));
-		
+
 		public static final DeferredItem<BioBaseBlockItem> MEAT_MELON_SEEDS = register("meat_melon_seeds", props -> new BioBaseBlockItem(BlockReg.MEAT_MELON_STEM.get(), props)
 				{
 					@Override
@@ -1494,11 +1579,31 @@ public final class Registration
 					}
 				},
 				properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
-		
+
 		public static final DeferredItem<BioHoeItem> FLESH_HOE = register("flesh_hoe", properties -> new BioHoeItem(BioTiers.FLESH, properties),
 				properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).
 						attributes(HoeItem.createAttributes(BioTiers.FLESH, 0, -3)));
-				
+
+		public static final DeferredHolder<Item, BioArmorItem> LIFELESS_HELMET = register("lifeless_helmet",
+				properties ->
+						new BioArmorItem(ArmorMaterialReg.LIFELESS, ArmorItem.Type.HELMET, properties),
+				properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).durability(150));
+	    
+	    public static final DeferredHolder<Item, BioArmorItem> LIFELESS_CHESTPLATE = register("lifeless_chestplate",
+			    properties ->
+					    new BioArmorItem(ArmorMaterialReg.LIFELESS, ArmorItem.Type.CHESTPLATE, properties),
+			    properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).durability(150));
+	    
+	    public static final DeferredHolder<Item, BioArmorItem> LIFELESS_LEGGINGS = register("lifeless_leggings",
+			    properties ->
+					    new BioArmorItem(ArmorMaterialReg.LIFELESS, ArmorItem.Type.LEGGINGS, properties),
+			    properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).durability(150));
+	    
+	    public static final DeferredHolder<Item, BioArmorItem> LIFELESS_BOOTS = register("lifeless_boots",
+			    properties ->
+					    new BioArmorItem(ArmorMaterialReg.LIFELESS, ArmorItem.Type.BOOTS, properties),
+			    properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()).durability(150));
+		
         private static DeferredItem<BioIconItem> registerIcon(String name)
         {
             Item.Properties props = setId(name, new Item.Properties().stacksTo(1), false);
@@ -1518,7 +1623,7 @@ public final class Registration
             //ResourceKey<Item> resourceKey = ResourceKey.create(Registries.ITEM, Database.rl(id));
             return props;//.setId(resourceKey).overrideDescription(resourceKey.location().withPrefix(blockItem ? "block." : "item." ).toLanguageKey().replace(':', '.').replace('/', '.'));
         }
-		
+
         private static Item.Properties props (Consumer<Item.Properties> additionalProps)
         {
             return Util.make(new Item.Properties(), additionalProps);
@@ -1772,12 +1877,12 @@ public final class Registration
                 "chamber",
                 ChamberMenu :: makeServer,
                 ChamberMenu :: makeClient);
-	    
+
 	    public static final ArgContainer<MultiblockTurret, TurretMenu> TURRET = registerArg(
 			    "turret",
 			    TurretMenu :: makeServer,
 			    TurretMenu :: makeClient);
-	    
+
 	    public static final ArgContainer<MultiblockChrysalis, ChrysalisMenu> CHRYSALIS = registerArg(
 			    "chrysalis",
 			    ChrysalisMenu :: makeServer,
@@ -1836,7 +1941,6 @@ public final class Registration
                         return Component.empty();
                     }
 
-                    @Nullable
                     @Override
                     public AbstractContainerMenu createMenu(
                             int containerId, Inventory inventory, Player player
@@ -1874,7 +1978,7 @@ public final class Registration
 		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
 		public static final ResourceKey<DamageType> IMPOSSIBLE_MUTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("impossible_mutation"));
 	}
-	
+
     public static class RecipeReg
     {
         public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(BuiltInRegistries.RECIPE_TYPE, Database.MOD_ID);
@@ -2011,9 +2115,9 @@ public final class Registration
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_CHEST_CLOSE = variable("block_chest_close");
 
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_HIVE = variable("block_hive_deco");
-		
+
 		public static final DeferredHolder<SoundEvent, SoundEvent> ADVANCEMENT = variable("advancement");
-		
+
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
         private static DeferredHolder<SoundEvent, SoundEvent> variable(String name)
@@ -2025,7 +2129,7 @@ public final class Registration
         {
             return SOUNDS.register(name, () -> SoundEvent.createFixedRangeEvent(Database.rl(name), range));
         }
-			
+
         private static void init (final IEventBus bus)
         {
             SOUNDS.register(bus);
@@ -2035,16 +2139,16 @@ public final class Registration
 	public static class ParticleReg
 	{
 		public static final DeferredRegister<ParticleType<?>> TYPES = DeferredRegister.create(Registries.PARTICLE_TYPE, Database.MOD_ID);
-		
+
 		public static final DeferredHolder<ParticleType<?>, SimpleParticleType> HIVE_DECO =
 				TYPES.register("hive_deco", () -> new SimpleParticleType(false));
-		
+
 		private static void init(IEventBus bus)
 		{
 			TYPES.register(bus);
 		}
 	}
-	
+
     public static class AIReg
     {
         public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULES = DeferredRegister.create(BuiltInRegistries.MEMORY_MODULE_TYPE, Database.MOD_ID);
@@ -2062,16 +2166,16 @@ public final class Registration
             MEMORY_MODULES.register(bus);
         }
     }
-    
+
 	public static class GenomeReg
 	{
 		public static final ResourceKey<Registry<IGeneEffectType<?>>> EFFECT_TYPE_KEY = ResourceKey.createRegistryKey(Database.rl("genome_effect_type"));
 		public static final ResourceKey<Registry<GeneDefinition>> DEFINITION_KEY = ResourceKey.createRegistryKey(Database.mineRl("genome/effect"));
 		public static final ResourceKey<Registry<GenomeTemplate>> GENOME_TEMPLATES_KEY = ResourceKey.createRegistryKey(Database.mineRl("genome/templates"));
-		
+
 		public static final DeferredRegister<IGeneEffectType<?>> EFFECT_TYPES = DeferredRegister.create(EFFECT_TYPE_KEY, Database.MOD_ID);
 		public static Registry<IGeneEffectType<?>> EFFECT_TYPE_REGISTRY;
-		
+
 		public static final DeferredHolder<IGeneEffectType<?>, BalanceEffectType> BALANCE = EFFECT_TYPES.register("balance", BalanceEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, DamageEffectType> DAMAGE = EFFECT_TYPES.register("damage", DamageEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, JumpStrengthEffectType> JUMP_STRENGTH = EFFECT_TYPES.register("jump_strength", JumpStrengthEffectType :: new);
@@ -2080,12 +2184,13 @@ public final class Registration
 		public static final DeferredHolder<IGeneEffectType<?>, SpeedEffectType> SPEED = EFFECT_TYPES.register("speed", SpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, SwimSpeedEffectType> SWIM_SPEED = EFFECT_TYPES.register("swim_speed", SwimSpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, VampirismEffectType> VAMPIRISM = EFFECT_TYPES.register("vampirism", VampirismEffectType :: new);
+		
 		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{
 			event.dataPackRegistry(DEFINITION_KEY, GeneDefinition.CODEC, GeneDefinition.CODEC, regBuilder -> makeRegistry(regBuilder, DEFINITION_KEY));
 			event.dataPackRegistry(GENOME_TEMPLATES_KEY, GenomeTemplate.CODEC, GenomeTemplate.CODEC, regBuilder -> makeRegistry(regBuilder, GENOME_TEMPLATES_KEY));
 		}
-		
+
 		public static void init(final IEventBus modEventBus)
 		{
 			EFFECT_TYPE_REGISTRY = EFFECT_TYPES.makeRegistry(builder -> makeRegistry(builder, EFFECT_TYPE_KEY));
@@ -2093,33 +2198,48 @@ public final class Registration
 			modEventBus.addListener(GenomeReg :: registerDataPackRegister);
 		}
 	}
-	
+
+	public static class OrganicArmorReg
+	{
+		public static final ResourceKey<Registry<OrganicArmorType>> TYPE_KEY = ResourceKey.createRegistryKey(Database.mineRl("organic_armor/type"));
+
+		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
+		{
+			event.dataPackRegistry(TYPE_KEY, OrganicArmorType.CODEC, OrganicArmorType.CODEC, regBuilder -> makeRegistry(regBuilder, TYPE_KEY));
+		}
+
+		public static void init(final IEventBus modEventBus)
+		{
+			modEventBus.addListener(OrganicArmorReg :: registerDataPackRegister);
+		}
+	}
+
 	public static class StructureTypeReg
 	{
 		public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Database.MOD_ID);
-		
+
 		public static final DeferredHolder<StructureType<?>, StructureType<SwarmVillageStructure>> SWARM_VILLAGE_TYPE = STRUCTURE_TYPES.register("swarm_village",
 				() -> () -> SwarmVillageStructure.CODEC);
-		
+
 		public static final DeferredHolder<StructureType<?>, StructureType<SpawnerStructure>> SPAWNER_STRUCTURE = STRUCTURE_TYPES.register("spawner",
 				() -> () -> SpawnerStructure.CODEC);
-		
+
 		public static final DeferredHolder<StructureType<?>, StructureType<SRFHeadquarters>> SRF_HEADQUARTERS = STRUCTURE_TYPES.register("srf_headquarters",
 				() -> () -> SRFHeadquarters.CODEC);
-		
+
 		private static void init (final IEventBus bus)
 		{
 			STRUCTURE_TYPES.register(bus);
 		}
 	}
-	
+
 	public static class StructurePieceTypeReg
 	{
 		public static final DeferredRegister<StructurePieceType> STRUCTURE_PIECE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PIECE, Database.MOD_ID);
-		
+
 		public static final DeferredHolder<StructurePieceType, StructurePieceType> SPAWNER_STRUCTURE = STRUCTURE_PIECE_TYPES.register("spawner",
 				() -> (context, tag) -> new SpawnerStructure.Piece(context.structureTemplateManager(), tag));
-		
+
 		private static void init(final IEventBus bus)
 		{
 			STRUCTURE_PIECE_TYPES.register(bus);
@@ -2138,28 +2258,29 @@ public final class Registration
             FEATURES.register(bus);
         }
     }
-	
+
 	public static class PalladinOrderReg
 	{
 		public static final ResourceKey<Registry<PalladinOrder>> ORDER_KEY = ResourceKey.createRegistryKey(ResourceLocation.withDefaultNamespace("palladin_order"));
-		
+
 		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{
 			event.dataPackRegistry(ORDER_KEY, PalladinOrder.CODEC, PalladinOrder.CODEC, regBuilder -> makeRegistry(regBuilder, ORDER_KEY));
 		}
-		
+
 		public static void init(final IEventBus modEventBus)
 		{
 			modEventBus.addListener(PalladinOrderReg :: registerDataPackRegister);
 		}
-		
+
 	}
-	
+
     public static void init(final IEventBus bus)
     {
 	    GlobalLootModifiersReg.init(bus);
 	    DataAttachmentsReg.init(bus);
         DataComponentsReg.init(bus);
+	    ArmorMaterialReg.init(bus);
         IngredientReg.init(bus);
         MultiblockReg.init(bus);
         BookDataReg.init(bus);
@@ -2170,6 +2291,7 @@ public final class Registration
         //AIReg.init(bus);
         FluidReg.init(bus);
 	    GenomeReg.init(bus);
+	    OrganicArmorReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);
 	    FeatureReg.init(bus);

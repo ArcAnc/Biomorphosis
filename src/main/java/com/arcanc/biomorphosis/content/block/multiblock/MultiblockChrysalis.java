@@ -13,6 +13,7 @@ package com.arcanc.biomorphosis.content.block.multiblock;
 import com.arcanc.biomorphosis.content.block.BlockInterfaces;
 import com.arcanc.biomorphosis.content.block.multiblock.base.type.StaticMultiblockPart;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChrysalisMenu;
+import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.mutations.GenomeEffectsHolder;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
@@ -56,6 +57,12 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 	private static final PRawAnimation WAVE_ANIMATION = PRawAnimation.begin().thenPlay("wave").build();
 	private static final int MIN_ANIM_PERIOD = 4 * 20;
 	private static final int MAX_ANIM_PERIOD = 10 * 20;
+
+	public enum ArmorAction
+	{
+		EQUIP,
+		UNEQUIP
+	}
 	
 	private final PAnimationManager<MultiblockChrysalis> manager = PLibHelper.createManager(this);
 	
@@ -141,9 +148,12 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 		this.progressBar.removePlayer(serverPlayer);
 		if (GenomeHelper.calculateStability(this.toGenome, this.getLevel()) < 0)
 		{
-			this.toGenome = GenomeInstance.EMPTY;
+			this.toGenome = GenomeInstance.empty();
 			serverPlayer.setData(Registration.DataAttachmentsReg.GENOME.get(), this.toGenome);
 			NetworkEngine.sendToPlayer(serverPlayer, new S2CGenomeSync(serverPlayer.getUUID(), this.toGenome));
+			if (serverPlayer instanceof GenomeEffectsHolder holder)
+				holder.biomorphosis$rebuildEffects();
+			GenomeHandler.syncGenomeEffects(serverPlayer, serverPlayer);
 			reset();
 			DamageHelper.mutationDamage(Integer.MAX_VALUE, serverPlayer);
 			return;
@@ -162,6 +172,7 @@ public class MultiblockChrysalis extends StaticMultiblockPart implements PAnimat
 		serverPlayer.teleportTo(pos.getX() + 0.5d, pos.getY() + 0.5d, pos.getZ() + 0.5d);
 		if (serverPlayer instanceof GenomeEffectsHolder holder)
 			holder.biomorphosis$rebuildEffects();
+		GenomeHandler.syncGenomeEffects(serverPlayer, serverPlayer);
 		reset();
 	}
 	

@@ -243,6 +243,7 @@ public final class ClientEvents
 		BioRegistryData.register(new BioPalladinOrdersProvider());
         BioRegistryData.register(new BioWorldGenProvider());
 		BioRegistryData.register(new BioGenomeProvider());
+		BioRegistryData.register(new BioOrganicArmorProvider());
 
 		DatapackBuiltinEntriesProvider entries = new DatapackBuiltinEntriesProvider(
 				packOutput,

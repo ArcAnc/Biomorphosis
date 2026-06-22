@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.gui.screen.container;
 
-import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
 import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;

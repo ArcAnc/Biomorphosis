@@ -11,7 +11,7 @@ package com.arcanc.biomorphosis.content.gui.container_menu;
 
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioChest;
-import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.ItemHelper;
 import net.minecraft.core.BlockPos;

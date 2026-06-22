@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.integration.jei;
 
 
-import com.arcanc.biomorphosis.content.gui.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
 import com.arcanc.biomorphosis.content.gui.screen.GuideScreen;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.SqueezerRecipe;

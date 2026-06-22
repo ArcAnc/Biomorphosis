@@ -11,22 +11,17 @@ package com.arcanc.biomorphosis.content.gui.component.info;
 
 
 import com.arcanc.biomorphosis.content.gui.component.GeneChooser;
-import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
-import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
-import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.Rect2i;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceKey;
 
 import java.util.List;
 
@@ -51,10 +46,8 @@ public class GenomeStabilityInfoArea extends InfoArea
 		Minecraft mc = RenderHelper.mc();
 		Font font = mc.font;
 		GenomeInstance genome = this.geneChooser.getGenome();
-		ClientPacketListener listener = mc.getConnection();
-		int resultedStability = 0;
 		
-		if (genome.geneInstances().isEmpty() || listener == null)
+		if (genome.geneInstances().isEmpty() || mc.level == null)
 		{
 			guiGraphics.drawString(
 					font,
@@ -66,20 +59,7 @@ public class GenomeStabilityInfoArea extends InfoArea
 			return;
 		}
 		
-		RegistryAccess registries = listener.registryAccess();
-		for (GeneInstance gene : genome.geneInstances())
-		{
-			GeneDefinition geneDefinition = registries.
-					lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY).
-					getOrThrow(ResourceKey.create(Registration.GenomeReg.DEFINITION_KEY, gene.id())).
-					value();
-			if (geneDefinition == null)
-				continue;
-			GeneDefinition.RarityData data = geneDefinition.rarityData().get(gene.rarity());
-			if (data == null)
-				continue;
-			resultedStability -= data.destabilizationAmount();
-		}
+		int resultedStability = GenomeHelper.validateGenome(genome, mc.level, null, false).stability();
 		
 		MutableComponent stability = Component.literal(String.valueOf(resultedStability));
 		if (resultedStability < 0)

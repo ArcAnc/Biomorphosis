@@ -111,6 +111,19 @@ public class Database
 	    {
 		    public static final String PROGRESS_BAR = rl(GUI + ".label.chrysalis.progress_bar").toLanguageKey();
 	    }
+
+		public static final class OrganicArmor
+		{
+			public static final Function<ResourceLocation, String> NAME = input -> input.withPrefix(GUI + ".organic_armor.").toLanguageKey();
+
+			public static final class Tooltip
+			{
+				public static final String EMPTY = rl(GUI + ".tooltip.organic_armor.empty").toLanguageKey();
+				public static final String EFFECTS = rl(GUI + ".tooltip.organic_armor.effects").toLanguageKey();
+				public static final String STATS = rl(GUI + ".tooltip.organic_armor.stats").toLanguageKey();
+				public static final Function<ResourceLocation, String> FLUID_EFFECT = input -> input.withPrefix(GUI + ".tooltip.organic_armor.effect.").toLanguageKey();
+			}
+		}
 		
         public static final class InfoArea
         {
@@ -151,6 +164,8 @@ public class Database
 				public static final String UNKNOWN_RARITY_DATA = rl (GUI + ".label.info.error.unknow_rarity_data").toLanguageKey();
 				public static final String INCOMPATIBLE_GENES = rl (GUI + ".label.info.error.incompatible_genes").toLanguageKey();
 				public static final String MORE_POWERFUL_GENE = rl (GUI + ".label.info.error.more_powerful_gene").toLanguageKey();
+				public static final String LOCKED_GENE = rl (GUI + ".label.info.error.locked_gene").toLanguageKey();
+				public static final String DUPLICATE_GENE = rl (GUI + ".label.info.error.duplicate_gene").toLanguageKey();
 			}
         }
 
@@ -180,7 +195,7 @@ public class Database
 			public static final GeneInfo PROTECTION = new GeneInfo(Database.rl("protection"));
 			public static final GeneInfo SPEED = new GeneInfo(Database.rl("speed"));
 			public static final GeneInfo VAMPIRISM = new GeneInfo(Database.rl("vampirism"));
-			
+
 			public static final class Translations
 			{
 				public static final String GENE_RARITY = rl(GUI + ".tooltip.genome.gene.rarity").toLanguageKey();
@@ -198,6 +213,11 @@ public class Database
 				public GeneInfo (ResourceLocation id)
 				{
 					this(id, id.withPrefix("textures/genome/").withSuffix(".png"));
+				}
+
+				public ResourceLocation getImageWithSuffix(String suffix)
+				{
+					return this.id.withPrefix("textures/genome/").withSuffix(suffix).withSuffix(".png");
 				}
 			}
 		}

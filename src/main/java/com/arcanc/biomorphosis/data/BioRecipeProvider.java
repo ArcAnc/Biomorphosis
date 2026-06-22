@@ -13,7 +13,6 @@ import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.BioBaseRecipe;
 import com.arcanc.biomorphosis.data.recipe.builders.*;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
-import com.arcanc.biomorphosis.data.tags.base.BioBlockTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.inventory.item.StackWithChance;
@@ -34,7 +33,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.ShapelessRecipe;
 import net.minecraft.world.level.block.Blocks;
 import net.neoforged.fml.loading.FMLPaths;
 import net.neoforged.neoforge.common.Tags;
@@ -335,6 +333,48 @@ public class BioRecipeProvider extends RecipeProvider
 				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
 				group(group).
 				save(output, Database.rlStr("meat_melon_seeds_from_chamber"));
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER_HELMET))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.LIFELESS_HELMET.get())).
+				unlockedBy(getHasName(Items.LEATHER_HELMET), has(Items.LEATHER_HELMET)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rlStr("lifeless_helmet_from_chamber"));
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER_CHESTPLATE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.LIFELESS_CHESTPLATE.get())).
+				unlockedBy(getHasName(Items.LEATHER_CHESTPLATE), has(Items.LEATHER_CHESTPLATE)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rlStr("lifeless_chestplate_from_chamber"));
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER_LEGGINGS))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.LIFELESS_LEGGINGS.get())).
+				unlockedBy(getHasName(Items.LEATHER_LEGGINGS), has(Items.LEATHER_LEGGINGS)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rlStr("lifeless_leggings_from_chamber"));
+		
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Items.LEATHER_BOOTS))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.LIFELESS_BOOTS.get())).
+				unlockedBy(getHasName(Items.LEATHER_BOOTS), has(Items.LEATHER_BOOTS)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rlStr("lifeless_boots_from_chamber"));
 	}
 	
 	private void generateCrusherRecipes(RecipeOutput output)

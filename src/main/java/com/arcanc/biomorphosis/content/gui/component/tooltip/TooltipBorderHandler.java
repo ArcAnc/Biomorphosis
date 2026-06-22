@@ -27,11 +27,22 @@ import org.lwjgl.opengl.GL11;
 
 public class TooltipBorderHandler
 {
+    private static TooltipData overrideTooltipData;
 
     public static void registerHandler()
     {
         NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipDisplayEvent);
         NeoForge.EVENT_BUS.addListener(TooltipBorderHandler :: tooltipBackgroundEvent);
+    }
+
+    public static void pushTooltipStyle(TooltipData data)
+    {
+        overrideTooltipData = data;
+    }
+
+    public static void popTooltipStyle()
+    {
+        overrideTooltipData = null;
     }
 
     private static void tooltipDisplayEvent(final CustomEvents.TooltipDisplayEvent event)
@@ -41,15 +52,9 @@ public class TooltipBorderHandler
         if (player == null)
             return;
 
-        ItemStack stack = event.getStack();
-
-        if (!(stack.getItem() instanceof ICustomTooltip tooltip))
+        TooltipData data = getTooltipData(player, event.getStack());
+        if (data == null)
             return;
-
-        StyleData style = tooltip.getStyle();
-        if (!style.isCustom())
-            return;
-        TooltipData data = style.tooltip().apply(player, stack);
         if (!data.isTextured())
             return;
 
@@ -334,18 +339,27 @@ public class TooltipBorderHandler
 
     private static void tooltipBackgroundEvent(final RenderTooltipEvent.Color event)
     {
-        if (!(event.getItemStack().getItem() instanceof ICustomTooltip tooltip))
+        TooltipData data = getTooltipData(RenderHelper.clientPlayer(), event.getItemStack());
+        if (data == null)
             return;
-
-        StyleData style = tooltip.getStyle();
-        if (!style.isCustom())
-            return;
-        TooltipData data = style.tooltip().apply(RenderHelper.clientPlayer(), event.getItemStack());
         
         event.setBackground(MathHelper.ColorHelper.color(240, 50, 29, 27));
         event.setBorderStart(MathHelper.ColorHelper.color(80, 255, 0, 5));
         event.setBorderEnd(MathHelper.ColorHelper.color(80, 127, 0, 2));
         //if (data.isTextured())
             //event.setTexture(data.background());
+    }
+
+    private static TooltipData getTooltipData(LocalPlayer player, ItemStack stack)
+    {
+        if (overrideTooltipData != null)
+            return overrideTooltipData;
+        if (!(stack.getItem() instanceof ICustomTooltip tooltip))
+            return null;
+
+        StyleData style = tooltip.getStyle();
+        if (!style.isCustom())
+            return null;
+        return style.tooltip().apply(player, stack);
     }
 }
