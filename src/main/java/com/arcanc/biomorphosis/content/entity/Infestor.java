@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.entity;
 
 
+import com.arcanc.biomorphosis.content.entity.ai.brain.InfestorBrain;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
@@ -17,23 +18,29 @@ import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
+import com.mojang.serialization.Dynamic;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.Brain;
+import net.minecraft.world.entity.animal.WaterAnimal;
 import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
 
 public class Infestor extends Monster implements PAnimatable<Infestor>
 {
-	/*FIXME: 1 удар и потеря интереса + заражение и выпадение личинок. Приделать эту херь*/
-	/*FIXME: что-то не так с атакой мобов. Проверить, почему она не работает*/
 	private final PAnimationManager<Infestor> manager = PLibHelper.createManager(this);
 
 	private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
@@ -50,24 +57,88 @@ public class Infestor extends Monster implements PAnimatable<Infestor>
 	@Override
 	protected void registerGoals()
 	{
-		this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.1f, false));
-		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
-		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
-				this,
-				Mob.class,
-				5,
-				true,
-				true,
-				entity ->
-						!entity.getType().is(BioEntityTags.SWARM) &&
-								!(entity instanceof Creeper)));
-		
-		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
-		this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
+	}
 
+	@Override
+	protected Brain<?> makeBrain(Dynamic<?> dynamic)
+	{
+		return InfestorBrain.makeBrain(dynamic);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Brain<Infestor> getBrain()
+	{
+		return (Brain<Infestor>)super.getBrain();
+	}
+
+	@Override
+	protected void customServerAiStep()
+	{
+		if (this.level() instanceof ServerLevel serverLevel)
+		{
+			ensureHomeMemory();
+			serverLevel.getProfiler().push("infestorBrain");
+			this.getBrain().tick(serverLevel, this);
+			serverLevel.getProfiler().pop();
+		}
+		super.customServerAiStep();
+	}
+
+	@Override
+	public @Nullable LivingEntity getTarget()
+	{
+		return this.getTargetFromBrain();
+	}
+
+	@Override
+	public boolean canAttack(LivingEntity target)
+	{
+		return super.canAttack(target) && isValidInfestationTarget(this, target);
+	}
+
+	@Override
+	@SuppressWarnings("deprecation")
+	public @Nullable SpawnGroupData finalizeSpawn(ServerLevelAccessor level,
+	                                              DifficultyInstance difficulty,
+	                                              MobSpawnType spawnType,
+	                                              @Nullable SpawnGroupData spawnGroupData)
+	{
+		this.getBrain().setMemory(Registration.AIReg.INFESTOR_HOME_POS.get(), this.blockPosition());
+		return super.finalizeSpawn(level, difficulty, spawnType, spawnGroupData);
+	}
+
+	public void infest(LivingEntity target)
+	{
+		if (!isValidInfestationTarget(this, target))
+			return;
+
+		target.addEffect(new MobEffectInstance(Registration.EffectReg.INFESTATION, -1, 0, false, true, true));
+		if (target instanceof Mob mob && mob.getTarget() == this)
+			mob.setTarget(null);
+	}
+
+	public static boolean isValidInfestationTarget(Infestor infestor, @Nullable LivingEntity target)
+	{
+		if (target == null || target == infestor || !target.isAlive())
+			return false;
+		if (target.hasEffect(Registration.EffectReg.INFESTATION))
+			return false;
+		if (target.getType().is(BioEntityTags.SWARM))
+			return false;
+		if (target instanceof Creeper)
+			return false;
+		if (target instanceof Drowned)
+			return false;
+		if (target instanceof WaterAnimal)
+			return false;
+		return !(target instanceof Player player) || !player.isCreative();
+	}
+
+	private void ensureHomeMemory()
+	{
+		if (this.getBrain().getMemory(Registration.AIReg.INFESTOR_HOME_POS.get()).isEmpty())
+			this.getBrain().setMemory(Registration.AIReg.INFESTOR_HOME_POS.get(), this.blockPosition());
 	}
 	
 	@Override

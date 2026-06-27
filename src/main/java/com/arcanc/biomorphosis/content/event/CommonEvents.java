@@ -16,6 +16,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockTurret;
 import com.arcanc.biomorphosis.content.entity.BioEntityType;
 import com.arcanc.biomorphosis.content.entity.trades.Trades;
+import com.arcanc.biomorphosis.content.effect.InfestationHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
@@ -44,6 +45,7 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerCapabilitiesEvent);
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
 	    GenomeHandler.register(modEventBus);
+	    InfestationHandler.register(modEventBus);
 		ChestMenu.registerEvents();
 	    Trades.register(modEventBus);
 		

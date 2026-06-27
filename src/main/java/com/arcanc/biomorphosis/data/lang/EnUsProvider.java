@@ -321,6 +321,8 @@ public class EnUsProvider extends LanguageProvider
 	    //-----------------------------
 	    //DAMAGE TYPES
 		this.add("death.attack.biomorphosis:impossible_mutation", "Player %s mutated too hard");
+		this.add("death.attack.biomorphosis:infestation", "%s was consumed by infestation");
+		this.add(Registration.EffectReg.INFESTATION.get().getDescriptionId(), "Infestation");
     }
 
     private void addFluidDescription(Registration.FluidReg.FluidEntry entry, String description)

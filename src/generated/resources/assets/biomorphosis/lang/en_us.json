@@ -251,6 +251,8 @@
   "block.biomorphosis.stomach": "Organic Reprocessor",
   "block.biomorphosis.trampled_dirt": "Trampled Dirt",
   "death.attack.biomorphosis:impossible_mutation": "Player %s mutated too hard",
+  "death.attack.biomorphosis:infestation": "%s was consumed by infestation",
+  "effect.biomorphosis.infestation": "Infestation",
   "entity.biomorphosis.blacksmith": "Blacksmith",
   "entity.biomorphosis.captain": "Captain",
   "entity.biomorphosis.guard": "Queen Guard",

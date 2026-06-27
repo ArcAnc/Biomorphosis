@@ -41,6 +41,16 @@ public class DamageHelper
 				Vec3.atLowerCornerOf(turret.getBlockPos()));
 		return dealDamage(source, amount, target);
 	}
+
+	public static boolean infestationDamage(float amount, LivingEntity target)
+	{
+		Level level = target.level();
+		DamageSource source = new DamageSource(
+				level.registryAccess().
+						lookupOrThrow(Registries.DAMAGE_TYPE).
+						getOrThrow(Registration.DamageTypeReg.INFESTATION));
+		return dealDamage(source, amount, target);
+	}
 	
 	public static boolean dealDamage(DamageSource source, float amount, Entity target)
 	{

@@ -45,6 +45,12 @@ public class BioDamageTypesProvider extends BioRegistryData
 		
 		addDamageType(new DamageType(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION.location().toString(),
 				0));
+
+		addDamageType(new DamageType(Registration.DamageTypeReg.INFESTATION.location().toString(),
+				DamageScaling.NEVER,
+				0.0f,
+				DamageEffects.HURT,
+				DeathMessageType.DEFAULT));
 	}
 	
 	private void addDamageType(DamageType type)

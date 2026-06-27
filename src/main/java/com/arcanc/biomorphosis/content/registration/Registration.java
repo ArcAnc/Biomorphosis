@@ -22,7 +22,9 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
+import com.arcanc.biomorphosis.content.effect.InfestationEffect;
 import com.arcanc.biomorphosis.content.entity.*;
+import com.arcanc.biomorphosis.content.entity.ai.brain.sensor.SwarmHurtBySensor;
 import com.arcanc.biomorphosis.content.entity.renderer.*;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.BlacksmithRenderer;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.CaptainRenderer;
@@ -86,10 +88,12 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.MenuProvider;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
+import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -1977,6 +1981,19 @@ public final class Registration
 	{
 		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
 		public static final ResourceKey<DamageType> IMPOSSIBLE_MUTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("impossible_mutation"));
+		public static final ResourceKey<DamageType> INFESTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("infestation"));
+	}
+
+	public static class EffectReg
+	{
+		public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Database.MOD_ID);
+
+		public static final DeferredHolder<MobEffect, InfestationEffect> INFESTATION = EFFECTS.register("infestation", InfestationEffect :: new);
+
+		private static void init (final IEventBus bus)
+		{
+			EFFECTS.register(bus);
+		}
 	}
 
     public static class RecipeReg
@@ -2152,18 +2169,32 @@ public final class Registration
     public static class AIReg
     {
         public static final DeferredRegister<MemoryModuleType<?>> MEMORY_MODULES = DeferredRegister.create(BuiltInRegistries.MEMORY_MODULE_TYPE, Database.MOD_ID);
+        public static final DeferredRegister<SensorType<?>> SENSOR_TYPES = DeferredRegister.create(BuiltInRegistries.SENSOR_TYPE, Database.MOD_ID);
 
         public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<UUID>> QUEEN_GUARD_QUEEN_UUID = register("queen_uuid", UUIDUtil.CODEC);
         public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> QUEEN_GUARD_PATROL_POS = register("patrol_pos", BlockPos.CODEC);
+        public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> INFESTOR_HOME_POS = register("infestor_home_pos", BlockPos.CODEC);
+        public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<BlockPos>> INFESTOR_RETURN_POS = register("infestor_return_pos", BlockPos.CODEC);
+        public static final DeferredHolder<MemoryModuleType<?>, MemoryModuleType<LivingEntity>> INFESTOR_ALERT_TARGET = register("infestor_alert_target");
+
+        public static final DeferredHolder<SensorType<?>, SensorType<SwarmHurtBySensor>> INFESTOR_SWARM_HURT_BY = SENSOR_TYPES.register(
+                "infestor_swarm_hurt_by",
+                () -> new SensorType<>(SwarmHurtBySensor :: new));
 
         private static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String name, Codec<T> codec)
         {
             return MEMORY_MODULES.register(name, () -> new MemoryModuleType<>(Optional.ofNullable(codec)));
         }
 
+        private static <T> DeferredHolder<MemoryModuleType<?>, MemoryModuleType<T>> register(String name)
+        {
+            return MEMORY_MODULES.register(name, () -> new MemoryModuleType<>(Optional.empty()));
+        }
+
         private static void init (final IEventBus bus)
         {
             MEMORY_MODULES.register(bus);
+            SENSOR_TYPES.register(bus);
         }
     }
 
@@ -2286,19 +2317,20 @@ public final class Registration
         BookDataReg.init(bus);
         RecipeReg.init(bus);
         SoundReg.init(bus);
+	    EffectReg.init(bus);
         BlockReg.init(bus);
         ItemReg.init(bus);
-        //AIReg.init(bus);
+        AIReg.init(bus);
         FluidReg.init(bus);
 	    GenomeReg.init(bus);
-	    OrganicArmorReg.init(bus);
         BETypeReg.init(bus);
         EntityReg.init(bus);
 	    FeatureReg.init(bus);
         MenuTypeReg.init(bus);
 	    ParticleReg.init(bus);
         CreativeTabReg.init(bus);
-        StructureTypeReg.init(bus);
+	    OrganicArmorReg.init(bus);
+	    StructureTypeReg.init(bus);
 	    PalladinOrderReg.init(bus);
 	    StructurePieceTypeReg.init(bus);
     }
