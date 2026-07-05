@@ -44,8 +44,11 @@ public class FittingMultiLineText extends AbstractScrollWidget
 	@Override
 	public void setMessage(Component message)
 	{
+		if (this.getMessage().equals(message))
+			return;
 		super.setMessage(message);
 		this.multilineWidget.setMessage(message);
+		this.setScrollAmount(this.scrollAmount());
 	}
 	
 	@Override

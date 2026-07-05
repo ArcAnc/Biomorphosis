@@ -1,7 +1,8 @@
-// 1.21.1	2026-06-21T16:05:06.321183494	Recipes
+// 1.21.1	2026-06-28T14:54:02.348484911	Recipes
 6dfcf11c8f97763260ef1883cd57b5be205a4f01 data/biomorphosis/advancement/recipes/chamber/catcher_from_chamber.json
 000edacff53fd3bead7d245df5f70e1cf789411e data/biomorphosis/advancement/recipes/chamber/chest_from_chamber.json
 07bbe973e530fc89f141bbea49db03d56d1b6034 data/biomorphosis/advancement/recipes/chamber/crusher_from_chamber.json
+7aa6195ae7ee281e67501290c2490b45abe1be9f data/biomorphosis/advancement/recipes/chamber/fluid_capsule_from_chamber.json
 d9e392e78067f470eeb97f15c93f78550e036b65 data/biomorphosis/advancement/recipes/chamber/fluid_storage_from_chamber.json
 169b840e1964ed593eb7e7f7347372731ac92d80 data/biomorphosis/advancement/recipes/chamber/fluid_transmitter_from_chamber.json
 dbd17d916962cdb31fedb46d53f2c889cf65f200 data/biomorphosis/advancement/recipes/chamber/forge_from_chamber.json
@@ -195,6 +196,7 @@ fb0b56c49daa5a65d612507630b061258171f679 data/biomorphosis/advancement/recipes/s
 7734991e4d9922eae6c216124ab50a7d385dc6f0 data/biomorphosis/recipe/chamber/catcher_from_chamber.json
 ca5c49a1e52ccb151b4e0e001f10ccab0ada1bda data/biomorphosis/recipe/chamber/chest_from_chamber.json
 11958216ca3da7f949f686737fe8cdb09f314411 data/biomorphosis/recipe/chamber/crusher_from_chamber.json
+cb8a79150cd3527ad5b820892ad5f9b9475f49ed data/biomorphosis/recipe/chamber/fluid_capsule_from_chamber.json
 30015a996870a47962ba27539a037a749085a10d data/biomorphosis/recipe/chamber/fluid_storage_from_chamber.json
 32ab9e92ee01fa2affeb678191a2b0410457bd98 data/biomorphosis/recipe/chamber/fluid_transmitter_from_chamber.json
 2ba1f4b7898f2cfaf46114b85eee26948cf3a856 data/biomorphosis/recipe/chamber/forge_from_chamber.json

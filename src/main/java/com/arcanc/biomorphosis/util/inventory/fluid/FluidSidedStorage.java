@@ -76,7 +76,7 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
 
         int remaining = value.getAmount();
         int filledTotal = 0;
-        FluidStack filledStack = new FluidStack(value.getFluid(), 0);
+        FluidStack filledStack = value.copy();
 
         for (IFluidTank tank : getHoldersForAccess(mode))
         {
@@ -87,7 +87,9 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
             if (remaining <= 0)
                 break;
         }
-        return new FluidStack(value.getFluid(), filledTotal);
+        FluidStack result = value.copy();
+        result.setAmount(filledTotal);
+        return result;
     }
 
     @Override
@@ -103,7 +105,9 @@ public class FluidSidedStorage extends BasicSidedStorage<FluidSidedStorage, Flui
 
         for (IFluidTank tank : getHoldersForAccess(mode))
         {
-            FluidStack drained = tank.drain(new FluidStack(value.getFluid(), remaining), isSimulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
+            FluidStack draining = value.copy();
+            draining.setAmount(remaining);
+            FluidStack drained = tank.drain(draining, isSimulate ? FluidAction.SIMULATE : FluidAction.EXECUTE);
             if (!drained.isEmpty())
             {
                 if (drainedTotal.isEmpty())

@@ -19,6 +19,7 @@ import com.arcanc.biomorphosis.content.entity.trades.Trades;
 import com.arcanc.biomorphosis.content.effect.InfestationHandler;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChestMenu;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.item.FluidCapsuleItem;
 import com.arcanc.biomorphosis.content.mutations.GenomeHandler;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -81,6 +82,7 @@ public class CommonEvents
         Registration.ItemReg.ITEMS.getEntries().stream().filter(item -> item.get() instanceof BioBucketItem).
                 map(DeferredHolder :: get).
                 forEach(item -> event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidBucketWrapper(stack), item));
+	    event.registerItem(Capabilities.FluidHandler.ITEM, (stack, ctx) -> new FluidCapsuleItem.CapsuleFluidHandler(stack), Registration.ItemReg.FLUID_CAPSULE.get());
 
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_FLUID_STORAGE.get(), BioFluidStorage :: getHandler);
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, Registration.BETypeReg.BE_MULTIBLOCK_FLUID_STORAGE.get(), MultiblockFluidStorage :: getHandler);

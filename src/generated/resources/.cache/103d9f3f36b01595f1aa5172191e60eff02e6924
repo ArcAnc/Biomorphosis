@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-21T17:39:12.676879172	Registries
+// 1.21.1	2026-06-28T14:54:02.369032978	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -33,6 +33,7 @@ f08247e998d45c197565d9c2ec2fbcb76334944d data/biomorphosis/book/page/v262.json
 a14d46acf2222f3e3263583cfe89011376b0733a data/biomorphosis/book/page/v2632.json
 d09ebc70c0f48b74d1dd589fe691924f5732fa02 data/biomorphosis/book/page/v2633.json
 5ff9e6254461dc6f77d7ad80848d040b3e3bf843 data/biomorphosis/damage_type/impossible_mutation.json
+67f11f83c5257722666b96558a04c0f155a9dce8 data/biomorphosis/damage_type/infestation.json
 32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
 e5b6429b831da25f1ad45182a288e5149509445e data/biomorphosis/genome/effect/balance.json
 443790f4a48be4d14797b21d67aa2d60c86dc206 data/biomorphosis/genome/effect/damage.json

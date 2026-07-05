@@ -26,7 +26,15 @@ public class Database
     public static final class DataComponents
     {
         public static final String FLUID_TRANSMIT = "fluid_transmit_data";
+        public static final String FLUID_CAPSULE = "fluid_capsule";
     }
+	
+	public static final class DataAttachments
+	{
+		public static final String GENOME = "genome";
+		public static final String UNLOCKED_GENOME = "unlocked_genome";
+		public static final String ORGANIC_ARMOR = "organic_armor";
+	}
 
     public static final class Integration
     {
@@ -123,6 +131,15 @@ public class Database
 				public static final String STATS = rl(GUI + ".tooltip.organic_armor.stats").toLanguageKey();
 				public static final Function<ResourceLocation, String> FLUID_EFFECT = input -> input.withPrefix(GUI + ".tooltip.organic_armor.effect.").toLanguageKey();
 			}
+		}
+
+		public static final class OrganicArmorInventory
+		{
+			public static final String TITLE = rl(GUI + ".organic_armor_inventory.title").toLanguageKey();
+			public static final String BUTTON = rl(GUI + ".organic_armor_inventory.button").toLanguageKey();
+			public static final String EFFECTS = rl(GUI + ".organic_armor_inventory.effects").toLanguageKey();
+			public static final String NO_ARMOR = rl(GUI + ".organic_armor_inventory.no_armor").toLanguageKey();
+			public static final String ARMOR = rl(GUI + ".organic_armor_inventory.armor").toLanguageKey();
 		}
 		
         public static final class InfoArea

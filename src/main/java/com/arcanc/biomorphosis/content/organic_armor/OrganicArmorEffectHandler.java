@@ -61,6 +61,15 @@ public class OrganicArmorEffectHandler
 		EFFECTS_BY_FLUID.put(fluidTypeId, effect);
 	}
 
+	public static boolean hasFluidEffect(FluidStack fluid)
+	{
+		if (fluid.isEmpty())
+			return false;
+
+		ResourceLocation fluidTypeId = getFluidTypeId(fluid.getFluidType());
+		return fluidTypeId != null && EFFECTS_BY_FLUID.containsKey(fluidTypeId);
+	}
+
 	public static void tickArmor(LivingEntity entity)
 	{
 		if (!(entity.level() instanceof ServerLevel))

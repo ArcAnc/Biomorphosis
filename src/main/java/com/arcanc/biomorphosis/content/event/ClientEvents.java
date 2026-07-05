@@ -26,6 +26,7 @@ import com.arcanc.biomorphosis.content.fluid.BioFluidType;
 import com.arcanc.biomorphosis.content.fluid.FluidLevelAnimator;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
+import com.arcanc.biomorphosis.content.gui.screen.container.OrganicArmorInventoryScreen;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -148,6 +149,7 @@ public final class ClientEvents
 				filter(item -> item instanceof BioBucketItem).
 				forEach(item ->
 				event.register(new DynamicFluidContainerModel.Colors(), item));
+		event.register(new DynamicFluidContainerModel.Colors(), Registration.ItemReg.FLUID_CAPSULE.get());
 	}
 	
     private static void registerClientExtensions(final RegisterClientExtensionsEvent event)
@@ -193,6 +195,8 @@ public final class ClientEvents
 
     private static void registerMenuScreens(final RegisterMenuScreensEvent event)
     {
+		event.register(Registration.MenuTypeReg.ORGANIC_ARMOR_INVENTORY.getType(), OrganicArmorInventoryScreen :: new);
+
         Registration.BETypeReg.BLOCK_ENTITIES.getEntries().stream().map(DeferredHolder :: get).
                 filter(type -> type instanceof Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>).
                 map(type -> (Registration.BETypeReg.BioBlockEntityType<? extends BlockEntity, ?, ?>)type).

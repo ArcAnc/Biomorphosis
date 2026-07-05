@@ -222,6 +222,12 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
         return new MenuContext(pMenuType, pContainerId, type, () -> {
         }, $ -> true);
     }
+
+	protected static MenuContext genericCtx(MenuType<?> pMenuType, int pContainerId)
+	{
+		return new MenuContext(pMenuType, pContainerId, ContextType.GENERIC, () -> {
+		}, player -> true);
+	}
     
     //FIXME: check positions
     protected void addStandardInventorySlots(Inventory playerInventory, int x, int y)

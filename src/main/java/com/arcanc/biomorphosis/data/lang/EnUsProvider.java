@@ -45,9 +45,18 @@ public class EnUsProvider extends LanguageProvider
 	    this.addItem(Registration.ItemReg.ZIRIS_WING, "Ziris Wing");
 	    this.addItem(Registration.ItemReg.WRENCH, "Manipulator");
         this.addItem(Registration.ItemReg.FORGE_UPGRADE, "Gene Optimizer");
+	    this.addItem(Registration.ItemReg.FLUID_CAPSULE, "Fluid Capsule");
 		this.addItem(Registration.ItemReg.INJECTOR, "Injector");
 		this.addItem(Registration.ItemReg.MEAT_MELON_SEEDS, "Meat Melon Seeds");
-		this.addItem(Registration.ItemReg.FLESH_HOE, "Flesh Hoe");
+	    this.addItem(Registration.ItemReg.FLESH_HOE, "Flesh Hoe");
+	    this.add("item.biomorphosis.fluid_capsule.empty", "Empty");
+	    this.add("item.biomorphosis.fluid_capsule.amount", "%s / %s mB");
+
+		this.add(Database.GUI.OrganicArmorInventory.TITLE, "Inventory");
+		this.add(Database.GUI.OrganicArmorInventory.BUTTON, "Organic armor");
+		this.add(Database.GUI.OrganicArmorInventory.EFFECTS, "Organic armor effects");
+		this.add(Database.GUI.OrganicArmorInventory.NO_ARMOR, "No organic armor installed");
+		this.add(Database.GUI.OrganicArmorInventory.ARMOR, "Armor: %s");
 		
         this.addBlock(Registration.BlockReg.NORPH, "Norph");
         this.addBlock(Registration.BlockReg.NORPH_OVERLAY, "Norph");

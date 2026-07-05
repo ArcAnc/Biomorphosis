@@ -135,6 +135,7 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
+import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
@@ -165,6 +166,12 @@ public final class Registration
                                 <ByteBuf, Vec3>list(2).
                                 apply(BioCodecs.VEC_3_STREAM_CODEC)));
 
+	    public static final DeferredHolder<DataComponentType<?>, DataComponentType<FluidCapsuleItem.CapsuleContainer>> FLUID_CAPSULE = TYPES.registerComponentType(
+			    Database.DataComponents.FLUID_CAPSULE,
+			    builder -> builder.
+					    persistent(FluidCapsuleItem.CapsuleContainer.CODEC).
+					    networkSynchronized(FluidCapsuleItem.CapsuleContainer.STREAM_CODEC));
+
         private static void init (final IEventBus bus)
         {
             TYPES.register(bus);
@@ -176,21 +183,21 @@ public final class Registration
 		public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Database.MOD_ID);
 
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<GenomeInstance>> GENOME = TYPES.register(
-				"genome",
+				Database.DataAttachments.GENOME,
 				() -> AttachmentType.builder(GenomeInstance :: empty).
 						serialize(GenomeInstance.CODEC).
 						copyOnDeath().
 						build());
 
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<UnlockedGenome>> UNLOCKED_GENOME = TYPES.register(
-				"unlocked_genome",
+				Database.DataAttachments.UNLOCKED_GENOME,
 				() -> AttachmentType.builder(UnlockedGenome :: empty).
 						serialize(UnlockedGenome.CODEC).
 						copyOnDeath().
 						build());
 
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<OrganicArmorState>> ORGANIC_ARMOR = TYPES.register(
-				"organic_armor",
+				Database.DataAttachments.ORGANIC_ARMOR,
 				() -> AttachmentType.builder(OrganicArmorState :: empty).
 						serialize(OrganicArmorState.CODEC).
 						copyOnDeath().
@@ -1558,6 +1565,7 @@ public final class Registration
 	    public static final DeferredItem<BioBaseItem> ZIRIS_WING = register("ziris_wing", BioBaseItem::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
 		public static final DeferredItem<WrenchItem> WRENCH = register("wrench", WrenchItem :: new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBaseItem> FLESH_PIECE = register("flesh_piece", BioBaseItem ::new, properties -> properties.rarity(RarityExtension.BIO_COMMON.getValue()));
+	    public static final DeferredItem<FluidCapsuleItem> FLUID_CAPSULE = register("fluid_capsule", FluidCapsuleItem :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<BioBook> BOOK = register("book", BioBook :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_COMMON.getValue()));
         public static final DeferredItem<Item> FORGE_UPGRADE = register("forge_upgrade", BioBaseItem :: new, properties -> properties.stacksTo(1).rarity(RarityExtension.BIO_RARE.getValue()));
 		public static final DeferredItem<GeneInjector> INJECTOR = register("injector", GeneInjector :: new, properties -> properties.stacksTo(1).durability(100).attributes(ItemAttributeModifiers.builder().
@@ -1896,6 +1904,11 @@ public final class Registration
                 "chest",
                 ChestMenu :: makeServer,
                 ChestMenu :: makeClient);
+
+		public static final ArgContainer<Player, OrganicArmorInventoryMenu> ORGANIC_ARMOR_INVENTORY = registerArg(
+				"organic_armor_inventory",
+				OrganicArmorInventoryMenu :: makeServer,
+				OrganicArmorInventoryMenu :: makeClient);
 
         public static <T, C extends BioContainerMenu>
         ArgContainer<T, C> registerArg(

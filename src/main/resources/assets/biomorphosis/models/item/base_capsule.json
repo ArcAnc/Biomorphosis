@@ -1,0 +1,7 @@
+{
+    "parent": "neoforge:item/default",
+    "textures": {
+        "base": "biomorphosis:item/fluid_capsule",
+        "fluid": "biomorphosis:item/mask/fluid_capsule"
+    }
+}

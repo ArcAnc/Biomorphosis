@@ -30,6 +30,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.FluidStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class OrganicArmorHelper
@@ -136,6 +138,60 @@ public class OrganicArmorHelper
 				orElse(0);
 	}
 
+	public static boolean canFillFluid(LivingEntity entity, FluidStack fluid)
+	{
+		if (!OrganicArmorEffectHandler.hasFluidEffect(fluid))
+			return false;
+		return getFillablePieces(entity, fluid).stream().anyMatch(entry -> entry.space() > 0);
+	}
+
+	public static int fillFluid(ServerPlayer player, FluidStack fluid)
+	{
+		if (!OrganicArmorEffectHandler.hasFluidEffect(fluid))
+			return 0;
+
+		List<FillablePiece> fillable = getFillablePieces(player, fluid);
+		int remaining = fluid.getAmount();
+		List<OrganicArmorState.Piece> updated = new ArrayList<>(getState(player).pieces());
+
+		while (remaining > 0)
+		{
+			List<FillablePiece> active = fillable.stream().filter(entry -> entry.space() > 0).toList();
+			if (active.isEmpty())
+				break;
+
+			int share = Math.max(1, remaining / active.size());
+			boolean changed = false;
+			for (FillablePiece entry : active)
+			{
+				if (remaining <= 0)
+					break;
+
+				int filled = Math.min(entry.space(), share);
+				entry.fill(filled);
+				remaining -= filled;
+				changed = true;
+			}
+			if (!changed)
+				break;
+		}
+
+		int filledTotal = fluid.getAmount() - remaining;
+		if (filledTotal <= 0)
+			return 0;
+
+		for (FillablePiece entry : fillable)
+		{
+			updated.removeIf(piece -> piece.slot() == entry.piece().slot());
+			updated.add(entry.toPiece(fluid));
+		}
+
+		player.setData(Registration.DataAttachmentsReg.ORGANIC_ARMOR, new OrganicArmorState(updated));
+		rebuildArmor(player);
+		sync(player, player);
+		return filledTotal;
+	}
+
 	public static void rebuildArmor(LivingEntity entity)
 	{
 		AttributeInstance instance = entity.getAttribute(Attributes.ARMOR);
@@ -163,6 +219,65 @@ public class OrganicArmorHelper
 	private static ResourceLocation getArmorModifierId(EquipmentSlot slot)
 	{
 		return ARMOR_MODIFIER_BASE.withSuffix("_" + slot.getName() + "_armor");
+	}
+
+	private static List<FillablePiece> getFillablePieces(LivingEntity entity, FluidStack fluid)
+	{
+		List<FillablePiece> fillable = new ArrayList<>();
+		for (OrganicArmorState.Piece piece : getState(entity).pieces())
+		{
+			OrganicArmorType type = getType(entity.level(), piece).orElse(null);
+			if (type == null)
+				continue;
+
+			FluidStack current = piece.fluid();
+			if (!current.isEmpty() && !FluidStack.isSameFluidSameComponents(current, fluid))
+				continue;
+			if (current.getAmount() >= type.capacity())
+				continue;
+
+			fillable.add(new FillablePiece(piece, type.capacity(), current.getAmount()));
+		}
+		return fillable;
+	}
+
+	private static class FillablePiece
+	{
+		private final OrganicArmorState.Piece piece;
+		private final int capacity;
+		private int amount;
+
+		private FillablePiece(OrganicArmorState.Piece piece, int capacity, int amount)
+		{
+			this.piece = piece;
+			this.capacity = capacity;
+			this.amount = amount;
+		}
+
+		private OrganicArmorState.Piece piece()
+		{
+			return this.piece;
+		}
+
+		private int space()
+		{
+			return this.capacity - this.amount;
+		}
+
+		private void fill(int amount)
+		{
+			this.amount += amount;
+		}
+
+		private OrganicArmorState.Piece toPiece(FluidStack source)
+		{
+			if (this.amount <= 0)
+				return new OrganicArmorState.Piece(this.piece.slot(), this.piece.typeId(), FluidStack.EMPTY);
+
+			FluidStack filled = source.copy();
+			filled.setAmount(this.amount);
+			return new OrganicArmorState.Piece(this.piece.slot(), this.piece.typeId(), filled);
+		}
 	}
 
 	private static void returnSourceArmor(ServerPlayer player, OrganicArmorType type, EquipmentSlot slot)

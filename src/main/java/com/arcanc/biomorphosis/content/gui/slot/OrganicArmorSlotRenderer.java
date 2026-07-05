@@ -9,12 +9,12 @@
 
 package com.arcanc.biomorphosis.content.gui.slot;
 
+import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
+import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipData;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorState;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
-import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipData;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -24,7 +24,6 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
@@ -36,6 +35,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.Slot;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
 import org.jetbrains.annotations.Nullable;
 
@@ -143,7 +143,7 @@ public class OrganicArmorSlotRenderer
 		IClientFluidTypeExtensions renderProps = IClientFluidTypeExtensions.of(stack.getFluid());
 		TextureAtlasSprite still = RenderHelper.mc().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).
 				apply(renderProps.getStillTexture());
-		int color = renderProps.getTintColor();
+		int color = MathHelper.ColorHelper.opaque(renderProps.getTintColor());
 		guiGraphics.blit(
 				x,
 				y,
@@ -184,7 +184,7 @@ public class OrganicArmorSlotRenderer
 			return new OrganicArmorData(piece.typeId(), 0, 0, new FluidTank(0));
 
 		FluidTank tank = new FluidTank(type.capacity());
-		tank.fill(piece.fluid(), net.neoforged.neoforge.fluids.capability.IFluidHandler.FluidAction.EXECUTE);
+		tank.fill(piece.fluid(), IFluidHandler.FluidAction.EXECUTE);
 		return new OrganicArmorData(piece.typeId(), piece.hasFluid() ? type.armor() : type.drainedArmor(), type.capacity(), tank);
 	}
 

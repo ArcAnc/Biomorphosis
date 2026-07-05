@@ -2,20 +2,12 @@
   "multipart": [
     {
       "apply": {
-        "model": "biomorphosis:block/moss"
-      },
-      "when": {
-        "north": "true"
-      }
-    },
-    {
-      "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 180
+        "y": 90
       },
       "when": {
-        "south": "true"
+        "east": "true"
       }
     },
     {
@@ -26,6 +18,14 @@
       },
       "when": {
         "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomorphosis:block/moss"
+      },
+      "when": {
+        "north": "true"
       }
     },
     {
@@ -42,10 +42,10 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 90
+        "y": 180
       },
       "when": {
-        "east": "true"
+        "south": "true"
       }
     }
   ]

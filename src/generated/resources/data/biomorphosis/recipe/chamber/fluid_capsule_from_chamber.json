@@ -1,0 +1,47 @@
+{
+  "type": "biomorphosis:chamber",
+  "id": "chamber",
+  "input": [
+    {
+      "amount": 1,
+      "ingredient": {
+        "tag": "c:barrels/wooden"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    },
+    {
+      "amount": 1,
+      "ingredient": {
+        "item": "biomorphosis:flesh_piece"
+      }
+    }
+  ],
+  "resources": {
+    "biomass": {
+      "per_second": 0.0,
+      "required": false
+    },
+    "time": 100
+  },
+  "result": {
+    "count": 1,
+    "id": "biomorphosis:fluid_capsule"
+  }
+}

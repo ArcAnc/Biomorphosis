@@ -35,8 +35,8 @@ public class FluidStackHolder implements IFluidTank
     public FluidStackHolder(FluidStack stack, int capacity, Predicate<FluidStack> validator, HolderCallback callback)
     {
         Preconditions.checkArgument(capacity > 0, "Capacity must be greater than zero");
-        this.fluid = Preconditions.checkNotNull(stack, "FluidStack can't be null");
         this.capacity = capacity;
+        this.fluid = copyWithLimit(Preconditions.checkNotNull(stack, "FluidStack can't be null"), capacity);
         this.validator = Preconditions.checkNotNull(validator, "Validator can't be null");
         this.callback = Preconditions.checkNotNull(callback, "Callback can't be null");
     }
@@ -44,7 +44,7 @@ public class FluidStackHolder implements IFluidTank
     @Override
     public FluidStack getFluid()
     {
-        return this.fluid;
+        return this.fluid.copy();
     }
 
     public void setAmount(int amount)
@@ -55,7 +55,7 @@ public class FluidStackHolder implements IFluidTank
 
     public void setFluid(FluidStack fluid)
     {
-        this.fluid = new FluidStack(fluid.getFluid(), Mth.clamp(fluid.getAmount(), 0, this.capacity));
+        this.fluid = copyWithLimit(fluid, this.capacity);
         update();
     }
 
@@ -103,7 +103,11 @@ public class FluidStackHolder implements IFluidTank
         if (action.execute())
         {
             if (this.fluid.isEmpty())
-                setFluid(new FluidStack(stack.getFluid(), fillAmount));
+            {
+                FluidStack filled = stack.copy();
+                filled.setAmount(fillAmount);
+                setFluid(filled);
+            }
             else
                 setAmount(this.fluid.getAmount() + fillAmount);
         }
@@ -117,7 +121,8 @@ public class FluidStackHolder implements IFluidTank
             return FluidStack.EMPTY;
 
         int drained = Math.min(amount, fluid.getAmount());
-        FluidStack drainedStack = new FluidStack(fluid.getFluid(), drained);
+        FluidStack drainedStack = fluid.copy();
+        drainedStack.setAmount(drained);
 
         if (action.execute())
         {
@@ -139,6 +144,16 @@ public class FluidStackHolder implements IFluidTank
     {
         this.fluid = FluidStack.EMPTY;
         update();
+    }
+
+    private static FluidStack copyWithLimit(FluidStack fluid, int capacity)
+    {
+        if (fluid.isEmpty() || capacity <= 0)
+            return FluidStack.EMPTY;
+
+        FluidStack copy = fluid.copy();
+        copy.setAmount(Mth.clamp(copy.getAmount(), 0, capacity));
+        return copy;
     }
 
     public CompoundTag serializeNBT(HolderLookup.Provider registries)

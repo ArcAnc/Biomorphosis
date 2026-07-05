@@ -14,6 +14,7 @@ import com.arcanc.biomorphosis.content.gui.component.info.InfoArea;
 import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
 import com.arcanc.biomorphosis.content.network.NetworkEngine;
 import com.arcanc.biomorphosis.content.network.packets.C2SGuiData;
+import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.base.Preconditions;
@@ -22,6 +23,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -145,7 +147,7 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         {
             guiGraphics.blitSprite(BioSlot.FRAME, i - 1, j - 1, 18, 18);
             Vector4f color = BioSlot.NORMAL_SLOT_COLOR.div(255f, new Vector4f());
-            GuiSpriteManager atlas = minecraft.getGuiSprites();
+            GuiSpriteManager atlas = this.minecraft.getGuiSprites();
             TextureAtlasSprite sprite = atlas.getSprite(BioSlot.MASK);
             guiGraphics.blit(
                     i - 1, j - 1,
@@ -155,7 +157,8 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
                     color.x(),
                     color.y(),
                     color.z(),
-                    color.w());        }
+                    color.w());
+        }
 
         guiGraphics.pose().translate(0.0F, 0.0F, 100.0F);
         if (itemstack.isEmpty() && slot.isActive())
@@ -163,7 +166,14 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
             Pair<ResourceLocation, ResourceLocation> resourcelocation = slot.getNoItemIcon();
             if (resourcelocation != null)
             {
-                guiGraphics.blitSprite(resourcelocation.getSecond(), i, j, 16, 16);
+                ResourceLocation atlasLoc = resourcelocation.getFirst();
+                if (atlasLoc.equals(BioSpriteSourceProvider.GUI_ATLAS))
+                    guiGraphics.blitSprite(resourcelocation.getSecond(), i, j, 16, 16);
+                else
+                {
+                    TextureAtlasSprite textureatlassprite = this.minecraft.getTextureAtlas(atlasLoc).apply(resourcelocation.getSecond());
+                    guiGraphics.blit(i, j, 0, 16, 16, textureatlassprite);
+                }
                 flag1 = true;
             }
         }

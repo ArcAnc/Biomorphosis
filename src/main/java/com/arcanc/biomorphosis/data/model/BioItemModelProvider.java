@@ -15,6 +15,7 @@ import com.arcanc.biomorphosis.util.Database;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.client.model.generators.ModelProvider;
@@ -43,6 +44,7 @@ public class BioItemModelProvider extends ItemModelProvider
 		basicItem(Registration.ItemReg.WRENCH.get());
 		basicItem(Registration.ItemReg.BOOK.get());
 		basicItem(Registration.ItemReg.FORGE_UPGRADE.get());
+		createFluidCapsule();
 		handheldItem(Registration.ItemReg.INJECTOR.get());
 		basicItem(Registration.ItemReg.MEAT_MELON_SEEDS.get());
 		handheldItem(Registration.ItemReg.FLESH_HOE.get());
@@ -83,6 +85,15 @@ public class BioItemModelProvider extends ItemModelProvider
 		withExistingParent(itemPrefix(entry.bucket()), Database.neoRl(itemPrefix("bucket_drip"))).
 				customLoader(DynamicFluidContainerModelBuilder :: begin).
 				fluid(entry.still().get()).
+				applyFluidLuminosity(true).
+				applyTint(true);
+	}
+	
+	private void createFluidCapsule()
+	{
+		withExistingParent(itemPrefix(Registration.ItemReg.FLUID_CAPSULE), Database.rl(itemPrefix("base_capsule"))).
+				customLoader(DynamicFluidContainerModelBuilder :: begin).
+				fluid(Fluids.EMPTY).
 				applyFluidLuminosity(true).
 				applyTint(true);
 	}

@@ -323,6 +323,18 @@ public class BioRecipeProvider extends RecipeProvider
 				unlockedBy("has_" + Registration.ItemReg.FLESH_PIECE, has(Registration.ItemReg.FLESH_PIECE)).
 				group(group).
 				save(output, Database.rlStr("injector_from_chamber"));
+
+		ChamberRecipeBuilder.newBuilder(100).
+				addInput(new IngredientWithSize(Ingredient.of(Tags.Items.BARRELS_WOODEN))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				addInput(new IngredientWithSize(Ingredient.of(Registration.ItemReg.FLESH_PIECE))).
+				setResult(new ItemStack(Registration.ItemReg.FLUID_CAPSULE.get())).
+				unlockedBy("has_" + Tags.Items.BARRELS_WOODEN.location().getPath(), has(Tags.Items.BARRELS_WOODEN)).
+				unlockedBy(getHasName(Registration.ItemReg.FLESH_PIECE.get()), has(Registration.ItemReg.FLESH_PIECE)).
+				group(group).
+				save(output, Database.rlStr("fluid_capsule_from_chamber"));
 		
 		ChamberRecipeBuilder.newBuilder(100).
 				addInput(new IngredientWithSize(Ingredient.of(Tags.Items.SEEDS_MELON))).
