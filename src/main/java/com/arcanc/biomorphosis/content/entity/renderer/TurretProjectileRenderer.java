@@ -13,7 +13,7 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 import com.arcanc.biomorphosis.content.entity.TurretProjectile;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PEntityRenderLayer;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
@@ -79,7 +79,7 @@ public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
 				deferredLayers);
 	}
 	
-	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
 	{
 		event.addTextureLocation(TEXTURE);
 	}

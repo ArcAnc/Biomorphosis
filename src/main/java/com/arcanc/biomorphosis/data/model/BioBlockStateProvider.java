@@ -1652,7 +1652,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 					from(0,0,0).
 					to(16, 16, 16).
 					allFaces((direction, faceBuilder) ->
-					faceBuilder.uvs(0, 0, 16, 16)).
+					faceBuilder.uvs(0, 0, 16, 16).cullface(direction)).
 					texture("#all").end();
 			
 			registerModels(blocks[q], blockModels[q]);

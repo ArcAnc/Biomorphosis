@@ -16,7 +16,7 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
@@ -101,7 +101,7 @@ public class MultiblockMorpherRenderer extends PBlockRenderer<MultiblockMorpher>
 		//poseStack.popPose();
 	}
 	
-	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
 	{
 		event.addTextureLocation(TEXTURE);
 	}

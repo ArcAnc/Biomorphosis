@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
@@ -27,7 +27,6 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.packs.resources.Resource;
 import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.neoforged.neoforge.fluids.FluidStack;
 import org.jetbrains.annotations.Nullable;
@@ -116,7 +115,7 @@ public class BioCatcherRenderer extends PBlockRenderer<BioCatcher>
         builder.addVertex(pose, maxX, y, maxZ).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
     
-    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(TEXTURE);
     }

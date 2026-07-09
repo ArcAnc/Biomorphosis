@@ -28,6 +28,7 @@ import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandle
 import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.gui.screen.container.OrganicArmorInventoryScreen;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorRenderHandler;
 import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.*;
@@ -76,7 +77,8 @@ public final class ClientEvents
     public static void registerClientEvents(final IEventBus modEventBus)
     {
 		modEventBus.addListener(ClientEvents :: clientSetup);
-        modEventBus.addListener(ClientEvents :: gatherData);
+	    registerPulseLibClientData(modEventBus);
+	    modEventBus.addListener(ClientEvents :: gatherData);
         modEventBus.addListener(ClientEvents :: registerRenderers);
 		modEventBus.addListener(ClientEvents :: registerItemColors);
 	    modEventBus.addListener(ClientEvents :: registerBlockColors);
@@ -304,5 +306,12 @@ public final class ClientEvents
 		modEventBus.addListener(WorkerRenderer :: registerTextures);
 		modEventBus.addListener(ZirisRenderer :: registerTextures);
 		modEventBus.addListener(MelonMawRenderer :: registerTextures);
+		modEventBus.addListener(OrganicArmorRenderHandler :: registerTextures);
+	}
+
+	private static void registerPulseLibClientData(final IEventBus modEventBus)
+	{
+		modEventBus.addListener(OrganicArmorRenderHandler :: registerLifelessArmor);
+		modEventBus.addListener(OrganicArmorRenderHandler :: registerOrganicArmor);
 	}
 }

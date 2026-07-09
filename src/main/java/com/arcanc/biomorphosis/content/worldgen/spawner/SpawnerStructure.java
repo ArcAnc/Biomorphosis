@@ -225,7 +225,7 @@ public class SpawnerStructure extends Structure
 					setRotation(rotation).
 					setMirror(mirror).
 					setRotationPivot(pivot).
-					addProcessor(BlockIgnoreProcessor.STRUCTURE_AND_AIR).
+					addProcessor(BlockIgnoreProcessor.STRUCTURE_BLOCK).
 					addProcessor(new ProtectedBlockProcessor(BlockTags.FEATURES_CANNOT_REPLACE));
 		}
 		

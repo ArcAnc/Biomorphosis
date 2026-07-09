@@ -1,10 +1,10 @@
-// 1.21.1	2026-06-28T14:54:02.323176896	Biomorphosis Item Models
+// 1.21.1	2026-07-09T14:12:44.397524798	Biomorphosis Item Models
 c9834275952415d3146de7b5231a09972964d9d3 assets/biomorphosis/models/item/antennas.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
 e61a869683836aaec7dd10c9e96419983391241e assets/biomorphosis/models/item/flesh_hoe.json
 55563bd38cba9be063ebf73b5f415adc5c4506b2 assets/biomorphosis/models/item/flesh_piece.json
-eba814d4d173a9c7ba0751a65af3cdeea78821b2 assets/biomorphosis/models/item/fluid_capsule.json
+49df6e314ada2bda6c945f83cc628d4c62b41a0f assets/biomorphosis/models/item/fluid_capsule.json
 85cd4d607b5467695d5b53203a981b0b33d641bb assets/biomorphosis/models/item/fluids/acid/bucket.json
 53b7a493755b0fa7eaec5ee5839147a27f544249 assets/biomorphosis/models/item/fluids/adrenaline/bucket.json
 75e7200540f45762e4327429614885eec24ef1d8 assets/biomorphosis/models/item/fluids/biomass/bucket.json

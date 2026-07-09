@@ -12,7 +12,7 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioChest;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
@@ -30,7 +30,7 @@ public class BioChestRenderer extends PBlockRenderer<BioChest>
 				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
-	public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
 	{
 		event.addTextureLocation(TEXTURE);
 	}

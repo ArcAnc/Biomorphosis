@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
@@ -112,7 +112,7 @@ public class BioStomachRenderer extends PBlockRenderer<BioStomach>
         builder.addVertex(pose, MAX_X, y, maxZ).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
     
-    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(TEXTURE);
     }

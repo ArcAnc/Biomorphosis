@@ -12,7 +12,7 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
@@ -45,7 +45,7 @@ public class NorphSourceRenderer extends PBlockRenderer<NorphSource>
         super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
     }
     
-    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(MAIN);
         event.addTextureLocation(FLUID);

@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-28T14:54:02.327211222	Biomorphosis Block Models
+// 1.21.1	2026-07-09T14:12:44.433536059	Biomorphosis Block Models
 2188ff95ce3d72d5dc39c321ecc36228e142ec9d assets/biomorphosis/blockstates/bush.json
 86f06762125b4491a88c26538ddf0036a6e5b99c assets/biomorphosis/blockstates/catcher.json
 bb8700e0a9e63e73497cbe5d893f1fd63f001176 assets/biomorphosis/blockstates/chest.json
@@ -17,7 +17,7 @@ f3cc81c0bca10ce751c8c2c7aaa77c32d1b76e3b assets/biomorphosis/blockstates/hive_de
 7881f033ec4d3767a62533236a5de6db3da854c6 assets/biomorphosis/blockstates/lure_campfire.json
 df55f964feffaffb6a564123a9969960a2d70c18 assets/biomorphosis/blockstates/meat_melon.json
 116bef8fbebb29426bfa9e318f1a766106fe310e assets/biomorphosis/blockstates/meat_melon_stem.json
-82f76a22a8c2b13415e00a7a9c6c2be4c19b314e assets/biomorphosis/blockstates/moss.json
+d9840b5c96a6c69e478d6348af3fc0da90ba9760 assets/biomorphosis/blockstates/moss.json
 07bd57da61fb8d7e2a02b0fe8abede2269c0277f assets/biomorphosis/blockstates/moss_hanging.json
 409acdc015f7b003b96d56be35a9616fae9055fb assets/biomorphosis/blockstates/multiblock_chamber.json
 adbba2c502e200999cd4a021f96b67639cd34f4b assets/biomorphosis/blockstates/multiblock_chrysalis.json
@@ -131,8 +131,8 @@ f7a95888c356e3d8470eea89043837c24f2181ac assets/biomorphosis/models/block/norph_
 9580aaa5f0ace95f16071173f70ffa872b48552b assets/biomorphosis/models/block/norph_stairs_outer_5.json
 e35f6d51d1195762f4e2c2c978badfb6fd8ca8ef assets/biomorphosis/models/block/norph_stairs_outer_6.json
 cde4c7ce7c0a5f4f7a5faaffa6fa5c5a1ccb939a assets/biomorphosis/models/block/norph_stairs_outer_7.json
-7e43b1579cde900310a75bb6b4c80bae1fb44325 assets/biomorphosis/models/block/norphed_dirt_0.json
-ede6ecc0600db6ba6abc21c7768736aece277f87 assets/biomorphosis/models/block/norphed_dirt_1.json
+bda83917fb3563d4a54d83b091399391fd5ead95 assets/biomorphosis/models/block/norphed_dirt_0.json
+b35fdb30a41dabfbd1679ffe264385f7c1d6bc52 assets/biomorphosis/models/block/norphed_dirt_1.json
 56d07197e4bbce35b69f87044c4095e800ba4a36 assets/biomorphosis/models/block/norphed_dirt_slab_0.json
 33a5989ebaa222bc7d6547d0012a3c7e73bf21be assets/biomorphosis/models/block/norphed_dirt_slab_0_top.json
 8ccfde2b263d9a24999b8c866ed415b737a24593 assets/biomorphosis/models/block/norphed_dirt_slab_1.json

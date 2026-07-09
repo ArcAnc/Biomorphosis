@@ -19,7 +19,7 @@ import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
 import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
 import com.arcanc.biomorphosis.util.model.obj.SphereObj;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
@@ -136,7 +136,7 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
         return blockEntity.isMaster() && blockEntity.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED && super.shouldRender(blockEntity, cameraPos);
     }
     
-    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(TEXTURE);
     }

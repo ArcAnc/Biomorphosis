@@ -11,7 +11,7 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.Ksigg;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.event.CustomEvents;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
@@ -48,7 +48,7 @@ public class KsiggRenderer extends PEntityRenderer<Ksigg>
             super.trueSubmit(poseStack, animatable, renderType, bufferSource, packedLight, packedOverlay, partialTick, additionalData);
     }
     
-    public static void registerTextures(final CustomEvents.PLibRegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(TEXTURE);
     }

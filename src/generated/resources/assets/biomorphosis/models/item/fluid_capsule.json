@@ -1,11 +1,7 @@
 {
-  "loader": "neoforge:fluid_container",
+  "parent": "biomorphosis:item/base_capsule",
   "apply_fluid_luminosity": true,
   "apply_tint": true,
   "fluid": "minecraft:empty",
-  "parent": "biomorphosis:item/base_capsule",
-  "textures": {
-    "base": "biomorphosis:item/fluid_capsule",
-    "fluid": "biomorphosis:item/mask/fluid_capsule"
-  }
+  "loader": "neoforge:fluid_container"
 }

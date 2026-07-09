@@ -135,7 +135,6 @@ import net.neoforged.neoforge.common.extensions.IMenuTypeExtension;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.util.DeferredSoundType;
 import net.neoforged.neoforge.fluids.BaseFlowingFluid;
-import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.FluidType;
 import net.neoforged.neoforge.registries.*;
 import org.apache.commons.lang3.mutable.Mutable;
@@ -389,7 +388,7 @@ public final class Registration
 		                highlightSpawnEggColor(MathHelper.ColorHelper.color(64, 94, 14)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
                                 add(Attributes.MAX_HEALTH, 30).
-                                add(Attributes.ATTACK_DAMAGE, 8).
+                                add(Attributes.ATTACK_DAMAGE, 1).
                                 add(Attributes.MOVEMENT_SPEED, 0.2f).
                                 add(Attributes.FOLLOW_RANGE, 16).
                                 add(Attributes.ARMOR, 2)).
