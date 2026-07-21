@@ -1,0 +1,29 @@
+{
+  "type": "organic",
+  "pieces": [
+    {
+      "armor": 2,
+      "capacity": 200,
+      "slot": "head",
+      "source_armor": "biomorphosis:lifeless_helmet"
+    },
+    {
+      "armor": 6,
+      "capacity": 200,
+      "slot": "chest",
+      "source_armor": "biomorphosis:lifeless_chestplate"
+    },
+    {
+      "armor": 4,
+      "capacity": 200,
+      "slot": "legs",
+      "source_armor": "biomorphosis:lifeless_leggings"
+    },
+    {
+      "armor": 2,
+      "capacity": 200,
+      "slot": "feet",
+      "source_armor": "biomorphosis:lifeless_boots"
+    }
+  ]
+}

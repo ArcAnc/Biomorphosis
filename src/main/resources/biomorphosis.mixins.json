@@ -21,6 +21,7 @@
     "client.FontManagerMixin",
     "client.GuiGraphicsMixin",
     "client.InventoryScreenMixin",
+    "client.LevelRendererMixin",
     "client.RecipeUpdateMixin"
   ]
 }

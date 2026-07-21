@@ -16,6 +16,7 @@ import com.google.common.base.Preconditions;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.neoforged.neoforge.common.data.LanguageProvider;
 
@@ -316,10 +317,10 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Height");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.VAMPIRISM.id()), "Vampirism");
-	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_head")), "Head Organic Armor");
-	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_chest")), "Chest Organic Armor");
-	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_legs")), "Legs Organic Armor");
-	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("lifeless_feet")), "Feet Organic Armor");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.HEAD), "Organic Helmet");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.CHEST), "Organic Chestplate");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.LEGS), "Organic Leggings");
+	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.FEET), "Organic Boots");
 		this.add(Database.GUI.OrganicArmor.Tooltip.STATS, "Organic armor: %s armor, %s mB capacity");
 	    this.add(Database.GUI.OrganicArmor.Tooltip.EMPTY, "No fluid loaded");
 	    this.add(Database.GUI.OrganicArmor.Tooltip.EFFECTS, "Armor effects:");

@@ -12,20 +12,10 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 90
+        "y": 270
       },
       "when": {
-        "east": "true"
-      }
-    },
-    {
-      "apply": {
-        "model": "biomorphosis:block/moss",
-        "uvlock": true,
-        "x": 270
-      },
-      "when": {
-        "up": "true"
+        "west": "true"
       }
     },
     {
@@ -42,10 +32,20 @@
       "apply": {
         "model": "biomorphosis:block/moss",
         "uvlock": true,
-        "y": 270
+        "x": 270
       },
       "when": {
-        "west": "true"
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "biomorphosis:block/moss",
+        "uvlock": true,
+        "y": 90
+      },
+      "when": {
+        "east": "true"
       }
     }
   ]

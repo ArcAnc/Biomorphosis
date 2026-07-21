@@ -9,9 +9,9 @@
 
 package com.arcanc.biomorphosis.content.entity;
 
-import com.arcanc.biomorphosis.content.entity.ai.goals.MoveToLureGoal;
+import com.arcanc.biomorphosis.content.entity.ai.brain.QueenBrain;
+import com.arcanc.biomorphosis.content.entity.ai.targeting.SwarmTargeting;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.ControllerState;
@@ -19,24 +19,33 @@ import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.util.helpers.PLibHelper;
+import com.mojang.serialization.Dynamic;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class Queen extends Monster implements PAnimatable<Queen>
 {
+    private static final double GUARD_SIGNAL_RADIUS = 128;
+    private static final float MIN_BURROW_HEIGHT_SCALE = 0.0f;
+    private static final EntityDataAccessor<Integer> BURROW_STATE = SynchedEntityData.defineId(Queen.class, EntityDataSerializers.INT);
+
     private final PAnimationManager<Queen> manager = PLibHelper.createManager(this);
 
     private static final PRawAnimation ATTACK = PRawAnimation.begin().thenPlay("attack").build();
@@ -46,10 +55,9 @@ public class Queen extends Monster implements PAnimatable<Queen>
     private static final PRawAnimation BURROW = PRawAnimation.begin().thenHold("burrow").build();
     private static final PRawAnimation DEATH = PRawAnimation.begin().thenHold("death").build();
 
-    private @Nullable BlockPos lurePos;
+    private BlockPos lurePos;
     private BlockPos spawnPos;
     private boolean findLure = false;
-    private BurrowState burrowState;
     private int unburrowTimer = 0;
     private int burrowTimer = 0;
 
@@ -60,7 +68,6 @@ public class Queen extends Monster implements PAnimatable<Queen>
             this.spawnPos = BlockPos.ZERO;
         if (this.lurePos == null)
             this.lurePos = BlockPos.ZERO;
-        this.burrowState = BurrowState.UNBURROWING;
     }
 
     public Queen (Level level, Vec3 position)
@@ -81,12 +88,12 @@ public class Queen extends Monster implements PAnimatable<Queen>
         return this.findLure;
     }
 
-    public BlockPos getLurePos()
+    public @Nullable BlockPos getLurePos()
     {
         return this.lurePos;
     }
 
-    public BlockPos getSpawnPos()
+    public @Nullable BlockPos getSpawnPos()
     {
         return this.spawnPos;
     }
@@ -99,86 +106,215 @@ public class Queen extends Monster implements PAnimatable<Queen>
     @Override
     protected void registerGoals()
     {
-        this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
-        this.targetSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, true, entity -> !entity.getType().is(BioEntityTags.SWARM)));
-
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.2, true));
-        this.goalSelector.addGoal(2, new MoveToLureGoal(this, 1.0));
-
-        this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
-        this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
     }
 
     public boolean isUnderGround()
     {
-        return this.burrowState == BurrowState.UNDER_GROUND;
+        return this.getBurrowState() == BurrowState.UNDER_GROUND;
     }
 
     public boolean isUnburrowing()
     {
-        return this.burrowState == BurrowState.UNBURROWING;
+        return this.getBurrowState() == BurrowState.UNBURROWING;
     }
 
     public boolean isOnGround()
     {
-        return this.burrowState == BurrowState.ON_GROUND;
+        return this.getBurrowState() == BurrowState.ON_GROUND;
     }
 
     public boolean isBurrowing()
     {
-        return this.burrowState == BurrowState.BURROWING;
+        return this.getBurrowState() == BurrowState.BURROWING;
+    }
+
+    public void tickUnburrow()
+    {
+        if (!this.isUnburrowing())
+            return;
+        this.unburrowTimer++;
+        this.refreshDimensions();
+        if (this.unburrowTimer >= QueenBrain.UNBURROW_TICKS)
+        {
+            this.unburrowTimer = 0;
+            this.setBurrowState(BurrowState.ON_GROUND);
+        }
+    }
+
+    public void tickBurrow()
+    {
+        if (!this.isBurrowing())
+            return;
+        this.burrowTimer++;
+        this.refreshDimensions();
+        if (this.burrowTimer >= QueenBrain.BURROW_TICKS)
+        {
+            this.burrowTimer = 0;
+            this.setBurrowState(BurrowState.UNDER_GROUND);
+            this.discard();
+        }
+    }
+
+    public void markLureFound()
+    {
+        this.findLure = true;
+    }
+
+    public void startBurrowing()
+    {
+        if (this.isOnGround())
+        {
+            this.burrowTimer = 0;
+            this.setBurrowState(BurrowState.BURROWING);
+        }
+    }
+
+    public boolean isValidCombatTarget(@Nullable LivingEntity target)
+    {
+        return this.isOnGround() && SwarmTargeting.isValidSwarmEnemy(this, target);
     }
 
     @Override
     public void tick()
     {
         super.tick();
+        if (this.level().isClientSide())
+            tickClientBurrowDimensions();
+    }
 
-        if (this.isUnburrowing())
+    private void tickClientBurrowDimensions()
+    {
+        if (this.isUnburrowing() && this.unburrowTimer < QueenBrain.UNBURROW_TICKS)
+        {
             this.unburrowTimer++;
-        if (this.isBurrowing())
+            this.refreshDimensions();
+        }
+        else if (this.isBurrowing() && this.burrowTimer < QueenBrain.BURROW_TICKS)
+        {
             this.burrowTimer++;
-
-        if (this.unburrowTimer >= 1.5f * 20 && this.isUnburrowing())
-        {
-            this.unburrowTimer = 0;
-            this.burrowState = BurrowState.ON_GROUND;
-        }
-
-        if (this.burrowTimer >= 5f * 20 && this.isBurrowing())
-        {
-            this.burrowTimer = 0;
-            this.burrowState = BurrowState.UNDER_GROUND;
-        }
-
-        if (this.lurePos != null && !this.findLure && this.isOnGround())
-        {
-            if (this.blockPosition().closerToCenterThan(Vec3.atCenterOf(this.lurePos), 2.0))
-                sniffBait();
-        }
-
-        if (this.findLure && this.lurePos != null)
-        {
-            double distance = this.blockPosition().distManhattan(this.lurePos);
-            if (distance > 32)
-            {
-                if (this.isOnGround())
-                    this.burrowState = BurrowState.BURROWING;
-                if (this.isUnderGround())
-                {
-                    this.discard();
-                    this.level().getEntitiesOfClass(QueenGuard.class, this.getBoundingBox().inflate(16))
-                            .forEach(Entity :: discard);
-				}
-            }
+            this.refreshDimensions();
         }
     }
 
-    private void sniffBait()
+    private BurrowState getBurrowState()
     {
-        this.findLure = true;
+        return BurrowState.values()[this.entityData.get(BURROW_STATE)];
+    }
+
+    private void setBurrowState(BurrowState state)
+    {
+        this.entityData.set(BURROW_STATE, state.ordinal());
+        this.refreshDimensions();
+    }
+
+    @Override
+    protected Brain<?> makeBrain(Dynamic<?> dynamic)
+    {
+        return QueenBrain.makeBrain(dynamic);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public Brain<Queen> getBrain()
+    {
+        return (Brain<Queen>) super.getBrain();
+    }
+
+    @Override
+    public @Nullable LivingEntity getTarget()
+    {
+        return this.getTargetFromBrain();
+    }
+
+    @Override
+    public boolean canAttack(LivingEntity target)
+    {
+        return super.canAttack(target) && isValidCombatTarget(target);
+    }
+
+    @Override
+    protected void customServerAiStep()
+    {
+        if (this.level() instanceof ServerLevel serverLevel)
+        {
+            serverLevel.getProfiler().push("queenBrain");
+            this.getBrain().tick(serverLevel, this);
+            serverLevel.getProfiler().pop();
+        }
+        super.customServerAiStep();
+    }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder builder)
+    {
+        super.defineSynchedData(builder);
+        builder.define(BURROW_STATE, BurrowState.UNBURROWING.ordinal());
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key)
+    {
+        super.onSyncedDataUpdated(key);
+        if (BURROW_STATE.equals(key))
+        {
+            if (this.isUnburrowing())
+                this.unburrowTimer = 0;
+            else if (this.isBurrowing())
+                this.burrowTimer = 0;
+            this.refreshDimensions();
+        }
+    }
+
+    @Override
+    protected EntityDimensions getDefaultDimensions(Pose pose)
+    {
+        EntityDimensions dimensions = super.getDefaultDimensions(pose);
+        return dimensions.scale(1.0f, getBurrowHeightScale());
+    }
+
+    private float getBurrowHeightScale()
+    {
+        return switch (this.getBurrowState())
+        {
+            case UNDER_GROUND -> MIN_BURROW_HEIGHT_SCALE;
+            case UNBURROWING -> Math.max(MIN_BURROW_HEIGHT_SCALE, Math.min(1.0f, this.unburrowTimer / (float) QueenBrain.UNBURROW_TICKS));
+            case ON_GROUND -> 1.0f;
+            case BURROWING -> Math.max(MIN_BURROW_HEIGHT_SCALE, 1.0f - Math.min(1.0f, this.burrowTimer / (float) QueenBrain.BURROW_TICKS));
+        };
+    }
+
+    @Override
+    public void die(DamageSource damageSource)
+    {
+        super.die(damageSource);
+        if (!this.level().isClientSide())
+            signalGuardQueenDeath();
+    }
+
+    @Override
+    public void remove(RemovalReason reason)
+    {
+        if (!this.level().isClientSide() && reason == RemovalReason.DISCARDED)
+            discardGuards();
+        super.remove(reason);
+    }
+
+    private void signalGuardQueenDeath()
+    {
+        this.level().getEntitiesOfClass(
+                QueenGuard.class,
+                this.getBoundingBox().inflate(GUARD_SIGNAL_RADIUS),
+                guard -> guard.isGuarding(this)).
+                forEach(guard -> guard.queenDied(this));
+    }
+
+    private void discardGuards()
+    {
+        this.level().getEntitiesOfClass(
+                QueenGuard.class,
+                this.getBoundingBox().inflate(GUARD_SIGNAL_RADIUS),
+                guard -> guard.isGuarding(this)).
+                forEach(Entity :: discard);
     }
 
     @Override
@@ -188,9 +324,9 @@ public class Queen extends Monster implements PAnimatable<Queen>
         this.lurePos = TagHelper.readBlockPos(compound, "lure_pos");
         this.spawnPos = TagHelper.readBlockPos(compound, "spawn_pos");
         this.findLure = compound.getBoolean("find_lure");
-        this.burrowState = BurrowState.values()[compound.getInt("burrow_state")];
         this.burrowTimer = compound.getInt("burrow_timer");
         this.unburrowTimer = compound.getInt("unburrow_timer");
+        this.setBurrowState(BurrowState.values()[compound.getInt("burrow_state")]);
     }
 
     @Override
@@ -200,7 +336,7 @@ public class Queen extends Monster implements PAnimatable<Queen>
         TagHelper.writeBlockPos(this.lurePos, compound, "lure_pos");
         TagHelper.writeBlockPos(this.spawnPos, compound, "spawn_pos");
         compound.putBoolean("find_lure", this.findLure);
-        compound.putInt("burrow_state", this.burrowState.ordinal());
+        compound.putInt("burrow_state", this.getBurrowState().ordinal());
         compound.putInt("burrow_timer", this.burrowTimer);
         compound.putInt("unburrow_timer", this.unburrowTimer);
     }
@@ -211,7 +347,7 @@ public class Queen extends Monster implements PAnimatable<Queen>
         registrar.add("animControl", () ->state ->
         {
             Queen animatable = state.animatable();
-            return switch (animatable.burrowState)
+            return switch (animatable.getBurrowState())
             {
                 case BURROWING -> {
                     state.controller().play(BURROW);

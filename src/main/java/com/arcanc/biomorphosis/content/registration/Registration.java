@@ -44,8 +44,7 @@ import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.*;
-import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorState;
-import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
+import com.arcanc.biomorphosis.content.organic_armor.*;
 import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
 import com.arcanc.biomorphosis.content.worldgen.spawner.SpawnerStructure;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
@@ -234,19 +233,19 @@ public final class Registration
                 builder -> builder.
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
-                        sized(1.6f, 2.3f).
+                        sized(1.5f, 2.3f).
                         eyeHeight(2.05f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(4).
 		                backgroundSpawnEggColor(12654873).
 		                highlightSpawnEggColor(7475473).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 100).
-                                add(Attributes.ATTACK_DAMAGE, 15).
+                                add(Attributes.MAX_HEALTH, 50).
+                                add(Attributes.ATTACK_DAMAGE, 10).
                                 add(Attributes.KNOCKBACK_RESISTANCE, 1.0f).
                                 add(Attributes.FOLLOW_RANGE, 32).
-                                add(Attributes.MOVEMENT_SPEED, 0.15f).
-                                add(Attributes.ARMOR, 10)).
+                                add(Attributes.MOVEMENT_SPEED, 0.2f).
+                                add(Attributes.ARMOR, 5)).
                         rendererProvider(QueenRenderer :: new),
                 itemProps -> ItemReg.baseProps.
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
@@ -261,14 +260,14 @@ public final class Registration
                         canSpawnFarFromPlayer().
                         clientTrackingRange(6).
                         eyeHeight(2.1f).
-                        sized(1.3f, 2.2f).
+                        sized(1.2f, 2.2f).
                         immuneTo(Blocks.POWDER_SNOW, Blocks.SWEET_BERRY_BUSH).
                         updateInterval(3).
 		                backgroundSpawnEggColor(MathHelper.ColorHelper.color(0, 40, 2)).
 		                highlightSpawnEggColor(MathHelper.ColorHelper.color(43, 3, 99)).
                         attributeProvider(() -> LivingEntity.createLivingAttributes().
-                                add(Attributes.MAX_HEALTH, 150).
-                                add(Attributes.ATTACK_DAMAGE, 20).
+                                add(Attributes.MAX_HEALTH, 25).
+                                add(Attributes.ATTACK_DAMAGE, 6).
                                 add(Attributes.KNOCKBACK_RESISTANCE, 1.0f).
                                 add(Attributes.FOLLOW_RANGE, 16).
                                 add(Attributes.MOVEMENT_SPEED, 0.3f).
@@ -2244,15 +2243,27 @@ public final class Registration
 
 	public static class OrganicArmorReg
 	{
+		public static final ResourceKey<Registry<IOrganicArmorEffect>> EFFECT_KEY = ResourceKey.createRegistryKey(Database.rl("organic_armor_effect"));
 		public static final ResourceKey<Registry<OrganicArmorType>> TYPE_KEY = ResourceKey.createRegistryKey(Database.mineRl("organic_armor/type"));
+		public static final ResourceKey<Registry<OrganicArmorFluidEffect>> EFFECT_DATA_KEY = ResourceKey.createRegistryKey(Database.mineRl("organic_armor/effect"));
+
+		public static final DeferredRegister<IOrganicArmorEffect> EFFECTS = DeferredRegister.create(EFFECT_KEY, Database.MOD_ID);
+		public static Registry<IOrganicArmorEffect> EFFECT_REGISTRY;
+
+		public static final DeferredHolder<IOrganicArmorEffect, AcidOrganicArmorEffect> ACID = EFFECTS.register("acid", AcidOrganicArmorEffect :: new);
+		public static final DeferredHolder<IOrganicArmorEffect, AdrenalineOrganicArmorEffect> ADRENALINE = EFFECTS.register("adrenaline", AdrenalineOrganicArmorEffect :: new);
+		public static final DeferredHolder<IOrganicArmorEffect, BiomassOrganicArmorEffect> BIOMASS = EFFECTS.register("biomass", BiomassOrganicArmorEffect :: new);
 
 		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{
 			event.dataPackRegistry(TYPE_KEY, OrganicArmorType.CODEC, OrganicArmorType.CODEC, regBuilder -> makeRegistry(regBuilder, TYPE_KEY));
+			event.dataPackRegistry(EFFECT_DATA_KEY, OrganicArmorFluidEffect.CODEC, OrganicArmorFluidEffect.CODEC, regBuilder -> makeRegistry(regBuilder, EFFECT_DATA_KEY));
 		}
 
 		public static void init(final IEventBus modEventBus)
 		{
+			EFFECT_REGISTRY = EFFECTS.makeRegistry(builder -> makeRegistry(builder, EFFECT_KEY));
+			EFFECTS.register(modEventBus);
 			modEventBus.addListener(OrganicArmorReg :: registerDataPackRegister);
 		}
 	}

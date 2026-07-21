@@ -14,8 +14,11 @@ import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.function.BiFunction;
 
 public class Database
 {
@@ -122,7 +125,8 @@ public class Database
 
 		public static final class OrganicArmor
 		{
-			public static final Function<ResourceLocation, String> NAME = input -> input.withPrefix(GUI + ".organic_armor.").toLanguageKey();
+			public static final BiFunction<ResourceLocation, EquipmentSlot, String> NAME =
+					(typeId, slot) -> typeId.withPrefix(GUI + ".organic_armor.").withSuffix("." + slot.getName()).toLanguageKey();
 
 			public static final class Tooltip
 			{

@@ -13,6 +13,7 @@ package com.arcanc.biomorphosis.content.gui.screen.container;
 import com.arcanc.biomorphosis.content.gui.component.FittingMultiLineText;
 import com.arcanc.biomorphosis.content.gui.container_menu.OrganicArmorInventoryMenu;
 import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotRenderer;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorEffectHandler;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorState;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
@@ -217,7 +218,7 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 
 			OrganicArmorType type = findOrganicArmorType(piece);
 			int armor = type == null ? 0 : OrganicArmorHelper.getEffectiveArmor(this.minecraft.player.level(), piece);
-			text.append(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(piece.typeId())).withColor(TEXT)).
+			text.append(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(piece.typeId(), piece.slot())).withColor(TEXT)).
 					append("\n").
 					append(Component.translatable(Database.GUI.OrganicArmorInventory.ARMOR, armor).withColor(MUTED_TEXT)).
 					append("\n");
@@ -230,9 +231,11 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 			else
 			{
 				int fluidColor = IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor();
+				ResourceLocation effectId = OrganicArmorEffectHandler.getEffectId(this.minecraft.player.level().registryAccess(), piece, fluid).
+						orElse(getFluidId(fluid));
 				text.append(Component.translatable(fluid.getDescriptionId()).withColor(fluidColor)).
 						append("\n").
-						append(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(getFluidId(fluid))).withColor(MUTED_TEXT));
+						append(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(effectId)).withColor(MUTED_TEXT));
 			}
 
 			if (q < pieces.size() - 1)

@@ -31,6 +31,7 @@ import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorRenderHandler;
 import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
+import com.arcanc.biomorphosis.content.sky.BiomeSkyboxes;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
 import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
@@ -96,6 +97,7 @@ public final class ClientEvents
         RecipeRenderHandler.registerRenderers();
         NeoForge.EVENT_BUS.addListener(FluidLevelAnimator :: renderFrame);
         NeoForge.EVENT_BUS.addListener(ClientEvents :: receiveRecipesEvent);
+	    BiomeSkyboxes.init(modEventBus);
 		registerCustomTextures(modEventBus);
     }
 	

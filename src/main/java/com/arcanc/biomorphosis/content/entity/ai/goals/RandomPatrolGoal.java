@@ -10,8 +10,8 @@
 package com.arcanc.biomorphosis.content.entity.ai.goals;
 
 
-import com.arcanc.biomorphosis.content.entity.Queen;
 import com.arcanc.biomorphosis.content.entity.QueenGuard;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
@@ -28,20 +28,25 @@ public class RandomPatrolGoal extends RandomStrollGoal
 	@Override
 	public boolean canUse()
 	{
-		Queen queen = ((QueenGuard) this.mob).getQueen();
-		return super.canUse() && (queen == null || !queen.isAlive());
+		QueenGuard guard = (QueenGuard) this.mob;
+		return !guard.hasQueenId() && !guard.isBerserk() && super.canUse();
 	}
 
 	@Override
 	public boolean canContinueToUse()
 	{
-		Queen queen = ((QueenGuard) this.mob).getQueen();
-		return super.canContinueToUse() && (queen == null || !queen.isAlive());
+		QueenGuard guard = (QueenGuard) this.mob;
+		return !guard.hasQueenId() && !guard.isBerserk() && super.canContinueToUse();
 	}
 
 	@Override
 	protected @Nullable Vec3 getPosition()
 	{
-		return LandRandomPos.getPos(this.mob, 32, 8);
+		BlockPos patrolPos = ((QueenGuard) this.mob).getPatrolPos();
+		Vec3 patrolCenter = Vec3.atCenterOf(patrolPos);
+		if (!this.mob.blockPosition().closerToCenterThan(patrolCenter, 32))
+			return LandRandomPos.getPosTowards(this.mob, 16, 8, patrolCenter);
+
+		return LandRandomPos.getPos(this.mob, 16, 8, pos -> -pos.distSqr(patrolPos));
 	}
 }

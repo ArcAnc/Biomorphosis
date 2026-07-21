@@ -16,8 +16,16 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 
-public record OrganicArmorType(ResourceLocation sourceArmor, EquipmentSlot slot, int armor, int capacity)
+import java.util.List;
+import java.util.Optional;
+
+public record OrganicArmorType(String type, List<PieceParams> pieces)
 {
+	public OrganicArmorType
+	{
+		pieces = List.copyOf(pieces);
+	}
+
 	public static final Codec<EquipmentSlot> ARMOR_SLOT_CODEC = Codec.STRING.comapFlatMap(name ->
 	{
 		try
@@ -34,14 +42,36 @@ public record OrganicArmorType(ResourceLocation sourceArmor, EquipmentSlot slot,
 	}, EquipmentSlot :: getName);
 
 	public static final Codec<OrganicArmorType> CODEC = RecordCodecBuilder.create(instance -> instance.group(
-			ResourceLocation.CODEC.fieldOf("source_armor").forGetter(OrganicArmorType :: sourceArmor),
-			ARMOR_SLOT_CODEC.fieldOf("slot").forGetter(OrganicArmorType :: slot),
-			Codec.INT.fieldOf("armor").forGetter(OrganicArmorType :: armor),
-			Codec.INT.fieldOf("capacity").forGetter(OrganicArmorType :: capacity)
+			Codec.STRING.fieldOf("type").forGetter(OrganicArmorType :: type),
+			PieceParams.CODEC.listOf().fieldOf("pieces").forGetter(OrganicArmorType :: pieces)
 	).apply(instance, OrganicArmorType :: new));
 
-	public int drainedArmor()
+	public Optional<PieceParams> get(EquipmentSlot slot)
 	{
-		return this.armor / 2;
+		return this.pieces.stream().
+				filter(params -> params.slot() == slot).
+				findFirst();
+	}
+
+	public Optional<PieceParams> findBySourceArmor(ResourceLocation sourceArmor)
+	{
+		return this.pieces.stream().
+				filter(params -> params.sourceArmor().equals(sourceArmor)).
+				findFirst();
+	}
+
+	public record PieceParams(ResourceLocation sourceArmor, EquipmentSlot slot, int armor, int capacity)
+	{
+		public static final Codec<PieceParams> CODEC = RecordCodecBuilder.create(instance -> instance.group(
+				ResourceLocation.CODEC.fieldOf("source_armor").forGetter(PieceParams :: sourceArmor),
+				ARMOR_SLOT_CODEC.fieldOf("slot").forGetter(PieceParams :: slot),
+				Codec.intRange(0, Integer.MAX_VALUE).fieldOf("armor").forGetter(PieceParams :: armor),
+				Codec.intRange(0, Integer.MAX_VALUE).fieldOf("capacity").forGetter(PieceParams :: capacity)
+		).apply(instance, PieceParams :: new));
+
+		public int drainedArmor()
+		{
+			return this.armor / 2;
+		}
 	}
 }

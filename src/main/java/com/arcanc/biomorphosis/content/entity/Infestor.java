@@ -10,9 +10,9 @@
 package com.arcanc.biomorphosis.content.entity;
 
 
+import com.arcanc.biomorphosis.content.entity.ai.targeting.SwarmTargeting;
 import com.arcanc.biomorphosis.content.entity.ai.brain.InfestorBrain;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimatable;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
@@ -31,10 +31,8 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.animal.WaterAnimal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Drowned;
 import net.minecraft.world.entity.monster.Monster;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.Nullable;
@@ -120,19 +118,15 @@ public class Infestor extends Monster implements PAnimatable<Infestor>
 
 	public static boolean isValidInfestationTarget(Infestor infestor, @Nullable LivingEntity target)
 	{
-		if (target == null || target == infestor || !target.isAlive())
+		if (!SwarmTargeting.isValidSwarmEnemy(infestor, target))
 			return false;
 		if (target.hasEffect(Registration.EffectReg.INFESTATION))
-			return false;
-		if (target.getType().is(BioEntityTags.SWARM))
-			return false;
-		if (target instanceof Creeper)
 			return false;
 		if (target instanceof Drowned)
 			return false;
 		if (target instanceof WaterAnimal)
 			return false;
-		return !(target instanceof Player player) || !player.isCreative();
+		return true;
 	}
 
 	private void ensureHomeMemory()

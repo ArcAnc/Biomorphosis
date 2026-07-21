@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-28T14:54:02.369032978	Registries
+// 1.21.1	2026-07-16T20:49:27.297923592	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -43,17 +43,17 @@ ae2d864cd0ee1afc1ef238add0d3e13fd7cdcdc1 data/biomorphosis/genome/effect/protect
 32a7616e4a891ed73a64a369b5b4a1e262d00142 data/biomorphosis/genome/effect/speed.json
 f1e6330501e1f5f5ab6ff548d7c327861f32a9f5 data/biomorphosis/genome/effect/swim_speed.json
 25257d2b060679fa6431a2ca0b6338acf30b2b79 data/biomorphosis/genome/effect/vampirism.json
-c78cadd35ebf7294631e570bba647f1c431c432c data/biomorphosis/organic_armor/type/lifeless_chest.json
-4c43a0b7185c71f5858c285723567bcf04ec5bfb data/biomorphosis/organic_armor/type/lifeless_feet.json
-4d8d82a587b32266f49fa18ef28c7676f83d131d data/biomorphosis/organic_armor/type/lifeless_head.json
-1adfcbc4719c61967ca36f3c95c6f1ac0e9a9695 data/biomorphosis/organic_armor/type/lifeless_legs.json
+f9ea8ff9ce7642026f7a21fafab50747f930f5ba data/biomorphosis/organic_armor/effect/organic_acid.json
+971db358cfe0b4493feafc0ee9a02f14fad1b1eb data/biomorphosis/organic_armor/effect/organic_adrenaline.json
+f7afe361d78eb23b20eebc5cbfb928eddb7e60c3 data/biomorphosis/organic_armor/effect/organic_biomass.json
+4d909e6fb002eb71d472c7513a2516f3f011aef3 data/biomorphosis/organic_armor/type/organic.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
 a46ed97262c623e9247bb57d27df60a0407499ce data/biomorphosis/worldgen/biome/wastes.json
 5e553bcd6fd6ff8c14867c8ea1913a39366ecc56 data/biomorphosis/worldgen/configured_feature/wastes_grass.json
 345346ff08e947a0ea42fb323f93831ae3a25d35 data/biomorphosis/worldgen/configured_feature/wastes_spire.json
 134ec55223505d74bb8e3810d901aad2af686775 data/biomorphosis/worldgen/placed_feature/wastes_grass.json
 f29055686cf19081397c10386b6a7a87b4e8a88c data/biomorphosis/worldgen/placed_feature/wastes_spire.json
-dd46e84c7571a9b2b4e7ff543f42b87176ef86c9 data/biomorphosis/worldgen/structure/spawner.json
+7a8e331f584af9320df027fcea8f0d37082ba46c data/biomorphosis/worldgen/structure/spawner.json
 98bc516d0d053e57ab7ab18ed4ed5eebd8d83250 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
 e6a4a08bcfe35f9facf06f2a9df01d6e000f1bdb data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
 b678022004797c52f862683fc9ce5456ec0b96ad data/biomorphosis/worldgen/structure/village.json

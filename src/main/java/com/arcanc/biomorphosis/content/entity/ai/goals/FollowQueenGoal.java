@@ -29,6 +29,9 @@ public class FollowQueenGoal extends Goal
 	@Override
 	public boolean canUse()
 	{
+		if (this.guard.isBerserk())
+			return false;
+
 		Queen queen = this.guard.getQueen();
 		if (queen == null)
 			return false;
@@ -42,6 +45,9 @@ public class FollowQueenGoal extends Goal
 	@Override
 	public boolean canContinueToUse()
 	{
+		if (this.guard.isBerserk())
+			return false;
+
 		Queen queen = this.guard.getQueen();
 		if (queen == null || !queen.isAlive())
 			return false;

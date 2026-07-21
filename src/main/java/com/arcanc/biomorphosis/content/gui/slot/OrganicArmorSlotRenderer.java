@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.gui.slot;
 
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandler;
 import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipData;
+import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorEffectHandler;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorState;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
@@ -85,7 +86,7 @@ public class OrganicArmorSlotRenderer
 		OrganicArmorData data = resolveData(organicSlot);
 		List<Component> tooltip = new ArrayList<>();
 
-		tooltip.add(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(data.typeId())).
+		tooltip.add(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(data.typeId(), data.slot())).
 				withStyle(Style.EMPTY.withColor(ChatFormatting.GREEN.getColor())));
 		tooltip.add(Component.translatable(
 				Database.GUI.OrganicArmor.Tooltip.STATS,
@@ -111,7 +112,7 @@ public class OrganicArmorSlotRenderer
 				Component.literal(Integer.toString(tank.getCapacity())).withStyle(fluidStyle)).
 				withStyle(ChatFormatting.GRAY));
 		tooltip.add(Component.translatable(Database.GUI.OrganicArmor.Tooltip.EFFECTS).withStyle(ChatFormatting.DARK_GREEN));
-		tooltip.add(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(getFluidId(stack))).withStyle(ChatFormatting.GRAY));
+		tooltip.add(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(data.effectId())).withStyle(ChatFormatting.GRAY));
 		return tooltip;
 	}
 
@@ -177,15 +178,20 @@ public class OrganicArmorSlotRenderer
 		EquipmentSlot equipmentSlot = slot.getEquipmentSlot();
 		OrganicArmorState.Piece piece = OrganicArmorHelper.getPiece(owner, equipmentSlot).orElse(null);
 		if (piece == null)
-			return OrganicArmorData.empty();
+			return OrganicArmorData.empty(equipmentSlot);
 
 		OrganicArmorType type = findOrganicArmorType(piece);
 		if (type == null)
-			return new OrganicArmorData(piece.typeId(), 0, 0, new FluidTank(0));
+			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
+		OrganicArmorType.PieceParams params = type.get(piece.slot()).orElse(null);
+		if (params == null)
+			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
 
-		FluidTank tank = new FluidTank(type.capacity());
+		FluidTank tank = new FluidTank(params.capacity());
 		tank.fill(piece.fluid(), IFluidHandler.FluidAction.EXECUTE);
-		return new OrganicArmorData(piece.typeId(), piece.hasFluid() ? type.armor() : type.drainedArmor(), type.capacity(), tank);
+		ResourceLocation effectId = OrganicArmorEffectHandler.getEffectId(owner.level().registryAccess(), piece, piece.fluid()).
+				orElse(getFluidId(piece.fluid()));
+		return new OrganicArmorData(piece.typeId(), piece.slot(), piece.hasFluid() ? params.armor() : params.drainedArmor(), params.capacity(), tank, effectId);
 	}
 
 	private static @Nullable OrganicArmorType findOrganicArmorType(OrganicArmorState.Piece piece)
@@ -208,11 +214,11 @@ public class OrganicArmorSlotRenderer
 		return id == null ? ResourceLocation.withDefaultNamespace("empty") : id;
 	}
 
-	private record OrganicArmorData(ResourceLocation typeId, int armor, int capacity, FluidTank tank)
+	private record OrganicArmorData(ResourceLocation typeId, EquipmentSlot slot, int armor, int capacity, FluidTank tank, ResourceLocation effectId)
 	{
-		private static OrganicArmorData empty()
+		private static OrganicArmorData empty(EquipmentSlot slot)
 		{
-			return new OrganicArmorData(Database.rl("empty"), 0, 0, new FluidTank(0));
+			return new OrganicArmorData(Database.rl("empty"), slot, 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
 		}
 	}
 }

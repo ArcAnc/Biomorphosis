@@ -64,12 +64,13 @@ public class OrganicArmorHelper
 			return false;
 
 		OrganicArmorType type = optionalType.get().value();
-		if (!canCreateFrom(player.registryAccess(), typeKey, sourceStack))
+		OrganicArmorType.PieceParams params = findParamsForSource(type, sourceStack).orElse(null);
+		if (params == null)
 			return false;
-		if (hasArmor(player, type.slot()))
+		if (hasArmor(player, params.slot()))
 			return false;
 
-		OrganicArmorState state = getState(player).with(new OrganicArmorState.Piece(type.slot(), typeKey.location(), FluidStack.EMPTY));
+		OrganicArmorState state = getState(player).with(new OrganicArmorState.Piece(params.slot(), typeKey.location(), FluidStack.EMPTY));
 		player.setData(Registration.DataAttachmentsReg.ORGANIC_ARMOR, state);
 		sourceStack.shrink(1);
 		rebuildArmor(player);
@@ -86,12 +87,15 @@ public class OrganicArmorHelper
 		OrganicArmorType type = getType(player.level(), piece).orElse(null);
 		if (type == null)
 			return false;
+		OrganicArmorType.PieceParams params = type.get(slot).orElse(null);
+		if (params == null)
+			return false;
 
 		OrganicArmorState state = getState(player).without(slot);
 		player.setData(Registration.DataAttachmentsReg.ORGANIC_ARMOR, state);
 		OrganicArmorEffectHandler.removeEffectData(player, slot);
 		rebuildArmor(player);
-		returnSourceArmor(player, type, slot);
+		returnSourceArmor(player, params, slot);
 		sync(player, player);
 		return true;
 	}
@@ -119,8 +123,7 @@ public class OrganicArmorHelper
 
 	public static boolean canCreateFrom(OrganicArmorType type, ItemStack sourceStack)
 	{
-		ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(sourceStack.getItem());
-		return type.sourceArmor().equals(itemId);
+		return findParamsForSource(type, sourceStack).isPresent();
 	}
 
 	public static Optional<OrganicArmorType> getType(Level level, OrganicArmorState.Piece piece)
@@ -134,22 +137,18 @@ public class OrganicArmorHelper
 	public static int getEffectiveArmor(Level level, OrganicArmorState.Piece piece)
 	{
 		return getType(level, piece).
-				map(type -> piece.hasFluid() ? type.armor() : type.drainedArmor()).
+				flatMap(type -> type.get(piece.slot())).
+				map(params -> piece.hasFluid() ? params.armor() : params.drainedArmor()).
 				orElse(0);
 	}
 
 	public static boolean canFillFluid(LivingEntity entity, FluidStack fluid)
 	{
-		if (!OrganicArmorEffectHandler.hasFluidEffect(fluid))
-			return false;
 		return getFillablePieces(entity, fluid).stream().anyMatch(entry -> entry.space() > 0);
 	}
 
 	public static int fillFluid(ServerPlayer player, FluidStack fluid)
 	{
-		if (!OrganicArmorEffectHandler.hasFluidEffect(fluid))
-			return 0;
-
 		List<FillablePiece> fillable = getFillablePieces(player, fluid);
 		int remaining = fluid.getAmount();
 		List<OrganicArmorState.Piece> updated = new ArrayList<>(getState(player).pieces());
@@ -229,14 +228,19 @@ public class OrganicArmorHelper
 			OrganicArmorType type = getType(entity.level(), piece).orElse(null);
 			if (type == null)
 				continue;
+			OrganicArmorType.PieceParams params = type.get(piece.slot()).orElse(null);
+			if (params == null)
+				continue;
+			if (!OrganicArmorEffectHandler.hasFluidEffect(entity.level().registryAccess(), piece, fluid))
+				continue;
 
 			FluidStack current = piece.fluid();
 			if (!current.isEmpty() && !FluidStack.isSameFluidSameComponents(current, fluid))
 				continue;
-			if (current.getAmount() >= type.capacity())
+			if (current.getAmount() >= params.capacity())
 				continue;
 
-			fillable.add(new FillablePiece(piece, type.capacity(), current.getAmount()));
+			fillable.add(new FillablePiece(piece, params.capacity(), current.getAmount()));
 		}
 		return fillable;
 	}
@@ -280,9 +284,15 @@ public class OrganicArmorHelper
 		}
 	}
 
-	private static void returnSourceArmor(ServerPlayer player, OrganicArmorType type, EquipmentSlot slot)
+	private static Optional<OrganicArmorType.PieceParams> findParamsForSource(OrganicArmorType type, ItemStack sourceStack)
 	{
-		Item item = BuiltInRegistries.ITEM.get(type.sourceArmor());
+		ResourceLocation itemId = BuiltInRegistries.ITEM.getKey(sourceStack.getItem());
+		return type.findBySourceArmor(itemId);
+	}
+
+	private static void returnSourceArmor(ServerPlayer player, OrganicArmorType.PieceParams params, EquipmentSlot slot)
+	{
+		Item item = BuiltInRegistries.ITEM.get(params.sourceArmor());
 		ItemStack returned = new ItemStack(item);
 		ItemStack equipped = player.getItemBySlot(slot);
 		if (equipped.isEmpty())

@@ -10,8 +10,9 @@
 package com.arcanc.biomorphosis.content.entity;
 
 
+import com.arcanc.biomorphosis.content.entity.ai.goals.SwarmHurtByTargetGoal;
+import com.arcanc.biomorphosis.content.entity.ai.targeting.SwarmTargeting;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.data.tags.base.BioEntityTags;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.ControllerState;
@@ -29,7 +30,6 @@ import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -55,7 +55,8 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 		this.goalSelector.addGoal(0, new FloatGoal(this));
 		this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.1f, false));
 		
-		this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers());
+		this.targetSelector.addGoal(1, new SwarmHurtByTargetGoal(this, 24));
+		this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(
 				this,
@@ -63,9 +64,7 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 				5,
 				true,
 				true,
-				entity ->
-						!entity.getType().is(BioEntityTags.SWARM) &&
-								!(entity instanceof Creeper)));
+				entity -> SwarmTargeting.isValidSwarmEnemy(this, entity)));
 		
 		this.goalSelector.addGoal(3, new BreedGoal(this, 1.0));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));

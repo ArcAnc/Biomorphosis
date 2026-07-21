@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.entity;
 
+import com.arcanc.biomorphosis.content.entity.ai.goals.SwarmHurtByTargetGoal;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.ControllerState;
@@ -64,7 +65,8 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         this.goalSelector.addGoal(1, new Ziris.ZirisAttackStrategyGoal());
         this.goalSelector.addGoal(2, new Ziris.ZirisSweepAttackGoal());
         this.goalSelector.addGoal(3, new Ziris.ZirisCircleAroundAnchorGoal());
-        this.targetSelector.addGoal(1, new Ziris.ZirisAttackPlayerTargetGoal());
+        this.targetSelector.addGoal(1, new SwarmHurtByTargetGoal(this, 32));
+        this.targetSelector.addGoal(2, new Ziris.ZirisAttackPlayerTargetGoal());
     }
 
     //Копипаста из ванилы
