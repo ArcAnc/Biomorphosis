@@ -34,7 +34,8 @@ public class DynamicMultiblockPartBlock<T extends DynamicMultiblockPart> extends
                            BlockState oldState,
                            boolean movedByPiston)
     {
-        BlockHelper.castTileEntity(level, pos, DynamicMultiblockPart.class).ifPresent(part -> part.onPlace((ServerLevel) level, pos, state));
+        if (level instanceof ServerLevel serverLevel)
+            BlockHelper.castTileEntity(level, pos, DynamicMultiblockPart.class).ifPresent(part -> part.onPlace(serverLevel, pos, state));
     }
 
     @Override
@@ -44,8 +45,8 @@ public class DynamicMultiblockPartBlock<T extends DynamicMultiblockPart> extends
                             BlockState newState,
                             boolean movedByPiston)
     {
-        if (!state.is(newState.getBlock()))
-            BlockHelper.castTileEntity(level, pos, DynamicMultiblockPart.class).ifPresent(part -> part.onRemove((ServerLevel) level, pos, state));
+        if (!state.is(newState.getBlock()) && level instanceof ServerLevel serverLevel)
+            BlockHelper.castTileEntity(level, pos, DynamicMultiblockPart.class).ifPresent(part -> part.onRemove(serverLevel, pos, state));
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
 }

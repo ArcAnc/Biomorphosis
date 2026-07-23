@@ -8,3 +8,6 @@
 * changed organic armor code. Now it's datadriven
 * fixed skybox rotation angle
 * changed skybox stars texture and added clouds
+* updated Ziris AI. The mob should no longer get stuck in front of a single block
+* added flight mechanic
+* updated Dynamic Multiblock system

@@ -255,9 +255,15 @@ public class BioMultiblockProvider
 				if (staticMultiblock.getStructure().getPlacedBlock() == null)
 					throw new IllegalStateException("Definition " + definition.getId() + " haven't placed block");
 			}
-			else if (definition instanceof DynamicMultiblockDefinition dynamicMultiblock)
-				if (dynamicMultiblock.getAllowedBlockType() == null)
-					throw new IllegalStateException("Dynamic definition " + definition.getId() +"  haven't allowed block type");
+            else if (definition instanceof DynamicMultiblockDefinition dynamicMultiblock)
+            {
+                if (dynamicMultiblock.getMode() == DynamicMultiblockDefinition.Mode.CONNECTED &&
+                    dynamicMultiblock.getAllowedBlockType() == null)
+                    throw new IllegalStateException("Connected dynamic definition " + definition.getId() + " has no allowed block type");
+                if (dynamicMultiblock.getMode() == DynamicMultiblockDefinition.Mode.PATTERN &&
+                    dynamicMultiblock.getPattern().isEmpty())
+                    throw new IllegalStateException("Pattern dynamic definition " + definition.getId() + " has no pattern");
+            }
 		}
 		
 		@Override

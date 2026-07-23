@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.data.multiblock;
 
 import com.arcanc.biomorphosis.content.block.multiblock.definition.DynamicMultiblockDefinition;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.GrowthPattern;
 import com.google.common.base.Preconditions;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
@@ -21,6 +22,7 @@ public class DynamicMultiblockBuilder
     private DynamicMultiblockDefinition.ScanBehavior behavior;
     private BlockPos maxSize;
     private BlockState allowedBlockType;
+    private GrowthPattern pattern;
 
     public DynamicMultiblockBuilder(ResourceLocation location)
     {
@@ -53,9 +55,18 @@ public class DynamicMultiblockBuilder
         this.allowedBlockType = block;
         return this;
     }
+    
+    public DynamicMultiblockBuilder setPattern(GrowthPattern pattern)
+    {
+        Preconditions.checkNotNull(pattern);
+        this.pattern = pattern;
+        return this;
+    }
 
     public DynamicMultiblockDefinition end()
     {
+        if (this.pattern != null)
+            return new DynamicMultiblockDefinition(this.location, this.maxSize, this.pattern);
         return new DynamicMultiblockDefinition(this.location, this.behavior, this.maxSize, this.allowedBlockType);
     }
 }

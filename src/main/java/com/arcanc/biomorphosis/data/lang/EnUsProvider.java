@@ -309,6 +309,7 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed increased by %s%%");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Strength increased by %s%%");
 	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.VAMPIRISM.id()), "Each melee attack will restore %s%% of the damage dealt");
+	    this.add(Database.GUI.Genome.Translations.GENE_EFFECT_DESCRIPTION.apply(Database.GUI.Genome.WINGS.id()), "Grows organic wings. Toggle flight with the Atmospheric Flight key; jump ascends and sneak descends; release the movement keys to hover. Flight speed: %s");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.DAMAGE.id()), "Damage");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SPEED.id()), "Speed");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.HEALTH.id()), "Health");
@@ -317,6 +318,9 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.SWIM_SPEED.id()), "Swimming Speed");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.JUMP_STRENGTH.id()), "Jump Height");
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.VAMPIRISM.id()), "Vampirism");
+	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.WINGS.id()), "Wings");
+		this.add(Database.HotKeys.CATEGORY, "Biomorphosis");
+	    this.add(Database.HotKeys.WINGS, "Enable/Disable Flight");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.HEAD), "Organic Helmet");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.CHEST), "Organic Chestplate");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.LEGS), "Organic Leggings");

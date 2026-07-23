@@ -68,13 +68,13 @@ public class GenomeEffectsHolderMixin implements GenomeEffectsHolder
 	public void biomorphosis$rebuildEffects()
 	{
 		LivingEntity entity = (LivingEntity) (Object) this;
-		if (!(entity.level() instanceof ServerLevel serverLevel))
-			return;
+		boolean isServer = entity.level() instanceof ServerLevel;
 
 		Map<String, CompoundTag> preservedData = new LinkedHashMap<>(this.biomorphosis$pendingGeneEffectData);
-		this.biomorphosis$pendingGeneEffectData.clear();
+		if (isServer)
+			this.biomorphosis$pendingGeneEffectData.clear();
 
-		if (!biomorphosis$getGeneEffects().isEmpty())
+		if (isServer && !biomorphosis$getGeneEffects().isEmpty())
 			biomorphosis$getGeneEffects().forEach(effect ->
 			{
 				effect.entry().type().saveData(entity, effect.entry().params(), effect.data());
@@ -91,7 +91,7 @@ public class GenomeEffectsHolderMixin implements GenomeEffectsHolder
 		}
 
 		List<GenomeEffectsHolder.GeneEffectInstance> effects = new ArrayList<>();
-		HolderLookup.RegistryLookup<GeneDefinition> registry = serverLevel.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
+		HolderLookup.RegistryLookup<GeneDefinition> registry = entity.registryAccess().lookupOrThrow(Registration.GenomeReg.DEFINITION_KEY);
 
 		for (GeneInstance gene : genome.geneInstances())
 		{
@@ -113,7 +113,8 @@ public class GenomeEffectsHolderMixin implements GenomeEffectsHolder
 		}
 
 		this.biomorphosis$geneEffects = List.copyOf(effects);
-		this.biomorphosis$geneEffects.forEach(effect -> effect.entry().type().apply(entity, effect.entry().params(), effect.data()));
+		if (isServer)
+			this.biomorphosis$geneEffects.forEach(effect -> effect.entry().type().apply(entity, effect.entry().params(), effect.data()));
 	}
 
 	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))

@@ -42,6 +42,8 @@ import com.arcanc.biomorphosis.content.item.*;
 import com.arcanc.biomorphosis.content.mutations.GeneDefinition;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.mutations.UnlockedGenome;
+import com.arcanc.biomorphosis.content.mutations.wings.WingsFlightData;
+import com.arcanc.biomorphosis.content.mutations.wings.WingsFlightInput;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.mutations.types.*;
 import com.arcanc.biomorphosis.content.organic_armor.*;
@@ -200,6 +202,17 @@ public final class Registration
 						serialize(OrganicArmorState.CODEC).
 						copyOnDeath().
 						build());
+
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<WingsFlightData>> WINGS_FLIGHT = TYPES.register(
+				Database.DataAttachments.WINGS_FLIGHT,
+				() -> AttachmentType.builder(WingsFlightData :: empty).
+						serialize(WingsFlightData.CODEC).
+						sync(WingsFlightData.STREAM_CODEC).
+						build());
+		
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<WingsFlightInput>> WINGS_FLIGHT_INPUT = TYPES.register(
+				Database.DataAttachments.WINGS_FLIGHT_INPUT,
+				() -> AttachmentType.builder(() -> WingsFlightInput.EMPTY).build());
 
 		private static void init (final IEventBus bus)
 		{
@@ -2145,6 +2158,7 @@ public final class Registration
         public static final DeferredHolder<SoundEvent, SoundEvent> BLOCK_HIVE = variable("block_hive_deco");
 
 		public static final DeferredHolder<SoundEvent, SoundEvent> ADVANCEMENT = variable("advancement");
+		public static final DeferredHolder<SoundEvent, SoundEvent> WINGS_FLYING = variable("wings_flying");
 
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
@@ -2226,6 +2240,7 @@ public final class Registration
 		public static final DeferredHolder<IGeneEffectType<?>, SpeedEffectType> SPEED = EFFECT_TYPES.register("speed", SpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, SwimSpeedEffectType> SWIM_SPEED = EFFECT_TYPES.register("swim_speed", SwimSpeedEffectType :: new);
 		public static final DeferredHolder<IGeneEffectType<?>, VampirismEffectType> VAMPIRISM = EFFECT_TYPES.register("vampirism", VampirismEffectType :: new);
+		public static final DeferredHolder<IGeneEffectType<?>, WingsEffectType> WINGS = EFFECT_TYPES.register("wings", WingsEffectType :: new);
 		
 		private static void registerDataPackRegister(final DataPackRegistryEvent.NewRegistry event)
 		{

@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.block.multiblock.renderer;
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockFluidStorage;
+import com.arcanc.biomorphosis.content.block.multiblock.definition.PartsMap;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -26,6 +27,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -163,23 +165,27 @@ public class MultiblockFluidStorageRenderer implements BlockEntityRenderer<Multi
         FluidSidedStorage storage = MultiblockFluidStorage.getHandler(blockEntity, null);
         if (storage == null)
             return;
-        int multiblockHeight = blockEntity.getDefinition().map(definition ->
-                    definition.getStructure(level, pos).getSize().getY()).orElse(1);
-        int blockHeightInMultiblock = blockEntity.getMasterPos().map(masterPos -> Math.abs(blockEntity.getBlockPos().getY() - masterPos.getY())).orElse(0);
         FluidStack fluid = storage.getFluidInTank(0);
         if (fluid.isEmpty())
             return;
-        float fluidHeightInMultiblock = multiblockHeight * (float)storage.getFluidInTank(0).getAmount()/storage.getTankCapacity(0);
-        float inBlockAmount = fluidHeightInMultiblock - blockHeightInMultiblock;
-        if (fluidHeightInMultiblock > blockHeightInMultiblock)
-        {
-            if (inBlockAmount < 0)
-                return;
-            if (inBlockAmount > 1)
-                renderFluid(fluid, 1, poseStack);
-            else
-                renderFluid(fluid, inBlockAmount, poseStack);
-        }
+
+        BlockPos masterPos = blockEntity.getMasterPos().orElse(pos);
+        PartsMap structure = blockEntity.getDefinition().
+                map(definition -> definition.getStructure(level, masterPos)).
+                orElse(null);
+        if (structure == null || structure.getParts().isEmpty())
+            return;
+
+        int minY = structure.getParts().keySet().stream().mapToInt(BlockPos :: getY).min().orElse(0);
+        int maxY = structure.getParts().keySet().stream().mapToInt(BlockPos :: getY).max().orElse(0);
+        int multiblockHeight = maxY - minY + 1;
+        int localY = pos.getY() - masterPos.getY();
+        boolean gas = fluid.getFluid().getFluidType().isLighterThanAir();
+        int blockHeightInMultiblock = gas ? maxY - localY : localY - minY;
+        float fluidHeightInMultiblock = multiblockHeight * (float)fluid.getAmount() / storage.getTankCapacity(0);
+        float inBlockAmount = Mth.clamp(fluidHeightInMultiblock - blockHeightInMultiblock, 0, 1);
+        if (inBlockAmount > 0)
+            renderFluid(fluid, inBlockAmount, poseStack);
     }
 
     private void renderFluid(FluidStack fluid,

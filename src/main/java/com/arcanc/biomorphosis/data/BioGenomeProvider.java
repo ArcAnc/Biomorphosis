@@ -366,6 +366,41 @@ public class BioGenomeProvider extends BioRegistryData
 				end());
 		
 		addDefinition(GeneDefinitionBuilder.
+				builder(Database.GUI.Genome.WINGS.id()).
+				setImage(Database.GUI.Genome.WINGS.image()).
+				addRarityInfo(GeneRarity.COMMON).
+						setDestabilizationAmount(8).
+						setMainColor(80, 120, 45).
+						setSecondaryColor(160, 205, 70).
+						addEffect(Registration.GenomeReg.WINGS.get(), flightParams(58)).
+						end().
+				addRarityInfo(GeneRarity.UNCOMMON).
+						setDestabilizationAmount(10).
+						setMainColor(70, 145, 55).
+						setSecondaryColor(180, 225, 80).
+						addEffect(Registration.GenomeReg.WINGS.get(), flightParams(64)).
+						end().
+				addRarityInfo(GeneRarity.ULTRA_RARE).
+						setDestabilizationAmount(12).
+						setMainColor(55, 165, 75).
+						setSecondaryColor(195, 240, 95).
+						addEffect(Registration.GenomeReg.WINGS.get(), flightParams(72)).
+						end().
+				addRarityInfo(GeneRarity.EPIC).
+						setDestabilizationAmount(14).
+						setMainColor(45, 185, 100).
+						setSecondaryColor(210, 250, 120).
+						addEffect(Registration.GenomeReg.WINGS.get(), flightParams(79)).
+						end().
+				addRarityInfo(GeneRarity.LEGENDARY).
+						setDestabilizationAmount(17).
+						setMainColor(35, 210, 130).
+						setSecondaryColor(230, 255, 150).
+						addEffect(Registration.GenomeReg.WINGS.get(), flightParams(86)).
+						end().
+				end());
+
+		addDefinition(GeneDefinitionBuilder.
 				builder(Database.GUI.Genome.VAMPIRISM.id()).
 				setImage(Database.GUI.Genome.VAMPIRISM.image()).
 				addRarityInfo(GeneRarity.COMMON).
@@ -410,6 +445,12 @@ public class BioGenomeProvider extends BioRegistryData
 						end().
 				end());
 		
+	}
+
+	private static AttributeParams flightParams(int speed)
+	{
+		return new AttributeParams(new Dynamic<>(JsonOps.INSTANCE, JsonOps.INSTANCE.createMap(new HashMap<>())).
+				set("speed", new Dynamic<>(JsonOps.INSTANCE, JsonOps.INSTANCE.createInt(speed))));
 	}
 	
 	private void addDefinition(GeneDefinition data)

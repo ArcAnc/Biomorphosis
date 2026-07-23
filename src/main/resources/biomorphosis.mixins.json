@@ -10,10 +10,14 @@
     "FluidTypeRarityAccessor",
     "GenomeEffectsHolderMixin",
     "InventoryMenuMixin",
+    "LivingEntityAccessor",
     "MutationTicker",
     "OctahedralGroupAccessor",
     "OctahedralGroupExpander",
-    "SymmetricGroup3Expander"
+    "SymmetricGroup3Expander",
+    "WingsLivingEntityMixin",
+    "WingsPlayerMixin",
+    "WingsServerPacketListenerImplMixin"
   ],
   "minVersion": "0.8",
   "client": [
@@ -21,7 +25,11 @@
     "client.FontManagerMixin",
     "client.GuiGraphicsMixin",
     "client.InventoryScreenMixin",
+    "client.ItemInHandRendererAccessor",
     "client.LevelRendererMixin",
-    "client.RecipeUpdateMixin"
+    "client.RecipeUpdateMixin",
+    "client.WingsEntityTurnMixin",
+    "client.WingsHumanoidModelMixin",
+    "client.WingsPlayerRendererMixin"
   ]
 }

@@ -37,6 +37,8 @@ public class Database
 		public static final String GENOME = "genome";
 		public static final String UNLOCKED_GENOME = "unlocked_genome";
 		public static final String ORGANIC_ARMOR = "organic_armor";
+		public static final String WINGS_FLIGHT = "wings_flight";
+		public static final String WINGS_FLIGHT_INPUT = "wings_flight_input";
 	}
 
     public static final class Integration
@@ -216,6 +218,7 @@ public class Database
 			public static final GeneInfo PROTECTION = new GeneInfo(Database.rl("protection"));
 			public static final GeneInfo SPEED = new GeneInfo(Database.rl("speed"));
 			public static final GeneInfo VAMPIRISM = new GeneInfo(Database.rl("vampirism"));
+			public static final GeneInfo WINGS = new GeneInfo(Database.rl("wings"));
 
 			public static final class Translations
 			{
@@ -433,6 +436,12 @@ public class Database
             }
         }
     }
+	
+	public static final class HotKeys
+	{
+		public static final String CATEGORY = Database.rl("key.categories").toLanguageKey();
+		public static final String WINGS = Database.rl("key.wings").toLanguageKey();
+	}
 
     public static ResourceLocation rl(String name)
     {

@@ -1,4 +1,12 @@
 {
+	"wings_flying": {
+		"sounds": [
+			{
+				"name": "minecraft:item/elytra/elytra_loop",
+				"volume": 0.6
+			}
+		]
+	},
   "advancement": {
     "sounds": [
       "biomorphosis:advancement/0"

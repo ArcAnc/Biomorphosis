@@ -18,7 +18,6 @@ import com.arcanc.biomorphosis.content.mutations.templates.GenomeDataDefinition;
 import com.arcanc.biomorphosis.content.mutations.templates.GenomeTemplate;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.registration.Registration;
-import com.arcanc.biomorphosis.util.Database;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -91,11 +90,6 @@ public class GenomeHelper
 	public static <T extends LivingEntity> boolean hasArmorGene(T entity, EquipmentSlot slot)
 	{
 		return OrganicArmorHelper.hasArmor(entity, slot);
-	}
-
-	public static boolean hasArmorGene(GenomeInstance instance, EquipmentSlot slot)
-	{
-		return false;
 	}
 
 	public static List<Object> getAllEffectData(GeneDefinition.GeneEffectEntry entry)

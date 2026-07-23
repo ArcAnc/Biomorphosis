@@ -34,6 +34,10 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		add(Registration.SoundReg.ADVANCEMENT, SoundDefinition.definition().
 				with(sound(Database.rl("advancement/0"), SoundDefinition.SoundType.SOUND)).
 				subtitle(Database.GUI.Sounds.ADVANCEMENT_RECEIVE));
+
+		add(Registration.SoundReg.WINGS_FLYING, SoundDefinition.definition().
+				with(sound(Database.mineRl("item/elytra/elytra_loop"), SoundDefinition.SoundType.SOUND).
+				volume(0.6D)));
 		
 		add(Registration.SoundReg.BLOCK_DESTROY, SoundDefinition.definition().
 				with(

@@ -11,6 +11,7 @@ package com.arcanc.biomorphosis.content.network.packets;
 
 
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
+import com.arcanc.biomorphosis.content.mutations.GenomeEffectsHolder;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
@@ -45,6 +46,8 @@ public record S2CGenomeSync (UUID entityId, GenomeInstance genome) implements IP
 			if (target == null)
 				return;
 			target.setData(Registration.DataAttachmentsReg.GENOME, this.genome);
+			if (target instanceof GenomeEffectsHolder holder)
+				holder.biomorphosis$rebuildEffects();
 		});
 	}
 	

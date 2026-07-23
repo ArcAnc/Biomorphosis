@@ -29,6 +29,8 @@ import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.fluids.FluidStack;
+import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -63,9 +65,45 @@ public class MultiblockFluidStorage extends DynamicMultiblockPart implements Blo
     @Override
     protected void transferRequiredData(DynamicMultiblockPart target)
     {
-        CompoundTag tag = new CompoundTag();
-        this.writeCustomTag(tag, getLevel().registryAccess(), false);
-        target.readCustomTag(tag, getLevel().registryAccess(), false);
+        if (!(target instanceof MultiblockFluidStorage storage))
+            return;
+
+        FluidStack fluid = this.handler.getFluidInTank(0);
+        if (!fluid.isEmpty())
+            storage.handler.fill(fluid, IFluidHandler.FluidAction.EXECUTE);
+    }
+
+    @Override
+    protected void distributeRequiredData(List<DynamicMultiblockPart> targets)
+    {
+        FluidStack fluid = this.handler.getFluidInTank(0);
+        if (fluid.isEmpty())
+            return;
+
+        List<MultiblockFluidStorage> storages = targets.stream().
+                filter(MultiblockFluidStorage.class :: isInstance).
+                map(MultiblockFluidStorage.class :: cast).
+                toList();
+        int totalCapacity = storages.stream().mapToInt(storage -> storage.handler.getTankCapacity(0)).sum();
+        if (totalCapacity == 0)
+            return;
+
+        int remaining = fluid.getAmount();
+        for (MultiblockFluidStorage storage : storages)
+        {
+            int share = (int)((long)fluid.getAmount() * storage.handler.getTankCapacity(0) / totalCapacity);
+            FluidStack part = fluid.copy();
+            part.setAmount(share);
+            remaining -= storage.handler.fill(part, IFluidHandler.FluidAction.EXECUTE);
+        }
+        for (MultiblockFluidStorage storage : storages)
+        {
+            if (remaining == 0)
+                break;
+            FluidStack part = fluid.copy();
+            part.setAmount(remaining);
+            remaining -= storage.handler.fill(part, IFluidHandler.FluidAction.EXECUTE);
+        }
     }
 
     @Override

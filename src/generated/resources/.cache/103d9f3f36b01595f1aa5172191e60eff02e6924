@@ -1,4 +1,4 @@
-// 1.21.1	2026-07-16T20:49:27.297923592	Registries
+// 1.21.1	2026-07-21T14:45:42.485714811	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
@@ -43,6 +43,7 @@ ae2d864cd0ee1afc1ef238add0d3e13fd7cdcdc1 data/biomorphosis/genome/effect/protect
 32a7616e4a891ed73a64a369b5b4a1e262d00142 data/biomorphosis/genome/effect/speed.json
 f1e6330501e1f5f5ab6ff548d7c327861f32a9f5 data/biomorphosis/genome/effect/swim_speed.json
 25257d2b060679fa6431a2ca0b6338acf30b2b79 data/biomorphosis/genome/effect/vampirism.json
+d049a3fd8bb42ff644d1c6b2395476e1d477e02b data/biomorphosis/genome/effect/wings.json
 f9ea8ff9ce7642026f7a21fafab50747f930f5ba data/biomorphosis/organic_armor/effect/organic_acid.json
 971db358cfe0b4493feafc0ee9a02f14fad1b1eb data/biomorphosis/organic_armor/effect/organic_adrenaline.json
 f7afe361d78eb23b20eebc5cbfb928eddb7e60c3 data/biomorphosis/organic_armor/effect/organic_biomass.json

@@ -158,6 +158,9 @@ public class BioGenomeTemplatesProvider
 														Database.GUI.Genome.VAMPIRISM.id(),
 														GeneRarity.LEGENDARY),
 												new GeneInstance(
+														Database.GUI.Genome.WINGS.id(),
+														GeneRarity.LEGENDARY),
+												new GeneInstance(
 														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.ULTRA_RARE)
 										)
@@ -169,6 +172,9 @@ public class BioGenomeTemplatesProvider
 										List.of(
 												new GeneInstance(
 														Database.GUI.Genome.VAMPIRISM.id(),
+														GeneRarity.EPIC),
+												new GeneInstance(
+														Database.GUI.Genome.WINGS.id(),
 														GeneRarity.EPIC),
 												new GeneInstance(
 														Database.GUI.Genome.BALANCE.id(),
@@ -184,6 +190,9 @@ public class BioGenomeTemplatesProvider
 														Database.GUI.Genome.VAMPIRISM.id(),
 														GeneRarity.ULTRA_RARE),
 												new GeneInstance(
+														Database.GUI.Genome.WINGS.id(),
+														GeneRarity.ULTRA_RARE),
+												new GeneInstance(
 														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.UNCOMMON)
 										)
@@ -197,6 +206,9 @@ public class BioGenomeTemplatesProvider
 														Database.GUI.Genome.VAMPIRISM.id(),
 														GeneRarity.UNCOMMON),
 												new GeneInstance(
+														Database.GUI.Genome.WINGS.id(),
+														GeneRarity.UNCOMMON),
+												new GeneInstance(
 														Database.GUI.Genome.BALANCE.id(),
 														GeneRarity.COMMON)
 										)
@@ -208,6 +220,9 @@ public class BioGenomeTemplatesProvider
 										List.of(
 												new GeneInstance(
 														Database.GUI.Genome.VAMPIRISM.id(),
+														GeneRarity.COMMON),
+												new GeneInstance(
+														Database.GUI.Genome.WINGS.id(),
 														GeneRarity.COMMON),
 												new GeneInstance(
 														Database.GUI.Genome.BALANCE.id(),

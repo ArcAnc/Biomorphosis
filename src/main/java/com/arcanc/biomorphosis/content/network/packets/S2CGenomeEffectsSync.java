@@ -43,7 +43,10 @@ public record S2CGenomeEffectsSync(UUID entityId, CompoundTag effectData) implem
 				return;
 			Entity target = level.getEntities().get(this.entityId);
 			if (target instanceof GenomeEffectsHolder holder)
+			{
 				holder.biomorphosis$setGeneEffectData(this.effectData);
+				holder.biomorphosis$rebuildEffects();
+			}
 		});
 	}
 

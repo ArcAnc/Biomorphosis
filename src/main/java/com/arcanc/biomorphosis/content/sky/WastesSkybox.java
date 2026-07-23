@@ -44,6 +44,7 @@ final class WastesSkybox
 	private static final int CLOUD_MAX_LOBES = 16;
 	private static final int CLOUD_SEGMENTS = 16;
 	private static final ResourceLocation STARS = Database.rl("textures/environment/skybox/wastes/stars.png");
+	private static final ResourceLocation NEBULA = Database.rl("textures/environment/skybox/wastes/nebula.png");
 	private static final RenderStateShard.ShaderStateShard POSITION_TEX_COLOR_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer :: getPositionTexColorShader);
 	private static final RenderStateShard.ShaderStateShard POSITION_COLOR_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer :: getPositionColorShader);
 	private static final RenderStateShard.TransparencyStateShard ALPHA_ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard(
@@ -55,8 +56,8 @@ final class WastesSkybox
 			},
 			() ->
 			{
-				RenderSystem.enableBlend();
 				RenderSystem.defaultBlendFunc();
+				RenderSystem.disableBlend();
 			});
 	private static final RenderType STARS_RENDER_TYPE = RenderType.create(
 			Database.rlStr("wastes_stars"),
@@ -70,8 +71,27 @@ final class WastesSkybox
 					setTextureState(new RenderStateShard.TextureStateShard(STARS, true, false)).
 					setTransparencyState(ALPHA_ADDITIVE_TRANSPARENCY).
 					setCullState(RenderStateShard.NO_CULL).
+					setDepthTestState(RenderStateShard.NO_DEPTH_TEST).
 					setWriteMaskState(RenderStateShard.COLOR_WRITE).
 					createCompositeState(false));
+	
+	private static final RenderType NEBULA_RENDER_TYPE = RenderType.create(
+			Database.rlStr("wastes_nebula"),
+			DefaultVertexFormat.POSITION_TEX_COLOR,
+			VertexFormat.Mode.QUADS,
+			RenderType.TRANSIENT_BUFFER_SIZE,
+			false,
+			true,
+			RenderType.CompositeState.builder().
+					setShaderState(POSITION_TEX_COLOR_SHADER).
+					setTextureState(new RenderStateShard.TextureStateShard(NEBULA, true, false)).
+					setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).
+					setCullState(RenderStateShard.NO_CULL).
+					setDepthTestState(RenderStateShard.NO_DEPTH_TEST).
+					setWriteMaskState(RenderStateShard.COLOR_WRITE).
+					setOutputState(RenderStateShard.TRANSLUCENT_TARGET).
+					createCompositeState(false));
+	
 	private static final RenderType CLOUDS_RENDER_TYPE = RenderType.create(
 			Database.rlStr("wastes_clouds"),
 			DefaultVertexFormat.POSITION_COLOR,
@@ -123,8 +143,24 @@ final class WastesSkybox
 	private static void renderStars(BiomeSkyboxRenderContext context)
 	{
 		float nightAlpha = Mth.clamp(context.level().getStarBrightness(context.partialTick()) * 1.35F, 0.0F, 1.0F);
-		if (nightAlpha <= 0.001F || !BiomeSkyboxes.hasTexture(STARS))
+		if (nightAlpha <= 0.001F || !BiomeSkyboxes.hasTexture(NEBULA) || !BiomeSkyboxes.hasTexture(STARS))
 			return;
+		
+		BiomeSkyboxes.renderHemisphere(
+				NEBULA,
+				context.alpha() * nightAlpha,
+				Mth.PI,
+				Mth.TWO_PI,
+				BiomeSkyboxes.sphereTravelAngle(context.level(), context.partialTick()),
+				0f,
+				0.879f,
+				0.823F,
+				BiomeSkyboxes.UvMode.TRANSITION_REVERSED,
+				BiomeSkyboxes.SKYBOX_EFFECT_SIZE,
+				context.skybox().sphereYOffset(),
+				NEBULA_RENDER_TYPE,
+				context.poseStack(),
+				context.projectionMatrix());
 		
 		BiomeSkyboxes.renderHemisphere(
 				STARS,
@@ -132,9 +168,9 @@ final class WastesSkybox
 				Mth.PI,
 				Mth.TWO_PI,
 				BiomeSkyboxes.sphereTravelAngle(context.level(), context.partialTick()),
-				1.0F,
-				1.0F,
-				1.0F,
+				1f,
+				1f,
+				1f,
 				BiomeSkyboxes.UvMode.TRANSITION_REVERSED,
 				BiomeSkyboxes.SKYBOX_EFFECT_SIZE,
 				context.skybox().sphereYOffset(),

@@ -28,6 +28,8 @@ import com.arcanc.biomorphosis.content.gui.component.tooltip.TooltipBorderHandle
 import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.gui.screen.container.OrganicArmorInventoryScreen;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
+import com.arcanc.biomorphosis.content.mutations.wings.client.WingsClient;
+import com.arcanc.biomorphosis.content.mutations.wings.client.WingsAttachmentRenderHandler;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorRenderHandler;
 import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
@@ -98,6 +100,9 @@ public final class ClientEvents
         NeoForge.EVENT_BUS.addListener(FluidLevelAnimator :: renderFrame);
         NeoForge.EVENT_BUS.addListener(ClientEvents :: receiveRecipesEvent);
 	    BiomeSkyboxes.init(modEventBus);
+	    
+		WingsClient.init(modEventBus);
+		
 		registerCustomTextures(modEventBus);
     }
 	

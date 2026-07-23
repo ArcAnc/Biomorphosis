@@ -1,0 +1,116 @@
+{
+  "id": "biomorphosis:wings",
+  "image": "biomorphosis:textures/genome/wings.png",
+  "rarity_data": {
+    "grath": {
+      "destabilization_amount": 10,
+      "effects": [
+        {
+          "type": "biomorphosis:wings",
+          "params": {
+            "speed": 64
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 55,
+        "green": 145,
+        "red": 70
+      },
+      "secondary_color": {
+        "blue": 80,
+        "green": 225,
+        "red": 180
+      }
+    },
+    "slyth": {
+      "destabilization_amount": 8,
+      "effects": [
+        {
+          "type": "biomorphosis:wings",
+          "params": {
+            "speed": 58
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 45,
+        "green": 120,
+        "red": 80
+      },
+      "secondary_color": {
+        "blue": 70,
+        "green": 205,
+        "red": 160
+      }
+    },
+    "thrynn": {
+      "destabilization_amount": 14,
+      "effects": [
+        {
+          "type": "biomorphosis:wings",
+          "params": {
+            "speed": 79
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 100,
+        "green": 185,
+        "red": 45
+      },
+      "secondary_color": {
+        "blue": 120,
+        "green": 250,
+        "red": 210
+      }
+    },
+    "vorrath": {
+      "destabilization_amount": 17,
+      "effects": [
+        {
+          "type": "biomorphosis:wings",
+          "params": {
+            "speed": 86
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 130,
+        "green": 210,
+        "red": 35
+      },
+      "secondary_color": {
+        "blue": 150,
+        "green": 255,
+        "red": 230
+      }
+    },
+    "xyrr": {
+      "destabilization_amount": 12,
+      "effects": [
+        {
+          "type": "biomorphosis:wings",
+          "params": {
+            "speed": 72
+          }
+        }
+      ],
+      "incompatibilities": [],
+      "main_color": {
+        "blue": 75,
+        "green": 165,
+        "red": 55
+      },
+      "secondary_color": {
+        "blue": 95,
+        "green": 240,
+        "red": 195
+      }
+    }
+  }
+}

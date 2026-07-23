@@ -22,15 +22,18 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.control.MoveControl;
+import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -51,12 +54,13 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
     
     private Ziris.AttackPhase attackPhase = Ziris.AttackPhase.CIRCLE;
     private BlockPos anchorPoint = BlockPos.ZERO;
-    private Vec3 moveTargetPoint = Vec3.ZERO;
+    private Vec3 flightTargetPoint = Vec3.ZERO;
 
     public Ziris(EntityType<? extends FlyingMob> type, Level level)
     {
         super(type, level);
-        this.moveControl = new Ziris.ZirisMoveControl(this);
+        this.moveControl = new FlyingMoveControl(this, 20, true);
+        this.navigation = new FlyingPathNavigation(this, level);
     }
 
     @Override
@@ -73,7 +77,8 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
     private enum AttackPhase
     {
         CIRCLE,
-        SWOOP;
+        SWOOP,
+        RETREAT;
     }
 
     private class ZirisAttackStrategyGoal extends Goal
@@ -140,20 +145,24 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
 
         protected boolean touchingTarget()
         {
-            return Ziris.this.moveTargetPoint.distanceToSqr(Ziris.this.getX(), Ziris.this.getY(), Ziris.this.getZ()) < 4.0;
+            return Ziris.this.flightTargetPoint.distanceToSqr(Ziris.this.getX(), Ziris.this.getY(), Ziris.this.getZ()) < 4.0;
         }
     }
 
     private class ZirisSweepAttackGoal extends Ziris.ZirisMoveTargetGoal
     {
         private static final int CAT_SEARCH_TICK_DELAY = 20;
+        private static final double ATTACK_DISTANCE = 4.5;
+        private static final double RETREAT_DISTANCE = 10.0;
         private boolean isScaredOfCat;
         private int catSearchTick;
+        private int retreatEndTick;
 
         @Override
         public boolean canUse()
         {
-            return Ziris.this.getTarget() != null && Ziris.this.attackPhase == Ziris.AttackPhase.SWOOP;
+            return Ziris.this.getTarget() != null
+                    && (Ziris.this.attackPhase == Ziris.AttackPhase.SWOOP || Ziris.this.attackPhase == Ziris.AttackPhase.RETREAT);
         }
 
         @Override
@@ -195,7 +204,6 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
 	    @Override
         public void stop()
         {
-            Ziris.this.setTarget(null);
             Ziris.this.attackPhase = Ziris.AttackPhase.CIRCLE;
         }
 
@@ -205,19 +213,57 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
             LivingEntity livingentity = Ziris.this.getTarget();
             if (livingentity != null)
             {
-                Ziris.this.moveTargetPoint = new Vec3(livingentity.getX(), livingentity.getY(0.5), livingentity.getZ());
-                if (Ziris.this.getBoundingBox().inflate(0.2F).intersects(livingentity.getBoundingBox()))
+                if (Ziris.this.attackPhase == Ziris.AttackPhase.RETREAT)
                 {
-                    Ziris.this.doHurtTarget(livingentity);
-                    Ziris.this.attackPhase = Ziris.AttackPhase.CIRCLE;
-                    if (!Ziris.this.isSilent())
-                        Ziris.this.level().levelEvent(1039, Ziris.this.blockPosition(), 0);
+                    if (Ziris.this.tickCount >= this.retreatEndTick)
+                        Ziris.this.attackPhase = Ziris.AttackPhase.CIRCLE;
+                    else
+                        Ziris.this.setFlightTarget(this.getRetreatPoint(livingentity));
+                    return;
                 }
-                else if (Ziris.this.horizontalCollision || Ziris.this.hurtTime > 0)
+
+                Vec3 targetPosition = livingentity.getEyePosition();
+                Vec3 approachDirection = Ziris.this.position().subtract(targetPosition);
+                if (approachDirection.horizontalDistanceSqr() < 1.0E-4)
+                    approachDirection = Ziris.this.getLookAngle().scale(-1.0);
+                else
+                    approachDirection = new Vec3(approachDirection.x, 0.0, approachDirection.z).normalize();
+
+                Vec3 attackPoint = targetPosition.add(approachDirection.scale(ATTACK_DISTANCE));
+                if (!Ziris.this.setFlightTarget(attackPoint))
                 {
                     Ziris.this.attackPhase = Ziris.AttackPhase.CIRCLE;
+                    return;
                 }
+
+                Ziris.this.getLookControl().setLookAt(livingentity, 30.0F, 30.0F);
+                double distanceToTarget = Ziris.this.distanceTo(livingentity);
+                if (distanceToTarget >= 3.5 && distanceToTarget <= 5.5 && Ziris.this.hasLineOfSight(livingentity))
+                    this.fireAndRetreat(livingentity);
             }
+        }
+
+        private void fireAndRetreat(LivingEntity target)
+        {
+            Vec3 shotDirection = target.getEyePosition().subtract(Ziris.this.getEyePosition());
+            SmallFireball projectile = new SmallFireball(Ziris.this.level(), Ziris.this, shotDirection.normalize());
+            projectile.setPos(Ziris.this.getX(), Ziris.this.getEyeY(), Ziris.this.getZ());
+            Ziris.this.level().addFreshEntity(projectile);
+            Ziris.this.swing(InteractionHand.MAIN_HAND);
+            Ziris.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 0.9F + Ziris.this.random.nextFloat() * 0.2F);
+            this.retreatEndTick = Ziris.this.tickCount + this.adjustedTickDelay(30);
+            Ziris.this.attackPhase = Ziris.AttackPhase.RETREAT;
+            Ziris.this.setFlightTarget(this.getRetreatPoint(target));
+        }
+
+        private Vec3 getRetreatPoint(LivingEntity target)
+        {
+            Vec3 retreatDirection = Ziris.this.position().subtract(target.position());
+            if (retreatDirection.horizontalDistanceSqr() < 1.0E-4)
+                retreatDirection = Ziris.this.getLookAngle().scale(-1.0);
+            else
+                retreatDirection = new Vec3(retreatDirection.x, 0.0, retreatDirection.z).normalize();
+            return target.getEyePosition().add(retreatDirection.scale(RETREAT_DISTANCE)).add(0.0, 2.0, 0.0);
         }
     }
 
@@ -227,6 +273,7 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         private float distance;
         private float height;
         private float clockwise;
+        private int nextOrbitPointTick;
 
         @Override
         public boolean canUse()
@@ -238,7 +285,7 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         public void start()
         {
             this.distance = 5.0F + Ziris.this.random.nextFloat() * 10.0F;
-            this.height = -4.0F + Ziris.this.random.nextFloat() * 9.0F;
+            this.height = -3.0F + Ziris.this.random.nextFloat() * 7.0F;
             this.clockwise = Ziris.this.random.nextBoolean() ? 1.0F : -1.0F;
             this.selectNext();
         }
@@ -247,7 +294,7 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         public void tick()
         {
             if (Ziris.this.random.nextInt(this.adjustedTickDelay(350)) == 0)
-                this.height = -4.0F + Ziris.this.random.nextFloat() * 9.0F;
+                this.height = -3.0F + Ziris.this.random.nextFloat() * 7.0F;
 
             if (Ziris.this.random.nextInt(this.adjustedTickDelay(250)) == 0)
             {
@@ -265,16 +312,16 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
                 this.selectNext();
             }
 
-            if (this.touchingTarget())
+            if (this.touchingTarget() || Ziris.this.tickCount >= this.nextOrbitPointTick || Ziris.this.navigation.isDone())
                 this.selectNext();
 
-            if (Ziris.this.moveTargetPoint.y < Ziris.this.getY() && !Ziris.this.level().isEmptyBlock(Ziris.this.blockPosition().below(1)))
+            if (Ziris.this.flightTargetPoint.y < Ziris.this.getY() && !Ziris.this.level().isEmptyBlock(Ziris.this.blockPosition().below(1)))
             {
                 this.height = Math.max(1.0F, this.height);
                 this.selectNext();
             }
 
-            if (Ziris.this.moveTargetPoint.y > Ziris.this.getY() && !Ziris.this.level().isEmptyBlock(Ziris.this.blockPosition().above(1)))
+            if (Ziris.this.flightTargetPoint.y > Ziris.this.getY() && !Ziris.this.level().isEmptyBlock(Ziris.this.blockPosition().above(1)))
             {
                 this.height = Math.min(-1.0F, this.height);
                 this.selectNext();
@@ -286,10 +333,35 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
             if (BlockPos.ZERO.equals(Ziris.this.anchorPoint))
                 Ziris.this.anchorPoint = Ziris.this.blockPosition();
 
-            this.angle = this.angle + this.clockwise * 15.0F * (float) (Math.PI / 180.0);
-            Ziris.this.moveTargetPoint = Vec3.atLowerCornerOf(Ziris.this.anchorPoint)
-                    .add(this.distance * Mth.cos(this.angle), -4.0F + this.height, this.distance * Mth.sin(this.angle));
+            Vec3 center = Ziris.this.getOrbitCenter();
+            for (int attempt = 0; attempt < 8; attempt++)
+            {
+                this.angle += this.clockwise * 15.0F * (float) (Math.PI / 180.0);
+                Vec3 orbitPoint = center.add(
+                        this.distance * Mth.cos(this.angle), this.height, this.distance * Mth.sin(this.angle)
+                );
+                if (Ziris.this.setFlightTarget(orbitPoint))
+                    break;
+            }
+            this.nextOrbitPointTick = Ziris.this.tickCount + this.adjustedTickDelay(20 + Ziris.this.random.nextInt(20));
         }
+    }
+    
+    private Vec3 getOrbitCenter()
+    {
+        LivingEntity target = this.getTarget();
+        return target != null
+                ? new Vec3(target.getX(), target.getY(0.5), target.getZ())
+                : Vec3.atCenterOf(this.anchorPoint);
+    }
+
+    private boolean setFlightTarget(Vec3 target)
+    {
+        boolean targetChanged = this.flightTargetPoint.distanceToSqr(target) > 1.0;
+        this.flightTargetPoint = target;
+        if (targetChanged || this.navigation.isDone() || this.tickCount % 10 == 0)
+            return this.navigation.moveTo(target.x, target.y, target.z, 1.8);
+        return !this.navigation.isDone();
     }
 
     private class ZirisAttackPlayerTargetGoal extends Goal
@@ -330,58 +402,6 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         {
             LivingEntity livingentity = Ziris.this.getTarget();
             return livingentity != null && Ziris.this.canAttack(livingentity, TargetingConditions.DEFAULT);
-        }
-    }
-
-    private class ZirisMoveControl extends MoveControl
-    {
-        private float speed = 0.4F;
-
-        public ZirisMoveControl(Mob mob)
-        {
-            super(mob);
-        }
-
-        @Override
-        public void tick()
-        {
-            if (Ziris.this.horizontalCollision)
-            {
-                Ziris.this.setYRot(Ziris.this.getYRot() + 180.0F);
-                this.speed = 0.1F;
-            }
-
-            double d0 = Ziris.this.moveTargetPoint.x - Ziris.this.getX();
-            double d1 = Ziris.this.moveTargetPoint.y - Ziris.this.getY();
-            double d2 = Ziris.this.moveTargetPoint.z - Ziris.this.getZ();
-            double d3 = Math.sqrt(d0 * d0 + d2 * d2);
-            if (Math.abs(d3) > 1.0E-5F) {
-                double d4 = 1.0 - Math.abs(d1 * 0.7F) / d3;
-                d0 *= d4;
-                d2 *= d4;
-                d3 = Math.sqrt(d0 * d0 + d2 * d2);
-                double d5 = Math.sqrt(d0 * d0 + d2 * d2 + d1 * d1);
-                float f = Ziris.this.getYRot();
-                float f1 = (float)Mth.atan2(d2, d0);
-                float f2 = Mth.wrapDegrees(Ziris.this.getYRot() + 90.0F);
-                float f3 = Mth.wrapDegrees(f1 * (180.0F / (float)Math.PI));
-                Ziris.this.setYRot(Mth.approachDegrees(f2, f3, 4.0F) - 90.0F);
-                Ziris.this.yBodyRot = Ziris.this.getYRot();
-                if (Mth.degreesDifferenceAbs(f, Ziris.this.getYRot()) < 3.0F) {
-                    this.speed = Mth.approach(this.speed, 1.8F, 0.005F * (1.8F / this.speed));
-                } else {
-                    this.speed = Mth.approach(this.speed, 0.2F, 0.025F);
-                }
-
-                float f4 = (float)(-(Mth.atan2(-d1, d3) * 180.0F / (float)Math.PI));
-                Ziris.this.setXRot(f4);
-                float f5 = Ziris.this.getYRot() + 90.0F;
-                double d6 = (double)(this.speed * Mth.cos(f5 * (float) (Math.PI / 180.0))) * Math.abs(d0 / d5);
-                double d7 = (double)(this.speed * Mth.sin(f5 * (float) (Math.PI / 180.0))) * Math.abs(d2 / d5);
-                double d8 = (double)(this.speed * Mth.sin(f4 * (float) (Math.PI / 180.0))) * Math.abs(d1 / d5);
-                Vec3 vec3 = Ziris.this.getDeltaMovement();
-                Ziris.this.setDeltaMovement(vec3.add(new Vec3(d6, d8, d7).subtract(vec3).scale(0.2)));
-            }
         }
     }
 
@@ -437,13 +457,13 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
                 state.controller().play(animatable.walkAnimation.isMoving() ? WALK : IDLE);
             return state.controller().getState();
         }).
-                add("deathController", () -> state ->
-                {
-                    if (!state.animatable().isDeadOrDying())
-                        return ControllerState.STOP;
-                    state.controller().play(DEATH);
-                    return ControllerState.PLAY;
-                });
+        add("deathController", () -> state ->
+        {
+            if (!state.animatable().isDeadOrDying())
+                return ControllerState.STOP;
+            state.controller().play(DEATH);
+            return ControllerState.PLAY;
+        });
     }
     
     @Override

@@ -1,7 +1,7 @@
-// 1.21.1	2026-02-21T00:30:47.896557577	biomorphosis: Genome Templates Provider
+// 1.21.1	2026-07-21T14:51:19.632782811	biomorphosis: Genome Templates Provider
 6605ce4223370b7100f7f9236d8ef28e2c68ac2b data/minecraft/genome/templates/armadillo.json
 2d1f58e7b16d52135517f7d5e93e919fc3f5dc42 data/minecraft/genome/templates/axolotl.json
-f51ae0e856aaeadc7e223da4477f4bbdf3e62cd6 data/minecraft/genome/templates/bat.json
+bbdc04c0a73e6417056d687a3fcb6a28438f4a12 data/minecraft/genome/templates/bat.json
 81a798d850dc383c24719ba4c21f076c1e39e4b3 data/minecraft/genome/templates/cat.json
 b2fa5de480968ab58111b939b95140de0bc8c0df data/minecraft/genome/templates/cod.json
 fff8d4fb8bb3ec74ab52c265588314b7db54500e data/minecraft/genome/templates/cow.json
