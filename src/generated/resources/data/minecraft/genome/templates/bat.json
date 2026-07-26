@@ -9,10 +9,6 @@
             "id": "biomorphosis:vampirism"
           },
           {
-            "gene_rarity": "vorrath",
-            "id": "biomorphosis:wings"
-          },
-          {
             "gene_rarity": "xyrr",
             "id": "biomorphosis:balance"
           }
@@ -26,10 +22,6 @@
           {
             "gene_rarity": "thrynn",
             "id": "biomorphosis:vampirism"
-          },
-          {
-            "gene_rarity": "thrynn",
-            "id": "biomorphosis:wings"
           },
           {
             "gene_rarity": "grath",
@@ -47,10 +39,6 @@
             "id": "biomorphosis:vampirism"
           },
           {
-            "gene_rarity": "xyrr",
-            "id": "biomorphosis:wings"
-          },
-          {
             "gene_rarity": "grath",
             "id": "biomorphosis:balance"
           }
@@ -66,10 +54,6 @@
             "id": "biomorphosis:vampirism"
           },
           {
-            "gene_rarity": "grath",
-            "id": "biomorphosis:wings"
-          },
-          {
             "gene_rarity": "slyth",
             "id": "biomorphosis:balance"
           }
@@ -83,10 +67,6 @@
           {
             "gene_rarity": "slyth",
             "id": "biomorphosis:vampirism"
-          },
-          {
-            "gene_rarity": "slyth",
-            "id": "biomorphosis:wings"
           },
           {
             "gene_rarity": "slyth",

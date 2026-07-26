@@ -50,6 +50,10 @@ public class EnUsProvider extends LanguageProvider
 		this.addItem(Registration.ItemReg.INJECTOR, "Injector");
 		this.addItem(Registration.ItemReg.MEAT_MELON_SEEDS, "Meat Melon Seeds");
 	    this.addItem(Registration.ItemReg.FLESH_HOE, "Flesh Hoe");
+		this.addItem(Registration.ItemReg.LIFELESS_BOOTS, "Lifeless Boots");
+		this.addItem(Registration.ItemReg.LIFELESS_CHESTPLATE, "Lifeless Chestplate");
+		this.addItem(Registration.ItemReg.LIFELESS_HELMET, "Lifeless Helmet");
+		this.addItem(Registration.ItemReg.LIFELESS_LEGGINGS, "Lifeless Leggings");
 	    this.add("item.biomorphosis.fluid_capsule.empty", "Empty");
 	    this.add("item.biomorphosis.fluid_capsule.amount", "%s / %s mB");
 
@@ -122,6 +126,7 @@ public class EnUsProvider extends LanguageProvider
 	    this.addEntity(Registration.EntityReg.MOB_BASE_CAPTAIN,"Captain", Database.GUI.Sounds.CAPTAIN, "yawns");
 	    this.addEntity(Registration.EntityReg.MOB_BASE_BLACKSMITH,"Blacksmith", Database.GUI.Sounds.BLACKSMITH, "yawns");
 		this.addEntityType(Registration.EntityReg.PROJECTILE_TURRET.getEntityHolder(), "Turret Projectile");
+		this.addEntityType(Registration.EntityReg.PROJECTILE_ZIRIS.getEntityHolder(), "Ziris Acid Projectile");
 
         //-----------------------------
         // JADE
@@ -335,7 +340,9 @@ public class EnUsProvider extends LanguageProvider
 	    //-----------------------------
 	    //DAMAGE TYPES
 		this.add("death.attack.biomorphosis:impossible_mutation", "Player %s mutated too hard");
+		this.add("death.attack.biomorphosis:acid", "%s dissolved in acid");
 		this.add("death.attack.biomorphosis:infestation", "%s was consumed by infestation");
+		this.add(Registration.EffectReg.ACID.get().getDescriptionId(), "Acid");
 		this.add(Registration.EffectReg.INFESTATION.get().getDescriptionId(), "Infestation");
     }
 

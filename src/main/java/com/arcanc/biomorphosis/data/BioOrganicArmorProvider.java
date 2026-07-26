@@ -37,10 +37,10 @@ public class BioOrganicArmorProvider extends BioRegistryData
 	protected void addContent()
 	{
 		addType("organic", "organic", List.of(
-				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_HELMET.getId(), EquipmentSlot.HEAD, 2, 200),
-				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_CHESTPLATE.getId(), EquipmentSlot.CHEST, 6, 200),
-				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_LEGGINGS.getId(), EquipmentSlot.LEGS, 4, 200),
-				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_BOOTS.getId(), EquipmentSlot.FEET, 2, 200)));
+				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_HELMET.getId(), Database.rl("organic_armor/helmet"), EquipmentSlot.HEAD, 2, 200),
+				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_CHESTPLATE.getId(), Database.rl("organic_armor/chest"), EquipmentSlot.CHEST, 6, 200),
+				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_LEGGINGS.getId(), Database.rl("organic_armor/pants"), EquipmentSlot.LEGS, 4, 200),
+				new OrganicArmorType.PieceParams(Registration.ItemReg.LIFELESS_BOOTS.getId(), Database.rl("organic_armor/boots"), EquipmentSlot.FEET, 2, 200)));
 
 		addDefaultEffects("organic");
 	}

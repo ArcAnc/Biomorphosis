@@ -22,6 +22,9 @@
   "minVersion": "0.8",
   "client": [
     "client.AbstractContainerScreeMixin",
+    "client.AbstractContainerScreenAccessor",
+    "client.CreativeModeInventoryScreenMixin",
+    "client.EffectRenderingInventoryScreenMixin",
     "client.FontManagerMixin",
     "client.GuiGraphicsMixin",
     "client.InventoryScreenMixin",

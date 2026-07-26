@@ -11,3 +11,6 @@
 * updated Ziris AI. The mob should no longer get stuck in front of a single block
 * added flight mechanic
 * updated Dynamic Multiblock system
+* updated icons for armor
+* fixed a lot of bugs with chrysalis screen
+* Ziris mob now short range shooter mob

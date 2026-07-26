@@ -60,10 +60,11 @@ public record OrganicArmorType(String type, List<PieceParams> pieces)
 				findFirst();
 	}
 
-	public record PieceParams(ResourceLocation sourceArmor, EquipmentSlot slot, int armor, int capacity)
+	public record PieceParams(ResourceLocation sourceArmor, ResourceLocation icon, EquipmentSlot slot, int armor, int capacity)
 	{
 		public static final Codec<PieceParams> CODEC = RecordCodecBuilder.create(instance -> instance.group(
 				ResourceLocation.CODEC.fieldOf("source_armor").forGetter(PieceParams :: sourceArmor),
+				ResourceLocation.CODEC.fieldOf("icon").forGetter(PieceParams :: icon),
 				ARMOR_SLOT_CODEC.fieldOf("slot").forGetter(PieceParams :: slot),
 				Codec.intRange(0, Integer.MAX_VALUE).fieldOf("armor").forGetter(PieceParams :: armor),
 				Codec.intRange(0, Integer.MAX_VALUE).fieldOf("capacity").forGetter(PieceParams :: capacity)

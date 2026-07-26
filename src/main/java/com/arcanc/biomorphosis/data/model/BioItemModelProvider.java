@@ -53,6 +53,11 @@ public class BioItemModelProvider extends ItemModelProvider
 		createBucket(Registration.FluidReg.ACID);
 		createBucket(Registration.FluidReg.ADRENALINE);
 		
+		basicItem(Registration.ItemReg.LIFELESS_BOOTS.get());
+		basicItem(Registration.ItemReg.LIFELESS_CHESTPLATE.get());
+		basicItem(Registration.ItemReg.LIFELESS_HELMET.get());
+		basicItem(Registration.ItemReg.LIFELESS_LEGGINGS.get());
+		
 		/*createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHAMBER.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_CHRYSALIS.asItem());
 		createMultiblockItemModel(Registration.BlockReg.MULTIBLOCK_TURRET.asItem());

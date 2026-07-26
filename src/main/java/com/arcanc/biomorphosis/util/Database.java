@@ -34,6 +34,7 @@ public class Database
 	
 	public static final class DataAttachments
 	{
+		public static final String ACID_STACKS = "acid_stacks";
 		public static final String GENOME = "genome";
 		public static final String UNLOCKED_GENOME = "unlocked_genome";
 		public static final String ORGANIC_ARMOR = "organic_armor";

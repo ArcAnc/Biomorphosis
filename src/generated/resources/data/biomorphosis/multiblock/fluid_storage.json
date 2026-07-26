@@ -6,9 +6,7 @@
       "multiblock_state": "disassembled"
     }
   },
-  "behavior": "bfs",
   "id": "biomorphosis:fluid_storage",
-  "mode": "connected",
   "max_size": [
     2,
     3,

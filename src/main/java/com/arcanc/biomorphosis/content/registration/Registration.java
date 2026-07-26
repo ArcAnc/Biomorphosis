@@ -22,6 +22,7 @@ import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSourceBlock;
 import com.arcanc.biomorphosis.content.book_data.BookChapterData;
 import com.arcanc.biomorphosis.content.book_data.BookPageData;
+import com.arcanc.biomorphosis.content.effect.AcidEffect;
 import com.arcanc.biomorphosis.content.effect.InfestationEffect;
 import com.arcanc.biomorphosis.content.entity.*;
 import com.arcanc.biomorphosis.content.entity.ai.brain.sensor.SwarmHurtBySensor;
@@ -181,6 +182,13 @@ public final class Registration
 	public static class DataAttachmentsReg
 	{
 		public static final DeferredRegister<AttachmentType<?>> TYPES = DeferredRegister.create(NeoForgeRegistries.ATTACHMENT_TYPES, Database.MOD_ID);
+
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<AcidEffect.AcidStacks>> ACID_STACKS = TYPES.register(
+				Database.DataAttachments.ACID_STACKS,
+				() -> AttachmentType.builder(() -> AcidEffect.AcidStacks.EMPTY).
+						serialize(AcidEffect.AcidStacks.CODEC).
+						sync(AcidEffect.AcidStacks.STREAM_CODEC).
+						build());
 
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<GenomeInstance>> GENOME = TYPES.register(
 				Database.DataAttachments.GENOME,
@@ -464,6 +472,19 @@ public final class Registration
 						clientTrackingRange(4).
 						updateInterval(20).
 						rendererProvider(TurretProjectileRenderer :: new),
+				null);
+
+		public static final EntityEntry<ZirisProjectile> PROJECTILE_ZIRIS = makeEntityType(
+				"projectile_ziris",
+				ZirisProjectile.class,
+				ZirisProjectile::new,
+				MobCategory.MISC,
+				builder -> builder.
+						sized(0.5f, 0.5f).
+						eyeHeight(0.13f).
+						clientTrackingRange(4).
+						updateInterval(20).
+						rendererProvider(ZirisProjectileRenderer :: new),
 				null);
 
 		public static final EntityEntry<Soldier> MOB_BASE_SOLDIER = makeEntityType(
@@ -2003,6 +2024,7 @@ public final class Registration
 
 	public static class DamageTypeReg
 	{
+		public static final ResourceKey<DamageType> ACID = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("acid"));
 		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
 		public static final ResourceKey<DamageType> IMPOSSIBLE_MUTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("impossible_mutation"));
 		public static final ResourceKey<DamageType> INFESTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("infestation"));
@@ -2012,6 +2034,7 @@ public final class Registration
 	{
 		public static final DeferredRegister<MobEffect> EFFECTS = DeferredRegister.create(BuiltInRegistries.MOB_EFFECT, Database.MOD_ID);
 
+		public static final DeferredHolder<MobEffect, AcidEffect> ACID = EFFECTS.register("acid", AcidEffect :: new);
 		public static final DeferredHolder<MobEffect, InfestationEffect> INFESTATION = EFFECTS.register("infestation", InfestationEffect :: new);
 
 		private static void init (final IEventBus bus)

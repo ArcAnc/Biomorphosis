@@ -4,24 +4,28 @@
     {
       "armor": 2,
       "capacity": 200,
+      "icon": "biomorphosis:organic_armor/helmet",
       "slot": "head",
       "source_armor": "biomorphosis:lifeless_helmet"
     },
     {
       "armor": 6,
       "capacity": 200,
+      "icon": "biomorphosis:organic_armor/chest",
       "slot": "chest",
       "source_armor": "biomorphosis:lifeless_chestplate"
     },
     {
       "armor": 4,
       "capacity": 200,
+      "icon": "biomorphosis:organic_armor/pants",
       "slot": "legs",
       "source_armor": "biomorphosis:lifeless_leggings"
     },
     {
       "armor": 2,
       "capacity": 200,
+      "icon": "biomorphosis:organic_armor/boots",
       "slot": "feet",
       "source_armor": "biomorphosis:lifeless_boots"
     }

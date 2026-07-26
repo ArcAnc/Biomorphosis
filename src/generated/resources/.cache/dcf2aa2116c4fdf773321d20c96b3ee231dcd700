@@ -1,4 +1,4 @@
-// 1.21.1	2026-07-09T14:12:44.397524798	Biomorphosis Item Models
+// 1.21.1	2026-07-26T20:23:20.542230465	Biomorphosis Item Models
 c9834275952415d3146de7b5231a09972964d9d3 assets/biomorphosis/models/item/antennas.json
 b8f424c46786e980639e495d71282fab7deb2926 assets/biomorphosis/models/item/book.json
 38f1dd07c08195047d7d47711b80ceb7eb866e68 assets/biomorphosis/models/item/creative_tab_icon.json
@@ -12,6 +12,10 @@ b4f3f4d76287d781b1e9554929dc36f185190ed8 assets/biomorphosis/models/item/forge_u
 89c56a9169a80a3a7bcc95f2a96544fc5ca66a8a assets/biomorphosis/models/item/guard_armor_piece.json
 fe5f1dad0d6a5f17788abfb2d0143b36ae17bedd assets/biomorphosis/models/item/infestor_sting.json
 e283b7be1d890e5e481daefe2c5544f4bec99fb9 assets/biomorphosis/models/item/injector.json
+896713e62553b917aebcd91cbf62a1fbe436db05 assets/biomorphosis/models/item/lifeless_boots.json
+e9ac6c5d3abfc6b94cdca926ed519a550dc893e6 assets/biomorphosis/models/item/lifeless_chestplate.json
+1d06b5eb9f6e8628b117eb5e3a8a2acee2b0600f assets/biomorphosis/models/item/lifeless_helmet.json
+06ca0c833253e802965faf09014f2aea9b7319a7 assets/biomorphosis/models/item/lifeless_leggings.json
 4ace6b09b8335dac1ee12b8b4c195892ab9267ea assets/biomorphosis/models/item/meat_melon_seeds.json
 b301e9dceb6504c676af214d83b5865f5efce02c assets/biomorphosis/models/item/queens_brain.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/biomorphosis/models/item/spawning_egg_blacksmith.json

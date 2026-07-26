@@ -61,6 +61,8 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
         for (InfoArea area : this.infoAreas)
             area.fillTooltip(mouseX, mouseY, resultedTooltip);
 
+        this.renderBeforeTooltips(guiGraphics, mouseX, mouseY, partialTick);
+
         if (resultedTooltip.isEmpty())
             renderTooltip(guiGraphics, mouseX, mouseY);
         else
@@ -84,6 +86,10 @@ public abstract class BioContainerScreen<T extends AbstractContainerMenu> extend
     {
         Preconditions.checkNotNull(info);
         this.infoAreas.add(info);
+    }
+
+    protected void renderBeforeTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+    {
     }
 
     @Override

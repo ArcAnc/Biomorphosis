@@ -11,6 +11,8 @@ package com.arcanc.biomorphosis.content.gui.container_menu;
 
 
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChrysalis;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
+import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotReplacement;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
@@ -21,12 +23,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,6 +56,41 @@ public class ChrysalisMenu extends BioContainerMenu
 
 		Player player = playerInv.player;
 		opened(player);
+		addOrganicArmorSlots(playerInv, player);
+		addStandardInventorySlots(playerInv, 44, 98);
+		setOrganicArmorTabActive(false);
+	}
+
+	private void addOrganicArmorSlots(Inventory inventory, Player player)
+	{
+		addArmorSlot(inventory, player, EquipmentSlot.HEAD, 39, 34, 13, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
+		addArmorSlot(inventory, player, EquipmentSlot.CHEST, 38, 34, 52, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
+		addArmorSlot(inventory, player, EquipmentSlot.LEGS, 37, 200, 13, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
+		addArmorSlot(inventory, player, EquipmentSlot.FEET, 36, 200, 52, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
+		this.ownSlotCount = 4;
+	}
+
+	private void addArmorSlot(Inventory inventory,
+	                                                  Player player,
+	                                                  EquipmentSlot slot,
+	                                                  int slotIndex,
+	                                                  int x,
+	                                                  int y,
+	                                                  ResourceLocation emptyIcon)
+	{
+		OrganicArmorSlotReplacement armorSlot = new OrganicArmorSlotReplacement(inventory, player, slot, slotIndex, x, y, emptyIcon);
+		this.addSlot(armorSlot);
+	}
+
+	public void setOrganicArmorTabActive(boolean active)
+	{
+		for (Slot slot : this.slots)
+		{
+			if (slot instanceof BioSlot bioSlot)
+				bioSlot.setActive(active);
+			if (slot instanceof OrganicArmorSlotReplacement organicSlot)
+				organicSlot.setActive(active);
+		}
 	}
 	
 	private void opened(Player player)

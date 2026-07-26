@@ -19,6 +19,7 @@ import com.arcanc.biomorphosis.content.gui.component.info.ErrorInfoArea;
 import com.arcanc.biomorphosis.content.gui.component.info.FluidInfoArea;
 import com.arcanc.biomorphosis.content.gui.component.info.GenomeStabilityInfoArea;
 import com.arcanc.biomorphosis.content.gui.container_menu.ChrysalisMenu;
+import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotRenderer;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
@@ -29,6 +30,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.network.chat.Component;
@@ -36,6 +38,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
 public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
@@ -43,6 +46,7 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	private static final EquipmentSlot[] ARMOR_SLOTS = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
 	private Tab activeTab = Tab.MUTATION;
 	private final Player player;
+	private final Button[] armorActionButtons = new Button[ARMOR_SLOTS.length];
 	
 	private GeneChooser chooser;
 	private OwnedGeneList ownedGeneList;
@@ -53,7 +57,7 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	public ChrysalisScreen(ChrysalisMenu menu, Inventory playerInventory, Component title)
 	{
 		super(menu, playerInventory, title);
-		this.imageHeight = 176;
+		this.imageHeight = 184;
 		this.imageWidth = 250;
 		this.player = playerInventory.player;
 	}
@@ -63,6 +67,7 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	{
 		super.init();
 		addTabButtons();
+		this.menu.setOrganicArmorTabActive(this.activeTab == Tab.ORGANIC_ARMOR);
 		if (this.activeTab == Tab.ORGANIC_ARMOR)
 		{
 			initOrganicArmorTab();
@@ -183,51 +188,83 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 
 	private void initOrganicArmorTab()
 	{
-		int x = this.getGuiLeft() + 26;
-		int y = this.getGuiTop() + 34;
+		int left = this.getGuiLeft();
+		int top = this.getGuiTop();
+		int[] buttonX = {20, 20, 186, 186};
+		int[] buttonY = {33, 72, 33, 72};
 		for (int q = 0; q < ARMOR_SLOTS.length; q++)
 		{
 			EquipmentSlot slot = ARMOR_SLOTS[q];
-			ItemStack stack = this.player.getItemBySlot(slot);
-			boolean installed = OrganicArmorHelper.hasArmor(this.player, slot);
-			boolean canInstall = !installed && !stack.isEmpty();
-			MultiblockChrysalis.ArmorAction action = installed ?
-					MultiblockChrysalis.ArmorAction.UNEQUIP :
-					MultiblockChrysalis.ArmorAction.EQUIP;
-			Button button = Button.builder(Component.literal(slot.getName()), btn ->
+			Button button = Button.builder(Component.empty(), btn ->
 					sendUpdateToServer(tag ->
 					{
 						tag.putString("organic_armor_slot", slot.getName());
-						tag.putString("organic_armor_action", action.name());
+						tag.putString("organic_armor_action", (OrganicArmorHelper.hasArmor(this.player, slot) ?
+								MultiblockChrysalis.ArmorAction.UNEQUIP :
+								MultiblockChrysalis.ArmorAction.EQUIP).name());
 					})).
-					bounds(x, y + q * 24, 96, 20).
+					bounds(left + buttonX[q], top + buttonY[q], 44, 16).
 					build();
-			button.active = installed || canInstall;
+			this.armorActionButtons[q] = button;
+			addRenderableWidget(button);
+		}
+		updateOrganicArmorButtons();
+	}
+
+	@Override
+	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	{
+		if (this.activeTab == Tab.ORGANIC_ARMOR)
+			updateOrganicArmorButtons();
+		super.render(guiGraphics, mouseX, mouseY, partialTick);
+	}
+
+	private void updateOrganicArmorButtons()
+	{
+		for (int q = 0; q < ARMOR_SLOTS.length; q++)
+		{
+			Button button = this.armorActionButtons[q];
+			if (button == null)
+				continue;
+
+			EquipmentSlot slot = ARMOR_SLOTS[q];
+			ItemStack stack = this.player.getItemBySlot(slot);
+			boolean installed = OrganicArmorHelper.hasArmor(this.player, slot);
+			button.setMessage(Component.literal(installed ? "Remove" : "Equip"));
+			button.active = installed || !stack.isEmpty();
 			button.setTooltip(Tooltip.create(installed ?
 					Component.literal("Remove organic armor") :
 					stack.isEmpty() ? Component.literal("No armor equipped") : stack.getHoverName()));
-			addRenderableWidget(button);
 		}
+	}
+
+	@Override
+	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
+	{
+		super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
+		if (this.activeTab != Tab.ORGANIC_ARMOR)
+			return;
+
+		int left = this.getGuiLeft();
+		int top = this.getGuiTop();
+		InventoryScreen.renderEntityInInventoryFollowsMouse(
+				guiGraphics,
+				left + 84,
+				top + 15,
+				left + 166,
+				top + 97,
+				30,
+				0.0625F,
+				mouseX,
+				mouseY,
+				this.player);
 	}
 	
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
 		if (this.activeTab == Tab.ORGANIC_ARMOR)
-		{
-			guiGraphics.drawString(this.minecraft.font, Component.literal("Organic Armor"), 26, 16, -1, false);
-			for (int q = 0; q < ARMOR_SLOTS.length; q++)
-			{
-				EquipmentSlot slot = ARMOR_SLOTS[q];
-				ItemStack stack = this.player.getItemBySlot(slot);
-				Component status = OrganicArmorHelper.hasArmor(this.player, slot) ?
-						Component.literal("installed") :
-						stack.isEmpty() ? Component.literal("empty") : stack.getHoverName();
-				guiGraphics.drawString(this.minecraft.font, status, 130, 39 + q * 24, -1, false);
-			}
 			return;
-		}
-
 		guiGraphics.pose().pushPose();
 		guiGraphics.pose().translate(138, 72, 0);
 		guiGraphics.pose().scale(0.7f, 0.7f, 1);
@@ -252,7 +289,15 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 				false);
 		guiGraphics.pose().popPose();
 	}
-
+	
+	@Override
+	protected void renderSlot(GuiGraphics guiGraphics, Slot slot)
+	{
+		super.renderSlot(guiGraphics, slot);
+		if (OrganicArmorSlotRenderer.shouldReplace(slot))
+			OrganicArmorSlotRenderer.render(guiGraphics, slot);
+	}
+	
 	private enum Tab
 	{
 		MUTATION,

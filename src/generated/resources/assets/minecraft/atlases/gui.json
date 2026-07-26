@@ -19,6 +19,11 @@
       "type": "minecraft:single",
       "resource": "biomorphosis:gui/slots/mask",
       "sprite": "biomorphosis:slot/mask"
+    },
+    {
+      "type": "minecraft:directory",
+      "source": "gui/organic_armor",
+      "prefix": "organic_armor/"
     }
   ]
 }

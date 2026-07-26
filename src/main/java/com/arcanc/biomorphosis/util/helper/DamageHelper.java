@@ -21,6 +21,16 @@ import net.minecraft.world.phys.Vec3;
 
 public class DamageHelper
 {
+	public static boolean acidDamage(float amount, LivingEntity target)
+	{
+		Level level = target.level();
+		DamageSource source = new DamageSource(
+				level.registryAccess().
+						lookupOrThrow(Registries.DAMAGE_TYPE).
+						getOrThrow(Registration.DamageTypeReg.ACID));
+		return dealDamage(source, amount, target);
+	}
+
 	public static boolean mutationDamage(int amount, LivingEntity target)
 	{
 		Level level = target.level();

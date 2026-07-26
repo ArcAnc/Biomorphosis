@@ -1,12 +1,4 @@
 {
-	"wings_flying": {
-		"sounds": [
-			{
-				"name": "minecraft:item/elytra/elytra_loop",
-				"volume": 0.6
-			}
-		]
-	},
   "advancement": {
     "sounds": [
       "biomorphosis:advancement/0"
@@ -265,6 +257,14 @@
       "biomorphosis:swarmling/idle_1"
     ],
     "subtitle": "biomorphosis.sound.subtitle.swarmling.idle"
+  },
+  "wings_flying": {
+    "sounds": [
+      {
+        "name": "item/elytra/elytra_loop",
+        "volume": 0.6
+      }
+    ]
   },
   "worker_death": {
     "sounds": [

@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.event;
 
 
+import com.arcanc.biomorphosis.content.effect.AcidEffect;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
@@ -22,6 +23,7 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.EffectRenderingInventoryScreen;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
@@ -29,16 +31,19 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.extensions.common.IClientMobEffectExtensions;
 import net.neoforged.neoforge.client.gui.VanillaGuiLayers;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -46,6 +51,7 @@ import java.util.function.Function;
 public class OverlayRenderHandler
 {
 	public static final ResourceLocation ADVANCEMENTS = Database.rl("advancements");
+	public static final ResourceLocation ACID_STACKS = Database.rl("acid_stacks");
 	public static final ResourceLocation ITEMS = Database.rl("items");
 	public static final ResourceLocation BLOCKS = Database.rl("blocks");
 	
@@ -54,9 +60,42 @@ public class OverlayRenderHandler
 		event.registerAbove(VanillaGuiLayers.DEBUG_OVERLAY,
 				ADVANCEMENTS,
 				OverlayRenderHandler::renderAdvancementsOverlays);
+		event.registerAbove(VanillaGuiLayers.EFFECTS,
+				ACID_STACKS,
+				OverlayRenderHandler::renderAcidStacks);
 		event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY,
 				ITEMS,
 				OverlayRenderHandler :: renderItemOverlays);
+	}
+
+	private static void renderAcidStacks(GuiGraphics guiGraphics, DeltaTracker delta)
+	{
+		LocalPlayer player = RenderHelper.clientPlayer();
+		if (player == null || player.getData(Registration.DataAttachmentsReg.ACID_STACKS).stacks().isEmpty())
+			return;
+		if (RenderHelper.mc().screen instanceof EffectRenderingInventoryScreen effectScreen && effectScreen.canSeeEffects())
+			return;
+
+		List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects());
+		effects.sort(Comparator.reverseOrder());
+
+		int harmfulEffects = 0;
+		for (MobEffectInstance effect : effects)
+		{
+			if (!IClientMobEffectExtensions.of(effect).isVisibleInGui(effect) || !effect.showIcon() || effect.getEffect().value().isBeneficial())
+				continue;
+
+			harmfulEffects++;
+			if (effect.getEffect().value() != Registration.EffectReg.ACID.get())
+				continue;
+
+			int x = guiGraphics.guiWidth() - 25 * harmfulEffects;
+			int y = 27 + (RenderHelper.mc().isDemo() ? 15 : 0);
+			String stacks = Integer.toString(player.getData(Registration.DataAttachmentsReg.ACID_STACKS).stacks().size());
+			Font font = RenderHelper.mc().font;
+			guiGraphics.drawString(font, stacks, x + 22 - font.width(stacks), y + 15, 0xFFFFFF, true);
+			return;
+		}
 	}
 	
 	private static void renderAdvancementsOverlays(GuiGraphics guiGraphics, DeltaTracker delta)

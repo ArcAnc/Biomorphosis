@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.gui.container_menu;
 
 import com.arcanc.biomorphosis.content.block.block_entity.BioBaseBlockEntity;
+import com.arcanc.biomorphosis.content.gui.slot.BioSlot;
 import com.arcanc.biomorphosis.content.gui.sync.IGuiContextInfoProvider;
 import com.arcanc.biomorphosis.content.gui.sync.IScreenMessageReceiver;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
@@ -26,6 +27,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.neoforged.neoforge.items.IItemHandler;
+import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -232,12 +235,14 @@ public abstract class BioContainerMenu extends AbstractContainerMenu implements 
     //FIXME: check positions
     protected void addStandardInventorySlots(Inventory playerInventory, int x, int y)
     {
+        IItemHandler handler = new InvWrapper(playerInventory);
+        
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 9; j++)
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, x + j * 18, y + i * 18));
+                this.addSlot(new BioSlot(this, handler, j + i * 9 + 9, x + j * 18, y + i * 18));
         
         for (int k = 0; k < 9; k++)
-            this.addSlot(new Slot(playerInventory, k, x + k * 18, y + 57));
+            this.addSlot(new BioSlot(this, handler, k, x + k * 18, y + 57));
     }
     
     protected record MenuContext(

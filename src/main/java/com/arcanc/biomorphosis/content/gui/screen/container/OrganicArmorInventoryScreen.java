@@ -22,6 +22,7 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.core.Holder;
@@ -45,6 +46,7 @@ import java.util.List;
 public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmorInventoryMenu>
 {
 	private static final ResourceLocation SLIME_BACKGROUND = Database.rl("textures/gui/slime_background.png");
+	private static final ResourceLocation FRAME_BACKGROUND = Database.rl("textures/gui/frame.png");
 	private static final int BACKGROUND_TEXTURE_SIZE = 512;
 	private static final int BACKGROUND_SOURCE_SIZE = 448;
 	private static final int BACKGROUND_OVERDRAW_X = 18;
@@ -52,14 +54,15 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	private static final float BACKGROUND_PARALLAX_X = 10f;
 	private static final float BACKGROUND_PARALLAX_Y = 7f;
 	
-	private static final int MODEL_X = 73;
-	private static final int MODEL_Y = 15;
-	private static final int MODEL_WIDTH = 58;
-	private static final int MODEL_HEIGHT = 76;
-	private static final int EFFECT_X = 190;
-	private static final int EFFECT_Y = 17;
-	private static final int EFFECT_WIDTH = 130;
-	private static final int EFFECT_HEIGHT = 150;
+	private static final int MODEL_X = 77;
+	private static final int MODEL_Y = 12;
+	private static final int MODEL_WIDTH = 42;
+	private static final int MODEL_HEIGHT = 60;
+	private static final int EFFECT_X = 180;
+	private static final int EFFECT_Y = 8;
+	private static final int EFFECT_WIDTH = 105;
+	private static final int EFFECT_HEIGHT = 280;
+	private static final float EFFECT_SCALE = 0.5F;
 	private static final int PANEL = MathHelper.ColorHelper.color(190, 14, 18, 15);
 	private static final int PANEL_BORDER = MathHelper.ColorHelper.color(255, 66, 103, 73);
 	private static final int TEXT = MathHelper.ColorHelper.color(255, 218, 232, 214);
@@ -69,35 +72,36 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	public OrganicArmorInventoryScreen(OrganicArmorInventoryMenu menu, Inventory playerInventory, Component title)
 	{
 		super(menu, playerInventory, title);
-		this.imageWidth = 326;
-		this.imageHeight = 184;
-		this.inventoryLabelY = 84;
+		this.imageWidth = 240;
+		this.imageHeight = 155;
 	}
 	
 	@Override
 	protected void init()
 	{
+		RenderHelper.mc().getTextureManager().getTexture(SLIME_BACKGROUND).setFilter(true, false);
+		
 		super.init();
-		this.effectsText = addRenderableWidget(new FittingMultiLineText(
-				this.getGuiLeft() + EFFECT_X + 6,
-				this.getGuiTop() + EFFECT_Y + 22,
-				EFFECT_WIDTH - 12,
-				EFFECT_HEIGHT - 28,
+		this.effectsText = addWidget(new FittingMultiLineText(
+				this.getGuiLeft() + EFFECT_X + 8,
+				this.getGuiTop() + EFFECT_Y + 30,
+				EFFECT_WIDTH - 16,
+				EFFECT_HEIGHT - 40,
 				Component.empty(),
 				this.font).setColor(MUTED_TEXT));
 	}
 	
 	@Override
-	public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	protected void renderBeforeTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		updateEffectsText();
-		super.render(guiGraphics, mouseX, mouseY, partialTick);
+		renderScaledEffectsText(guiGraphics, mouseX, mouseY, partialTick);
 	}
 	
 	@Override
 	public boolean mouseClicked(double mouseX, double mouseY, int button)
 	{
-		if (this.effectsText != null && this.effectsText.mouseClicked(mouseX, mouseY, button))
+		if (this.effectsText != null && this.effectsText.mouseClicked(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY), button))
 		{
 			this.setFocused(this.effectsText);
 			if (button == 0)
@@ -110,9 +114,23 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
 	{
-		if (this.effectsText != null && this.effectsText.isFocused() && this.effectsText.mouseDragged(mouseX, mouseY, button, dragX, dragY))
+		if (this.effectsText != null && this.effectsText.isFocused() && this.effectsText.mouseDragged(
+				getUnscaledEffectsX(mouseX),
+				getUnscaledEffectsY(mouseY),
+				button,
+				dragX / EFFECT_SCALE,
+				dragY / EFFECT_SCALE))
 			return true;
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+	}
+
+	@Override
+	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY)
+	{
+		if (this.effectsText != null && this.effectsText.isMouseOver(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY)) &&
+				this.effectsText.mouseScrolled(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY), scrollX, scrollY))
+			return true;
+		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
 
 	@Override
@@ -122,8 +140,23 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 
 		int left = this.getGuiLeft();
 		int top = this.getGuiTop();
-		renderPanel(guiGraphics, left + MODEL_X, top + MODEL_Y, MODEL_WIDTH, MODEL_HEIGHT);
+		
+		RenderHelper.blit(guiGraphics,
+				FRAME_BACKGROUND,
+				left - 21,
+				top - 22,
+				0, 0,
+				289, 189,
+				0,
+				998, 578,
+				1024,1024);
+		
+		
+		renderPanel(guiGraphics, left + MODEL_X - 4, top + MODEL_Y - 4, MODEL_WIDTH + 8, MODEL_HEIGHT + 8);
+		guiGraphics.pose().pushPose();
+		applyEffectsScale(guiGraphics, left + EFFECT_X, top + EFFECT_Y);
 		renderPanel(guiGraphics, left + EFFECT_X, top + EFFECT_Y, EFFECT_WIDTH, EFFECT_HEIGHT);
+		guiGraphics.pose().popPose();
 		InventoryScreen.renderEntityInInventoryFollowsMouse(
 				guiGraphics,
 				left + MODEL_X,
@@ -153,7 +186,6 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 		float y = top + (getYSize() - coverSize) / 2f + mouseOffsetY * BACKGROUND_PARALLAX_Y;
 		float sourceOffset = (BACKGROUND_TEXTURE_SIZE - BACKGROUND_SOURCE_SIZE) / 2f;
 
-		RenderHelper.mc().getTextureManager().getTexture(SLIME_BACKGROUND).setFilter(true, false);
 		guiGraphics.enableScissor(left, top, left + getXSize(), top + getYSize());
 		RenderHelper.blit(guiGraphics,
 				SLIME_BACKGROUND,
@@ -169,24 +201,63 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	@Override
 	protected void renderSlot(GuiGraphics guiGraphics, Slot slot)
 	{
-		if (OrganicArmorSlotRenderer.shouldReplace(slot))
-		{
-			OrganicArmorSlotRenderer.render(guiGraphics, slot);
-			return;
-		}
 		super.renderSlot(guiGraphics, slot);
+		if (OrganicArmorSlotRenderer.shouldReplace(slot))
+			OrganicArmorSlotRenderer.render(guiGraphics, slot);
 	}
 
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
-		guiGraphics.drawString(
+		guiGraphics.pose().pushPose();
+		applyEffectsScale(guiGraphics, EFFECT_X, EFFECT_Y);
+		guiGraphics.drawWordWrap(
 				this.font,
 				Component.translatable(Database.GUI.OrganicArmorInventory.EFFECTS),
 				EFFECT_X + 8,
 				EFFECT_Y + 8,
-				TEXT,
-				false);
+				EFFECT_WIDTH - 20,
+				TEXT);
+		guiGraphics.pose().popPose();
+	}
+
+	private void renderScaledEffectsText(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	{
+		if (this.effectsText == null)
+			return;
+
+		int originX = this.getGuiLeft() + EFFECT_X;
+		int originY = this.getGuiTop() + EFFECT_Y;
+		this.effectsText.renderScaled(
+				guiGraphics,
+				(int)getUnscaledEffectsX(mouseX),
+				(int)getUnscaledEffectsY(mouseY),
+				partialTick,
+				EFFECT_SCALE,
+				originX,
+				originY);
+	}
+
+	private void applyEffectsScale(GuiGraphics guiGraphics, float originX, float originY)
+	{
+		guiGraphics.pose().translate(originX, originY, 0.0F);
+		guiGraphics.pose().scale(EFFECT_SCALE, EFFECT_SCALE, 1.0F);
+		guiGraphics.pose().translate(-originX, -originY, 0.0F);
+	}
+
+	private double getUnscaledEffectsX(double mouseX)
+	{
+		return unscaleEffectsCoordinate(mouseX, this.getGuiLeft() + EFFECT_X);
+	}
+
+	private double getUnscaledEffectsY(double mouseY)
+	{
+		return unscaleEffectsCoordinate(mouseY, this.getGuiTop() + EFFECT_Y);
+	}
+
+	private static double unscaleEffectsCoordinate(double coordinate, int origin)
+	{
+		return origin + (coordinate - origin) / EFFECT_SCALE;
 	}
 
 	@Override
@@ -194,7 +265,15 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	{
 		super.onClose();
 		if (this.minecraft != null && this.minecraft.player != null)
-			this.minecraft.setScreen(new InventoryScreen(this.minecraft.player));
+		{
+			if (this.minecraft.player.isCreative() && this.minecraft.player.connection != null)
+				this.minecraft.setScreen(new CreativeModeInventoryScreen(
+						this.minecraft.player,
+						this.minecraft.player.connection.enabledFeatures(),
+						this.minecraft.options.operatorItemsTab().get()));
+			else
+				this.minecraft.setScreen(new InventoryScreen(this.minecraft.player));
+		}
 	}
 
 	private void updateEffectsText()

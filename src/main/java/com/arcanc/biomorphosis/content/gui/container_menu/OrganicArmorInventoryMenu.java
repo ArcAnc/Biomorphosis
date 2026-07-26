@@ -46,13 +46,13 @@ public class OrganicArmorInventoryMenu extends BioContainerMenu
 		super(ctx);
 
 		Player player = playerInventory.player;
-		addArmorSlot(playerInventory, player, EquipmentSlot.HEAD, 39, 27, 20, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
-		addArmorSlot(playerInventory, player, EquipmentSlot.CHEST, 38, 27, 55, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
-		addArmorSlot(playerInventory, player, EquipmentSlot.LEGS, 37, 148, 20, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
-		addArmorSlot(playerInventory, player, EquipmentSlot.FEET, 36, 148, 55, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
+		addArmorSlot(playerInventory, player, EquipmentSlot.HEAD, 39, 45, 16, InventoryMenu.EMPTY_ARMOR_SLOT_HELMET);
+		addArmorSlot(playerInventory, player, EquipmentSlot.CHEST, 38, 45, 48, InventoryMenu.EMPTY_ARMOR_SLOT_CHESTPLATE);
+		addArmorSlot(playerInventory, player, EquipmentSlot.LEGS, 37, 134, 16, InventoryMenu.EMPTY_ARMOR_SLOT_LEGGINGS);
+		addArmorSlot(playerInventory, player, EquipmentSlot.FEET, 36, 134, 48, InventoryMenu.EMPTY_ARMOR_SLOT_BOOTS);
 		this.ownSlotCount = ARMOR_SLOT_COUNT;
 
-		this.addStandardInventorySlots(playerInventory, 17, 96);
+		this.addStandardInventorySlots(playerInventory, 17, 79);
 	}
 
 	private void addArmorSlot(Inventory inventory, Player player, EquipmentSlot slot, int slotIndex, int x, int y, ResourceLocation emptyIcon)

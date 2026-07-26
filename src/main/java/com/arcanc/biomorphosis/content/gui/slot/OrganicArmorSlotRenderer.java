@@ -23,6 +23,7 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiSpriteManager;
 import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -38,7 +39,9 @@ import net.neoforged.neoforge.client.extensions.common.IClientFluidTypeExtension
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.templates.FluidTank;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector4f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,9 +75,13 @@ public class OrganicArmorSlotRenderer
 		int x = slot.x;
 		int y = slot.y;
 		OrganicArmorData data = resolveData(organicSlot);
-
-		guiGraphics.blit(x, y, 0, SLOT_SIZE, SLOT_SIZE, RenderHelper.mc().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(OrganicArmorSlotReplacement.BLOCKED_SLOT));
+		guiGraphics.pose().translate(0, 0, 100);
+		if (data.icon() == null)
+			guiGraphics.blit(x, y, 0, SLOT_SIZE, SLOT_SIZE, RenderHelper.mc().getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(OrganicArmorSlotReplacement.BLOCKED_SLOT));
+		else
+			guiGraphics.blitSprite(data.icon(), x, y, SLOT_SIZE, SLOT_SIZE);
 		renderFluidBar(guiGraphics, data.tank(), x + 2, y + 13);
+		guiGraphics.pose().translate(0, 0, -100);
 	}
 
 	public static List<Component> tooltip(Slot slot)
@@ -182,16 +189,16 @@ public class OrganicArmorSlotRenderer
 
 		OrganicArmorType type = findOrganicArmorType(piece);
 		if (type == null)
-			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
+			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"), null);
 		OrganicArmorType.PieceParams params = type.get(piece.slot()).orElse(null);
 		if (params == null)
-			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
+			return new OrganicArmorData(piece.typeId(), piece.slot(), 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"), null);
 
 		FluidTank tank = new FluidTank(params.capacity());
 		tank.fill(piece.fluid(), IFluidHandler.FluidAction.EXECUTE);
 		ResourceLocation effectId = OrganicArmorEffectHandler.getEffectId(owner.level().registryAccess(), piece, piece.fluid()).
 				orElse(getFluidId(piece.fluid()));
-		return new OrganicArmorData(piece.typeId(), piece.slot(), piece.hasFluid() ? params.armor() : params.drainedArmor(), params.capacity(), tank, effectId);
+		return new OrganicArmorData(piece.typeId(), piece.slot(), piece.hasFluid() ? params.armor() : params.drainedArmor(), params.capacity(), tank, effectId, params.icon());
 	}
 
 	private static @Nullable OrganicArmorType findOrganicArmorType(OrganicArmorState.Piece piece)
@@ -210,15 +217,21 @@ public class OrganicArmorSlotRenderer
 
 	private static ResourceLocation getFluidId(FluidStack stack)
 	{
-		ResourceLocation id = net.neoforged.neoforge.registries.NeoForgeRegistries.FLUID_TYPES.getKey(stack.getFluid().getFluidType());
-		return id == null ? ResourceLocation.withDefaultNamespace("empty") : id;
+		ResourceLocation id = NeoForgeRegistries.FLUID_TYPES.getKey(stack.getFluid().getFluidType());
+		return id == null ? Database.mineRl("empty") : id;
 	}
 
-	private record OrganicArmorData(ResourceLocation typeId, EquipmentSlot slot, int armor, int capacity, FluidTank tank, ResourceLocation effectId)
+	private record OrganicArmorData(ResourceLocation typeId,
+	                                EquipmentSlot slot,
+	                                int armor,
+	                                int capacity,
+	                                FluidTank tank,
+	                                ResourceLocation effectId,
+	                                @Nullable ResourceLocation icon)
 	{
 		private static OrganicArmorData empty(EquipmentSlot slot)
 		{
-			return new OrganicArmorData(Database.rl("empty"), slot, 0, 0, new FluidTank(0), ResourceLocation.withDefaultNamespace("empty"));
+			return new OrganicArmorData(Database.rl("empty"), slot, 0, 0, new FluidTank(0), Database.mineRl("empty"), null);
 		}
 	}
 }

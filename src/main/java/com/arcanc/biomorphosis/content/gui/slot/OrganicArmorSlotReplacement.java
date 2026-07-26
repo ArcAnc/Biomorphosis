@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.gui.slot;
 
 
+import com.arcanc.biomorphosis.data.BioSpriteSourceProvider;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.mojang.datafixers.util.Pair;
@@ -22,6 +23,8 @@ import net.minecraft.world.inventory.ArmorSlot;
 import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class OrganicArmorSlotReplacement extends ArmorSlot
 {
@@ -81,7 +84,17 @@ public class OrganicArmorSlotReplacement extends ArmorSlot
 	public Pair<ResourceLocation, ResourceLocation> getNoItemIcon()
 	{
 		if (OrganicArmorHelper.hasArmor(this.owner, this.slot))
-			return Pair.of(InventoryMenu.BLOCK_ATLAS, BLOCKED_SLOT);
+			return getOrganicArmorIcon().
+					map(icon -> Pair.of(BioSpriteSourceProvider.GUI_ATLAS, icon)).
+					orElse(Pair.of(InventoryMenu.BLOCK_ATLAS, BLOCKED_SLOT));
 		return super.getNoItemIcon();
+	}
+
+	public Optional<ResourceLocation> getOrganicArmorIcon()
+	{
+		return OrganicArmorHelper.getPiece(this.owner, this.slot).
+				flatMap(piece -> OrganicArmorHelper.getType(this.owner.level(), piece)).
+				flatMap(type -> type.get(this.slot)).
+				map(params -> params.icon());
 	}
 }

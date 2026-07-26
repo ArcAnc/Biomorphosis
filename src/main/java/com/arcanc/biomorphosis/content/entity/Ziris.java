@@ -33,7 +33,6 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.animal.Cat;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.SmallFireball;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.levelgen.Heightmap;
@@ -246,8 +245,10 @@ public class Ziris extends FlyingMob implements PAnimatable<Ziris>, Enemy
         private void fireAndRetreat(LivingEntity target)
         {
             Vec3 shotDirection = target.getEyePosition().subtract(Ziris.this.getEyePosition());
-            SmallFireball projectile = new SmallFireball(Ziris.this.level(), Ziris.this, shotDirection.normalize());
+            ZirisProjectile projectile = new ZirisProjectile(Registration.EntityReg.PROJECTILE_ZIRIS.getEntityHolder().get(), Ziris.this.level());
             projectile.setPos(Ziris.this.getX(), Ziris.this.getEyeY(), Ziris.this.getZ());
+			projectile.setOwner(Ziris.this);
+			projectile.shoot(shotDirection.x(), shotDirection.y(), shotDirection.z(), 1.5f, 0.0f);
             Ziris.this.level().addFreshEntity(projectile);
             Ziris.this.swing(InteractionHand.MAIN_HAND);
             Ziris.this.playSound(SoundEvents.BLAZE_SHOOT, 1.0F, 0.9F + Ziris.this.random.nextFloat() * 0.2F);
