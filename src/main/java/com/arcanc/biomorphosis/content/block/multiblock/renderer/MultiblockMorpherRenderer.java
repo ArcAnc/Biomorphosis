@@ -65,15 +65,10 @@ public class MultiblockMorpherRenderer extends PBlockRenderer<MultiblockMorpher>
 	{
 		BlockState state = animatable.getBlockState();
 		
-		//poseStack.pushPose();
-		
-		//BASE_MODEL.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, -1);
-		
 		if ((state.getValue(MultiblockPartBlock.STATE) == MultiblockState.MORPHING &&
 				animatable.isPreparationPhase()) ||
 				state.getValue(MultiblockPartBlock.STATE) != MultiblockState.MORPHING)
 		{
-			//poseStack.popPose();
 			return;
 		}
 		else
@@ -88,17 +83,8 @@ public class MultiblockMorpherRenderer extends PBlockRenderer<MultiblockMorpher>
 			int maxScale = Math.max(maxSize.getX(), Math.max(maxSize.getY(), maxSize.getZ()));
 			
 			value = Mth.clamp(Mth.lerp(value, 0.2f, maxScale), 1, maxScale);
-			//poseStack.translate(0, -(0.5f * value) + value , 0f);
 			poseStack.scale(value, value, value);
-			//sphereModel.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, -1);
-			//poseStack.popPose();
-			
-			/*poseStack.pushPose();
-			poseStack.translate(0f, -0.05f, 0f);
-			poseStack.scale(value, value, value);
-			sphereGreenModel.render(poseStack, ObjRenderTypes :: trianglesTranslucent, bufferSource, packedOverlay, packedLight, -1);*/
 		}
-		//poseStack.popPose();
 	}
 	
 	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)

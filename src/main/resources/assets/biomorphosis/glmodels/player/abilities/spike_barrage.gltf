@@ -1,0 +1,98 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Biomorphosis / PulseLib player animation"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0, 1]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "right_arm"
+    },
+    {
+      "name": "left_arm"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AAAAAArXIz4zM7M+mpkZP0JgZTwOLTK+wcqhvVpkez8zM7O+exQuvo/Cdb0fhWs/MzMzvwrXo7zNzEy9j8I1PzMzM78K16O8zcxMvY/CNT9CYGU8Di0yPsHKoT1aZHs/MzOzvnsULj6PwnU9H4VrPzMzM78K16M8zcxMPY/CNT8zMzO/CtejPM3MTD2PwjU/",
+      "byteLength": 144
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 16
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 16,
+      "byteLength": 64
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 80,
+      "byteLength": 64
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 4,
+      "type": "SCALAR",
+      "max": [0.6],
+      "min": [0.0]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 4,
+      "type": "VEC4"
+    }
+  ],
+  "animations": [
+    {
+      "name": "hands_forward",
+      "samplers": [
+        {
+          "input": 0,
+          "output": 1,
+          "interpolation": "LINEAR"
+        },
+        {
+          "input": 0,
+          "output": 2,
+          "interpolation": "LINEAR"
+        }
+      ],
+      "channels": [
+        {
+          "sampler": 0,
+          "target": {
+            "node": 0,
+            "path": "rotation"
+          }
+        },
+        {
+          "sampler": 1,
+          "target": {
+            "node": 1,
+            "path": "rotation"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.ability.client.ClientAbilitiesHandler;
 import com.arcanc.biomorphosis.content.block.BioStemBlock;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
 import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChamberRenderer;
@@ -29,17 +30,13 @@ import com.arcanc.biomorphosis.content.gui.font.BioGlyphRenderTypes;
 import com.arcanc.biomorphosis.content.gui.screen.container.OrganicArmorInventoryScreen;
 import com.arcanc.biomorphosis.content.item.BioBucketItem;
 import com.arcanc.biomorphosis.content.mutations.wings.client.WingsClient;
-import com.arcanc.biomorphosis.content.mutations.wings.client.WingsAttachmentRenderHandler;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorRenderHandler;
 import com.arcanc.biomorphosis.content.particle.HiveDecoParticle;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.sky.BiomeSkyboxes;
 import com.arcanc.biomorphosis.data.*;
 import com.arcanc.biomorphosis.data.lang.EnUsProvider;
-import com.arcanc.biomorphosis.data.loot.BioBlockLoot;
-import com.arcanc.biomorphosis.data.loot.BioEntityLoot;
-import com.arcanc.biomorphosis.data.loot.BioGlobalLootModifier;
-import com.arcanc.biomorphosis.data.loot.BioLootTableProvider;
+import com.arcanc.biomorphosis.data.loot.*;
 import com.arcanc.biomorphosis.data.model.BioBlockStateProvider;
 import com.arcanc.biomorphosis.data.model.BioItemModelProvider;
 import com.arcanc.biomorphosis.data.recipe.*;
@@ -47,6 +44,7 @@ import com.arcanc.biomorphosis.data.regSetBuilder.BioRegistryData;
 import com.arcanc.biomorphosis.data.tags.*;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.model.BioFluidStorageBakedModel;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
@@ -102,6 +100,7 @@ public final class ClientEvents
 	    BiomeSkyboxes.init(modEventBus);
 	    
 		WingsClient.init(modEventBus);
+	    ClientAbilitiesHandler.register(modEventBus);
 		
 		registerCustomTextures(modEventBus);
     }
@@ -246,7 +245,8 @@ public final class ClientEvents
         gen.addProvider(true, BioLootTableProvider.create(
                 List.of(
                         new LootTableProvider.SubProviderEntry(BioBlockLoot :: new, LootContextParamSets.BLOCK),
-                        new LootTableProvider.SubProviderEntry(BioEntityLoot :: new, LootContextParamSets.ENTITY)),
+                        new LootTableProvider.SubProviderEntry(BioEntityLoot :: new, LootContextParamSets.ENTITY),
+                        new LootTableProvider.SubProviderEntry(BioChestLoot :: new, LootContextParamSets.CHEST)),
                 packOutput,
                 lookupProvider));
 		gen.addProvider(true, new BioParticleDescriptionProvider(packOutput, ext));
@@ -257,6 +257,7 @@ public final class ClientEvents
         BioRegistryData.register(new BioWorldGenProvider());
 		BioRegistryData.register(new BioGenomeProvider());
 		BioRegistryData.register(new BioOrganicArmorProvider());
+		BioRegistryData.register(new BioEntityAbilityProvider());
 
 		DatapackBuiltinEntriesProvider entries = new DatapackBuiltinEntriesProvider(
 				packOutput,
@@ -287,6 +288,7 @@ public final class ClientEvents
 	
 	private static void registerCustomTextures(final IEventBus modEventBus)
 	{
+		modEventBus.addListener(RenderHelper.GenomeRenderer :: registerTextures);
 		// BLOCK_ENTITIES
 		modEventBus.addListener(BioCatcherRenderer :: registerTextures);
 		modEventBus.addListener(BioChestRenderer :: registerTextures);

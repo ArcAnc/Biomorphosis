@@ -40,12 +40,14 @@ import net.minecraft.world.level.levelgen.structure.placement.StructurePlacement
 import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import net.minecraft.world.level.levelgen.structure.structures.JigsawStructure;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorList;
 
 import java.util.*;
 
 public class SwarmResistanceForces
 {
 	private static final Set<OrderData> ORDER_DATA = new HashSet<>();
+	private static final Holder<StructureProcessorList> SRF_LOOT_PROCESSORS = Holder.direct(new StructureProcessorList(List.of(SRFChestLootProcessor.INSTANCE)));
 	
 	public static void structures(BootstrapContext<Structure> context)
 	{
@@ -153,7 +155,7 @@ public class SwarmResistanceForces
 						new StructureTemplatePool(
 								empty,
 								ImmutableList.of(
-										Pair.of(StructurePoolElement.legacy(poolLocPair.getSecond().toString()), 1)),
+										Pair.of(StructurePoolElement.legacy(poolLocPair.getSecond().toString(), SRF_LOOT_PROCESSORS), 1)),
 								StructureTemplatePool.Projection.RIGID));
 			}
 			
@@ -164,7 +166,7 @@ public class SwarmResistanceForces
 						new StructureTemplatePool(
 								empty,
 								ImmutableList.of(
-										Pair.of(StructurePoolElement.legacy(poolLocPair.getSecond().toString()), 1)),
+										Pair.of(StructurePoolElement.legacy(poolLocPair.getSecond().toString(), SRF_LOOT_PROCESSORS), 1)),
 								StructureTemplatePool.Projection.RIGID));
 			}
 		});

@@ -22,6 +22,7 @@ import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -33,6 +34,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 
 public class MultiblockChrysalisRenderer extends PBlockRenderer<MultiblockChrysalis>
@@ -63,11 +65,11 @@ public class MultiblockChrysalisRenderer extends PBlockRenderer<MultiblockChrysa
 	}
 	
 	@Override
-	protected void perBoneSubmit(MultiblockChrysalis animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockChrysalis>> controllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+	protected void perBoneSubmit(MultiblockChrysalis animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockChrysalis>> controllers, Map<PAnimationController<MultiblockChrysalis>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
 	{
 		if (bone.name().equals("egg"))
 			renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-		super.perBoneSubmit(animatable, poseStack, bone, controllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+		super.perBoneSubmit(animatable, poseStack, bone, controllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
 	}
 	
 	@Override

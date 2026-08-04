@@ -10,14 +10,18 @@
 package com.arcanc.biomorphosis.content.event;
 
 
-import com.arcanc.biomorphosis.content.effect.AcidEffect;
+import com.arcanc.biomorphosis.content.ability.AbilityLoadout;
+import com.arcanc.biomorphosis.content.ability.IAbility;
+import com.arcanc.biomorphosis.content.ability.client.AbilityWheelClient;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.AbilityHelper;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -54,18 +58,135 @@ public class OverlayRenderHandler
 	public static final ResourceLocation ACID_STACKS = Database.rl("acid_stacks");
 	public static final ResourceLocation ITEMS = Database.rl("items");
 	public static final ResourceLocation BLOCKS = Database.rl("blocks");
+	public static final ResourceLocation ABILITY_WHEEL = Database.rl("ability_wheel");
 	
 	public static void registerGuiLayers(RegisterGuiLayersEvent event)
 	{
 		event.registerAbove(VanillaGuiLayers.DEBUG_OVERLAY,
 				ADVANCEMENTS,
-				OverlayRenderHandler::renderAdvancementsOverlays);
+				OverlayRenderHandler :: renderAdvancementsOverlays);
 		event.registerAbove(VanillaGuiLayers.EFFECTS,
 				ACID_STACKS,
-				OverlayRenderHandler::renderAcidStacks);
+				OverlayRenderHandler :: renderAcidStacks);
 		event.registerBelow(VanillaGuiLayers.DEBUG_OVERLAY,
 				ITEMS,
 				OverlayRenderHandler :: renderItemOverlays);
+		event.registerAbove(VanillaGuiLayers.DEBUG_OVERLAY,
+				ABILITY_WHEEL,
+				AbilityWheelOverlay :: render);
+	}
+
+	private static final class AbilityWheelOverlay
+	{
+		private static final int WHEEL_LABEL_RADIUS = 64;
+		private static final int ABILITY_ICON_SIZE = 16;
+		private static final int ABILITY_ICON_OFFSET_Y = 28;
+		private static final int WHEEL_TEXTURE_SIZE = 184;
+		private static final int WHEEL_TEXTURE_RADIUS = WHEEL_TEXTURE_SIZE / 2;
+		private static final float WHEEL_SELECTED_SECTOR_SCALE = 1.1F;
+		private static final ResourceLocation WHEEL_SECTOR_TEXTURE = Database.rl("textures/gui/overlay/ability_wheel/sector.png");
+		private static final ResourceLocation WHEEL_SELECTED_TEXTURE = Database.rl("textures/gui/overlay/ability_wheel/selected.png");
+		private static final int WHEEL_LABEL_COLOR = 0xFFE2DAEF;
+		private static final int WHEEL_SELECTED_LABEL_BORDER = 0xFF9A57FF;
+		private static final int WHEEL_SELECTED_LABEL_BACKGROUND = 0xED120720;
+
+		private static void render(GuiGraphics graphics, DeltaTracker deltaTracker)
+		{
+			if (!AbilityWheelClient.isWheelOpen())
+				return;
+
+			Minecraft minecraft = RenderHelper.mc();
+			LocalPlayer player = minecraft.player;
+			if (player == null)
+				return;
+
+			AbilityWheelClient.updateSelectedSlot(minecraft);
+			int centerX = graphics.guiWidth() / 2;
+			int centerY = graphics.guiHeight() / 2;
+			drawAbilitySectors(graphics, centerX, centerY);
+
+			AbilityLoadout loadout = AbilityHelper.getLoadout(player);
+			long gameTime = player.level().getGameTime();
+			for (int slot = 0; slot < AbilityLoadout.SLOT_COUNT; slot++)
+			{
+				double angle = Math.toRadians(-90.0 + slot * 60.0);
+				int x = centerX + (int)(Math.cos(angle) * WHEEL_LABEL_RADIUS);
+				int y = centerY + (int)(Math.sin(angle) * WHEEL_LABEL_RADIUS);
+				drawAbilityIcon(graphics, loadout, slot, x, y);
+				Component label = abilitySlotLabel(loadout, slot, gameTime);
+				if (slot == AbilityWheelClient.getSelectedSlot())
+					drawSelectedLabel(graphics, minecraft, label, x, y);
+				else
+					graphics.drawCenteredString(minecraft.font, label, x, y - 4, WHEEL_LABEL_COLOR);
+			}
+		}
+
+		private static void drawAbilityIcon(GuiGraphics graphics, AbilityLoadout loadout, int slot, int centerX, int centerY)
+		{
+			loadout.getSlot(slot).
+					flatMap(AbilityHelper :: getAbility).
+					flatMap(IAbility :: getIcon).
+					ifPresent(icon -> RenderHelper.blit(graphics, icon,
+							centerX - ABILITY_ICON_SIZE / 2, centerY - ABILITY_ICON_OFFSET_Y,
+							0, 0, ABILITY_ICON_SIZE, ABILITY_ICON_SIZE, 0,
+							16, 16, 16, 16));
+		}
+
+		private static Component abilitySlotLabel(AbilityLoadout loadout, int slot, long gameTime)
+		{
+			return loadout.getSlot(slot).
+					map(id -> abilityLabel(loadout, id, gameTime)).
+					orElseGet(() -> Component.literal("-"));
+		}
+
+		private static Component abilityLabel(AbilityLoadout loadout, ResourceLocation abilityId, long gameTime)
+		{
+			long cooldown = loadout.getRemainingCooldownTicks(abilityId, gameTime);
+			if (cooldown == 0)
+				return Component.literal(abilityId.getPath());
+
+			return Component.literal(abilityId.getPath() + " " + (int)Math.ceil(cooldown / 20.0));
+		}
+
+		private static void drawSelectedLabel(GuiGraphics graphics, Minecraft minecraft, Component label, int centerX, int centerY)
+		{
+			int halfWidth = minecraft.font.width(label) / 2 + 6;
+			int top = centerY - minecraft.font.lineHeight / 2 - 4;
+			int bottom = top + minecraft.font.lineHeight + 8;
+			graphics.fill(centerX - halfWidth - 2, top - 2, centerX + halfWidth + 2, bottom + 2, WHEEL_SELECTED_LABEL_BORDER);
+			graphics.fill(centerX - halfWidth, top, centerX + halfWidth, bottom, WHEEL_SELECTED_LABEL_BACKGROUND);
+			graphics.drawCenteredString(minecraft.font, label, centerX, top + 4, 0xFFFFFFFF);
+		}
+
+		private static void drawAbilitySectors(GuiGraphics graphics, int centerX, int centerY)
+		{
+			int selectedSlot = AbilityWheelClient.getSelectedSlot();
+			for (int slot = 0; slot < AbilityLoadout.SLOT_COUNT; slot++)
+				if (slot != selectedSlot)
+					drawWheelLayer(graphics, WHEEL_SECTOR_TEXTURE, centerX, centerY, slot, 1.0F);
+
+			drawWheelLayer(graphics, WHEEL_SECTOR_TEXTURE, centerX, centerY, selectedSlot, WHEEL_SELECTED_SECTOR_SCALE);
+			drawWheelLayer(graphics, WHEEL_SELECTED_TEXTURE, centerX, centerY, selectedSlot, 1.0F);
+		}
+
+		private static void drawWheelLayer(GuiGraphics graphics, ResourceLocation texture, int centerX, int centerY, int slot, float scale)
+		{
+			PoseStack poseStack = graphics.pose();
+			poseStack.pushPose();
+			poseStack.translate(centerX, centerY, 0);
+			poseStack.mulPose(Axis.ZP.rotationDegrees(slot * 60.0F));
+			poseStack.scale(scale, scale, 1.0F);
+			drawWheelTexture(graphics, texture, 0, 0);
+			poseStack.popPose();
+		}
+
+		private static void drawWheelTexture(GuiGraphics graphics, ResourceLocation texture, int centerX, int centerY)
+		{
+			RenderHelper.blit(graphics, texture,
+					centerX - WHEEL_TEXTURE_RADIUS, centerY - WHEEL_TEXTURE_RADIUS,
+					0, 0, WHEEL_TEXTURE_SIZE, WHEEL_TEXTURE_SIZE, 0,
+					WHEEL_TEXTURE_SIZE, WHEEL_TEXTURE_SIZE, WHEEL_TEXTURE_SIZE, WHEEL_TEXTURE_SIZE);
+		}
 	}
 
 	private static void renderAcidStacks(GuiGraphics guiGraphics, DeltaTracker delta)
@@ -73,7 +194,7 @@ public class OverlayRenderHandler
 		LocalPlayer player = RenderHelper.clientPlayer();
 		if (player == null || player.getData(Registration.DataAttachmentsReg.ACID_STACKS).stacks().isEmpty())
 			return;
-		if (RenderHelper.mc().screen instanceof EffectRenderingInventoryScreen effectScreen && effectScreen.canSeeEffects())
+		if (RenderHelper.mc().screen instanceof EffectRenderingInventoryScreen<?> effectScreen && effectScreen.canSeeEffects())
 			return;
 
 		List<MobEffectInstance> effects = new ArrayList<>(player.getActiveEffects());
@@ -103,7 +224,7 @@ public class OverlayRenderHandler
 		LocalPlayer player = RenderHelper.clientPlayer();
 		if (player == null)
 			return;
-		
+
 		int scaledWidth = RenderHelper.mc().getWindow().getGuiScaledWidth();
 		int scaledHeight = RenderHelper.mc().getWindow().getGuiScaledHeight();
 		

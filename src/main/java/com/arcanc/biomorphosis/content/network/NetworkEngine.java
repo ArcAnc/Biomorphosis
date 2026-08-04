@@ -37,13 +37,21 @@ public class NetworkEngine
 		registerMessage(registrar, C2SOpenOrganicArmorInventory.STREAM_CODEC, C2SOpenOrganicArmorInventory.TYPE, PacketFlow.SERVERBOUND);
 		registerMessage(registrar, C2SWings.STREAM_CODEC, C2SWings.TYPE, PacketFlow.SERVERBOUND);
 		registerMessage(registrar, C2SWingsFlightInput.STREAM_CODEC, C2SWingsFlightInput.TYPE, PacketFlow.SERVERBOUND);
+		registerMessage(registrar, C2SActivateAbility.STREAM_CODEC, C2SActivateAbility.TYPE, PacketFlow.SERVERBOUND);
 		
 		registerMessage(registrar, S2CRecipeResponse.STREAM_CODEC, S2CRecipeResponse.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CGenomeSync.STREAM_CODEC, S2CGenomeSync.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CGenomeEffectsSync.STREAM_CODEC, S2CGenomeEffectsSync.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2COrganicArmorSync.STREAM_CODEC, S2COrganicArmorSync.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CUnlockedGenomeSync.STREAM_CODEC, S2CUnlockedGenomeSync.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CUnlockedAbilities.STREAM_CODEC, S2CUnlockedAbilities.TYPE, PacketFlow.CLIENTBOUND);
 		registerMessage(registrar, S2CWings.STREAM_CODEC, S2CWings.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CWave.STREAM_CODEC, S2CWave.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CHook.STREAM_CODEC, S2CHook.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CSpike.STREAM_CODEC, S2CSpike.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CSpikeImpact.STREAM_CODEC, S2CSpikeImpact.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CSpikeBarrageCast.STREAM_CODEC, S2CSpikeBarrageCast.TYPE, PacketFlow.CLIENTBOUND);
+		registerMessage(registrar, S2CAbilityCast.STREAM_CODEC, S2CAbilityCast.TYPE, PacketFlow.CLIENTBOUND);
     }
 
     private <T extends IPacket> void registerMessage(

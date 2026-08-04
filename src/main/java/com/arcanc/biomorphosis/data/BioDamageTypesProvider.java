@@ -42,6 +42,11 @@ public class BioDamageTypesProvider extends BioRegistryData
 				0.0f,
 				DamageEffects.HURT,
 				DeathMessageType.DEFAULT));
+		addDamageType(new DamageType(Registration.DamageTypeReg.SPIKE_BARRAGE.location().toString(),
+				DamageScaling.NEVER,
+				0.0f,
+				DamageEffects.HURT,
+				DeathMessageType.DEFAULT));
 
 		addDamageType(new DamageType(Registration.DamageTypeReg.TURRET_DAMAGE.location().toString(),
 				DamageScaling.NEVER,

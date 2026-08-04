@@ -14,3 +14,6 @@
 * updated icons for armor
 * fixed a lot of bugs with chrysalis screen
 * Ziris mob now short range shooter mob
+* a bit fixed Worker work AI
+* changed spawn settings for mod mobs
+* now structures have small amount of loot

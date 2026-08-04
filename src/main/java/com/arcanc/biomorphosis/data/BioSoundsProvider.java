@@ -38,6 +38,23 @@ public class BioSoundsProvider extends SoundDefinitionsProvider
 		add(Registration.SoundReg.WINGS_FLYING, SoundDefinition.definition().
 				with(sound(Database.mineRl("item/elytra/elytra_loop"), SoundDefinition.SoundType.SOUND).
 				volume(0.6D)));
+
+		add(Registration.SoundReg.WAVE_CAST, SoundDefinition.definition().
+				with(sound(Database.rl("ability/wave/cast"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.WAVE_CAST));
+		add(Registration.SoundReg.WAVE_TRAVEL, SoundDefinition.definition().
+				with(sound(Database.rl("ability/wave/travel"), SoundDefinition.SoundType.SOUND).
+				volume(0.75D)).
+				subtitle(Database.GUI.Sounds.WAVE_TRAVEL));
+		add(Registration.SoundReg.HOOK_FLY, SoundDefinition.definition().
+				with(sound(Database.rl("ability/hook/fly"), SoundDefinition.SoundType.SOUND).
+				volume(0.60D)).
+				subtitle(Database.GUI.Sounds.HOOK_FLY));
+		add(Registration.SoundReg.HOOK_GET_OVER_HERE, SoundDefinition.definition().
+				with(sound(Database.rl("ability/hook/get_over_here"), SoundDefinition.SoundType.SOUND)).
+				subtitle(Database.GUI.Sounds.HOOK_GET_OVER_HERE));
+		add(Registration.SoundReg.SPIKE_START, SoundDefinition.definition().
+				with(sound(Database.rl("ability/spike/start"), SoundDefinition.SoundType.SOUND)));
 		
 		add(Registration.SoundReg.BLOCK_DESTROY, SoundDefinition.definition().
 				with(

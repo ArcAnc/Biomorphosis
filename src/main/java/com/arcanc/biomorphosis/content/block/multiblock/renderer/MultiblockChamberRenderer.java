@@ -16,8 +16,6 @@ import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDe
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
-import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
-import com.arcanc.biomorphosis.util.model.obj.SphereObj;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
@@ -25,6 +23,7 @@ import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -33,6 +32,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -41,13 +41,25 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 
 public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
 {
     private static final ResourceLocation TEXTURE = Database.rl("block/chamber/0");
+    private static final ResourceLocation SPHERE_TEXTURE = Database.rl("block/chamber/sphere/0");
+    private static final float[][] PULSE_POINTS = {
+            {0f, 0f}, {1f, 0.02f}, {2f, 0.04f}, {3f, 0.06f}, {4f, 0.07f}, {5f, 0.08f},
+            {6f, 0.09f}, {7f, 0.10f}, {8f, 0.11f}, {9f, 0.12f}, {10f, 0.13f}, {11f, 0.15f},
+            {12f, 0.145f}, {13f, 0.13f}, {14f, 0.12f}, {15f, 0.11f}, {16f, 0.10f}, {17f, 0.09f},
+            {18f, 0.05f}, {19f, 0.04f}, {20f, 0.02f}, {21f, 0.01f}, {22f, 0.01f}, {23f, 0f},
+            {46f, 0f}, {47f, 0.01f}, {48f, 0.03f}, {49f, 0.05f}, {50f, 0.06f}, {51f, 0.05f},
+            {52f, 0.04f}, {53f, 0.03f}, {54f, 0.02f}, {55f, 0.01f}, {56f, 0f}, {99f, 0f}
+    };
     
-    private static final SphereObj SPHERE_MODEL = new SphereObj(Database.rl("textures/block/chamber/sphere.png"));
+    private static final PModelData SPHERE_MODEL = new PModelData.Builder(
+            Database.rl("glmodels/block/chamber/sphere.gltf"), "").build();
     private static final PModelData MORPHED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
     private static final PModelData MORPHING = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
     private static final PModelData DISASSEMBLED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
@@ -84,12 +96,24 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
             return;
         float percent = Math.clamp(currentTime / (float)maxTime, 0.1f, 1.0f);
         float angle = (level.getGameTime() % 360 + partialTick);
+        PBakedModel sphereModel = SPHERE_MODEL.getModel();
+        if (sphereModel == null)
+            return;
         
         poseStack.pushPose();
         poseStack.translate(0, 1.5f, 0);
         poseStack.mulPose(Axis.YP.rotationDegrees(angle));
-        poseStack.scale(percent, percent, percent);
-        SPHERE_MODEL.render(poseStack, ObjRenderTypes :: trianglesSolid, bufferSource, packedOverlay, packedLight, -1);
+        float scale = percent * (1f + pulse(System.nanoTime() / 1_000_000_000f) * 2f);
+        poseStack.scale(scale, scale, scale);
+        sphereModel.instantDraw(
+                poseStack,
+                SPHERE_MODEL,
+                List.of(),
+                PRenderTypes.RenderTypeProvider :: trianglesLit,
+                -1,
+                packedLight,
+                packedOverlay,
+                partialTick);
         poseStack.popPose();
     }
 
@@ -116,11 +140,11 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
     }
     
     @Override
-    protected void perBoneSubmit(MultiblockChamber animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockChamber>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+    protected void perBoneSubmit(MultiblockChamber animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockChamber>> pAnimationControllers, Map<PAnimationController<MultiblockChamber>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
     {
         if (bone.name().equals("plat_top") || bone.name().equals("sphere"))
             renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
     }
     
     @Override
@@ -139,5 +163,19 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
     public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(TEXTURE);
+        event.addTextureLocation(SPHERE_TEXTURE);
+    }
+
+    private static float pulse(float time)
+    {
+        float index = (time * (20f / 60f) % 1f) * 99f;
+        for (int q = 1; q < PULSE_POINTS.length; q++)
+        {
+            float[] previous = PULSE_POINTS[q - 1];
+            float[] next = PULSE_POINTS[q];
+            if (index <= next[0])
+                return Mth.lerp((index - previous[0]) / (next[0] - previous[0]), previous[1], next[1]);
+        }
+        return 0f;
     }
 }

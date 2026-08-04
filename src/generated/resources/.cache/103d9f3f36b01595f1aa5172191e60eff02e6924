@@ -1,7 +1,8 @@
-// 1.21.1	2026-07-21T14:45:42.485714811	Registries
+// 1.21.1	2026-08-04T20:28:31.90399397	Registries
 5567c9f18b06855d34a97dba4535d6cec2fee2e4 data/biomorphosis/book/chapter/advanced.json
 0b57cd45e98e840e966171e02501cbb252b2e499 data/biomorphosis/book/chapter/basic.json
 5d649d129c357949ff6b2319220b3c284a8fd319 data/biomorphosis/book/chapter/title.json
+2c6167773ca390b193c293a8d23bd04888e03a67 data/biomorphosis/book/page/abilities.json
 12834d13e46bba77a1593f2ab99e7a0d635c0ab4 data/biomorphosis/book/page/catcher.json
 5c50a6bc03e0141cb3c9edb59521c86b50e090f4 data/biomorphosis/book/page/chamber.json
 8905c4269188cc54057500c2eb9333d412e524ef data/biomorphosis/book/page/chrysalis.json
@@ -12,6 +13,7 @@ a94d0260f21c3bba7e4554d572653204aaea0db1 data/biomorphosis/book/page/flesh.json
 039c2ed456a2b8d6c944205519bac33d4dd386df data/biomorphosis/book/page/forge.json
 bce346ce76a6194fddac7228b10f0194e01146c4 data/biomorphosis/book/page/manipulator.json
 a18fce323a545f276bee95a32883860afac41e6a data/biomorphosis/book/page/norph_source.json
+7a9c09d4b85c4db87bedae8641e2ddb73d9846fb data/biomorphosis/book/page/organic_armor.json
 5c6cea9c766c85ef9f6774087420af501f4e240d data/biomorphosis/book/page/squeezer.json
 e5dd6de04d0eeb82f44de346dbac1ab2dc4c3264 data/biomorphosis/book/page/stomach.json
 84dfb307f947ffc00a8793b81c99e27f8060700b data/biomorphosis/book/page/storages.json
@@ -32,9 +34,15 @@ a02d4660ec2170e11205854f4eedc81a56b65c0c data/biomorphosis/book/page/v261.json
 f08247e998d45c197565d9c2ec2fbcb76334944d data/biomorphosis/book/page/v262.json
 a14d46acf2222f3e3263583cfe89011376b0733a data/biomorphosis/book/page/v2632.json
 d09ebc70c0f48b74d1dd589fe691924f5732fa02 data/biomorphosis/book/page/v2633.json
+419746941128c5da540ec9173554ebf51878dc43 data/biomorphosis/book/page/v264.json
+1a7447e6a13be23e1466236c4be91bb0e2deb7a9 data/biomorphosis/damage_type/acid.json
 5ff9e6254461dc6f77d7ad80848d040b3e3bf843 data/biomorphosis/damage_type/impossible_mutation.json
 67f11f83c5257722666b96558a04c0f155a9dce8 data/biomorphosis/damage_type/infestation.json
+9296480c39ad7506e18f4221bd88646e0999c2a3 data/biomorphosis/damage_type/spike_barrage.json
 32c4cb17637eae5f5751d31bf8fd4d5128b0afb3 data/biomorphosis/damage_type/turret.json
+0b1beeba893e6e8735cf0475929445c9149de4bd data/biomorphosis/entity_ability/guard.json
+f42530f9f0522b339e73aba236267c0b43fe129d data/biomorphosis/entity_ability/infestor.json
+a61756c4ef73a4ae491d8bd2cd168ba1e5303396 data/biomorphosis/entity_ability/queen.json
 e5b6429b831da25f1ad45182a288e5149509445e data/biomorphosis/genome/effect/balance.json
 443790f4a48be4d14797b21d67aa2d60c86dc206 data/biomorphosis/genome/effect/damage.json
 06acc2c5979c99c17e9952ee69331eab0f7f3810 data/biomorphosis/genome/effect/health.json
@@ -47,9 +55,9 @@ d049a3fd8bb42ff644d1c6b2395476e1d477e02b data/biomorphosis/genome/effect/wings.j
 f9ea8ff9ce7642026f7a21fafab50747f930f5ba data/biomorphosis/organic_armor/effect/organic_acid.json
 971db358cfe0b4493feafc0ee9a02f14fad1b1eb data/biomorphosis/organic_armor/effect/organic_adrenaline.json
 f7afe361d78eb23b20eebc5cbfb928eddb7e60c3 data/biomorphosis/organic_armor/effect/organic_biomass.json
-4d909e6fb002eb71d472c7513a2516f3f011aef3 data/biomorphosis/organic_armor/type/organic.json
+6d01987020d63bffd465798d996296ed1bc2d03f data/biomorphosis/organic_armor/type/organic.json
 31db77cd3b70844c807b467c06a85d4554e68d44 data/biomorphosis/palladin_order/base.json
-a46ed97262c623e9247bb57d27df60a0407499ce data/biomorphosis/worldgen/biome/wastes.json
+7feb921b4598623c70abc996468f19e85ba143a2 data/biomorphosis/worldgen/biome/wastes.json
 5e553bcd6fd6ff8c14867c8ea1913a39366ecc56 data/biomorphosis/worldgen/configured_feature/wastes_grass.json
 345346ff08e947a0ea42fb323f93831ae3a25d35 data/biomorphosis/worldgen/configured_feature/wastes_spire.json
 134ec55223505d74bb8e3810d901aad2af686775 data/biomorphosis/worldgen/placed_feature/wastes_grass.json
@@ -57,18 +65,18 @@ f29055686cf19081397c10386b6a7a87b4e8a88c data/biomorphosis/worldgen/placed_featu
 7a8e331f584af9320df027fcea8f0d37082ba46c data/biomorphosis/worldgen/structure/spawner.json
 98bc516d0d053e57ab7ab18ed4ed5eebd8d83250 data/biomorphosis/worldgen/structure/srf/orders/base/headquarters.json
 e6a4a08bcfe35f9facf06f2a9df01d6e000f1bdb data/biomorphosis/worldgen/structure/srf/orders/base/tower.json
-b678022004797c52f862683fc9ce5456ec0b96ad data/biomorphosis/worldgen/structure/village.json
+095f7c44555f7f78f5a7c8879d71be55944dba41 data/biomorphosis/worldgen/structure/village.json
 ecabfec14838c069d6c01843c9016cf27f9e4007 data/biomorphosis/worldgen/structure_set/spawner.json
 68aec96ec0618a496e1d0afe39665afaa2d5a8e6 data/biomorphosis/worldgen/structure_set/srf/orders/base/headquarters.json
 6d7945ad0de398f99fa3ce6ba701ea1e81663c88 data/biomorphosis/worldgen/structure_set/srf/orders/base/tower.json
 d95e61a139191e75a44f2bce207c384835945a02 data/biomorphosis/worldgen/structure_set/village.json
-11705599ec23e19876a2fbbf9d884ffe2f6957e6 data/biomorphosis/worldgen/template_pool/srf/orders/base/blacksmith.json
-dad0e742b699db281f98e34196131f3fd2e53ef7 data/biomorphosis/worldgen/template_pool/srf/orders/base/captain.json
-c8b21a35cc08fc6f5ab52680446a6c9db318f949 data/biomorphosis/worldgen/template_pool/srf/orders/base/sergeant.json
-11aa850c1dc4f8886c1a1f715b9f0ab3f342de5e data/biomorphosis/worldgen/template_pool/srf/orders/base/soldier.json
-ff88130326dc5a1e17edadd8c23efda89736394f data/biomorphosis/worldgen/template_pool/srf/orders/base/start/headquarters.json
-e31c6fe27e58dc448f76860c6eb3c9bae130ce5d data/biomorphosis/worldgen/template_pool/srf/orders/base/start/tower.json
-dd4c5acf07cc77dbbfd6f3f63e0c4839039e511c data/biomorphosis/worldgen/template_pool/village/guard.json
-806fdb19389fae132cf097de485edb0b14265b89 data/biomorphosis/worldgen/template_pool/village/road.json
-b78ab6da36479601003be5ef36a38012696fbc6c data/biomorphosis/worldgen/template_pool/village/start.json
-747bb8a89dc40e4aa138a03209d9db16452cc494 data/biomorphosis/worldgen/template_pool/village/worker.json
+799e1e039861652e78873f7ba8178ebdeaec9155 data/biomorphosis/worldgen/template_pool/srf/orders/base/blacksmith.json
+a814f0a4f1b1b332e1e1b442fdd4217260434603 data/biomorphosis/worldgen/template_pool/srf/orders/base/captain.json
+f1aad01cb06176d42b5d146be9685a88c25aa626 data/biomorphosis/worldgen/template_pool/srf/orders/base/sergeant.json
+67fe34f616684759f176f8af3183b3d1cb240ffa data/biomorphosis/worldgen/template_pool/srf/orders/base/soldier.json
+d50f7579c3b45f1afd080b8630a0db48272802dd data/biomorphosis/worldgen/template_pool/srf/orders/base/start/headquarters.json
+081c12188f47ae94cd51ae9fd41213c40fc08f94 data/biomorphosis/worldgen/template_pool/srf/orders/base/start/tower.json
+15a56a143bbc89957e830c46f3efc9a6c6ce9907 data/biomorphosis/worldgen/template_pool/village/guard.json
+9fab4639008b2d477907cb5e0096efb88466c467 data/biomorphosis/worldgen/template_pool/village/road.json
+8454cbe20ed4d79eaf84a12022de5802eb927d0d data/biomorphosis/worldgen/template_pool/village/start.json
+6d133f6d86055c147ac48c1d50ce389631e3804a data/biomorphosis/worldgen/template_pool/village/worker.json

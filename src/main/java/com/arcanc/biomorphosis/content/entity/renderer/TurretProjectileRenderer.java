@@ -19,6 +19,7 @@ import com.arcanc.pulselib.content.renderer.PEntityRenderLayer;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -58,7 +59,8 @@ public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
 	                             @Nullable PEntityRenderLayer<TurretProjectile> renderLayer,
 	                             @Nullable Map<String, Matrix4f> entityBonePoses,
 	                             @Nullable Matrix4f layerTransform,
-	                             @Nullable List<DeferredLayerSubmit> deferredLayers)
+	                             @Nullable List<DeferredLayerSubmit> deferredLayers,
+	                             Map<PAnimationController<TurretProjectile>, MolangParser.Context> molangContexts)
 	{
 		if (animatable.getEffect() != null)
 			packedColor = animatable.getEffect().getColor();
@@ -76,7 +78,8 @@ public class TurretProjectileRenderer extends PEntityRenderer<TurretProjectile>
 				renderLayer,
 				entityBonePoses,
 				layerTransform,
-				deferredLayers);
+				deferredLayers,
+				molangContexts);
 	}
 	
 	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)

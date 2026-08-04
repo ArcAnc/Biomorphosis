@@ -19,6 +19,7 @@ import com.arcanc.pulselib.content.renderer.PEntityRenderLayer;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -57,10 +58,11 @@ public class ZirisProjectileRenderer extends PEntityRenderer<ZirisProjectile>
 								 @Nullable PEntityRenderLayer<ZirisProjectile> renderLayer,
 								 @Nullable Map<String, Matrix4f> entityBonePoses,
 								 @Nullable Matrix4f layerTransform,
-								 @Nullable List<DeferredLayerSubmit> deferredLayers)
+								 @Nullable List<DeferredLayerSubmit> deferredLayers,
+								 Map<PAnimationController<ZirisProjectile>, MolangParser.Context> molangContexts)
 	{
 		super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, data, renderType, YELLOW,
-				packedLight, packedOverlay, partialTick, headRotation, renderLayer, entityBonePoses, layerTransform, deferredLayers);
+				packedLight, packedOverlay, partialTick, headRotation, renderLayer, entityBonePoses, layerTransform, deferredLayers, molangContexts);
 	}
 
 	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)

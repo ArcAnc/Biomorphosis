@@ -36,7 +36,6 @@ import net.minecraft.world.level.levelgen.structure.StructureSpawnOverride;
 import net.minecraft.world.level.levelgen.structure.TerrainAdjustment;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadStructurePlacement;
 import net.minecraft.world.level.levelgen.structure.placement.RandomSpreadType;
-import net.minecraft.world.level.levelgen.structure.pools.StructurePoolElement;
 import net.minecraft.world.level.levelgen.structure.pools.StructureTemplatePool;
 import org.jetbrains.annotations.Nullable;
 
@@ -60,14 +59,6 @@ public class SwarmVillage
 								new StructureSpawnOverride(
 										StructureSpawnOverride.BoundingBoxType.STRUCTURE,
 										WeightedRandomList.create(
-												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 1, 2),
-												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), 1, 4, 8),
-												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), 1, 1, 3),
-												new MobSpawnSettings.SpawnerData(
-														Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), 1, 2, 4),
 												new MobSpawnSettings.SpawnerData(
 														Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), 1, 2, 4),
 												new MobSpawnSettings.SpawnerData(
@@ -102,8 +93,7 @@ public class SwarmVillage
 				new StructureTemplatePool (
 				empty,
 				ImmutableList.of (
-					Pair.of(StructurePoolElement.legacy (Database.rlStr ("village/center/start")), 1)),
-						StructureTemplatePool.Projection.RIGID));
+					Pair.of(SwarmLegacySinglePoolElement.rigid(Database.rl("village/center/start")), 1))));
 		
 		context.register (VILLAGE.pools().getPoolKey(CellType.ROAD),
 				new StructureTemplatePool(

@@ -32,7 +32,7 @@
     "client.LevelRendererMixin",
     "client.RecipeUpdateMixin",
     "client.WingsEntityTurnMixin",
-    "client.WingsHumanoidModelMixin",
+    "client.WingsPlayerModelMixin",
     "client.WingsPlayerRendererMixin"
   ]
 }

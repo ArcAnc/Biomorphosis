@@ -56,8 +56,8 @@ public class Captain extends AbstractPalladin implements Merchant
 	protected void registerGoals()
 	{
 		this.goalSelector.addGoal(0, new FloatGoal(this));
-		this.goalSelector.addGoal(2, new ReturnGoal(this, 1.2d));
-		this.goalSelector.addGoal(3, new MeleeAttackGoal(this, 1.2d, true));
+		this.goalSelector.addGoal(2, new MeleeAttackGoal(this, 1.2d, true));
+		this.goalSelector.addGoal(3, new ReturnGoal(this, 1.2d));
 		this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 12.0f));
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 		this.targetSelector.addGoal(1, new HurtByTargetGoal(this, AbstractPalladin.class).setAlertOthers());

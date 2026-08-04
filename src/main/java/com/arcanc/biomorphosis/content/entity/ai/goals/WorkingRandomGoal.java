@@ -13,6 +13,8 @@ package com.arcanc.biomorphosis.content.entity.ai.goals;
 import com.arcanc.biomorphosis.content.entity.Worker;
 import net.minecraft.world.entity.ai.goal.Goal;
 
+import java.util.EnumSet;
+
 public class WorkingRandomGoal extends Goal
 {
 	private final int MAX_WORK_TIME = 50;
@@ -25,6 +27,8 @@ public class WorkingRandomGoal extends Goal
 	public WorkingRandomGoal(Worker mob)
 	{
 		this.mob = mob;
+		this.breakTime = this.mob.getRandom().nextInt(BREAK_BETWEEN_WORK) + 1;
+		this.setFlags(EnumSet.of(Flag.MOVE));
 	}
 
 	@Override
@@ -57,7 +61,7 @@ public class WorkingRandomGoal extends Goal
 	{
 		this.mob.setWorking(false);
 		this.workTime = 0;
-		this.breakTime = BREAK_BETWEEN_WORK;
+		this.breakTime = this.mob.getRandom().nextInt(BREAK_BETWEEN_WORK);
 	}
 
 	@Override

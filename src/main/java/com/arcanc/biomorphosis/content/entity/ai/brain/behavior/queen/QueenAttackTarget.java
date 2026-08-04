@@ -9,7 +9,9 @@
 
 package com.arcanc.biomorphosis.content.entity.ai.brain.behavior.queen;
 
+import com.arcanc.biomorphosis.content.ability.MobAbilityCaster;
 import com.arcanc.biomorphosis.content.entity.Queen;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.behavior.Behavior;
@@ -26,6 +28,7 @@ public class QueenAttackTarget extends Behavior<Queen>
 	private final float speedModifier;
 	private final int attackInterval;
 	private long nextAttackTick;
+	private final MobAbilityCaster abilityCaster = new MobAbilityCaster();
 
 	public QueenAttackTarget(float speedModifier, int attackInterval)
 	{
@@ -56,6 +59,11 @@ public class QueenAttackTarget extends Behavior<Queen>
 
 		LivingEntity target = optional.get();
 		owner.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new EntityTracker(target, true));
+		if (this.abilityCaster.tryCast(owner, target, Registration.AbilityReg.WAVE.getId()))
+		{
+			owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+			return;
+		}
 		if (owner.isWithinMeleeAttackRange(target))
 		{
 			owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);

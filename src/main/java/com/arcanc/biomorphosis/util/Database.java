@@ -40,6 +40,8 @@ public class Database
 		public static final String ORGANIC_ARMOR = "organic_armor";
 		public static final String WINGS_FLIGHT = "wings_flight";
 		public static final String WINGS_FLIGHT_INPUT = "wings_flight_input";
+		public static final String ABILITY_LOADOUT = "ability_loadout";
+		public static final String ABILITY_CASTING = "ability_casting";
 	}
 
     public static final class Integration
@@ -282,6 +284,7 @@ public class Database
 	            public static final PageInfo V262 = new PageInfo(rl("v262"));
 	            public static final PageInfo V2632 = new PageInfo(rl("v2632"));
 	            public static final PageInfo V2633 = new PageInfo(rl("v2633"));
+	            public static final PageInfo V264 = new PageInfo(rl("v264"));
                 public static final PageInfo FLESH = new PageInfo(rl("flesh"));
                 public static final PageInfo NORPH_SOURCE = new PageInfo(rl("norph_source"));
                 public static final PageInfo CHAMBER = new PageInfo(rl("chamber"));
@@ -294,8 +297,10 @@ public class Database
 				public static final PageInfo CATCHER = new PageInfo(rl("catcher"));
 				public static final PageInfo MANIPULATOR = new PageInfo(rl("manipulator"));
 				public static final PageInfo FLUID_TRANSMITTER = new PageInfo(rl("fluid_transmitter"));
-				public static final PageInfo TURRET = new PageInfo(rl("turret"));
+	            public static final PageInfo TURRET = new PageInfo(rl("turret"));
 	            public static final PageInfo CHRYSALIS = new PageInfo(rl("chrysalis"));
+	            public static final PageInfo ORGANIC_ARMOR = new PageInfo(rl("organic_armor"));
+	            public static final PageInfo ABILITIES = new PageInfo(rl("abilities"));
 
                 public record PageInfo(ResourceLocation location, String titleLangKey, String textLangKey)
                 {
@@ -320,10 +325,14 @@ public class Database
             }
         }
 
-        public static final class Sounds
-        {
+		public static final class Sounds
+		{
 	        public static final String MULTIBLOCK_MORPH_COMPLETE = Database.rl("sound.subtitle.block.morph_complete").toLanguageKey();
 			public static final String ADVANCEMENT_RECEIVE = Database.rl("sound.subtitle.advancement.receive").toLanguageKey();
+			public static final String WAVE_CAST = Database.rl("sound.subtitle.wave.cast").toLanguageKey();
+			public static final String WAVE_TRAVEL = Database.rl("sound.subtitle.wave.travel").toLanguageKey();
+			public static final String HOOK_FLY = Database.rl("sound.subtitle.hook.fly").toLanguageKey();
+			public static final String HOOK_GET_OVER_HERE = Database.rl("sound.subtitle.hook.get_over_here").toLanguageKey();
 
             public static final String BLOCK_DESTROYED = Database.rl("sound.subtitle.block.destroyed").toLanguageKey();
             public static final String BLOCK_PLACED = Database.rl("sound.subtitle.block.placed").toLanguageKey();
@@ -393,6 +402,7 @@ public class Database
 			public static final class Advancements
 			{
 				public static final String RECEIVE_GENE = rl(GUI + ".overlay.advancement.receive_gene").toLanguageKey();
+				public static final String RECEIVE_ABILITY = rl(GUI + ".overlay.advancement.receive_ability").toLanguageKey();
 			}
 		}
 		
@@ -442,6 +452,7 @@ public class Database
 	{
 		public static final String CATEGORY = Database.rl("key.categories").toLanguageKey();
 		public static final String WINGS = Database.rl("key.wings").toLanguageKey();
+		public static final String ABILITY_WHEEL = Database.rl("key.ability_wheel").toLanguageKey();
 	}
 
     public static ResourceLocation rl(String name)

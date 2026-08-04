@@ -9,30 +9,6 @@
       "bounding_box": "full",
       "spawns": [
         {
-          "type": "biomorphosis:infestor",
-          "maxCount": 2,
-          "minCount": 1,
-          "weight": 1
-        },
-        {
-          "type": "biomorphosis:swarmling",
-          "maxCount": 8,
-          "minCount": 4,
-          "weight": 1
-        },
-        {
-          "type": "biomorphosis:larva",
-          "maxCount": 3,
-          "minCount": 1,
-          "weight": 1
-        },
-        {
-          "type": "biomorphosis:ziris",
-          "maxCount": 4,
-          "minCount": 2,
-          "weight": 1
-        },
-        {
           "type": "biomorphosis:ksigg",
           "maxCount": 4,
           "minCount": 2,

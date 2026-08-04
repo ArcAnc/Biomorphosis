@@ -5,7 +5,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:srf/orders/base/mobs/sergeant",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:srf_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },

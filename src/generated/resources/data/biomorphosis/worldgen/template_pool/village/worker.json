@@ -5,7 +5,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/mobs/worker",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },

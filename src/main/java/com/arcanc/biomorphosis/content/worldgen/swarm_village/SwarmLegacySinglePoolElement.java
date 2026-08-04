@@ -22,7 +22,7 @@ import java.util.Optional;
 
 public class SwarmLegacySinglePoolElement extends LegacySinglePoolElement
 {
-	private static final Holder<StructureProcessorList> PROCESSORS = Holder.direct(new StructureProcessorList(List.of()));
+	private static final Holder<StructureProcessorList> PROCESSORS = Holder.direct(new StructureProcessorList(List.of(SwarmChestLootProcessor.INSTANCE)));
 	
 	public SwarmLegacySinglePoolElement(ResourceLocation id, StructureTemplatePool.Projection projection)
 	{

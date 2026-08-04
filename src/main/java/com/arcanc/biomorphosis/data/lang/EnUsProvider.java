@@ -187,6 +187,8 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.GuideBook.Pages.V2632.textLangKey(), "\u2022 updated pulselib version \n\u2022 fixed missing Lure Campfire recipe (reported by Hyrezer) \n\u2022 fixed broken Chest recipe doesn't allow to get Reprocessor (reported by Hyrezer) \n\u2022 fixed typos in item names \n\u2022 fixed Transmittter choosing wrong slots in fluid storages (reported by Herezer) \n\u2022 fixed some mobs doesn't get damage inside Fluid Extractor (reported by Herezer) \n\u2022 fixed BasicStorage code. Now it's working properly \n\u2022 added custom biome \n\u2022 now swarm villages can generate only in wastes biome \n\u2022 added columns to wastes biome \n\u2022 added custom font into book (as part of big book rework) \n\u2022 fixed jei compatibility. Now recipes registered correctly \n\u2022 fixed in book recipe rendering \n\u2022 added norphed stone \n\u2022 added melonmaw \n\u2022 added sounds for SRF \n\u2022 reworked hive model");
 	    this.add(Database.GUI.GuideBook.Pages.V2633.titleLangKey(), "Version: 26.3.3 hotfix");
 	    this.add(Database.GUI.GuideBook.Pages.V2633.textLangKey(), "\u2022 added missing Guide Entry \n\u2022 fixed shaped rendering in the guide");
+	    this.add(Database.GUI.GuideBook.Pages.V264.titleLangKey(), "Version: 26.4");
+	    this.add(Database.GUI.GuideBook.Pages.V264.textLangKey(), "\u2022 Updated Infestor \n\u2022 AI Changed textures to smoother variant\n\u2022 added first version of organic armor\n\u2022 bumped pulselib version\n\u2022 nerfed infestor damage\n\u2022 updated Queen and QueenGuard AI\n\u2022 rebalanced Queen and QueenGuard\n\u2022 changed organic armor code. Now it's datadriven\n\u2022 fixed skybox rotation angle\n\u2022 changed skybox stars texture and added clouds\n\u2022 updated Ziris AI. The mob should no longer get stuck in front of a single block\n\u2022 added flight mechanic\n\u2022 updated Dynamic Multiblock system\n\u2022 updated icons for armor\n\u2022 fixed a lot of bugs with chrysalis screen\n\u2022 Ziris mob now short range shooter mob\n\u2022 a bit fixed Worker work AI \n\u2022 changed spawn settings for mod mobs \n\u2022 now structures have small amount of loot");
 		
 	    this.add(Database.GUI.GuideBook.Pages.FLESH.titleLangKey(), "</item;biomorphosis:flesh_piece/>Flesh");
 		this.add(Database.GUI.GuideBook.Pages.FLESH.textLangKey(), "The first thing you must understand, little one, is flesh. Everything begins with flesh. It is the seed of life - and of us. Harvest it from the living. Tear it from Zombies, Villagers, Horses... All bodies serve. Each will give you </item;biomorphosis:flesh_piece/>Gather enough, and you may compress the pieces into a single, pulsating mass. Use this method: "+ recipeForBook(RecipeType.CRAFTING, "_shaped", Database.mineRl("flesh")) + "The Swarm is built from flesh. Remember that" );
@@ -229,6 +231,12 @@ public class EnUsProvider extends LanguageProvider
 
 	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.titleLangKey(), "</block;biomorphosis:multiblock_chrysalis/>Chrysalis");
 	    this.add(Database.GUI.GuideBook.Pages.CHRYSALIS.textLangKey(), "The Chrysalis... One of the simplest forms, and yet one of the most vital technologies of the Swarm. Within it, flesh remembers what it can become. It allows you to accept discovered genes into yourself - to mutate, to reshape, to rise beyond your previous form. To grow a Chrysalis, the Swarm requires the following tissues and substances:" + multiblock(Database.rl("chrysalis")) + "A natural question follows - where do the genes come from? The answer is simple: life always carries them... unwillingly. Take the Injector and extract them yourself. It does not matter who stands before you - a Villager, a beast, or any other living form. All of them carry something that can be torn out and repurposed. To grow an Injector, you will need:" + recipeForBook(Registration.RecipeReg.CHAMBER_RECIPE.getRecipeType().get(), Database.rl("chamber/injector_from_chamber")));
+
+	    this.add(Database.GUI.GuideBook.Pages.ORGANIC_ARMOR.titleLangKey(), "</item;biomorphosis:lifeless_chestplate/>Organic Armor");
+	    this.add(Database.GUI.GuideBook.Pages.ORGANIC_ARMOR.textLangKey(), "Flesh alone is soft, little one. To endure, you must give it a shell. Grow Lifeless Armor in the Chamber, wear each piece, then bring it to the Chrysalis. There, in the Armor tab, let the Chrysalis draw it beneath your skin. It will no longer hang from you like dead leather. It will become part of you. But living armor hungers. Each piece holds a small reservoir; feed it with a Fluid Capsule, and the fluid will teach the flesh how to answer danger. Acid punishes those who strike you with poison and sluggishness. Adrenaline makes your limbs faster. Biomass hardens the shell, turning blows and resisting the force that would throw you aside. Let it run dry, and the armor weakens. Feed it - and it will protect you as the Swarm protects its own");
+
+	    this.add(Database.GUI.GuideBook.Pages.ABILITIES.titleLangKey(), "</item;biomorphosis:infestor_sting/>Abilities");
+	    this.add(Database.GUI.GuideBook.Pages.ABILITIES.textLangKey(), "Some creatures carry more than flesh. They carry instincts sharpened into weapons. Kill such a creature yourself, and the Swarm may preserve its gift within you. Return to the Chrysalis and open the Abilities tab. There you may place each stolen instinct into one of six living slots. Hold the Ability Wheel key, choose a slot, then release it. Your body will remember what to do. The Queen's Wave tears forward, crushing and hurling those in its path. The Guard's Hook binds to prey or stone, dragging the two of you together. The Infestor's Spike Barrage sends a storm of barbs toward whatever dares stand before you. Every gift needs time to grow back after use. Do not waste them on weak prey");
 	    
 	    
 	    this.add(Database.GUI.GuideBook.Pages.Components.SHAPED, "Shaped");
@@ -283,11 +291,16 @@ public class EnUsProvider extends LanguageProvider
 		this.add(Database.GUI.Overlays.Tooltip.CHOOSE_TRANSMITTER, "Choose the Fluid Transmitter and use %s on it");
 		
 		this.add(Database.GUI.Overlays.Advancements.RECEIVE_GENE, "You receive gene ");
+		this.add(Database.GUI.Overlays.Advancements.RECEIVE_ABILITY, "You receive ability ");
   
 		//-----------------------------
         //SOUND
         this.add(Database.GUI.Sounds.ADVANCEMENT_RECEIVE, "Advancement received");
 	    this.add(Database.GUI.Sounds.MULTIBLOCK_MORPH_COMPLETE, "Multiblock morphed");
+		this.add(Database.GUI.Sounds.WAVE_CAST, "Wave energy strains");
+		this.add(Database.GUI.Sounds.WAVE_TRAVEL, "Wave hums");
+		this.add(Database.GUI.Sounds.HOOK_FLY, "Hook flies");
+		this.add(Database.GUI.Sounds.HOOK_GET_OVER_HERE, "Hook catches its target");
 	    
 	    this.add(Database.GUI.Sounds.BLOCK_DESTROYED, "Block broken");
         this.add(Database.GUI.Sounds.BLOCK_PLACED, "Block placed");
@@ -326,6 +339,7 @@ public class EnUsProvider extends LanguageProvider
 	    this.add(Database.GUI.Genome.Translations.GENE_NAME.apply(Database.GUI.Genome.WINGS.id()), "Wings");
 		this.add(Database.HotKeys.CATEGORY, "Biomorphosis");
 	    this.add(Database.HotKeys.WINGS, "Enable/Disable Flight");
+		this.add(Database.HotKeys.ABILITY_WHEEL, "Ability Wheel");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.HEAD), "Organic Helmet");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.CHEST), "Organic Chestplate");
 	    this.add(Database.GUI.OrganicArmor.NAME.apply(Database.rl("organic"), EquipmentSlot.LEGS), "Organic Leggings");

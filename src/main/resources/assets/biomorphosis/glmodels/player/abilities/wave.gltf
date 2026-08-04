@@ -1,0 +1,98 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Biomorphosis / PulseLib player animation"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0, 1]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "left_arm"
+    },
+    {
+      "name": "right_arm"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AAAAAM3MTD3NzMw9mpkZPs3MTD4AAIA+mpmZPjMzsz7NzMw+ZmbmPgAAAD/NzAw/mpkZP2ZmJj8zMzM/AABAP83MTD+amVk/ZmZmPzMzcz8AAIA/s/ZjPG63MT5iKqE9o0h7P3c0Ib4asu0+iKCbPLYTXz8Mrp2+pCwAP0o5tb053E0/AIoDvyxylD7WaZa9jNdNPz+OJr9plia8IbU1PXsPQj8QoDm/vFUGvm1oBD6a3ik/Q/1Vv5Y4KTtuHjo9EQgMP1h+XL/yNlQ+c9RcvqVL0j4eL0y/FhGOPmwj2r5QK6Y+HUtWv+pveT7IlMq+89yTPg9Vb79E4wA+IoISvlFQmT7DTm2/LqwPve3g4j3smrY+XeNlv3nnlr1lGxk+NnzQPsmkZL8/IZk9nfQLvXto4j5rV0i/RqCSPqwQir76Dfc+Lcgmv/yjzj7Ka6q+uKcMP4EKHr/lQrM+uZc3vuFoLj86Mga/9PimPYCqLDxW/Vg/zOehvnRZI75mD0Y90BVvP4acEb6/B+m95iHBPHylez+z9mM8brcxPmIqoT2jSHs/s/ZjPG63Mb5iKqG9o0h7P9FKbb3KEuu+hR2SvdkzYj+wQEu+FAwCv3X5rTwpgVY/7wb1vvPulb4zL3k9m1ZTP3nxNb+ej9Q7E4Q4vaG2Mz9ig0+/gBblPaLbFb4ITg4/f8Zgvy62zrumnji9ze/zPl29V78UkV2++XFTPsEr5T7PWD+/qsSpvvlYxT5H6do+iZBMv7XQkr77L7s+zlrDPg9Vb79E4wC+IoISPlFQmT4wG3a/ue+2PD2L6b2Cln8+LbFxv5PVWT27xCG+M5qRPmJTab/L9ZW96REZPUtrzj6Ngj2/fHqdvmQXez6okws/zoURv15m5L4b64s+YY0iP5crD785M7q+fIAZPl3POj+HdA+/67+nvYt35buU+1I/rfPfvotUGz4/ho294DhiP7k4gb6HFOI9L58UvXbrdT+z9mM8brcxvmIqob2jSHs/",
+      "byteLength": 756
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 84
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 84,
+      "byteLength": 336
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 420,
+      "byteLength": 336
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 21,
+      "type": "SCALAR",
+      "max": [1.0],
+      "min": [0.0]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 21,
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 21,
+      "type": "VEC4"
+    }
+  ],
+  "animations": [
+    {
+      "name": "cast",
+      "samplers": [
+        {
+          "input": 0,
+          "output": 1,
+          "interpolation": "LINEAR"
+        },
+        {
+          "input": 0,
+          "output": 2,
+          "interpolation": "LINEAR"
+        }
+      ],
+      "channels": [
+        {
+          "sampler": 0,
+          "target": {
+            "node": 0,
+            "path": "rotation"
+          }
+        },
+        {
+          "sampler": 1,
+          "target": {
+            "node": 1,
+            "path": "rotation"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Biomorphosis / PulseLib player animation"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0, 1, 2, 3]
+    }
+  ],
+  "nodes": [
+    { "name": "right_arm" },
+    { "name": "left_arm" },
+    { "name": "right_leg" },
+    { "name": "left_leg" }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AAAAAAAAgD8O5H+/AAAAAAAAAADWM++8DuR/vwAAAAAAAAAA1jPvvA7kf78AAAAAAAAAANYz77wO5H+/AAAAAAAAAADWM++8/9YjOwAAAAAAAAAAzP9/P//WIzsAAAAAAAAAAMz/fz//1iM7AAAAAAAAAADM/38//9YjOwAAAAAAAAAAzP9/Pw==",
+      "byteLength": 136
+    }
+  ],
+  "bufferViews": [
+    { "buffer": 0, "byteOffset": 0, "byteLength": 8 },
+    { "buffer": 0, "byteOffset": 8, "byteLength": 32 },
+    { "buffer": 0, "byteOffset": 40, "byteLength": 32 },
+    { "buffer": 0, "byteOffset": 72, "byteLength": 32 },
+    { "buffer": 0, "byteOffset": 104, "byteLength": 32 }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 2,
+      "type": "SCALAR",
+      "max": [1.0],
+      "min": [0.0]
+    },
+    { "bufferView": 1, "componentType": 5126, "count": 2, "type": "VEC4" },
+    { "bufferView": 2, "componentType": 5126, "count": 2, "type": "VEC4" },
+    { "bufferView": 3, "componentType": 5126, "count": 2, "type": "VEC4" },
+    { "bufferView": 4, "componentType": 5126, "count": 2, "type": "VEC4" }
+  ],
+  "animations": [
+    {
+      "name": "flight",
+      "samplers": [
+        { "input": 0, "output": 1, "interpolation": "LINEAR" },
+        { "input": 0, "output": 2, "interpolation": "LINEAR" },
+        { "input": 0, "output": 3, "interpolation": "LINEAR" },
+        { "input": 0, "output": 4, "interpolation": "LINEAR" }
+      ],
+      "channels": [
+        { "sampler": 0, "target": { "node": 0, "path": "rotation" } },
+        { "sampler": 1, "target": { "node": 1, "path": "rotation" } },
+        { "sampler": 2, "target": { "node": 2, "path": "rotation" } },
+        { "sampler": 3, "target": { "node": 3, "path": "rotation" } }
+      ]
+    }
+  ]
+}

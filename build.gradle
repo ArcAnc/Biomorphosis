@@ -43,6 +43,14 @@ repositories {
     maven {
         url = "https://maven.minecraftforge.net/"
     }
+    maven{
+        name = "ArcAncMaven"
+        url = uri("https://arcanc.github.io/Maven/")
+
+        content {
+            includeGroupByRegex("com\\.arcanc\\..*")
+        }
+    }
 }
 
 base {
@@ -136,7 +144,7 @@ configurations {
 }
 
 dependencies {
-    implementation "maven.modrinth:pulselib:${pulselib_version}"
+    implementation "com.arcanc.pulselib:pulselib-neoforge:${pulselib_version}"
 
     implementation "com.github.glitchfiend:TerraBlender-neoforge:${minecraft_version}-${terrablender_version}"
 
@@ -237,6 +245,7 @@ tasks.register("publishCurseForge", TaskPublishCurseForge) {
 }
 
 tasks.register("publishMods") {
+    group = "publishing"
     dependsOn "modrinth"
     dependsOn "publishCurseForge"
 }

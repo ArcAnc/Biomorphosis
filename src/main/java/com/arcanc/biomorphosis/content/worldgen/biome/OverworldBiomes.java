@@ -10,6 +10,7 @@
 package com.arcanc.biomorphosis.content.worldgen.biome;
 
 
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.content.worldgen.BioFeatures;
 import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
 import net.minecraft.core.HolderGetter;
@@ -19,6 +20,8 @@ import net.minecraft.sounds.Music;
 import net.minecraft.sounds.Musics;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.biome.*;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.levelgen.carver.ConfiguredWorldCarver;
@@ -40,7 +43,28 @@ public class OverworldBiomes
 	public static Biome wastes (HolderGetter<PlacedFeature> placedFeatureGetter, HolderGetter<ConfiguredWorldCarver<?>> carverGetter)
 	{
 		MobSpawnSettings.Builder spawnBuilder = new MobSpawnSettings.Builder();
-		BiomeDefaultFeatures.desertSpawns(spawnBuilder);
+
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 1, 2));
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_INFESTOR.getEntityHolder().get(), 1, 1, 2));
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_SWARMLING.getEntityHolder().get(), 1, 4, 8));
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_LARVA.getEntityHolder().get(), 1, 1, 3));
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_ZIRIS.getEntityHolder().get(), 1, 2, 4));
+		spawnBuilder.addSpawn(MobCategory.MONSTER,
+				new MobSpawnSettings.SpawnerData(
+						Registration.EntityReg.MOB_KSIGG.getEntityHolder().get(), 1, 2, 4));
+
+		BiomeDefaultFeatures.caveSpawns(spawnBuilder);
+
 		BiomeGenerationSettings.Builder biomeBuilder = new BiomeGenerationSettings.Builder(placedFeatureGetter, carverGetter);
 		BiomeDefaultFeatures.addFossilDecoration(biomeBuilder);
 		

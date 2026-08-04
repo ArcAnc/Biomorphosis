@@ -22,8 +22,8 @@
     },
     {
       "type": "minecraft:directory",
-      "source": "gui/organic_armor",
-      "prefix": "organic_armor/"
+      "prefix": "organic_armor/",
+      "source": "gui/organic_armor"
     }
   ]
 }

@@ -10,11 +10,10 @@
 package com.arcanc.biomorphosis.content.gui.screen.container;
 
 
+import com.arcanc.biomorphosis.content.ability.AbilityLoadout;
+import com.arcanc.biomorphosis.content.ability.IAbility;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChrysalis;
-import com.arcanc.biomorphosis.content.gui.component.GeneChooser;
-import com.arcanc.biomorphosis.content.gui.component.OwnedGeneList;
-import com.arcanc.biomorphosis.content.gui.component.OwnedRarityList;
-import com.arcanc.biomorphosis.content.gui.component.TexturedButton;
+import com.arcanc.biomorphosis.content.gui.component.*;
 import com.arcanc.biomorphosis.content.gui.component.info.ErrorInfoArea;
 import com.arcanc.biomorphosis.content.gui.component.info.FluidInfoArea;
 import com.arcanc.biomorphosis.content.gui.component.info.GenomeStabilityInfoArea;
@@ -23,8 +22,11 @@ import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotRenderer;
 import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
+import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.util.helper.AbilityHelper;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
+import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
@@ -41,6 +43,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 {
 	private static final EquipmentSlot[] ARMOR_SLOTS = {EquipmentSlot.HEAD, EquipmentSlot.CHEST, EquipmentSlot.LEGS, EquipmentSlot.FEET};
@@ -53,6 +58,8 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	private OwnedRarityList ownedRarityList;
 	private GenomeStabilityInfoArea stabilityInfoArea;
 	private ErrorInfoArea errorInfoArea;
+	private AbilityLoadout abilityLoadout;
+	private int selectedAbilitySlot = -1;
 	
 	public ChrysalisScreen(ChrysalisMenu menu, Inventory playerInventory, Component title)
 	{
@@ -71,6 +78,11 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 		if (this.activeTab == Tab.ORGANIC_ARMOR)
 		{
 			initOrganicArmorTab();
+			return;
+		}
+		else if (this.activeTab == Tab.ABILITIES)
+		{
+			initAbilitiesTab();
 			return;
 		}
 
@@ -184,6 +196,82 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 			this.activeTab = Tab.ORGANIC_ARMOR;
 			this.rebuildWidgets();
 		}).bounds(this.getGuiLeft() + 80, this.getGuiTop() - 18, 58, 18).build());
+		addRenderableWidget(Button.builder(Component.literal("Abilities"), button ->
+		{
+			this.activeTab = Tab.ABILITIES;
+			this.selectedAbilitySlot = -1;
+			this.rebuildWidgets();
+		}).bounds(this.getGuiLeft() + 140, this.getGuiTop() - 18, 70, 18).build());
+	}
+
+	private void initAbilitiesTab()
+	{
+		if (this.abilityLoadout == null)
+			this.abilityLoadout = AbilityHelper.getLoadout(this.player);
+
+		int left = this.getGuiLeft();
+		int top = this.getGuiTop();
+		if (this.selectedAbilitySlot >= 0)
+		{
+			initAbilitySelection(left, top);
+			return;
+		}
+
+		for (int slot = 0; slot < AbilityLoadout.SLOT_COUNT; slot++)
+		{
+			final int abilitySlot = slot;
+			addRenderableWidget(Button.builder(getAbilitySlotLabel(abilitySlot), button ->
+			{
+				this.selectedAbilitySlot = this.selectedAbilitySlot == abilitySlot ? -1 : abilitySlot;
+				this.rebuildWidgets();
+			}).bounds(left + 10, top + 20 + slot * 22, 112, 20).build());
+		}
+
+	}
+
+	private void initAbilitySelection(int left, int top)
+	{
+		List<ResourceLocation> availableAbilities = this.abilityLoadout.unlockedAbilities().stream().
+				filter(abilityId -> Registration.AbilityReg.ABILITY_REGISTRY.containsKey(abilityId)).
+				sorted(Comparator.comparing(ResourceLocation :: toString)).toList();
+		addRenderableWidget(Button.builder(Component.literal("Back"), button ->
+		{
+			this.selectedAbilitySlot = -1;
+			this.rebuildWidgets();
+		}).bounds(left + 10, top + 20, 112, 20).build());
+		addRenderableWidget(new AbilitySelectionList(this.minecraft, left + 10, top + 45, 112,
+				Math.min(72, Math.max(18, availableAbilities.size() * 18)), 18, availableAbilities,
+				this :: selectAbility));
+	}
+
+	private Component getAbilitySlotLabel(int slot)
+	{
+		return this.abilityLoadout.getSlot(slot).
+				map(AbilitySelectionList :: formatAbilityName).
+				map(name -> Component.literal((slot + 1) + ":  " + name)).
+				orElseGet(() -> Component.literal((slot + 1) + ": Empty"));
+	}
+
+	private void selectAbility(ResourceLocation abilityId)
+	{
+		this.abilityLoadout = moveAbilityToSlot(this.abilityLoadout, this.selectedAbilitySlot, abilityId);
+		sendUpdateToServer(tag ->
+		{
+			tag.putInt("ability_slot", this.selectedAbilitySlot);
+			tag.putString("ability_id", abilityId.toString());
+		});
+		this.selectedAbilitySlot = -1;
+		this.rebuildWidgets();
+	}
+
+	private static AbilityLoadout moveAbilityToSlot(AbilityLoadout loadout, int slot, ResourceLocation abilityId)
+	{
+		AbilityLoadout updated = loadout;
+		for (int currentSlot = 0; currentSlot < AbilityLoadout.SLOT_COUNT; currentSlot++)
+			if (updated.getSlot(currentSlot).filter(abilityId :: equals).isPresent())
+				updated = updated.withoutSlot(currentSlot);
+
+		return updated.withSlot(slot, abilityId);
 	}
 
 	private void initOrganicArmorTab()
@@ -242,7 +330,12 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
 	{
 		super.renderBg(guiGraphics, partialTick, mouseX, mouseY);
-		if (this.activeTab != Tab.ORGANIC_ARMOR)
+		if (this.activeTab == Tab.ABILITIES)
+		{
+			renderAbilityPlayer(guiGraphics, mouseX, mouseY);
+			return;
+		}
+		else if (this.activeTab != Tab.ORGANIC_ARMOR)
 			return;
 
 		int left = this.getGuiLeft();
@@ -259,11 +352,29 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 				mouseY,
 				this.player);
 	}
+
+	private void renderAbilityPlayer(GuiGraphics guiGraphics, int mouseX, int mouseY)
+	{
+		int left = this.getGuiLeft();
+		int top = this.getGuiTop();
+		InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics,
+				left + 141, top + 15, left + 239, top + 130, 42, 0.0625F, mouseX, mouseY, this.player);
+
+		int barX = left + 132;
+		int barY = top + 139;
+		int barWidth = 108;
+		int filled = Math.round(barWidth * this.player.experienceProgress);
+		guiGraphics.fill(barX - 1, barY - 1, barX + barWidth + 1, barY + 7, 0xFF1D4B26);
+		guiGraphics.fill(barX, barY, barX + barWidth, barY + 6, 0xFF162018);
+		guiGraphics.fill(barX, barY, barX + filled, barY + 6, 0xFF38B541);
+		guiGraphics.drawCenteredString(this.minecraft.font, Component.literal("Level " + this.player.experienceLevel),
+				barX + barWidth / 2, barY + 11, 0xFFFFFFFF);
+	}
 	
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
-		if (this.activeTab == Tab.ORGANIC_ARMOR)
+		if (this.activeTab != Tab.MUTATION)
 			return;
 		guiGraphics.pose().pushPose();
 		guiGraphics.pose().translate(138, 72, 0);
@@ -289,6 +400,26 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 				false);
 		guiGraphics.pose().popPose();
 	}
+
+	@Override
+	protected void renderBeforeTooltips(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
+	{
+		super.renderBeforeTooltips(guiGraphics, mouseX, mouseY, partialTick);
+		if (this.activeTab != Tab.ABILITIES || this.selectedAbilitySlot >= 0)
+			return;
+
+		int left = this.getGuiLeft();
+		int top = this.getGuiTop();
+		for (int slot = 0; slot < AbilityLoadout.SLOT_COUNT; slot++)
+		{
+			final int iconY = top + 22 + slot * 22;
+			this.abilityLoadout.getSlot(slot).
+					flatMap(AbilityHelper :: getAbility).
+					flatMap(IAbility :: getIcon).
+					ifPresent(icon -> RenderHelper.blit(guiGraphics, icon,
+							left + 12, iconY, 0, 0, 16, 16, 0, 16, 16, 16, 16));
+		}
+	}
 	
 	@Override
 	protected void renderSlot(GuiGraphics guiGraphics, Slot slot)
@@ -301,7 +432,8 @@ public class ChrysalisScreen extends BioContainerScreen<ChrysalisMenu>
 	private enum Tab
 	{
 		MUTATION,
-		ORGANIC_ARMOR
+		ORGANIC_ARMOR,
+		ABILITIES
 	}
 	
 	@Override

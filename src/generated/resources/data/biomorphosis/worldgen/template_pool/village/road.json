@@ -5,7 +5,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/left",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -16,7 +20,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/right",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -27,7 +35,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/t",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -38,7 +50,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/x",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -49,7 +65,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/fl",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -60,7 +80,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/fr",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -71,7 +95,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/road/straight",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "terrain_matching"
       },
@@ -82,7 +110,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/0",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -93,7 +125,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/1",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -104,7 +140,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/2",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -115,7 +155,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/3",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -126,7 +170,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/4",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -137,7 +185,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/5",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },
@@ -148,7 +200,11 @@
         "element_type": "minecraft:legacy_single_pool_element",
         "location": "biomorphosis:village/house/6",
         "processors": {
-          "processors": []
+          "processors": [
+            {
+              "processor_type": "biomorphosis:swarm_chest_loot"
+            }
+          ]
         },
         "projection": "rigid"
       },

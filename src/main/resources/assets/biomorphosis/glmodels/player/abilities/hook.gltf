@@ -1,0 +1,72 @@
+{
+  "asset": {
+    "version": "2.0",
+    "generator": "Biomorphosis / PulseLib player animation"
+  },
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [0]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "right_arm"
+    }
+  ],
+  "buffers": [
+    {
+      "uri": "data:application/octet-stream;base64,AAAAAOxROD49Ctc+ZmYmPwAAgD9CYGU8Di0yvsHKob1aZHs/exQuvqRwvb7NzEy9w/VoP9ej8L5SuJ6+j8J1PYXrUT+PwjW/CtejvM3MTL0zMzM/j8I1vwrXo7zNzEy9MzMzPw==",
+      "byteLength": 100
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteOffset": 0,
+      "byteLength": 20
+    },
+    {
+      "buffer": 0,
+      "byteOffset": 20,
+      "byteLength": 80
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 5,
+      "type": "SCALAR",
+      "max": [1.0],
+      "min": [0.0]
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 5,
+      "type": "VEC4"
+    }
+  ],
+  "animations": [
+    {
+      "name": "extend",
+      "samplers": [
+        {
+          "input": 0,
+          "output": 1,
+          "interpolation": "LINEAR"
+        }
+      ],
+      "channels": [
+        {
+          "sampler": 0,
+          "target": {
+            "node": 0,
+            "path": "rotation"
+          }
+        }
+      ]
+    }
+  ]
+}

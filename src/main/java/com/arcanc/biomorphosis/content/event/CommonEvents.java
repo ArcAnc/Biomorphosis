@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.event;
 
+import com.arcanc.biomorphosis.content.ability.CommonAbilitiesHandler;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChamber;
 import com.arcanc.biomorphosis.content.block.multiblock.MultiblockChrysalis;
@@ -47,6 +48,7 @@ public class CommonEvents
         modEventBus.addListener(CommonEvents :: registerEntityAttributes);
 	    GenomeHandler.register(modEventBus);
 	    InfestationHandler.register(modEventBus);
+		CommonAbilitiesHandler.register(modEventBus);
 		ChestMenu.registerEvents();
 	    Trades.register(modEventBus);
 		

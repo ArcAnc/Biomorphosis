@@ -44,7 +44,8 @@ public class BioDamageTypeTagsProvider extends DamageTypeTagsProvider
 				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION).
 				add(Registration.DamageTypeReg.INFESTATION);
 		this.tag(DamageTypeTags.BYPASSES_COOLDOWN).
-				add(Registration.DamageTypeReg.ACID);
+				add(Registration.DamageTypeReg.ACID).
+				add(Registration.DamageTypeReg.SPIKE_BARRAGE);
 		this.tag(DamageTypeTags.BYPASSES_INVULNERABILITY).
 				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION);
 		this.tag(DamageTypeTags.BYPASSES_RESISTANCE).
@@ -53,6 +54,7 @@ public class BioDamageTypeTagsProvider extends DamageTypeTagsProvider
 		this.tag(DamageTypeTags.NO_KNOCKBACK).
 				add(Registration.DamageTypeReg.ACID).
 				add(Registration.DamageTypeReg.IMPOSSIBLE_MUTATION).
-				add(Registration.DamageTypeReg.INFESTATION);
+				add(Registration.DamageTypeReg.INFESTATION).
+				add(Registration.DamageTypeReg.SPIKE_BARRAGE);
 	}
 }

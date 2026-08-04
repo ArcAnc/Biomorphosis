@@ -9,6 +9,7 @@
 
 package com.arcanc.biomorphosis.content.entity.ai.brain.behavior.infestor;
 
+import com.arcanc.biomorphosis.content.ability.MobAbilityCaster;
 import com.arcanc.biomorphosis.content.entity.Infestor;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import net.minecraft.server.level.ServerLevel;
@@ -25,6 +26,7 @@ import java.util.Optional;
 public class InfectorStingTarget extends Behavior<Infestor>
 {
 	private final float speedModifier;
+	private final MobAbilityCaster abilityCaster = new MobAbilityCaster();
 
 	public InfectorStingTarget(float speedModifier)
 	{
@@ -55,6 +57,11 @@ public class InfectorStingTarget extends Behavior<Infestor>
 
 		LivingEntity living = target.get();
 		owner.getBrain().setMemory(MemoryModuleType.LOOK_TARGET, new EntityTracker(living, true));
+		if (this.abilityCaster.tryCast(owner, living, Registration.AbilityReg.SPIKE_BARRAGE.getId()))
+		{
+			owner.getBrain().eraseMemory(MemoryModuleType.WALK_TARGET);
+			return;
+		}
 		if (owner.isWithinMeleeAttackRange(living))
 		{
 			if (owner.doHurtTarget(living))

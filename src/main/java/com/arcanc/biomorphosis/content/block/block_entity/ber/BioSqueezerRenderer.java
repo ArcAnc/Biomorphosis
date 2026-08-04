@@ -18,6 +18,7 @@ import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -25,6 +26,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 
 public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
@@ -39,11 +41,11 @@ public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
 	}
 	
 	@Override
-	protected void perBoneSubmit(BioSqueezer animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<BioSqueezer>> animationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+	protected void perBoneSubmit(BioSqueezer animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<BioSqueezer>> animationControllers, Map<PAnimationController<BioSqueezer>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
 	{
 		if (!bone.name().equals("main"))
 		{
-			super.perBoneSubmit(animatable, poseStack, bone, animationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+			super.perBoneSubmit(animatable, poseStack, bone, animationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
 			return;
 		}
 		poseStack.pushPose();
@@ -51,7 +53,7 @@ public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
 				map(handler -> handler.getFluidInTank(2).getAmount() / (float) handler.getTankCapacity(2)).orElse(0.0f);
 		//FIXME: проверить название модели и убедиться что скейл стоит правильный
 		poseStack.scale(1, percent, 1);
-		super.perBoneSubmit(animatable, poseStack, bone, animationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+		super.perBoneSubmit(animatable, poseStack, bone, animationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
 		poseStack.popPose();
 	}
 	

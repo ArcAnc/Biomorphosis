@@ -18,6 +18,7 @@ import com.arcanc.pulselib.content.renderer.PEntityRenderLayer;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.RenderType;
@@ -56,7 +57,8 @@ public class QueenRenderer extends PEntityRenderer<Queen>
                                  @Nullable PEntityRenderLayer<Queen> renderLayer,
                                  @Nullable Map<String, Matrix4f> entityBonePoses,
                                  @Nullable Matrix4f layerTransform,
-                                 @Nullable List<DeferredLayerSubmit> deferredLayers)
+                                 @Nullable List<DeferredLayerSubmit> deferredLayers,
+                                 Map<PAnimationController<Queen>, MolangParser.Context> molangContexts)
     {
         if(bone.name().equals("head") || bone.name().equals("wing_left") || bone.name().equals("wing_right"))
             renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
@@ -74,7 +76,8 @@ public class QueenRenderer extends PEntityRenderer<Queen>
                 renderLayer,
                 entityBonePoses,
                 layerTransform,
-                deferredLayers);
+                deferredLayers,
+                molangContexts);
     }
     
     public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)

@@ -16,19 +16,24 @@ import com.arcanc.biomorphosis.content.network.packets.C2SWingsFlightInput;
 import com.arcanc.biomorphosis.mixin.client.ItemInHandRendererAccessor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
+import com.arcanc.pulselib.content.animatable.ControllerState;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
+import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.content.player.animation.PPlayerAnimationBlendMode;
+import com.arcanc.pulselib.content.player.animation.PPlayerAnimationDefinition;
+import com.arcanc.pulselib.content.player.animation.PPlayerPart;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.neoforged.bus.api.IEventBus;
@@ -45,9 +50,13 @@ import java.util.WeakHashMap;
 
 public final class WingsClient
 {
+	private static final String FLIGHT_CONTROLLER = "wings_flight_controller";
 	private static final float FLIGHT_POSE_STEP = 0.12F;
 	private static final float HOVER_BOB_AMPLITUDE = 0.025F;
 	private static final float HOVER_BOB_SPEED = 0.12F;
+	private static final PModelData FLIGHT_MODEL = new PModelData.Builder(
+			Database.rl("glmodels/player/wings_flight.gltf"), "").build();
+	private static final PRawAnimation FLIGHT_ANIMATION = PRawAnimation.begin().thenLoop("flight").build();
 	private static final Map<Player, FlightPose> FLIGHT_POSES = new WeakHashMap<>();
 	private static WingsFlightSound flightSound;
 	public static final KeyMapping TOGGLE_FLIGHT = new KeyMapping(Database.HotKeys.WINGS,
@@ -58,6 +67,7 @@ public final class WingsClient
 	public static void init (final IEventBus modEventBus)
 	{
 		modEventBus.addListener(WingsClient :: registerKeyMapping);
+		modEventBus.addListener(WingsClient :: registerFlightAnimation);
 		NeoForge.EVENT_BUS.addListener(WingsClient :: clientPlayerTick);
 		NeoForge.EVENT_BUS.addListener(WingsClient :: computeCameraAngles);
 		NeoForge.EVENT_BUS.addListener(WingsClient :: renderFlyingOffHand);
@@ -69,6 +79,36 @@ public final class WingsClient
 	private static void registerKeyMapping(RegisterKeyMappingsEvent event)
 	{
 		event.register(TOGGLE_FLIGHT);
+	}
+
+	private static void registerFlightAnimation(PulseLibEvents.PlayerAnimationRegistrationEvent event)
+	{
+		event.registration().register(Database.rl("wings_flight"),
+				PPlayerAnimationDefinition.builder(FLIGHT_MODEL).
+						when(WingsClient :: shouldApplyFlightAnimation).
+						weight(WingsClient :: getFlightPoseAmount).
+						bind(PPlayerPart.LEFT_ARM, "left_arm").
+						bind(PPlayerPart.RIGHT_ARM, "right_arm").
+						bind(PPlayerPart.LEFT_LEG, "left_leg").
+						bind(PPlayerPart.RIGHT_LEG, "right_leg").
+						mask(PPlayerPart.LEFT_ARM, PPlayerPart.RIGHT_ARM, PPlayerPart.LEFT_LEG, PPlayerPart.RIGHT_LEG).
+						blendMode(PPlayerAnimationBlendMode.REPLACE).
+						priority(-100).
+						controllers(registrar -> registrar.add(FLIGHT_CONTROLLER, () -> state ->
+						{
+							if (getFlightPoseAmount(state.animatable().player(), 1.0F) <= 0.0F)
+								return ControllerState.STOP;
+							if (state.controller().isStopped())
+								state.controller().play(FLIGHT_ANIMATION);
+							return ControllerState.PLAY;
+						})).
+						build());
+	}
+
+	private static boolean shouldApplyFlightAnimation(Player player)
+	{
+		return getFlightPoseAmount(player, 1.0F) > 0.0F &&
+				(!player.isLocalPlayer() || !RenderHelper.mc().options.getCameraType().isFirstPerson());
 	}
 
 	private static void clientPlayerTick(PlayerTickEvent.Post event)
@@ -139,33 +179,15 @@ public final class WingsClient
 		poseStack.translate(0.0D, -1.2D * flightPoseAmount, 0.0D);
 	}
 
-	public static void applyFlightModelPose(LivingEntity entity, HumanoidModel<?> model, float ageInTicks, float headPitch)
+	public static void applyFlightHeadPose(Player player, PlayerModel<?> model, float ageInTicks, float headPitch)
 	{
-		if (!(entity instanceof Player player))
-			return;
 		float flightPoseAmount = getFlightPoseAmount(player, Mth.frac(ageInTicks));
 		if (flightPoseAmount <= 0.0F)
 			return;
-		model.leftArm.xRot = Mth.lerp(flightPoseAmount, model.leftArm.xRot, -3.2F);
-		model.leftArm.yRot = Mth.lerp(flightPoseAmount, model.leftArm.yRot, 0.0F);
-		model.leftArm.zRot = Mth.lerp(flightPoseAmount, model.leftArm.zRot, 0.0F);
-		model.rightArm.xRot = Mth.lerp(flightPoseAmount, model.rightArm.xRot, -3.2F);
-		model.rightArm.yRot = Mth.lerp(flightPoseAmount, model.rightArm.yRot, 0.0F);
-		model.rightArm.zRot = Mth.lerp(flightPoseAmount, model.rightArm.zRot, 0.0F);
-		model.leftLeg.xRot = Mth.lerp(flightPoseAmount, model.leftLeg.xRot, 0.0F);
-		model.leftLeg.yRot = Mth.lerp(flightPoseAmount, model.leftLeg.yRot, 0.0F);
-		model.leftLeg.zRot = Mth.lerp(flightPoseAmount, model.leftLeg.zRot, 0.0F);
-		model.rightLeg.xRot = Mth.lerp(flightPoseAmount, model.rightLeg.xRot, 0.0F);
-		model.rightLeg.yRot = Mth.lerp(flightPoseAmount, model.rightLeg.yRot, 0.0F);
-		model.rightLeg.zRot = Mth.lerp(flightPoseAmount, model.rightLeg.zRot, 0.0F);
-		if (model instanceof PlayerModel<?> playerModel && entity instanceof AbstractClientPlayer)
-		{
-			float flightHeadPitch = (headPitch / 4.0F - 90.0F) * Mth.DEG_TO_RAD;
-			playerModel.head.xRot = Mth.lerp(flightPoseAmount, playerModel.head.xRot, flightHeadPitch);
-			playerModel.hat.copyFrom(playerModel.head);
-			playerModel.leftSleeve.copyFrom(playerModel.leftArm);
-			playerModel.rightSleeve.copyFrom(playerModel.rightArm);
-		}
+
+		float flightHeadPitch = (headPitch / 4.0F - 90.0F) * Mth.DEG_TO_RAD;
+		model.head.xRot = Mth.lerp(flightPoseAmount, model.head.xRot, flightHeadPitch);
+		model.hat.copyFrom(model.head);
 	}
 
 	private static float getFlightPoseAmount(Player player, float partialTick)

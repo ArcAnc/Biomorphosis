@@ -170,6 +170,13 @@ public class BioBookProvider extends BioRegistryData
 			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
 			    addTags("Patch Notes").
 			    end());
+	    addPage(Database.GUI.GuideBook.Pages.V264.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.V264.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.V264.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.TITLE.location()).
+			    addTags("Patch Notes").
+			    end());
         //-----------------------------------------------------------------------
         // BASIC CHAPTER
         //-----------------------------------------------------------------------
@@ -283,6 +290,22 @@ public class BioBookProvider extends BioRegistryData
 			    setText(Database.GUI.GuideBook.Pages.CHRYSALIS.textLangKey()).
 			    setChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
 			    addTags("chrysalis", "mutation", "evolution").
+			    end());
+
+	    addPage(Database.GUI.GuideBook.Pages.ORGANIC_ARMOR.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.ORGANIC_ARMOR.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.ORGANIC_ARMOR.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
+			    addTags("armor", "organic", "fluid", "protection").
+			    end());
+
+	    addPage(Database.GUI.GuideBook.Pages.ABILITIES.location(), BookPageBuilder.newPage().
+			    setAuthor("ArcAnc").
+			    setTitle(Database.GUI.GuideBook.Pages.ABILITIES.titleLangKey()).
+			    setText(Database.GUI.GuideBook.Pages.ABILITIES.textLangKey()).
+			    setChapter(Database.GUI.GuideBook.Chapters.ADVANCED.location()).
+			    addTags("ability", "abilities", "combat", "evolution").
 			    end());
     }
 

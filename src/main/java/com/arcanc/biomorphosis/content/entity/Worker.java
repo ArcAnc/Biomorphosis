@@ -78,8 +78,8 @@ public class Worker extends Monster implements PAnimatable<Worker>
 		this.goalSelector.addGoal(8, new RandomLookAroundGoal(this));
 
 		this.goalSelector.addGoal(0, new MeleeAttackGoal(this, 1.1f, false));
+		this.goalSelector.addGoal(6, new WorkingRandomGoal(this));
 		this.goalSelector.addGoal(7, new WaterAvoidingRandomStrollGoal(this, 1.0));
-		this.goalSelector.addGoal(8, new WorkingRandomGoal(this));
 		this.targetSelector.addGoal(1, new SwarmHurtByTargetGoal(this, 24));
 		this.targetSelector.addGoal(2, new HurtByTargetGoal(this).setAlertOthers());
 		this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));

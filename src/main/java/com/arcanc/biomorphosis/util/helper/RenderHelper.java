@@ -16,8 +16,11 @@ import com.arcanc.biomorphosis.content.mutations.GeneInstance;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.recipe.ingredient.IngredientWithSize;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.biomorphosis.util.model.obj.BioGeneModel;
-import com.arcanc.biomorphosis.util.model.obj.ObjRenderTypes;
+import com.arcanc.pulselib.content.event.PulseLibEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedModel;
+import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
+import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
@@ -227,8 +230,15 @@ public class RenderHelper
 	public static class GenomeRenderer
 	{
 		private static final int RENDER_GENE_AMOUNT_PER_INSTANCE = 5;
-		private static final ResourceLocation GENE_TEXTURE = Database.rl("textures/gui/gene.png");
-		public static final BioGeneModel GENE_MODEL = new BioGeneModel(GENE_TEXTURE);
+		private static final String MAIN_GENE_MESH = "gene_part_0";
+		private static final ResourceLocation GENE_TEXTURE = Database.rl("gui/gene/0");
+		private static final PModelData GENE_MODEL = new PModelData.Builder(
+				Database.rl("glmodels/gui/gene.gltf"), "").build();
+
+		public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+		{
+			event.addTextureLocation(GENE_TEXTURE);
+		}
 		
 		public static void renderGeneInGui(GeneInstance gene, GuiGraphics guiGraphics, Rect2d bounds)
 		{
@@ -248,6 +258,9 @@ public class RenderHelper
 					get(gene.rarity());
 			if (data == null)
 				return;
+			PBakedModel model = GENE_MODEL.getModel();
+			if (model == null)
+				return;
 			
 			PoseStack poseStack = guiGraphics.pose();
 			float time = (Util.getMillis() % 10000) / 1000f;
@@ -263,15 +276,21 @@ public class RenderHelper
 				poseStack.scale(geneSize, geneSize, geneSize);
 				poseStack.mulPose(Axis.XP.rotationDegrees(rotation + q * 36));
 				
-				guiGraphics.drawManaged(() ->
-						GENE_MODEL.renderModel(
-								poseStack,
-								ObjRenderTypes :: trianglesSolid,
-								guiGraphics.bufferSource(),
-								OverlayTexture.NO_OVERLAY,
+				guiGraphics.drawManaged(() -> model.instantDraw(
+						poseStack,
+						GENE_MODEL,
+						List.of(),
+						(bone, mesh, inherited) -> new PMeshRenderContext(
+								inherited.renderType(),
+								bone.name().equals(MAIN_GENE_MESH) ? data.mainColor().color() : data.secondaryColor().color(),
+								inherited.packedLight(),
+								inherited.packedOverlay()),
+						new PMeshRenderContext(
+								PRenderTypes.RenderTypeProvider :: trianglesLit,
+								0,
 								15728880,
-								data.mainColor().color(),
-								data.secondaryColor().color()));
+								OverlayTexture.NO_OVERLAY),
+						0f));
 
 				poseStack.popPose();
 			}

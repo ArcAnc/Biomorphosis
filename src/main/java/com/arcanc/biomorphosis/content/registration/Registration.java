@@ -9,6 +9,19 @@
 
 package com.arcanc.biomorphosis.content.registration;
 
+import com.arcanc.biomorphosis.content.ability.Ability;
+import com.arcanc.biomorphosis.content.ability.AbilityCastingState;
+import com.arcanc.biomorphosis.content.ability.EntityAbilityDefinition;
+import com.arcanc.biomorphosis.content.ability.AbilityLoadout;
+import com.arcanc.biomorphosis.content.ability.AbilityType;
+import com.arcanc.biomorphosis.content.ability.IAbility;
+import com.arcanc.biomorphosis.content.ability.IAbilityType;
+import com.arcanc.biomorphosis.content.ability.hook.HookAbility;
+import com.arcanc.biomorphosis.content.ability.hook.HookAbilityType;
+import com.arcanc.biomorphosis.content.ability.spike.SpikeBarrageAbility;
+import com.arcanc.biomorphosis.content.ability.spike.SpikeBarrageAbilityType;
+import com.arcanc.biomorphosis.content.ability.wave.WaveAbility;
+import com.arcanc.biomorphosis.content.ability.wave.WaveAbilityType;
 import com.arcanc.biomorphosis.content.block.*;
 import com.arcanc.biomorphosis.content.block.block_entity.*;
 import com.arcanc.biomorphosis.content.block.block_entity.ber.*;
@@ -51,7 +64,9 @@ import com.arcanc.biomorphosis.content.organic_armor.*;
 import com.arcanc.biomorphosis.content.worldgen.biome.wastes.WastesSpireFeature;
 import com.arcanc.biomorphosis.content.worldgen.spawner.SpawnerStructure;
 import com.arcanc.biomorphosis.content.worldgen.srf.SRFHeadquarters;
+import com.arcanc.biomorphosis.content.worldgen.srf.SRFChestLootProcessor;
 import com.arcanc.biomorphosis.content.worldgen.srf.orders.PalladinOrder;
+import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmChestLootProcessor;
 import com.arcanc.biomorphosis.content.worldgen.swarm_village.SwarmVillageStructure;
 import com.arcanc.biomorphosis.data.loot.modifiers.FleshLootModifier;
 import com.arcanc.biomorphosis.data.recipe.*;
@@ -120,6 +135,7 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.minecraft.world.level.levelgen.structure.StructureType;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceType;
+import net.minecraft.world.level.levelgen.structure.templatesystem.StructureProcessorType;
 import net.minecraft.world.level.lighting.LightEngine;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.MapColor;
@@ -221,6 +237,20 @@ public final class Registration
 		public static final DeferredHolder<AttachmentType<?>, AttachmentType<WingsFlightInput>> WINGS_FLIGHT_INPUT = TYPES.register(
 				Database.DataAttachments.WINGS_FLIGHT_INPUT,
 				() -> AttachmentType.builder(() -> WingsFlightInput.EMPTY).build());
+
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<AbilityLoadout>> ABILITY_LOADOUT = TYPES.register(
+				Database.DataAttachments.ABILITY_LOADOUT,
+				() -> AttachmentType.builder(AbilityLoadout :: empty).
+						serialize(AbilityLoadout.CODEC).
+						sync(AbilityLoadout.STREAM_CODEC).
+						copyOnDeath().
+						build());
+
+		public static final DeferredHolder<AttachmentType<?>, AttachmentType<AbilityCastingState>> ABILITY_CASTING = TYPES.register(
+				Database.DataAttachments.ABILITY_CASTING,
+				() -> AttachmentType.builder(AbilityCastingState :: empty).
+						serialize(AbilityCastingState.CODEC).
+						build());
 
 		private static void init (final IEventBus bus)
 		{
@@ -2025,6 +2055,7 @@ public final class Registration
 	public static class DamageTypeReg
 	{
 		public static final ResourceKey<DamageType> ACID = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("acid"));
+		public static final ResourceKey<DamageType> SPIKE_BARRAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("spike_barrage"));
 		public static final ResourceKey<DamageType> TURRET_DAMAGE = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("turret"));
 		public static final ResourceKey<DamageType> IMPOSSIBLE_MUTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("impossible_mutation"));
 		public static final ResourceKey<DamageType> INFESTATION = ResourceKey.create(Registries.DAMAGE_TYPE, Database.rl("infestation"));
@@ -2182,6 +2213,11 @@ public final class Registration
 
 		public static final DeferredHolder<SoundEvent, SoundEvent> ADVANCEMENT = variable("advancement");
 		public static final DeferredHolder<SoundEvent, SoundEvent> WINGS_FLYING = variable("wings_flying");
+		public static final DeferredHolder<SoundEvent, SoundEvent> WAVE_CAST = variable("wave_cast");
+		public static final DeferredHolder<SoundEvent, SoundEvent> WAVE_TRAVEL = variable("wave_travel");
+		public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_FLY = variable("hook_fly");
+		public static final DeferredHolder<SoundEvent, SoundEvent> HOOK_GET_OVER_HERE = variable("hook_get_over_here");
+		public static final DeferredHolder<SoundEvent, SoundEvent> SPIKE_START = variable("spike_start");
 
         public static final DeferredSoundType BLOCK_SOUNDS = new DeferredSoundType(1.0f, 1.0f, BLOCK_DESTROY, BLOCK_STEP_NORMAL, BLOCK_PLACE, () -> SoundEvents.GRAVEL_HIT, () -> SoundEvents.GRAVEL_FALL);
 
@@ -2306,6 +2342,66 @@ public final class Registration
 		}
 	}
 
+	public static class AbilityReg
+	{
+		public static final ResourceKey<Registry<IAbilityType<?>>> TYPE_KEY = ResourceKey.createRegistryKey(Database.rl("ability_type"));
+		public static final ResourceKey<Registry<IAbility>> ABILITY_KEY = ResourceKey.createRegistryKey(Database.rl("ability"));
+		public static final ResourceKey<Registry<EntityAbilityDefinition>> ENTITY_ABILITY_KEY = ResourceKey.createRegistryKey(Database.mineRl("entity_ability"));
+
+		public static final DeferredRegister<IAbilityType<?>> TYPES = DeferredRegister.create(TYPE_KEY, Database.MOD_ID);
+		public static final DeferredRegister<IAbility> ABILITIES = DeferredRegister.create(ABILITY_KEY, Database.MOD_ID);
+
+		public static Registry<IAbilityType<?>> TYPE_REGISTRY;
+		public static Registry<IAbility> ABILITY_REGISTRY;
+		
+		public static final DeferredHolder<IAbilityType<?>, IAbilityType<Ability>> BASIC = registerType(
+				"basic", () -> new AbilityType<>(Ability.class));
+		public static final DeferredHolder<IAbilityType<?>, IAbilityType<WaveAbility>> WAVE_TYPE = registerType(
+				"wave", WaveAbilityType :: new);
+		public static final DeferredHolder<IAbilityType<?>, IAbilityType<HookAbility>> HOOK_TYPE = registerType(
+				"hook", HookAbilityType :: new);
+		public static final DeferredHolder<IAbilityType<?>, IAbilityType<SpikeBarrageAbility>> SPIKE_BARRAGE_TYPE = registerType(
+				"spike_barrage", SpikeBarrageAbilityType :: new);
+
+		public static final DeferredHolder<IAbility, WaveAbility> WAVE = register(
+				"wave", () -> new WaveAbility(WAVE_TYPE));
+		public static final DeferredHolder<IAbility, HookAbility> HOOK = register(
+				"hook", () -> new HookAbility(HOOK_TYPE));
+		public static final DeferredHolder<IAbility, SpikeBarrageAbility> SPIKE_BARRAGE = register(
+				"spike_barrage", () -> new SpikeBarrageAbility(SPIKE_BARRAGE_TYPE));
+		
+		public static <A extends IAbility> DeferredHolder<IAbilityType<?>, IAbilityType<A>> registerType(
+				String name, Supplier<? extends IAbilityType<A>> type)
+		{
+			return TYPES.register(name, type);
+		}
+		
+		public static DeferredHolder<IAbility, Ability> register(String name, int cooldownTicks)
+		{
+			return register(name, () -> new Ability(BASIC, cooldownTicks));
+		}
+		
+		public static <A extends IAbility> DeferredHolder<IAbility, A> register(String name, Supplier<? extends A> ability)
+		{
+			return ABILITIES.register(name, ability);
+		}
+
+		private static void registerDataPackRegistry(final DataPackRegistryEvent.NewRegistry event)
+		{
+			event.dataPackRegistry(ENTITY_ABILITY_KEY, EntityAbilityDefinition.CODEC, EntityAbilityDefinition.CODEC,
+					regBuilder -> makeRegistry(regBuilder, ENTITY_ABILITY_KEY));
+		}
+
+		public static void init(final IEventBus modEventBus)
+		{
+			TYPE_REGISTRY = TYPES.makeRegistry(builder -> makeRegistry(builder, TYPE_KEY));
+			ABILITY_REGISTRY = ABILITIES.makeRegistry(builder -> makeRegistry(builder, ABILITY_KEY));
+			TYPES.register(modEventBus);
+			ABILITIES.register(modEventBus);
+			modEventBus.addListener(AbilityReg :: registerDataPackRegistry);
+		}
+	}
+
 	public static class StructureTypeReg
 	{
 		public static final DeferredRegister<StructureType<?>> STRUCTURE_TYPES = DeferredRegister.create(BuiltInRegistries.STRUCTURE_TYPE, Database.MOD_ID);
@@ -2335,6 +2431,24 @@ public final class Registration
 		private static void init(final IEventBus bus)
 		{
 			STRUCTURE_PIECE_TYPES.register(bus);
+		}
+	}
+
+	public static class StructureProcessorReg
+	{
+		public static final DeferredRegister<StructureProcessorType<?>> PROCESSORS = DeferredRegister.create(BuiltInRegistries.STRUCTURE_PROCESSOR, Database.MOD_ID);
+
+		public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SwarmChestLootProcessor>> SWARM_CHEST_LOOT = PROCESSORS.register(
+				"swarm_chest_loot",
+				() -> () -> SwarmChestLootProcessor.CODEC);
+
+		public static final DeferredHolder<StructureProcessorType<?>, StructureProcessorType<SRFChestLootProcessor>> SRF_CHEST_LOOT = PROCESSORS.register(
+				"srf_chest_loot",
+				() -> () -> SRFChestLootProcessor.CODEC);
+
+		private static void init(final IEventBus bus)
+		{
+			PROCESSORS.register(bus);
 		}
 	}
 
@@ -2387,6 +2501,7 @@ public final class Registration
         BETypeReg.init(bus);
         EntityReg.init(bus);
 	    FeatureReg.init(bus);
+	    AbilityReg.init(bus);
         MenuTypeReg.init(bus);
 	    ParticleReg.init(bus);
         CreativeTabReg.init(bus);
@@ -2394,6 +2509,7 @@ public final class Registration
 	    StructureTypeReg.init(bus);
 	    PalladinOrderReg.init(bus);
 	    StructurePieceTypeReg.init(bus);
+	    StructureProcessorReg.init(bus);
     }
 
     private static <T> void makeRegistry(RegistryBuilder<T> registryBuilder, ResourceKey<? extends Registry<T>> key)

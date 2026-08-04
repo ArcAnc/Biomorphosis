@@ -16,6 +16,7 @@ import com.arcanc.biomorphosis.content.gui.slot.OrganicArmorSlotReplacement;
 import com.arcanc.biomorphosis.content.mutations.GenomeInstance;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorHelper;
 import com.arcanc.biomorphosis.content.organic_armor.OrganicArmorType;
+import com.arcanc.biomorphosis.util.helper.AbilityHelper;
 import com.arcanc.biomorphosis.util.helper.BlockHelper;
 import com.arcanc.biomorphosis.util.helper.GenomeHelper;
 import com.arcanc.biomorphosis.util.helper.TagHelper;
@@ -123,6 +124,12 @@ public class ChrysalisMenu extends BioContainerMenu
 			return;
 		}
 
+		if (tag.contains("ability_slot") && tag.contains("ability_id"))
+		{
+			handleAbilitySelection(player, tag.getInt("ability_slot"), tag.getString("ability_id"));
+			return;
+		}
+
 		if (!tag.contains("genome"))
 			return;
 		GenomeInstance genome = GenomeInstance.CODEC.
@@ -132,6 +139,15 @@ public class ChrysalisMenu extends BioContainerMenu
 			return;
 		BlockHelper.castTileEntity(level, bePos, MultiblockChrysalis.class).
 				ifPresent(chrysalis -> chrysalis.tryStartMutation(player, genome));
+	}
+
+	private void handleAbilitySelection(ServerPlayer player, int slot, String abilityName)
+	{
+		ResourceLocation abilityId = ResourceLocation.tryParse(abilityName);
+		if (abilityId == null)
+			return;
+
+		AbilityHelper.assignAbility(player, slot, abilityId);
 	}
 
 	private void handleOrganicArmorAction(ServerPlayer player, String slotName, String actionName)

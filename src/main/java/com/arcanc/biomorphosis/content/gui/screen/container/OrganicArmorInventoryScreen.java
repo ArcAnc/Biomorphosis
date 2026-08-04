@@ -47,6 +47,11 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 {
 	private static final ResourceLocation SLIME_BACKGROUND = Database.rl("textures/gui/slime_background.png");
 	private static final ResourceLocation FRAME_BACKGROUND = Database.rl("textures/gui/frame.png");
+	
+	private static final int FRAME_X = - 23;
+	private static final int FRAME_Y = - 22;
+	private static final int FRAME_WIDTH = 289;
+	private static final int FRAME_HEIGHT = 189;
 	private static final int BACKGROUND_TEXTURE_SIZE = 512;
 	private static final int BACKGROUND_SOURCE_SIZE = 448;
 	private static final int BACKGROUND_OVERDRAW_X = 18;
@@ -68,7 +73,7 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	private static final int TEXT = MathHelper.ColorHelper.color(255, 218, 232, 214);
 	private static final int MUTED_TEXT = MathHelper.ColorHelper.color(255, 119, 139, 122);
 	private @Nullable FittingMultiLineText effectsText;
-
+	
 	public OrganicArmorInventoryScreen(OrganicArmorInventoryMenu menu, Inventory playerInventory, Component title)
 	{
 		super(menu, playerInventory, title);
@@ -82,13 +87,7 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 		RenderHelper.mc().getTextureManager().getTexture(SLIME_BACKGROUND).setFilter(true, false);
 		
 		super.init();
-		this.effectsText = addWidget(new FittingMultiLineText(
-				this.getGuiLeft() + EFFECT_X + 8,
-				this.getGuiTop() + EFFECT_Y + 30,
-				EFFECT_WIDTH - 16,
-				EFFECT_HEIGHT - 40,
-				Component.empty(),
-				this.font).setColor(MUTED_TEXT));
+		this.effectsText = addWidget(new FittingMultiLineText(this.getGuiLeft() + EFFECT_X + 8, this.getGuiTop() + EFFECT_Y + 30, EFFECT_WIDTH - 16, EFFECT_HEIGHT - 40, Component.empty(), this.font).setColor(MUTED_TEXT));
 	}
 	
 	@Override
@@ -114,79 +113,61 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 	@Override
 	public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY)
 	{
-		if (this.effectsText != null && this.effectsText.isFocused() && this.effectsText.mouseDragged(
-				getUnscaledEffectsX(mouseX),
-				getUnscaledEffectsY(mouseY),
-				button,
-				dragX / EFFECT_SCALE,
-				dragY / EFFECT_SCALE))
+		if (this.effectsText != null && this.effectsText.isFocused() && this.effectsText.mouseDragged(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY), button, dragX / EFFECT_SCALE, dragY / EFFECT_SCALE))
 			return true;
 		return super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
 	}
-
+	
 	@Override
 	public boolean mouseScrolled(double mouseX, double mouseY, double scrollX, double scrollY)
 	{
-		if (this.effectsText != null && this.effectsText.isMouseOver(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY)) &&
-				this.effectsText.mouseScrolled(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY), scrollX, scrollY))
+		if (this.effectsText != null && this.effectsText.isMouseOver(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY)) && this.effectsText.mouseScrolled(getUnscaledEffectsX(mouseX), getUnscaledEffectsY(mouseY), scrollX, scrollY))
 			return true;
 		return super.mouseScrolled(mouseX, mouseY, scrollX, scrollY);
 	}
-
+	
 	@Override
 	protected void renderBg(GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY)
 	{
 		renderMovingBackground(guiGraphics, mouseX, mouseY);
-
+		
 		int left = this.getGuiLeft();
 		int top = this.getGuiTop();
 		
-		RenderHelper.blit(guiGraphics,
-				FRAME_BACKGROUND,
-				left - 21,
-				top - 22,
+		RenderHelper.blit(guiGraphics, FRAME_BACKGROUND,
+				left + FRAME_X,
+				top + FRAME_Y,
 				0, 0,
-				289, 189,
+				FRAME_WIDTH, FRAME_HEIGHT,
 				0,
-				998, 578,
-				1024,1024);
-		
+				442, 282,
+				512, 512);
 		
 		renderPanel(guiGraphics, left + MODEL_X - 4, top + MODEL_Y - 4, MODEL_WIDTH + 8, MODEL_HEIGHT + 8);
 		guiGraphics.pose().pushPose();
 		applyEffectsScale(guiGraphics, left + EFFECT_X, top + EFFECT_Y);
 		renderPanel(guiGraphics, left + EFFECT_X, top + EFFECT_Y, EFFECT_WIDTH, EFFECT_HEIGHT);
 		guiGraphics.pose().popPose();
-		InventoryScreen.renderEntityInInventoryFollowsMouse(
-				guiGraphics,
-				left + MODEL_X,
-				top + MODEL_Y,
-				left + MODEL_X + MODEL_WIDTH,
-				top + MODEL_Y + MODEL_HEIGHT,
-				30,
-				0.0625F,
-				mouseX,
-				mouseY,
-				this.minecraft.player);
+		InventoryScreen.renderEntityInInventoryFollowsMouse(guiGraphics, left + MODEL_X, top + MODEL_Y, left + MODEL_X + MODEL_WIDTH, top + MODEL_Y + MODEL_HEIGHT, 30, 0.0625F, mouseX, mouseY, this.minecraft.player);
 	}
-
+	
 	private void renderMovingBackground(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
-		int left = this.getGuiLeft();
+		int left = this.getGuiLeft() - 2;
 		int top = this.getGuiTop();
 		float centerX = left + getXSize() / 2f;
 		float centerY = top + getYSize() / 2f;
-		float mouseOffsetX = Mth.clamp((mouseX - centerX) / (getXSize() / 2f), -1f, 1f);
-		float mouseOffsetY = Mth.clamp((mouseY - centerY) / (getYSize() / 2f), -1f, 1f);
-
-		float targetWidth = getXSize() + BACKGROUND_OVERDRAW_X * 2f;
-		float targetHeight = getYSize() + BACKGROUND_OVERDRAW_Y * 2f;
+		float mouseOffsetX = Mth.clamp((mouseX - centerX) / (getXSize() / 2f), - 1f, 1f);
+		float mouseOffsetY = Mth.clamp((mouseY - centerY) / (getYSize() / 2f), - 1f, 1f);
+		
+		float targetWidth = FRAME_WIDTH + BACKGROUND_OVERDRAW_X * 2f;
+		float targetHeight = FRAME_HEIGHT + BACKGROUND_OVERDRAW_Y * 2f;
 		float coverSize = Math.max(targetWidth, targetHeight);
 		float x = left + (getXSize() - coverSize) / 2f + mouseOffsetX * BACKGROUND_PARALLAX_X;
 		float y = top + (getYSize() - coverSize) / 2f + mouseOffsetY * BACKGROUND_PARALLAX_Y;
 		float sourceOffset = (BACKGROUND_TEXTURE_SIZE - BACKGROUND_SOURCE_SIZE) / 2f;
 
-		guiGraphics.enableScissor(left, top, left + getXSize(), top + getYSize());
+		guiGraphics.enableScissor(left, top, left + getXSize() + 10, top + getYSize());
 		RenderHelper.blit(guiGraphics,
 				SLIME_BACKGROUND,
 				x, y,
@@ -205,61 +186,48 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 		if (OrganicArmorSlotRenderer.shouldReplace(slot))
 			OrganicArmorSlotRenderer.render(guiGraphics, slot);
 	}
-
+	
 	@Override
 	protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY)
 	{
 		guiGraphics.pose().pushPose();
 		applyEffectsScale(guiGraphics, EFFECT_X, EFFECT_Y);
-		guiGraphics.drawWordWrap(
-				this.font,
-				Component.translatable(Database.GUI.OrganicArmorInventory.EFFECTS),
-				EFFECT_X + 8,
-				EFFECT_Y + 8,
-				EFFECT_WIDTH - 20,
-				TEXT);
+		guiGraphics.drawWordWrap(this.font, Component.translatable(Database.GUI.OrganicArmorInventory.EFFECTS), EFFECT_X + 8, EFFECT_Y + 8, EFFECT_WIDTH - 20, TEXT);
 		guiGraphics.pose().popPose();
 	}
-
+	
 	private void renderScaledEffectsText(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick)
 	{
 		if (this.effectsText == null)
 			return;
-
+		
 		int originX = this.getGuiLeft() + EFFECT_X;
 		int originY = this.getGuiTop() + EFFECT_Y;
-		this.effectsText.renderScaled(
-				guiGraphics,
-				(int)getUnscaledEffectsX(mouseX),
-				(int)getUnscaledEffectsY(mouseY),
-				partialTick,
-				EFFECT_SCALE,
-				originX,
-				originY);
+		this.effectsText.renderScaled(guiGraphics, (int) getUnscaledEffectsX(mouseX), (int) getUnscaledEffectsY(mouseY), partialTick, EFFECT_SCALE, originX, originY);
 	}
-
+	
 	private void applyEffectsScale(GuiGraphics guiGraphics, float originX, float originY)
 	{
 		guiGraphics.pose().translate(originX, originY, 0.0F);
 		guiGraphics.pose().scale(EFFECT_SCALE, EFFECT_SCALE, 1.0F);
-		guiGraphics.pose().translate(-originX, -originY, 0.0F);
+		guiGraphics.pose().translate(- originX, - originY, 0.0F);
 	}
-
+	
 	private double getUnscaledEffectsX(double mouseX)
 	{
 		return unscaleEffectsCoordinate(mouseX, this.getGuiLeft() + EFFECT_X);
 	}
-
+	
 	private double getUnscaledEffectsY(double mouseY)
 	{
 		return unscaleEffectsCoordinate(mouseY, this.getGuiTop() + EFFECT_Y);
 	}
-
+	
 	private static double unscaleEffectsCoordinate(double coordinate, int origin)
 	{
 		return origin + (coordinate - origin) / EFFECT_SCALE;
 	}
-
+	
 	@Override
 	public void onClose()
 	{
@@ -267,41 +235,35 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 		if (this.minecraft != null && this.minecraft.player != null)
 		{
 			if (this.minecraft.player.isCreative() && this.minecraft.player.connection != null)
-				this.minecraft.setScreen(new CreativeModeInventoryScreen(
-						this.minecraft.player,
-						this.minecraft.player.connection.enabledFeatures(),
-						this.minecraft.options.operatorItemsTab().get()));
+				this.minecraft.setScreen(new CreativeModeInventoryScreen(this.minecraft.player, this.minecraft.player.connection.enabledFeatures(), this.minecraft.options.operatorItemsTab().get()));
 			else
 				this.minecraft.setScreen(new InventoryScreen(this.minecraft.player));
 		}
 	}
-
+	
 	private void updateEffectsText()
 	{
 		if (this.effectsText == null)
 			return;
 		this.effectsText.setMessage(buildEffectsText());
 	}
-
+	
 	private MutableComponent buildEffectsText()
 	{
 		List<OrganicArmorState.Piece> pieces = new ArrayList<>(OrganicArmorHelper.getState(this.minecraft.player).pieces());
 		pieces.sort(Comparator.comparingInt(piece -> armorOrder(piece.slot())));
 		if (pieces.isEmpty())
 			return Component.translatable(Database.GUI.OrganicArmorInventory.NO_ARMOR).withColor(MUTED_TEXT);
-
+		
 		MutableComponent text = Component.empty();
 		for (int q = 0; q < pieces.size(); q++)
 		{
 			OrganicArmorState.Piece piece = pieces.get(q);
-
+			
 			OrganicArmorType type = findOrganicArmorType(piece);
 			int armor = type == null ? 0 : OrganicArmorHelper.getEffectiveArmor(this.minecraft.player.level(), piece);
-			text.append(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(piece.typeId(), piece.slot())).withColor(TEXT)).
-					append("\n").
-					append(Component.translatable(Database.GUI.OrganicArmorInventory.ARMOR, armor).withColor(MUTED_TEXT)).
-					append("\n");
-
+			text.append(Component.translatable(Database.GUI.OrganicArmor.NAME.apply(piece.typeId(), piece.slot())).withColor(TEXT)).append("\n").append(Component.translatable(Database.GUI.OrganicArmorInventory.ARMOR, armor).withColor(MUTED_TEXT)).append("\n");
+			
 			FluidStack fluid = piece.fluid();
 			if (fluid.isEmpty())
 			{
@@ -310,44 +272,37 @@ public class OrganicArmorInventoryScreen extends BioContainerScreen<OrganicArmor
 			else
 			{
 				int fluidColor = IClientFluidTypeExtensions.of(fluid.getFluid()).getTintColor();
-				ResourceLocation effectId = OrganicArmorEffectHandler.getEffectId(this.minecraft.player.level().registryAccess(), piece, fluid).
-						orElse(getFluidId(fluid));
-				text.append(Component.translatable(fluid.getDescriptionId()).withColor(fluidColor)).
-						append("\n").
-						append(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(effectId)).withColor(MUTED_TEXT));
+				ResourceLocation effectId = OrganicArmorEffectHandler.getEffectId(this.minecraft.player.level().registryAccess(), piece, fluid).orElse(getFluidId(fluid));
+				text.append(Component.translatable(fluid.getDescriptionId()).withColor(fluidColor)).append("\n").append(Component.translatable(Database.GUI.OrganicArmor.Tooltip.FLUID_EFFECT.apply(effectId)).withColor(MUTED_TEXT));
 			}
-
+			
 			if (q < pieces.size() - 1)
 				text.append("\n\n");
 		}
 		return text;
 	}
-
+	
 	private static void renderPanel(GuiGraphics guiGraphics, int x, int y, int width, int height)
 	{
 		guiGraphics.fill(x, y, x + width, y + height, PANEL);
 		guiGraphics.renderOutline(x, y, width, height, PANEL_BORDER);
 	}
-
+	
 	private @Nullable OrganicArmorType findOrganicArmorType(OrganicArmorState.Piece piece)
 	{
 		ClientPacketListener listener = this.minecraft.getConnection();
 		if (listener == null)
 			return null;
-
-		return listener.registryAccess().
-				lookup(Registration.OrganicArmorReg.TYPE_KEY).
-				flatMap(registry -> registry.get(ResourceKey.create(Registration.OrganicArmorReg.TYPE_KEY, piece.typeId()))).
-				map(Holder.Reference :: value).
-				orElse(null);
+		
+		return listener.registryAccess().lookup(Registration.OrganicArmorReg.TYPE_KEY).flatMap(registry -> registry.get(ResourceKey.create(Registration.OrganicArmorReg.TYPE_KEY, piece.typeId()))).map(Holder.Reference :: value).orElse(null);
 	}
-
+	
 	private static ResourceLocation getFluidId(FluidStack stack)
 	{
 		ResourceLocation id = NeoForgeRegistries.FLUID_TYPES.getKey(stack.getFluid().getFluidType());
 		return id == null ? ResourceLocation.withDefaultNamespace("empty") : id;
 	}
-
+	
 	private static int armorOrder(EquipmentSlot slot)
 	{
 		return switch (slot)

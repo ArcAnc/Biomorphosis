@@ -143,6 +143,21 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.guard.idle"
   },
+  "hook_fly": {
+    "sounds": [
+      {
+        "name": "biomorphosis:ability/hook/fly",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.hook.fly"
+  },
+  "hook_get_over_here": {
+    "sounds": [
+      "biomorphosis:ability/hook/get_over_here"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.hook.get_over_here"
+  },
   "infestor_death": {
     "sounds": [
       "biomorphosis:infestor/death"
@@ -239,6 +254,11 @@
     ],
     "subtitle": "biomorphosis.sound.subtitle.queen.idle"
   },
+  "spike_start": {
+    "sounds": [
+      "biomorphosis:ability/spike/start"
+    ]
+  },
   "swarmling_death": {
     "sounds": [
       "biomorphosis:swarmling/death"
@@ -257,6 +277,21 @@
       "biomorphosis:swarmling/idle_1"
     ],
     "subtitle": "biomorphosis.sound.subtitle.swarmling.idle"
+  },
+  "wave_cast": {
+    "sounds": [
+      "biomorphosis:ability/wave/cast"
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.wave.cast"
+  },
+  "wave_travel": {
+    "sounds": [
+      {
+        "name": "biomorphosis:ability/wave/travel",
+        "volume": 0.75
+      }
+    ],
+    "subtitle": "biomorphosis.sound.subtitle.wave.travel"
   },
   "wings_flying": {
     "sounds": [

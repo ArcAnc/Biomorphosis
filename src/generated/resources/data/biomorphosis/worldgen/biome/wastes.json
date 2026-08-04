@@ -100,69 +100,44 @@
       }
     ],
     "axolotls": [],
-    "creature": [
-      {
-        "type": "minecraft:rabbit",
-        "maxCount": 3,
-        "minCount": 2,
-        "weight": 4
-      }
-    ],
+    "creature": [],
     "misc": [],
     "monster": [
       {
-        "type": "minecraft:spider",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:zombie",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 19
-      },
-      {
-        "type": "minecraft:zombie_villager",
-        "maxCount": 1,
+        "type": "biomorphosis:infestor",
+        "maxCount": 2,
         "minCount": 1,
         "weight": 1
       },
       {
-        "type": "minecraft:skeleton",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:creeper",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:slime",
-        "maxCount": 4,
-        "minCount": 4,
-        "weight": 100
-      },
-      {
-        "type": "minecraft:enderman",
-        "maxCount": 4,
+        "type": "biomorphosis:infestor",
+        "maxCount": 2,
         "minCount": 1,
-        "weight": 10
+        "weight": 1
       },
       {
-        "type": "minecraft:witch",
-        "maxCount": 1,
-        "minCount": 1,
-        "weight": 5
-      },
-      {
-        "type": "minecraft:husk",
-        "maxCount": 4,
+        "type": "biomorphosis:swarmling",
+        "maxCount": 8,
         "minCount": 4,
-        "weight": 80
+        "weight": 1
+      },
+      {
+        "type": "biomorphosis:larva",
+        "maxCount": 3,
+        "minCount": 1,
+        "weight": 1
+      },
+      {
+        "type": "biomorphosis:ziris",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 1
+      },
+      {
+        "type": "biomorphosis:ksigg",
+        "maxCount": 4,
+        "minCount": 2,
+        "weight": 1
       }
     ],
     "underground_water_creature": [

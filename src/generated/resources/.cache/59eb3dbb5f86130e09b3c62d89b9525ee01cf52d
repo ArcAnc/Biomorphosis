@@ -1,4 +1,4 @@
-// 1.21.1	2026-06-21T16:05:06.274631734	Loot Tables
+// 1.21.1	2026-08-04T20:28:31.869191738	Loot Tables
 813ac2a7d9fbaffd6decc4b5c3181acb1df96b05 data/biomorphosis/loot_table/blocks/bush.json
 8f6dbafce8f3601eaea7cb7d23a5ab7878026799 data/biomorphosis/loot_table/blocks/catcher.json
 e0a4490a22ad72aa223bc41e980b18efcb91524b data/biomorphosis/loot_table/blocks/chest.json
@@ -41,6 +41,8 @@ cd86d21c3737fc7841f820b160249e9ec35b9690 data/biomorphosis/loot_table/blocks/shi
 fce76063e831641624218304330b88768395ef85 data/biomorphosis/loot_table/blocks/squeezer.json
 d907b1d9635d5e959ff2a7d3e4be3d5c0af2d8d2 data/biomorphosis/loot_table/blocks/stomach.json
 720dbc8d066f86e66f99898f50d1ce5b17d2eb21 data/biomorphosis/loot_table/blocks/trampled_dirt.json
+15d557beab5e322611eee5cac05ed50ea300b1c6 data/biomorphosis/loot_table/chests/srf.json
+01cd9d21e0abd07f8ae37fd8efb2fe5352732bb5 data/biomorphosis/loot_table/chests/swarm_village.json
 7e80094130fb83e145be5764b081bb9eae64547d data/biomorphosis/loot_table/entities/blacksmith.json
 fdd6c07714c151c554559ea178198069ccb9fbe5 data/biomorphosis/loot_table/entities/captain.json
 684d2d24b3eb9caecb1c6600e1a134eed3d179e9 data/biomorphosis/loot_table/entities/guard.json

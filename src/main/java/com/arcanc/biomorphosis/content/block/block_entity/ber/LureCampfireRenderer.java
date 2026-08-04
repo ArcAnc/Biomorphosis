@@ -19,6 +19,7 @@ import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -35,6 +36,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3f;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.function.Function;
 
 public class LureCampfireRenderer extends PBlockRenderer<LureCampfireBE>
@@ -50,11 +52,11 @@ public class LureCampfireRenderer extends PBlockRenderer<LureCampfireBE>
     }
     
     @Override
-    protected void perBoneSubmit(LureCampfireBE animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<LureCampfireBE>> pAnimationControllers, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+    protected void perBoneSubmit(LureCampfireBE animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<LureCampfireBE>> pAnimationControllers, Map<PAnimationController<LureCampfireBE>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
     {
         if (bone.name().equals("fire"))
             renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, renderType, packedColor, packedLight, packedOverlay, partialTick);
+        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
     }
     
     @Override
