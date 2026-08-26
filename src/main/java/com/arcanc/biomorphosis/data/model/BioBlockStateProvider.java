@@ -77,10 +77,10 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createGlowMoss();
 		
 		createNorphedDirt();
-		registerSimpleBlock(Registration.BlockReg.INNER.get());
+		createInnerBlock();
 		createRoofModel();
 		
-		registerSimpleBlock(Registration.BlockReg.TRAMPLED_DIRT.get());
+		createTrampledDirt();
 		createDecoHiveModel();
 		createChestModel();
 		createHangingMoss();
@@ -94,6 +94,52 @@ public class BioBlockStateProvider extends BlockStateProvider
 		createBushModel();
 		
 		createNorphedStone();
+	}
+	
+	private void createInnerBlock()
+	{
+		BioBaseBlock block = Registration.BlockReg.INNER.get();
+		
+		ResourceLocation texture = blockTexture(block);
+		
+		ModelFile model = models().
+				withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("cube_all"))).
+				renderType(RenderType.solid().name).
+				texture("all", texture).
+				texture("particle", texture);
+		
+		ConfiguredModel.Builder<?> builder = ConfiguredModel.builder();
+		
+		for (int y = 0; y < 4; y++)
+			for  (int x = 0; x < 4; x++)
+			{
+				builder.
+						modelFile(model).
+						rotationX(x * 90).
+						rotationY(y * 90);
+				if (!(y == 3 && x == 3))
+					builder = builder.nextModel();
+			}
+		
+		getVariantBuilder(block).partialState().addModels(builder.build());
+		
+		itemModels().getBuilder(itemPrefix(name(block))).
+				parent(model);
+	}
+	
+	private void createTrampledDirt()
+	{
+		BioBaseBlock block = Registration.BlockReg.TRAMPLED_DIRT.get();
+		
+		ResourceLocation texture = blockTexture(block);
+		
+		ModelFile model = models().
+				withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("cube_all"))).
+				renderType(RenderType.solid().name).
+				texture("all", texture).
+				texture("particle", texture);
+		
+		registerRandomYModels(block, model);
 	}
 	
 	private void createNorphedStone()
@@ -127,7 +173,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 					}).
 				end();
 		
-		registerModels(block, model);
+		registerRandomYModels(block, model);
 	}
 	
 	private void createBushModel()
@@ -202,9 +248,13 @@ public class BioBlockStateProvider extends BlockStateProvider
 		
 		for (int q = 0; q < variations; q++)
 		{
-			builder = builder.modelFile(models[q]);
-			if (q != variations - 1)
-				builder = builder.nextModel();
+			for (int y = 0; y < 4; y++)
+			{
+				builder.modelFile(models[q]).
+						rotationY(y * 90);
+				if (!(q == variations - 1 && y == 3))
+					builder = builder.nextModel();
+			}
 		}
 		
 		getVariantBuilder(block).partialState().addModels(builder.build());
@@ -247,7 +297,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 						texture("#all").
 				end();
 		
-		registerModels(block, model);
+		registerRandomYModels(block, model);
 	}
 	
 	private void createMeatMelonStem()
@@ -1588,7 +1638,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 				}).
 				end();
 		
-		registerModels(block, blockModel);
+		registerRandomYModels(block, blockModel);
 		
 		block = Registration.BlockReg.ROOF_DIRT.get();
 		ModelFile dirtModel = models().withExistingParent(blockPrefix(name(block)), mcLoc(blockPrefix("block"))).
@@ -1604,7 +1654,7 @@ public class BioBlockStateProvider extends BlockStateProvider
 				texture("#all")).
 				end();
 		
-		registerModels(block, dirtModel);
+		registerRandomYModels(block, dirtModel);
 		
 		StairBlock stair = Registration.BlockReg.ROOF_STAIRS.get();
 		blockTexture = blockTexture(stair.base);
@@ -1655,7 +1705,10 @@ public class BioBlockStateProvider extends BlockStateProvider
 					faceBuilder.uvs(0, 0, 16, 16).cullface(direction)).
 					texture("#all").end();
 			
-			registerModels(blocks[q], blockModels[q]);
+			getVariantBuilder(blocks[q]).partialState().addModels(randomYModel(blockModels[q]));
+			
+			itemModels().getBuilder(itemPrefix(name(blocks[q]))).
+					parent(blockModels[q]);
 		}
 		
 		StairBlock[] stairBlocks = new StairBlock[]
@@ -2868,9 +2921,9 @@ public class BioBlockStateProvider extends BlockStateProvider
 				rotation(ModelBuilder.FaceRotation.UPSIDE_DOWN).end().
 				texture("#all").end();
 		
-		registerModels(prop_0, template0);
-		registerModels(prop_1, template1);
-		registerModels(prop_2, template2);
+		registerRandomYModels(prop_0, template0);
+		registerRandomYModels(prop_1, template1);
+		registerRandomYModels(prop_2, template2);
 	}
 	
 	private void createMultiblockMorpherModel()
@@ -5474,9 +5527,11 @@ public class BioBlockStateProvider extends BlockStateProvider
 	{
 		NorphBlock block = Registration.BlockReg.NORPH.get();
 		
-		ModelFile[] models = new ModelFile[8];
+		int variations = 8;
+		
+		ModelFile[] models = new ModelFile[variations];
 		ResourceLocation texture = blockTexture(block);
-		for (int q = 0; q < 8; q++)
+		for (int q = 0; q < variations; q++)
 		{
 			ResourceLocation localTexture = texture.withSuffix("_" + q);
 			
@@ -6070,6 +6125,30 @@ public class BioBlockStateProvider extends BlockStateProvider
 				texture("particle", blockTexture(block));
 		
 		registerModels(block, model);
+	}
+	
+	private ConfiguredModel[] randomYModel(ModelFile model)
+	{
+		return ConfiguredModel.builder().
+				modelFile(model).
+				nextModel().
+				modelFile(model).
+				rotationY(90).
+				nextModel().
+				modelFile(model).
+				rotationY(180).
+				nextModel().
+				modelFile(model).
+				rotationY(270).
+				build();
+	}
+	
+	private void registerRandomYModels(Block block, ModelFile model)
+	{
+		getVariantBuilder(block).partialState().addModels(randomYModel(model));
+		
+		itemModels().getBuilder(itemPrefix(name(block))).
+				parent(model);
 	}
 	
 	private void registerModels(Block block, ModelFile model)

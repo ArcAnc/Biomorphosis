@@ -12,6 +12,9 @@ package com.arcanc.biomorphosis.content.entity.renderer;
 import com.arcanc.biomorphosis.content.entity.Ziris;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
+import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
@@ -33,4 +36,21 @@ public class ZirisRenderer extends PEntityRenderer<Ziris>
     {
         event.addTextureLocation(TEXTURE);
     }
+	
+	@Override
+	protected PMeshRenderContext resolveBoneRender(Ziris animatable, PBakedBone bone, PMeshRenderContext inherited, float partialTick)
+	{
+		if (!bone.name().equals("wingleft") &&
+				!bone.name().equals("wingright"))
+			return inherited;
+		return new PMeshRenderContext(
+				PRenderTypes.RenderTypeProvider :: trianglesTranslucent,
+				inherited.color(),
+				inherited.packedLight(),
+				inherited.packedOverlay(),
+				inherited.deformation(),
+				inherited.texture(),
+				inherited.emissive(),
+				PAlphaMode.TRANSLUCENT);
+	}
 }

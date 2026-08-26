@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "biomorphosis:block/prop_1"
-    }
+    "": [
+      {
+        "model": "biomorphosis:block/prop_1"
+      },
+      {
+        "model": "biomorphosis:block/prop_1",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/prop_1",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/prop_1",
+        "y": 270
+      }
+    ]
   }
 }

@@ -16,14 +16,15 @@ import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDe
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.item.ItemStackSidedStorage;
-import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
+import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
+import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
-import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
@@ -40,9 +41,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 
 public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
@@ -109,7 +108,7 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
                 poseStack,
                 SPHERE_MODEL,
                 List.of(),
-                PRenderTypes.RenderTypeProvider :: trianglesLit,
+                PRenderTypes.RenderTypeProvider :: trianglesImmediate,
                 -1,
                 packedLight,
                 packedOverlay,
@@ -138,16 +137,24 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
         RenderHelper.renderItem().renderStatic(stack, ItemDisplayContext.GROUND, packedLight, packedOverlay, poseStack, bufferSource, animatable.getLevel(), 0);
         poseStack.popPose();
     }
-    
-    @Override
-    protected void perBoneSubmit(MultiblockChamber animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockChamber>> pAnimationControllers, Map<PAnimationController<MultiblockChamber>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
-    {
-        if (bone.name().equals("plat_top") || bone.name().equals("sphere"))
-            renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
-    }
-    
-    @Override
+	
+	@Override
+	protected PMeshRenderContext resolveMeshRender(MultiblockChamber animatable, PBakedBone bone, PBakedMesh mesh, PMeshRenderContext inherited, float partialTick)
+	{
+		if (!bone.name().equals("plat_top") &&
+			!bone.name().equals("sphere"))
+			return inherited;
+		return new PMeshRenderContext(PRenderTypes.RenderTypeProvider :: trianglesTranslucent,
+				inherited.color(),
+				inherited.packedLight(),
+				inherited.packedOverlay(),
+				inherited.deformation(),
+				inherited.texture(),
+				inherited.emissive(),
+				PAlphaMode.TRANSLUCENT);
+	}
+	
+	@Override
     public AABB getRenderBoundingBox(MultiblockChamber blockEntity)
     {
         BlockPos size = blockEntity.getDefinition().map(IMultiblockDefinition :: size).orElse(BlockPos.ZERO);

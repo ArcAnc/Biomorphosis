@@ -21,12 +21,7 @@ import com.arcanc.pulselib.content.player.animation.PPlayerAnimationBlendMode;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationDefinition;
 import com.arcanc.pulselib.content.player.animation.PPlayerPart;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
-import com.mojang.blaze3d.vertex.BufferBuilder;
-import com.mojang.blaze3d.vertex.DefaultVertexFormat;
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.Tesselator;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.blaze3d.vertex.VertexFormat;
+import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.RenderType;
@@ -38,11 +33,7 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.joml.Vector3f;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public final class SpikeBarrageClientHandler
 {
@@ -101,7 +92,7 @@ public final class SpikeBarrageClientHandler
 						bind(PPlayerPart.LEFT_ARM, "left_arm").
 						bind(PPlayerPart.RIGHT_ARM, "right_arm").
 						mask(PPlayerPart.LEFT_ARM, PPlayerPart.RIGHT_ARM).
-						blendMode(PPlayerAnimationBlendMode.REPLACE).
+						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
 						controllers(registrar -> registrar.add(CAST_CONTROLLER, () -> state ->
 						{
 							if (!isHandsForward(state.animatable().player()))

@@ -92,7 +92,7 @@ public final class WingsClient
 						bind(PPlayerPart.LEFT_LEG, "left_leg").
 						bind(PPlayerPart.RIGHT_LEG, "right_leg").
 						mask(PPlayerPart.LEFT_ARM, PPlayerPart.RIGHT_ARM, PPlayerPart.LEFT_LEG, PPlayerPart.RIGHT_LEG).
-						blendMode(PPlayerAnimationBlendMode.REPLACE).
+						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
 						priority(-100).
 						controllers(registrar -> registrar.add(FLIGHT_CONTROLLER, () -> state ->
 						{

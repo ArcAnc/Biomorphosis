@@ -5,10 +5,46 @@
         "model": "biomorphosis:block/shit_0"
       },
       {
+        "model": "biomorphosis:block/shit_0",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/shit_0",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/shit_0",
+        "y": 270
+      },
+      {
         "model": "biomorphosis:block/shit_1"
       },
       {
+        "model": "biomorphosis:block/shit_1",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/shit_1",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/shit_1",
+        "y": 270
+      },
+      {
         "model": "biomorphosis:block/shit_2"
+      },
+      {
+        "model": "biomorphosis:block/shit_2",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/shit_2",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/shit_2",
+        "y": 270
       }
     ]
   }

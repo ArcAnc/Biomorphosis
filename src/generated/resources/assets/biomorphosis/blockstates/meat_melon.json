@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "biomorphosis:block/meat_melon"
-    }
+    "": [
+      {
+        "model": "biomorphosis:block/meat_melon"
+      },
+      {
+        "model": "biomorphosis:block/meat_melon",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/meat_melon",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/meat_melon",
+        "y": 270
+      }
+    ]
   }
 }

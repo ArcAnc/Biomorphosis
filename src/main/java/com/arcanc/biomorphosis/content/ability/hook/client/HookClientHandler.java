@@ -125,7 +125,7 @@ public final class HookClientHandler
 						when(player -> AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.HOOK)).
 						bind(PPlayerPart.RIGHT_ARM, "right_arm").
 						mask(PPlayerPart.RIGHT_ARM).
-						blendMode(PPlayerAnimationBlendMode.REPLACE).
+						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
 						controllers(registrar -> registrar.add(CAST_CONTROLLER, () -> state ->
 						{
 							if (!AbilityCastClientHandler.isCasting(state.animatable().player(), AbilityCastAnimations.HOOK))

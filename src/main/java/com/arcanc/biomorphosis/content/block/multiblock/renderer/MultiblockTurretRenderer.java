@@ -15,27 +15,22 @@ import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockPartBlock
 import com.arcanc.biomorphosis.content.block.multiblock.base.MultiblockState;
 import com.arcanc.biomorphosis.content.block.multiblock.definition.IMultiblockDefinition;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
+import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
+import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
-import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
 
 public class MultiblockTurretRenderer extends PBlockRenderer<MultiblockTurret>
 {
@@ -65,14 +60,19 @@ public class MultiblockTurretRenderer extends PBlockRenderer<MultiblockTurret>
 	}
 	
 	@Override
-	protected void perBoneSubmit(MultiblockTurret animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<MultiblockTurret>> pAnimationControllers, Map<PAnimationController<MultiblockTurret>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
+	protected PMeshRenderContext resolveMeshRender(MultiblockTurret animatable, PBakedBone bone, PBakedMesh mesh, PMeshRenderContext inherited, float partialTick)
 	{
-		if (bone.name().equals("projectile"))
-		{
-			renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-			packedColor = animatable.getShootEffect().getColor();
-		}
-		super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
+		if (!bone.name().equals("projectile"))
+			return inherited;
+		return new PMeshRenderContext(
+				PRenderTypes.RenderTypeProvider :: trianglesTranslucent,
+				animatable.getShootEffect().getColor(),
+				inherited.packedLight(),
+				inherited.packedOverlay(),
+				inherited.deformation(),
+				inherited.texture(),
+				inherited.emissive(),
+				PAlphaMode.TRANSLUCENT);
 	}
 	
 	@Override

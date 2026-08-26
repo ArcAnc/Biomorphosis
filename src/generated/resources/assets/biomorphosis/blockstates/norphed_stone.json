@@ -1,7 +1,21 @@
 {
   "variants": {
-    "": {
-      "model": "biomorphosis:block/norphed_stone"
-    }
+    "": [
+      {
+        "model": "biomorphosis:block/norphed_stone"
+      },
+      {
+        "model": "biomorphosis:block/norphed_stone",
+        "y": 90
+      },
+      {
+        "model": "biomorphosis:block/norphed_stone",
+        "y": 180
+      },
+      {
+        "model": "biomorphosis:block/norphed_stone",
+        "y": 270
+      }
+    ]
   }
 }

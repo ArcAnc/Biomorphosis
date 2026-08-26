@@ -11,21 +11,16 @@ package com.arcanc.biomorphosis.content.block.block_entity.ber;
 
 import com.arcanc.biomorphosis.content.block.norph.source.NorphSource;
 import com.arcanc.biomorphosis.util.Database;
-import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
+import com.arcanc.pulselib.content.model.baked.PBakedMesh;
+import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
+import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
 import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
-import com.arcanc.pulselib.data.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.function.Function;
 
 public class NorphSourceRenderer extends PBlockRenderer<NorphSource>
 {
@@ -38,16 +33,25 @@ public class NorphSourceRenderer extends PBlockRenderer<NorphSource>
                         build(),
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
-    
-    @Override
-    protected void perBoneSubmit(NorphSource animatable, PoseStack poseStack, PBakedBone bone, Collection<PAnimationController<NorphSource>> pAnimationControllers, Map<PAnimationController<NorphSource>, MolangParser.Context> molangContexts, Function<ResourceLocation, RenderType> renderType, int packedColor, int packedLight, int packedOverlay, float partialTick)
-    {
-        if (bone.name().equals("center") || bone.name().equals("fluid_left") || bone.name().equals("fluid_right"))
-            renderType = PRenderTypes.RenderTypeProvider :: trianglesTranslucent;
-        super.perBoneSubmit(animatable, poseStack, bone, pAnimationControllers, molangContexts, renderType, packedColor, packedLight, packedOverlay, partialTick);
-    }
-    
-    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	
+	@Override
+	protected PMeshRenderContext resolveMeshRender(NorphSource animatable, PBakedBone bone, PBakedMesh mesh, PMeshRenderContext inherited, float partialTick)
+	{
+		if (!bone.name().equals("center") &&
+			!bone.name().equals("fluid_left") &&
+			!bone.name().equals("fluid_right"))
+			return inherited;
+		return new PMeshRenderContext(PRenderTypes.RenderTypeProvider :: trianglesTranslucent,
+				inherited.color(),
+				inherited.packedLight(),
+				inherited.packedOverlay(),
+				inherited.deformation(),
+				inherited.texture(),
+				inherited.emissive(),
+				PAlphaMode.TRANSLUCENT);
+	}
+	
+	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
     {
         event.addTextureLocation(MAIN);
         event.addTextureLocation(FLUID);
