@@ -1,0 +1,128 @@
+{
+  "format": "RGBA PNG",
+  "face_size": 512,
+  "orientation": "OpenGL after existing CubemapTexture.orientedPixels upload",
+  "nebula_alpha_limit": 191,
+  "stars": {
+    "faces": {
+      "positive_x": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 208,
+        "grayscale": true
+      },
+      "negative_x": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 199,
+        "grayscale": true
+      },
+      "positive_y": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 193,
+        "grayscale": true
+      },
+      "negative_y": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 208,
+        "grayscale": true
+      },
+      "positive_z": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 199,
+        "grayscale": true
+      },
+      "negative_z": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 0,
+        "alpha_max": 213,
+        "grayscale": true
+      }
+    },
+    "matched_edge_and_corner_groups": 6128,
+    "edge_max_rgba_difference": 0,
+    "corner_count": 8
+  },
+  "nebula": {
+    "faces": {
+      "positive_x": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 62,
+        "alpha_max": 189,
+        "grayscale": true
+      },
+      "negative_x": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 61,
+        "alpha_max": 188,
+        "grayscale": true
+      },
+      "positive_y": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 72,
+        "alpha_max": 189,
+        "grayscale": true
+      },
+      "negative_y": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 76,
+        "alpha_max": 188,
+        "grayscale": true
+      },
+      "positive_z": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 89,
+        "alpha_max": 188,
+        "grayscale": true
+      },
+      "negative_z": {
+        "size": [
+          512,
+          512
+        ],
+        "alpha_min": 76,
+        "alpha_max": 189,
+        "grayscale": true
+      }
+    },
+    "matched_edge_and_corner_groups": 6128,
+    "edge_max_rgba_difference": 0,
+    "corner_count": 8
+  }
+}

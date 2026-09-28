@@ -34,6 +34,7 @@ final class WastesSkybox
 	private static final float CLOUD_MAX_PITCH = 0.78F;
 	private static final float CLOUD_MIN_YAW_SPEED = 1.75F;
 	private static final float CLOUD_MAX_YAW_SPEED = 2.65F;
+	private static final float CLOUD_FADE_SUN_HEIGHT = 0.1F;
 	private static final float CLOUD_MIN_PITCH_SPEED = 1.85F;
 	private static final float CLOUD_MAX_PITCH_SPEED = 2.9F;
 	private static final int CLOUD_COUNT = 50;
@@ -89,6 +90,7 @@ final class WastesSkybox
 				noonFogColor(70, 115, 86).
 				midnightFogColor(24, 18, 47).
 				effect(STARS_EFFECT).
+				effect(new WastesHorizon()).
 				effect(CLOUDS_EFFECT).
 				build());
 	}
@@ -110,7 +112,9 @@ final class WastesSkybox
 	
 	private static void renderClouds(BiomeSkyboxRenderContext context)
 	{
-		float alpha = context.alpha();
+		float sunHeight = Mth.cos(context.level().getSunAngle(context.partialTick()));
+		float daylight = Mth.clamp((sunHeight + CLOUD_FADE_SUN_HEIGHT) / (2.0F * CLOUD_FADE_SUN_HEIGHT), 0.0F, 1.0F);
+		float alpha = context.alpha() * daylight * daylight * (3.0F - 2.0F * daylight);
 		if (alpha <= 0.001F || CLOUDS.isEmpty())
 			return;
 		
