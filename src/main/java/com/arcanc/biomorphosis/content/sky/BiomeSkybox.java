@@ -15,15 +15,14 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-public record BiomeSkybox(ResourceLocation dome,
-                          ResourceLocation domeNight,
+public record BiomeSkybox(CubemapDefinition day,
+                          CubemapDefinition night,
                           ResourceLocation sun,
                           ResourceLocation moon,
                           int noonColor,
                           int midnightColor,
                           int noonFogColor,
                           int midnightFogColor,
-                          float sphereYOffset,
                           List<BiomeSkyboxEffect> effects)
 {
 	public static Builder builder(ResourceLocation basePath)
@@ -34,33 +33,32 @@ public record BiomeSkybox(ResourceLocation dome,
 	public static final class Builder
 	{
 		private final List<BiomeSkyboxEffect> effects = new ArrayList<>();
-		private ResourceLocation dome;
-		private ResourceLocation domeNight;
+		private CubemapDefinition day;
+		private CubemapDefinition night;
 		private ResourceLocation sun;
 		private ResourceLocation moon;
 		private int noonColor = MathHelper.ColorHelper.color(255, 255, 255);
 		private int midnightColor = MathHelper.ColorHelper.color(82, 92, 140);
 		private int noonFogColor = MathHelper.ColorHelper.color(255, 255, 255);
 		private int midnightFogColor = MathHelper.ColorHelper.color(82, 92, 140);
-		private float sphereYOffset = 0.0F;
 		
 		private Builder(ResourceLocation basePath)
 		{
-			this.dome = texture(basePath, "dome");
-			this.domeNight = texture(basePath, "dome_night");
+			this.day = CubemapDefinition.fromDirectory(basePath.withSuffix("/day"));
+			this.night = CubemapDefinition.fromDirectory(basePath.withSuffix("/night"));
 			this.sun = texture(basePath, "sun");
 			this.moon = texture(basePath, "moon");
 		}
 		
-		public Builder dome(ResourceLocation texture)
+		public Builder day(CubemapDefinition cubemap)
 		{
-			this.dome = texture;
+			this.day = cubemap;
 			return this;
 		}
 		
-		public Builder domeNight(ResourceLocation texture)
+		public Builder night(CubemapDefinition cubemap)
 		{
-			this.domeNight = texture;
+			this.night = cubemap;
 			return this;
 		}
 		
@@ -120,12 +118,6 @@ public record BiomeSkybox(ResourceLocation dome,
 			return midnightFogColor(MathHelper.ColorHelper.color(red, green, blue));
 		}
 		
-		public Builder sphereYOffset(float offset)
-		{
-			this.sphereYOffset = offset;
-			return this;
-		}
-		
 		public Builder effect(BiomeSkyboxEffect effect)
 		{
 			this.effects.add(effect);
@@ -135,15 +127,14 @@ public record BiomeSkybox(ResourceLocation dome,
 		public BiomeSkybox build()
 		{
 			return new BiomeSkybox(
-					this.dome,
-					this.domeNight,
+					this.day,
+					this.night,
 					this.sun,
 					this.moon,
 					this.noonColor,
 					this.midnightColor,
 					this.noonFogColor,
 					this.midnightFogColor,
-					this.sphereYOffset,
 					List.copyOf(this.effects));
 		}
 		

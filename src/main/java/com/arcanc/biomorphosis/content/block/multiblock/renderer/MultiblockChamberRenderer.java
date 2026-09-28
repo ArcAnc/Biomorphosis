@@ -23,7 +23,6 @@ import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -57,11 +56,11 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
             {52f, 0.04f}, {53f, 0.03f}, {54f, 0.02f}, {55f, 0.01f}, {56f, 0f}, {99f, 0f}
     };
     
-    private static final PModelData SPHERE_MODEL = new PModelData.Builder(
-            Database.rl("glmodels/block/chamber/sphere.gltf"), "").build();
-    private static final PModelData MORPHED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
-    private static final PModelData MORPHING = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
-    private static final PModelData DISASSEMBLED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).build();
+    private static final PModelData SPHERE_MODEL = PModelData.direct(
+            Database.rl("block/chamber/sphere"));
+    public static final PModelData MORPHED = PModelData.block(Database.rl("chamber"));
+    private static final PModelData MORPHING = MORPHED;
+    private static final PModelData DISASSEMBLED = MORPHED;
     
     public MultiblockChamberRenderer(BlockEntityRendererProvider.Context ctx)
     {
@@ -167,10 +166,12 @@ public class MultiblockChamberRenderer extends PBlockRenderer<MultiblockChamber>
         return blockEntity.isMaster() && blockEntity.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED && super.shouldRender(blockEntity, cameraPos);
     }
     
-    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(TEXTURE);
-        event.addTextureLocation(SPHERE_TEXTURE);
+        event.model(MORPHED).
+		        texture("0", TEXTURE);
+        event.model(SPHERE_MODEL).
+		        texture("0", SPHERE_TEXTURE);
     }
 
     private static float pulse(float time)

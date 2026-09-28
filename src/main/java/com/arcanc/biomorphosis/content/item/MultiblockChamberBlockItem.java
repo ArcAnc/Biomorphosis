@@ -9,7 +9,7 @@
 
 package com.arcanc.biomorphosis.content.item;
 
-import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockChamberRenderer;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
@@ -17,7 +17,6 @@ import com.arcanc.pulselib.content.animatable.PItemAnimatable;
 import com.arcanc.pulselib.content.animatable.singleton.SingletonAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.content.renderer.PItemRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -73,8 +72,10 @@ public class MultiblockChamberBlockItem extends BioBaseBlockItem implements PIte
         private Renderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher,
                         EntityModelSet entityModelSet)
         {
-            super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chamber")).
-                    addTexture(Database.rl("0")).build(), PRenderTypes.RenderTypeProvider :: trianglesTranslucent, blockEntityRenderDispatcher, entityModelSet);
+            super(MultiblockChamberRenderer.MORPHED,
+		            PRenderTypes.RenderTypeProvider :: trianglesTranslucent,
+		            blockEntityRenderDispatcher,
+		            entityModelSet);
         }
     }
 }

@@ -14,24 +14,25 @@ import com.arcanc.biomorphosis.content.entity.Worker;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class WorkerRenderer extends PEntityRenderer<Worker>
 {
+	private static final PModelData MODEL_DATA = PModelData.entity(Database.rl("worker"));
 	private static final ResourceLocation TEXTURE = Database.rl("entity/worker/0");
 	
 	public WorkerRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("worker")).
-						build(),
+		super(ctx, MODEL_DATA,
 				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MODEL_DATA).
+				texture("0", TEXTURE);
 	}
 }

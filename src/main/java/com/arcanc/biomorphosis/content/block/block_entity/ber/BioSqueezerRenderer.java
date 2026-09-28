@@ -15,10 +15,10 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.FluidHelper;
 import com.arcanc.pulselib.content.animatable.PAnimationController;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
-import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.animation.PPose;
+import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.data.gecko.MolangParser;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,12 +32,12 @@ import java.util.function.Function;
 
 public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
 {
+	private static final PModelData MODEL_DATA = PModelData.block(Database.rl("squeezer"));
 	private static final ResourceLocation TEXTURE = Database.rl("block/squeezer/0");
 	
 	public BioSqueezerRenderer(final BlockEntityRendererProvider.Context ctx)
 	{
-		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("squeezer")).
-					build(),
+		super(MODEL_DATA,
 				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
@@ -68,8 +68,9 @@ public class BioSqueezerRenderer extends PBlockRenderer<BioSqueezer>
 		poseStack.popPose();
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MODEL_DATA).
+				texture("0", TEXTURE);
 	}
 }

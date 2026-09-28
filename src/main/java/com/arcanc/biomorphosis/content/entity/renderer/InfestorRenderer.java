@@ -14,7 +14,7 @@ import com.arcanc.biomorphosis.content.entity.Infestor;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -27,12 +27,12 @@ import java.util.function.Function;
 
 public class InfestorRenderer extends PEntityRenderer<Infestor>
 {
+	private static final PModelData MODEL_DATA = PModelData.entity(Database.rl("infestor"));
 	private static final ResourceLocation TEXTURE = Database.rl("entity/infestor/0");
 	
 	public InfestorRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("infestor")).
-						build(),
+		super(ctx, MODEL_DATA,
 				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
@@ -45,8 +45,9 @@ public class InfestorRenderer extends PEntityRenderer<Infestor>
 		poseStack.popPose();
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MODEL_DATA).
+				texture("0", TEXTURE);
 	}
 }

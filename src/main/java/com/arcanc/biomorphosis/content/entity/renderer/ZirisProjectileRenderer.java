@@ -10,14 +10,12 @@
 package com.arcanc.biomorphosis.content.entity.renderer;
 
 import com.arcanc.biomorphosis.content.entity.ZirisProjectile;
-import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 
@@ -27,7 +25,7 @@ public class ZirisProjectileRenderer extends PEntityRenderer<ZirisProjectile>
 
 	public ZirisProjectileRenderer(EntityRendererProvider.Context context)
 	{
-		super(context, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("projectile_turret")).build(),
+		super(context, TurretProjectileRenderer.MODEL_DATA,
 				PRenderTypes.RenderTypeProvider :: trianglesTranslucent);
 	}
 	
@@ -45,7 +43,7 @@ public class ZirisProjectileRenderer extends PEntityRenderer<ZirisProjectile>
 				inherited.alphaModeOverride());
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
 		//event.addTextureLocation(TEXTURE);
 	}

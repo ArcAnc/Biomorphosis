@@ -18,20 +18,20 @@ import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class QueenGuardRenderer extends PEntityRenderer<QueenGuard>
 {
+	private static final PModelData MODEL_DATA = PModelData.entity(Database.rl("guard"));
 	private static final ResourceLocation TEXTURE = Database.rl("entity/guard/0");
 	private static final int BERSERK_TINT = MathHelper.ColorHelper.color(255, 255, 85, 85);
 
 	public QueenGuardRenderer(EntityRendererProvider.Context ctx)
 	{
-		super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("guard")).
-						build(),
+		super(ctx, MODEL_DATA,
 				PRenderTypes.RenderTypeProvider :: trianglesCutout);
 	}
 	
@@ -47,8 +47,9 @@ public class QueenGuardRenderer extends PEntityRenderer<QueenGuard>
 						inherited.packedOverlay());
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MODEL_DATA).
+				texture("0", TEXTURE);
 	}
 }

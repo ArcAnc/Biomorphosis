@@ -21,7 +21,6 @@ import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -35,13 +34,13 @@ public class MultiblockChrysalisRenderer extends PBlockRenderer<MultiblockChrysa
 {
 	private static final ResourceLocation TEXTURE = Database.rl("block/chrysalis/0");
 	
-	private static final PModelData MORPHED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chrysalis")).build();
-	private static final PModelData MORPHING = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chrysalis")).build();
-	private static final PModelData DISASSEMBLED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chrysalis")).build();
+	public static final PModelData MORPHED = PModelData.block(Database.rl("chrysalis"));
+	private static final PModelData MORPHING = MORPHED;
+	private static final PModelData DISASSEMBLED = MORPHED;
 	
 	public MultiblockChrysalisRenderer(BlockEntityRendererProvider.Context ctx)
 	{
-		super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("chrysalis")).build(),
+		super(MORPHED,
 				PRenderTypes.RenderTypeProvider :: trianglesSolid);
 	}
 	
@@ -85,8 +84,9 @@ public class MultiblockChrysalisRenderer extends PBlockRenderer<MultiblockChrysa
 		return blockEntity.isMaster() && blockEntity.getBlockState().getValue(MultiblockPartBlock.STATE) == MultiblockState.FORMED && super.shouldRender(blockEntity, cameraPos);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MORPHED).
+				texture("0", TEXTURE);
 	}
 }

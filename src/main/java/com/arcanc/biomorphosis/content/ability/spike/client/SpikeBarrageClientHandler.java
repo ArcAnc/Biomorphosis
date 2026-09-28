@@ -17,9 +17,12 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.content.player.animation.PPlayerAnimationAnchors;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationBlendMode;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationDefinition;
 import com.arcanc.pulselib.content.player.animation.PPlayerPart;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PFirstPersonCameraMode;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PPlayerFirstPersonSettings;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -40,8 +43,8 @@ public final class SpikeBarrageClientHandler
 	private static final List<ClientSpike> SPIKES = new ArrayList<>();
 	private static final Map<UUID, Long> HANDS_FORWARD_UNTIL = new HashMap<>();
 	private static final String CAST_CONTROLLER = "spike_barrage_controller";
-	private static final PModelData CAST_MODEL = new PModelData.Builder(
-			Database.rl("glmodels/player/abilities/spike_barrage.gltf"), "").build();
+	private static final PModelData CAST_MODEL = PModelData.direct(
+			Database.rl("player/abilities/spike_barrage"));
 	private static final PRawAnimation CAST_ANIMATION = PRawAnimation.begin().thenPlay("hands_forward").build();
 
 	private SpikeBarrageClientHandler()
@@ -52,7 +55,14 @@ public final class SpikeBarrageClientHandler
 	{
 		NeoForge.EVENT_BUS.addListener(SpikeBarrageClientHandler :: clientTick);
 		NeoForge.EVENT_BUS.addListener(SpikeBarrageClientHandler :: renderSpikes);
+		modEventBus.addListener(SpikeBarrageClientHandler :: registerResources);
 		modEventBus.addListener(SpikeBarrageClientHandler :: registerAnimation);
+	}
+
+	private static void registerResources(PulseLibEvents.RegisterResourceEvent event)
+	{
+		event.model(CAST_MODEL).
+				texture("0", AbilityCastClientHandler.PLAYER_MODEL_DUMMY_TEXTURE);
 	}
 
 	public static void spawn(Vec3 origin, Vec3 targetOffset, double lateralCurve, double aimLift, double speedPerTick,
@@ -88,11 +98,13 @@ public final class SpikeBarrageClientHandler
 	{
 		event.registration().register(AbilityCastAnimations.SPIKE_BARRAGE,
 				PPlayerAnimationDefinition.builder(CAST_MODEL).
-						when(SpikeBarrageClientHandler :: isHandsForward).
+				when(SpikeBarrageClientHandler :: isHandsForward).
 						bind(PPlayerPart.LEFT_ARM, "left_arm").
 						bind(PPlayerPart.RIGHT_ARM, "right_arm").
+						anchor(PPlayerAnimationAnchors.FIRST_PERSON_CAMERA, "fp_camera").
 						mask(PPlayerPart.LEFT_ARM, PPlayerPart.RIGHT_ARM).
 						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
+						firstPerson(new PPlayerFirstPersonSettings(true, 0.0F, 0.0F, PFirstPersonCameraMode.VANILLA)).
 						controllers(registrar -> registrar.add(CAST_CONTROLLER, () -> state ->
 						{
 							if (!isHandsForward(state.animatable().player()))

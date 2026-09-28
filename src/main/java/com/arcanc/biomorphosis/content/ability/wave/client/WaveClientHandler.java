@@ -19,9 +19,12 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.content.player.animation.PPlayerAnimationAnchors;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationBlendMode;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationDefinition;
 import com.arcanc.pulselib.content.player.animation.PPlayerPart;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PFirstPersonCameraMode;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PPlayerFirstPersonSettings;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -47,8 +50,8 @@ public final class WaveClientHandler
 	private static final List<ClientWave> WAVES = new ArrayList<>();
 	
 	private static final String CAST_CONTROLLER = "wave_controller";
-	private static final PModelData CAST_MODEL = new PModelData.Builder(
-			Database.rl("glmodels/player/abilities/wave.gltf"), "").build();
+	private static final PModelData CAST_MODEL = PModelData.direct(
+			Database.rl("player/abilities/wave"));
 	private static final PRawAnimation CAST_ANIMATION = PRawAnimation.begin().thenPlay("cast").build();
 	
 	private WaveClientHandler()
@@ -59,8 +62,15 @@ public final class WaveClientHandler
 	{
 		NeoForge.EVENT_BUS.addListener(WaveClientHandler :: playerTick);
 		NeoForge.EVENT_BUS.addListener(WaveClientHandler :: renderWaves);
+		modEventBus.addListener(WaveClientHandler :: registerResources);
 		modEventBus.addListener(WaveClientHandler :: registerAnimation);
 		WaveRenderTypes.register(modEventBus);
+	}
+
+	private static void registerResources(PulseLibEvents.RegisterResourceEvent event)
+	{
+		event.model(CAST_MODEL).
+			texture("0", AbilityCastClientHandler.PLAYER_MODEL_DUMMY_TEXTURE);
 	}
 
 	public static void spawn(Vec3 origin, Vec3 direction, double height, double speedPerTick, double range)
@@ -119,11 +129,13 @@ public final class WaveClientHandler
 	{
 		event.registration().register(AbilityCastAnimations.WAVE,
 				PPlayerAnimationDefinition.builder(CAST_MODEL).
-						when(player -> AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.WAVE)).
+				when(player -> AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.WAVE)).
 						bind(PPlayerPart.LEFT_ARM, "left_arm").
 						bind(PPlayerPart.RIGHT_ARM, "right_arm").
+						anchor(PPlayerAnimationAnchors.FIRST_PERSON_CAMERA, "fp_camera").
 						mask(PPlayerPart.LEFT_ARM, PPlayerPart.RIGHT_ARM).
 						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
+						firstPerson(new PPlayerFirstPersonSettings(true, 0.0F, 0.0F, PFirstPersonCameraMode.VANILLA)).
 						controllers(registrar -> registrar.
 						add(CAST_CONTROLLER, () -> state ->
 						{

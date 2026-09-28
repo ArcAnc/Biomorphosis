@@ -19,13 +19,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
-import com.arcanc.pulselib.content.model.deformer.PChannelReference;
-import com.arcanc.pulselib.content.model.deformer.PDeformerInstance;
-import com.arcanc.pulselib.content.model.deformer.PDeformerStack;
-import com.arcanc.pulselib.content.model.deformer.PDeformerValueSource;
-import com.arcanc.pulselib.content.model.deformer.PMeshDeformation;
-import com.arcanc.pulselib.content.model.deformer.PTwistDeformer;
-import com.arcanc.pulselib.content.model.deformer.PTwistDefinition;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -50,7 +43,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.crafting.SizedIngredient;
 import org.joml.Matrix4f;
-import org.joml.Vector3f;
 
 import java.util.Arrays;
 import java.util.List;
@@ -240,12 +232,13 @@ public class RenderHelper
 		private static final int RENDER_GENE_AMOUNT_PER_INSTANCE = 5;
 		private static final String MAIN_GENE_MESH = "gene_part_0";
 		private static final ResourceLocation GENE_TEXTURE = Database.rl("gui/gene/0");
-		private static final PModelData GENE_MODEL = new PModelData.Builder(
-				Database.rl("glmodels/gui/gene.gltf"), "").build();
+		private static final PModelData GENE_MODEL = PModelData.direct(
+				Database.rl("gui/gene"));
 
-		public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+		public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 		{
-			event.addTextureLocation(GENE_TEXTURE);
+			event.model(GENE_MODEL).
+					texture("0", GENE_TEXTURE);
 		}
 		
 		public static void renderGeneInGui(GeneInstance gene, GuiGraphics guiGraphics, Rect2d bounds)

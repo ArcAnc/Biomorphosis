@@ -9,8 +9,10 @@
 
 package com.arcanc.biomorphosis.content.ability.client;
 
+import com.arcanc.biomorphosis.util.Database;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Map;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 public final class AbilityCastClientHandler
 {
+	public static final ResourceLocation PLAYER_MODEL_DUMMY_TEXTURE = Database.rl("player/abilities/0");
 	private static final Map<UUID, ClientCast> ACTIVE_CASTS = new Object2ObjectOpenHashMap<>();
 
 	private AbilityCastClientHandler()
@@ -45,6 +48,12 @@ public final class AbilityCastClientHandler
 
 		ACTIVE_CASTS.remove(player.getUUID(), cast);
 		return false;
+	}
+
+	public static long castStartedAt(Player player, ResourceLocation animationId)
+	{
+		ClientCast cast = ACTIVE_CASTS.get(player.getUUID());
+		return cast != null && cast.animationId.equals(animationId) ? cast.startedAt : -1L;
 	}
 
 	private record ClientCast(ResourceLocation animationId, long startedAt, int castTimeTicks)

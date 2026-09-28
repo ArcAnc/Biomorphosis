@@ -17,11 +17,7 @@ import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedBone;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
-import com.arcanc.pulselib.util.attachments.PAttachmentBinding;
-import com.arcanc.pulselib.util.attachments.PLivingAttachmentDefinition;
-import com.arcanc.pulselib.util.attachments.PLivingAttachmentSources;
-import com.arcanc.pulselib.util.attachments.PLivingMeshRenderResolver;
-import com.arcanc.pulselib.util.attachments.PLivingMeshRenderResolvers;
+import com.arcanc.pulselib.util.attachments.*;
 import com.arcanc.pulselib.util.attachments.humanoid.PHumanoidBindings;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -32,15 +28,11 @@ import java.util.List;
 
 public class OrganicArmorRenderHandler
 {
-	public static final ResourceLocation LIFELESS_TEXTURE = Database.rl("entity/armor/lifeless/0");
-	public static final PModelData LIFELESS_MODEL = new PModelData.Builder(Database.rl("armor/lifeless"), "entity").
-			addTexture(LIFELESS_TEXTURE).
-			build();
+	private static final ResourceLocation LIFELESS_TEXTURE = Database.rl("entity/armor/lifeless/0");
+	private static final PModelData LIFELESS_MODEL = PModelData.entity(Database.rl("armor/lifeless"));
 
-	public static final ResourceLocation ORGANIC_TEXTURE = Database.rl("entity/armor/organic/0");
-	private static final PModelData ORGANIC_MODEL = new PModelData.Builder(Database.rl("armor/organic"), "entity").
-			addTexture(ORGANIC_TEXTURE).
-			build();
+	private static final ResourceLocation ORGANIC_TEXTURE = Database.rl("entity/armor/organic/0");
+	private static final PModelData ORGANIC_MODEL = PModelData.entity(Database.rl("armor/organic"));
 
 	public static void registerOrganicArmor(final PulseLibEvents.AttachmentRegistrationEvent event)
 	{
@@ -103,10 +95,12 @@ public class OrganicArmorRenderHandler
 						true));
 	}
 
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(ORGANIC_TEXTURE);
-		event.addTextureLocation(LIFELESS_TEXTURE);
+		event.model(ORGANIC_MODEL).
+				texture("0", ORGANIC_TEXTURE);
+		event.model(LIFELESS_MODEL).
+				texture("0", LIFELESS_TEXTURE);
 	}
 
 	private static PLivingAttachmentDefinition organicDefinition(EquipmentSlot slot, List<PAttachmentBinding> bindings)

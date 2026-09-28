@@ -17,18 +17,19 @@ import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class QueenRenderer extends PEntityRenderer<Queen>
 {
+	private static final PModelData MODEL_DATA = PModelData.entity(Database.rl("queen"));
     private static final ResourceLocation TEXTURE = Database.rl("entity/queen/0");
+	
     public QueenRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("queen")).
-                        build(),
+        super(ctx, MODEL_DATA,
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
 	
@@ -50,8 +51,9 @@ public class QueenRenderer extends PEntityRenderer<Queen>
 				PAlphaMode.TRANSLUCENT);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(TEXTURE);
+        event.model(MODEL_DATA).
+		        texture("0", TEXTURE);
     }
 }

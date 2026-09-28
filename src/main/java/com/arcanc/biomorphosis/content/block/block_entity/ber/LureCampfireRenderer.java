@@ -22,7 +22,7 @@ import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -38,13 +38,13 @@ import java.util.function.Function;
 
 public class LureCampfireRenderer extends PBlockRenderer<LureCampfireBE>
 {
-    private static final ResourceLocation MAIN = Database.rl("block/lure_campfire/main");
+    private static final PModelData MODEL_DATA = PModelData.block(Database.rl("lure_campfire"));
+	private static final ResourceLocation MAIN = Database.rl("block/lure_campfire/main");
     private static final ResourceLocation FIRE = Database.rl("block/lure_campfire/fire");
     
     public LureCampfireRenderer(final BlockEntityRendererProvider.Context ctx)
     {
-        super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("lure_campfire")).
-                        build(),
+        super(MODEL_DATA,
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
     
@@ -102,9 +102,10 @@ public class LureCampfireRenderer extends PBlockRenderer<LureCampfireBE>
 				PAlphaMode.TRANSLUCENT);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(MAIN);
-        event.addTextureLocation(FIRE);
+        event.model(MODEL_DATA).
+		        texture("main", MAIN).
+		        texture("fire", FIRE);
     }
 }

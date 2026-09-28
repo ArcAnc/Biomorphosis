@@ -17,20 +17,20 @@ import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class NorphSourceRenderer extends PBlockRenderer<NorphSource>
 {
+	private static final PModelData MODEL_DATA = PModelData.block(Database.rl("norph_source"));
     private static final ResourceLocation MAIN = Database.rl("block/norph_source/main");
     private static final ResourceLocation FLUID = Database.rl("block/norph_source/fluid");
     
     public NorphSourceRenderer(final BlockEntityRendererProvider.Context ctx)
     {
-        super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("norph_source")).
-                        build(),
+        super(MODEL_DATA,
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
 	
@@ -51,9 +51,10 @@ public class NorphSourceRenderer extends PBlockRenderer<NorphSource>
 				PAlphaMode.TRANSLUCENT);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(MAIN);
-        event.addTextureLocation(FLUID);
+        event.model(MODEL_DATA).
+		        texture("main", MAIN).
+                texture("fluid", FLUID);
     }
 }

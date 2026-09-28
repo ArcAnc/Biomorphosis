@@ -10,12 +10,15 @@
 package com.arcanc.biomorphosis.mixin.client;
 
 import com.arcanc.biomorphosis.content.sky.BiomeSkyboxes;
+import com.mojang.blaze3d.vertex.BufferUploader;
+import com.mojang.blaze3d.vertex.MeshData;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.LevelRenderer;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LevelRenderer.class)
@@ -33,5 +36,37 @@ public abstract class LevelRendererMixin
 	{
 		if (BiomeSkyboxes.shouldHideClouds())
 			ci.cancel();
+	}
+
+	@Redirect(method = "renderSky",
+			at = @At(value = "INVOKE",
+					target = "Lcom/mojang/blaze3d/vertex/BufferUploader;drawWithShader(Lcom/mojang/blaze3d/vertex/MeshData;)V",
+					ordinal = 1),
+			require = 1)
+	private void hideVanillaSunInCustomSkyboxBiome(MeshData mesh)
+	{
+		if (!BiomeSkyboxes.shouldHideVanillaCelestialBodies())
+		{
+			BufferUploader.drawWithShader(mesh);
+			return;
+		}
+
+		mesh.close();
+	}
+
+	@Redirect(method = "renderSky",
+			at = @At(value = "INVOKE",
+					target = "Lcom/mojang/blaze3d/vertex/BufferUploader;drawWithShader(Lcom/mojang/blaze3d/vertex/MeshData;)V",
+					ordinal = 2),
+			require = 1)
+	private void hideVanillaMoonInCustomSkyboxBiome(MeshData mesh)
+	{
+		if (!BiomeSkyboxes.shouldHideVanillaCelestialBodies())
+		{
+			BufferUploader.drawWithShader(mesh);
+			return;
+		}
+
+		mesh.close();
 	}
 }

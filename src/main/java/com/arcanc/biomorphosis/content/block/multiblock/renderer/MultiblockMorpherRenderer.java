@@ -19,7 +19,6 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.baked.PBakedModel;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -38,9 +37,9 @@ public class MultiblockMorpherRenderer extends PBlockRenderer<MultiblockMorpher>
 {
 	private static final ResourceLocation TEXTURE = Database.rl("block/morpher/0");
 	
-	private static final PModelData MORPHED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("morpher")).build();
-	private static final PModelData MORPHING = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("morpher")).build();
-	private static final PModelData DISASSEMBLED = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("morpher")).build();
+	public static final PModelData MORPHED = PModelData.block(Database.rl("morpher"));
+	private static final PModelData MORPHING = MORPHED;
+	private static final PModelData DISASSEMBLED = MORPHED;
 	
 	public MultiblockMorpherRenderer(BlockEntityRendererProvider.Context ctx)
 	{
@@ -87,8 +86,9 @@ public class MultiblockMorpherRenderer extends PBlockRenderer<MultiblockMorpher>
 		}
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
 	{
-		event.addTextureLocation(TEXTURE);
+		event.model(MORPHED).
+				texture("0", TEXTURE);
 	}
 }

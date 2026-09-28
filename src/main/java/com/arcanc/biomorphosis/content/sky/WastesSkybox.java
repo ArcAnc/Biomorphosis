@@ -11,7 +11,6 @@ package com.arcanc.biomorphosis.content.sky;
 
 import com.arcanc.biomorphosis.content.worldgen.BioBiomes;
 import com.arcanc.biomorphosis.util.Database;
-import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
@@ -20,7 +19,6 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.joml.Matrix4f;
 
@@ -30,7 +28,6 @@ import java.util.Random;
 
 final class WastesSkybox
 {
-	private static final float SKYBOX_Y_OFFSET = -18.0F;
 	private static final float CLOUD_DISTANCE = 86.0F;
 	private static final float CLOUD_Y_OFFSET = -8.0F;
 	private static final float CLOUD_MIN_PITCH = 0.14F;
@@ -43,54 +40,9 @@ final class WastesSkybox
 	private static final int CLOUD_MIN_LOBES = 10;
 	private static final int CLOUD_MAX_LOBES = 16;
 	private static final int CLOUD_SEGMENTS = 16;
-	private static final ResourceLocation STARS = Database.rl("textures/environment/skybox/wastes/stars.png");
-	private static final ResourceLocation NEBULA = Database.rl("textures/environment/skybox/wastes/nebula.png");
-	private static final RenderStateShard.ShaderStateShard POSITION_TEX_COLOR_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer :: getPositionTexColorShader);
+	private static final CubemapDefinition STARS = CubemapDefinition.fromDirectory(Database.rl("environment/skybox/wastes/stars"));
+	private static final CubemapDefinition NEBULA = CubemapDefinition.fromDirectory(Database.rl("environment/skybox/wastes/nebula"));
 	private static final RenderStateShard.ShaderStateShard POSITION_COLOR_SHADER = new RenderStateShard.ShaderStateShard(GameRenderer :: getPositionColorShader);
-	private static final RenderStateShard.TransparencyStateShard ALPHA_ADDITIVE_TRANSPARENCY = new RenderStateShard.TransparencyStateShard(
-			"wastes_skybox_alpha_additive_transparency",
-			() ->
-			{
-				RenderSystem.enableBlend();
-				RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-			},
-			() ->
-			{
-				RenderSystem.defaultBlendFunc();
-				RenderSystem.disableBlend();
-			});
-	private static final RenderType STARS_RENDER_TYPE = RenderType.create(
-			Database.rlStr("wastes_stars"),
-			DefaultVertexFormat.POSITION_TEX_COLOR,
-			VertexFormat.Mode.QUADS,
-			RenderType.TRANSIENT_BUFFER_SIZE,
-			false,
-			true,
-			RenderType.CompositeState.builder().
-					setShaderState(POSITION_TEX_COLOR_SHADER).
-					setTextureState(new RenderStateShard.TextureStateShard(STARS, true, false)).
-					setTransparencyState(ALPHA_ADDITIVE_TRANSPARENCY).
-					setCullState(RenderStateShard.NO_CULL).
-					setDepthTestState(RenderStateShard.NO_DEPTH_TEST).
-					setWriteMaskState(RenderStateShard.COLOR_WRITE).
-					createCompositeState(false));
-	
-	private static final RenderType NEBULA_RENDER_TYPE = RenderType.create(
-			Database.rlStr("wastes_nebula"),
-			DefaultVertexFormat.POSITION_TEX_COLOR,
-			VertexFormat.Mode.QUADS,
-			RenderType.TRANSIENT_BUFFER_SIZE,
-			false,
-			true,
-			RenderType.CompositeState.builder().
-					setShaderState(POSITION_TEX_COLOR_SHADER).
-					setTextureState(new RenderStateShard.TextureStateShard(NEBULA, true, false)).
-					setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).
-					setCullState(RenderStateShard.NO_CULL).
-					setDepthTestState(RenderStateShard.NO_DEPTH_TEST).
-					setWriteMaskState(RenderStateShard.COLOR_WRITE).
-					setOutputState(RenderStateShard.TRANSLUCENT_TARGET).
-					createCompositeState(false));
 	
 	private static final RenderType CLOUDS_RENDER_TYPE = RenderType.create(
 			Database.rlStr("wastes_clouds"),
@@ -129,12 +81,13 @@ final class WastesSkybox
 	
 	static void register()
 	{
+		BiomeSkyboxes.registerCubemap(NEBULA);
+		BiomeSkyboxes.registerCubemap(STARS);
 		BiomeSkyboxes.register(BioBiomes.WASTES, BiomeSkybox.builder(Database.rl("environment/skybox/wastes")).
 				noonColor(192, 237, 183).
 				midnightColor(54, 48, 92).
 				noonFogColor(70, 115, 86).
 				midnightFogColor(24, 18, 47).
-				sphereYOffset(SKYBOX_Y_OFFSET).
 				effect(STARS_EFFECT).
 				effect(CLOUDS_EFFECT).
 				build());
@@ -143,40 +96,16 @@ final class WastesSkybox
 	private static void renderStars(BiomeSkyboxRenderContext context)
 	{
 		float nightAlpha = Mth.clamp(context.level().getStarBrightness(context.partialTick()) * 1.35F, 0.0F, 1.0F);
-		if (nightAlpha <= 0.001F || !BiomeSkyboxes.hasTexture(NEBULA) || !BiomeSkyboxes.hasTexture(STARS))
+		if (nightAlpha <= 0.001F)
 			return;
 		
-		BiomeSkyboxes.renderHemisphere(
-				NEBULA,
-				context.alpha() * nightAlpha,
-				Mth.PI,
-				Mth.TWO_PI,
-				BiomeSkyboxes.sphereTravelAngle(context.level(), context.partialTick()),
-				0f,
-				0.879f,
-				0.823F,
-				BiomeSkyboxes.UvMode.TRANSITION_REVERSED,
-				BiomeSkyboxes.SKYBOX_EFFECT_SIZE,
-				context.skybox().sphereYOffset(),
-				NEBULA_RENDER_TYPE,
-				context.poseStack(),
-				context.projectionMatrix());
-		
-		BiomeSkyboxes.renderHemisphere(
-				STARS,
-				context.alpha() * nightAlpha,
-				Mth.PI,
-				Mth.TWO_PI,
-				BiomeSkyboxes.sphereTravelAngle(context.level(), context.partialTick()),
-				1f,
-				1f,
-				1f,
-				BiomeSkyboxes.UvMode.TRANSITION_REVERSED,
-				BiomeSkyboxes.SKYBOX_EFFECT_SIZE,
-				context.skybox().sphereYOffset(),
-				STARS_RENDER_TYPE,
-				context.poseStack(),
-				context.projectionMatrix());
+		float alpha = context.alpha() * nightAlpha;
+		float rotation = BiomeSkyboxes.sphereTravelAngle(context.level(), context.partialTick());
+		CubemapSkyboxRenderer.render(NEBULA, alpha, rotation, 0.0F, 0.879F, 0.823F, context.poseStack());
+		RenderSystem.blendFunc(com.mojang.blaze3d.platform.GlStateManager.SourceFactor.SRC_ALPHA,
+				com.mojang.blaze3d.platform.GlStateManager.DestFactor.ONE);
+		CubemapSkyboxRenderer.render(STARS, alpha, rotation, 1.0F, 1.0F, 1.0F, context.poseStack());
+		RenderSystem.defaultBlendFunc();
 	}
 	
 	private static void renderClouds(BiomeSkyboxRenderContext context)

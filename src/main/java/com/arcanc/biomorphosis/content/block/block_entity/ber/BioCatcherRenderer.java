@@ -16,7 +16,7 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.biomorphosis.util.inventory.fluid.FluidSidedStorage;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -36,6 +36,7 @@ import java.util.function.Function;
 
 public class BioCatcherRenderer extends PBlockRenderer<BioCatcher>
 {
+	private static final PModelData MODEL_DATA = PModelData.block(Database.rl("catcher"));
     private static final ResourceLocation TEXTURE = Database.rl("block/catcher/0");
     
     private static final float MIN_X =  3.01F/16F;
@@ -50,8 +51,7 @@ public class BioCatcherRenderer extends PBlockRenderer<BioCatcher>
 
     public BioCatcherRenderer(final BlockEntityRendererProvider.Context ctx)
     {
-        super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("catcher")).
-                        build(),
+        super(MODEL_DATA,
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
     
@@ -115,8 +115,9 @@ public class BioCatcherRenderer extends PBlockRenderer<BioCatcher>
         builder.addVertex(pose, maxX, y, maxZ).setColor(color.x(), color.y(), color.z(), color.w()).setUv(minU, maxV);
     }
     
-    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(TEXTURE);
+        event.model(MODEL_DATA).
+		        texture("0", TEXTURE);
     }
 }

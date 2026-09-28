@@ -17,7 +17,7 @@ import com.arcanc.pulselib.content.model.baked.PBakedMesh;
 import com.arcanc.pulselib.content.model.baked.PMeshRenderContext;
 import com.arcanc.pulselib.content.model.textures.PAlphaMode;
 import com.arcanc.pulselib.content.renderer.PEntityRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultEntityModelData;
+import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -30,11 +30,12 @@ import java.util.function.Function;
 
 public class KsiggRenderer extends PEntityRenderer<Ksigg>
 {
+	private static final PModelData MODEL_DATA = PModelData.entity(Database.rl("ksigg"));
     private static final ResourceLocation TEXTURE = Database.rl("entity/ksigg/0");
+	
     public KsiggRenderer(EntityRendererProvider.Context ctx)
     {
-        super(ctx, new DefaultEntityModelData.DefaultEntityModelDataBuilder(Database.rl("ksigg")).
-                addTexture(Database.rl("0")).build(),
+        super(ctx, MODEL_DATA,
                 PRenderTypes.RenderTypeProvider :: trianglesSolid);
     }
     
@@ -68,8 +69,9 @@ public class KsiggRenderer extends PEntityRenderer<Ksigg>
 				PAlphaMode.TRANSLUCENT);
 	}
 	
-	public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+	public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(TEXTURE);
+        event.model(MODEL_DATA).
+		        texture("0", TEXTURE);
     }
 }

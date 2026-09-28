@@ -10,7 +10,7 @@
 package com.arcanc.biomorphosis.content.item;
 
 
-import com.arcanc.biomorphosis.util.Database;
+import com.arcanc.biomorphosis.content.block.multiblock.renderer.MultiblockMorpherRenderer;
 import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
 import com.arcanc.pulselib.content.animatable.PAnimationManager;
@@ -18,7 +18,6 @@ import com.arcanc.pulselib.content.animatable.PItemAnimatable;
 import com.arcanc.pulselib.content.animatable.singleton.SingletonAnimationManager;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
 import com.arcanc.pulselib.content.renderer.PItemRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -74,8 +73,10 @@ public class MultiblockMorpherBlockItem extends BioBaseBlockItem implements PIte
 		private Renderer(BlockEntityRenderDispatcher blockEntityRenderDispatcher,
 		                 EntityModelSet entityModelSet)
 		{
-			super(new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("morpher")).
-					addTexture(Database.rl("0")).build(), PRenderTypes.RenderTypeProvider :: trianglesSolid, blockEntityRenderDispatcher, entityModelSet);
+			super(MultiblockMorpherRenderer.MORPHED,
+					PRenderTypes.RenderTypeProvider :: trianglesSolid,
+					blockEntityRenderDispatcher,
+					entityModelSet);
 		}
 	}
 }

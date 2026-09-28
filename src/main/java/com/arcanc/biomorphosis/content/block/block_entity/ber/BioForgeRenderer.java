@@ -14,7 +14,6 @@ import com.arcanc.biomorphosis.content.block.block_entity.BioForge;
 import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.renderer.PBlockRenderer;
-import com.arcanc.pulselib.content.renderer.modelData.DefaultBlockModelData;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.arcanc.pulselib.util.PRenderTypes;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -24,10 +23,9 @@ public class BioForgeRenderer extends PBlockRenderer<BioForge>
 {
     private static final ResourceLocation TEXTURE = Database.rl("block/forge/0");
     
-    private static final PModelData FORGE = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("forge")).build();
+    private static final PModelData FORGE = PModelData.block(Database.rl("forge"));
     
-    private static final PModelData DOUBLE_FORGE = new DefaultBlockModelData.DefaultBlockModelDataBuilder(Database.rl("forge_double")).
-            addTexture("0", TEXTURE).build();
+    private static final PModelData DOUBLE_FORGE = PModelData.block(Database.rl("forge_double"));
     
     public BioForgeRenderer(final BlockEntityRendererProvider.Context ctx)
     {
@@ -40,8 +38,11 @@ public class BioForgeRenderer extends PBlockRenderer<BioForge>
         return animatable.getBlockState().getValue(BioForgeBlock.DOUBLE) ? DOUBLE_FORGE : FORGE;
     }
     
-    public static void registerTextures(final PulseLibEvents.RegisterTextureEvent event)
+    public static void registerTextures(final PulseLibEvents.RegisterResourceEvent event)
     {
-        event.addTextureLocation(TEXTURE);
+        event.model(FORGE).
+		        texture("0", TEXTURE);
+		event.model(DOUBLE_FORGE).
+				texture("0", TEXTURE);
     }
 }

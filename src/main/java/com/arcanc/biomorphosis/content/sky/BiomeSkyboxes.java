@@ -31,17 +31,11 @@ import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 import net.neoforged.neoforge.client.event.ViewportEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import org.joml.Matrix4f;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.*;
 
 public final class BiomeSkyboxes
 {
-	private static final float SKYBOX_SIZE = 100.0F;
-	static final float SKYBOX_EFFECT_SIZE = 99.0F;
-	private static final int DOME_HORIZONTAL_SEGMENTS = 96;
-	private static final int DOME_VERTICAL_SEGMENTS = 32;
 	private static final float DOME_DAY_CYCLE_SCROLL = 1.0F;
 	private static final float SUN_SIZE = 12.0F;
 	private static final float MOON_SIZE = 9.0F;
@@ -64,6 +58,8 @@ public final class BiomeSkyboxes
 	public static void init(IEventBus modEventBus)
 	{
 		registerDefaults();
+		CubemapTextures.registerReloadListener(modEventBus);
+		CubemapSkyboxRenderer.register(modEventBus);
 		
 		NeoForge.EVENT_BUS.addListener(BiomeSkyboxes :: renderSkyboxes);
 		NeoForge.EVENT_BUS.addListener(BiomeSkyboxes :: modifyFogColor);
@@ -77,6 +73,13 @@ public final class BiomeSkyboxes
 	public static void register(ResourceKey<Biome> biome, BiomeSkybox skybox)
 	{
 		SKYBOXES.put(biome, skybox);
+		CubemapTextures.register(skybox.day());
+		CubemapTextures.register(skybox.night());
+	}
+
+	static void registerCubemap(CubemapDefinition cubemap)
+	{
+		CubemapTextures.register(cubemap);
 	}
 	
 	public static void register(ResourceKey<Biome> biome, ResourceLocation skyboxPath)
@@ -93,21 +96,25 @@ public final class BiomeSkyboxes
 		List<BiomeSkyboxEffect> effects = new ArrayList<>(skybox.effects());
 		effects.add(effect);
 		register(biome, new BiomeSkybox(
-				skybox.dome(),
-				skybox.domeNight(),
+				skybox.day(),
+				skybox.night(),
 				skybox.sun(),
 				skybox.moon(),
 				skybox.noonColor(),
 				skybox.midnightColor(),
 				skybox.noonFogColor(),
 				skybox.midnightFogColor(),
-				skybox.sphereYOffset(),
 				List.copyOf(effects)));
 	}
 	
 	public static boolean shouldHideClouds()
 	{
 		return CURRENT_WEIGHTS.values().stream().anyMatch(weight -> weight > CLOUD_HIDE_WEIGHT);
+	}
+
+	public static boolean shouldHideVanillaCelestialBodies()
+	{
+		return shouldHideClouds();
 	}
 	
 	public static void modifyFogColor(final ViewportEvent.ComputeFogColor event)
@@ -184,6 +191,7 @@ public final class BiomeSkyboxes
 						partialTick));
 		
 		RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderSystem.setShader(GameRenderer :: getPositionTexColorShader);
 		RenderSystem.depthMask(true);
 		RenderSystem.enableCull();
 		RenderSystem.defaultBlendFunc();
@@ -255,7 +263,7 @@ public final class BiomeSkyboxes
 	                                 int renderTick,
 	                                 float partialTick)
 	{
-		renderDome(level, skybox, alpha, poseStack, projectionMatrix, partialTick);
+		renderDome(level, skybox, alpha, poseStack, partialTick);
 		
 		BiomeSkyboxRenderContext context = new BiomeSkyboxRenderContext(
 				level,
@@ -282,6 +290,11 @@ public final class BiomeSkyboxes
 	static boolean hasTexture(ResourceLocation texture)
 	{
 		return TEXTURE_EXISTS.computeIfAbsent(texture, location -> Minecraft.getInstance().getResourceManager().getResource(location).isPresent());
+	}
+
+	static void onResourcesReloaded()
+	{
+		TEXTURE_EXISTS.clear();
 	}
 	
 	private static RenderType celestialRenderType(ResourceLocation texture)
@@ -314,232 +327,27 @@ public final class BiomeSkyboxes
 	                               BiomeSkybox skybox,
 	                               float alpha,
 	                               PoseStack poseStack,
-	                               Matrix4f projectionMatrix,
 	                               float partialTick)
 	{
-		if (hasTexture(skybox.domeNight()))
-		{
-			float travelAngle = sphereTravelAngle(level, partialTick);
-			int skyColor = skyColor(level, skybox, partialTick);
-			renderHemisphere(
-					skybox.dome(),
-					alpha,
-					0.0F,
-					Mth.PI,
-					travelAngle,
-					MathHelper.ColorHelper.redFloat(skyColor),
-					MathHelper.ColorHelper.greenFloat(skyColor),
-					MathHelper.ColorHelper.blueFloat(skyColor),
-					UvMode.TRANSITION_FORWARD,
-					SKYBOX_SIZE,
-					skybox.sphereYOffset(),
-					poseStack,
-					projectionMatrix);
-			renderHemisphere(
-					skybox.domeNight(),
-					alpha,
-					Mth.PI,
-					Mth.TWO_PI,
-					travelAngle,
-					MathHelper.ColorHelper.redFloat(skyColor),
-					MathHelper.ColorHelper.greenFloat(skyColor),
-					MathHelper.ColorHelper.blueFloat(skyColor),
-					UvMode.TRANSITION_REVERSED,
-					SKYBOX_SIZE,
-					skybox.sphereYOffset(),
-					poseStack,
-					projectionMatrix);
-			return;
-		}
-		
 		int skyColor = skyColor(level, skybox, partialTick);
-		renderHemisphere(
-				skybox.dome(),
-				alpha,
-				0.0F,
-				Mth.TWO_PI,
-				sphereTravelAngle(level, partialTick),
-				MathHelper.ColorHelper.redFloat(skyColor),
-				MathHelper.ColorHelper.greenFloat(skyColor),
-				MathHelper.ColorHelper.blueFloat(skyColor),
-				UvMode.NORMAL,
-				SKYBOX_SIZE,
-				skybox.sphereYOffset(),
-				poseStack,
-				projectionMatrix);
-	}
-	
-	private static void renderHemisphere(ResourceLocation texture,
-	                                     float alpha,
-	                                     float yawStart,
-	                                     float yawEnd,
-	                                     float travelAngle,
-	                                     float red,
-	                                     float green,
-	                                     float blue,
-	                                     PoseStack poseStack,
-	                                     Matrix4f projectionMatrix)
-	{
-		renderHemisphere(texture, alpha, yawStart, yawEnd, travelAngle, red, green, blue, UvMode.NORMAL, poseStack, projectionMatrix);
-	}
-	
-	private static void renderHemisphere(ResourceLocation texture,
-	                                     float alpha,
-	                                     float yawStart,
-	                                     float yawEnd,
-	                                     float travelAngle,
-	                                     float red,
-	                                     float green,
-	                                     float blue,
-	                                     UvMode uvMode,
-	                                     PoseStack poseStack,
-	                                     Matrix4f projectionMatrix)
-	{
-		renderHemisphere(texture, alpha, yawStart, yawEnd, travelAngle, red, green, blue, uvMode, SKYBOX_SIZE, 0.0F, poseStack, projectionMatrix);
-	}
-	
-	private static void renderHemisphere(ResourceLocation texture,
-	                                     float alpha,
-	                                     float yawStart,
-	                                     float yawEnd,
-	                                     float travelAngle,
-	                                     float red,
-	                                     float green,
-	                                     float blue,
-	                                     float size,
-	                                     PoseStack poseStack,
-	                                     Matrix4f projectionMatrix)
-	{
-		renderHemisphere(texture, alpha, yawStart, yawEnd, travelAngle, red, green, blue, UvMode.NORMAL, size, 0.0F, null, poseStack, projectionMatrix);
-	}
-	
-	private static void renderHemisphere(ResourceLocation texture,
-	                                     float alpha,
-	                                     float yawStart,
-	                                     float yawEnd,
-	                                     float travelAngle,
-	                                     float red,
-	                                     float green,
-	                                     float blue,
-	                                     UvMode uvMode,
-	                                     float size,
-	                                     PoseStack poseStack,
-	                                     Matrix4f projectionMatrix)
-	{
-		renderHemisphere(texture, alpha, yawStart, yawEnd, travelAngle, red, green, blue, uvMode, size, 0.0F, null, poseStack, projectionMatrix);
-	}
-	
-	private static void renderHemisphere(ResourceLocation texture,
-	                                     float alpha,
-	                                     float yawStart,
-	                                     float yawEnd,
-	                                     float travelAngle,
-	                                     float red,
-	                                     float green,
-	                                     float blue,
-	                                     UvMode uvMode,
-	                                     float size,
-	                                     float yOffset,
-	                                     PoseStack poseStack,
-	                                     Matrix4f projectionMatrix)
-	{
-		renderHemisphere(texture, alpha, yawStart, yawEnd, travelAngle, red, green, blue, uvMode, size, yOffset, null, poseStack, projectionMatrix);
-	}
-	
-	static void renderHemisphere(ResourceLocation texture,
-	                             float alpha,
-	                             float yawStart,
-	                             float yawEnd,
-	                             float travelAngle,
-	                             float red,
-	                             float green,
-	                             float blue,
-	                             UvMode uvMode,
-	                             float size,
-	                             float yOffset,
-	                             RenderType renderType,
-	                             PoseStack poseStack,
-	                             Matrix4f projectionMatrix)
-	{
-		Matrix4f matrix = poseStack.last().pose();
-		RenderSystem.setShaderTexture(0, texture);
-		RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
-		RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
-		
-		BufferBuilder buffer = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
-		int alphaInt = alphaToInt(alpha);
-		int horizontalSegments = Math.max(1, Mth.ceil((yawEnd - yawStart) / Mth.TWO_PI * DOME_HORIZONTAL_SEGMENTS));
-		for (int x = 0; x < horizontalSegments; x++)
-		{
-			for (int y = 0; y < DOME_VERTICAL_SEGMENTS; y++)
-			{
-				float u0 = (float)x / horizontalSegments;
-				float v0 = (float)y / DOME_VERTICAL_SEGMENTS;
-				float u1 = (float)(x + 1) / horizontalSegments;
-				float v1 = (float)(y + 1) / DOME_VERTICAL_SEGMENTS;
-				
-				addSphereVertex(buffer, matrix, u0, v0, yawStart, yawEnd, travelAngle, red, green, blue, alphaInt, size, yOffset, uvMode);
-				addSphereVertex(buffer, matrix, u0, v1, yawStart, yawEnd, travelAngle, red, green, blue, alphaInt, size, yOffset, uvMode);
-				addSphereVertex(buffer, matrix, u1, v1, yawStart, yawEnd, travelAngle, red, green, blue, alphaInt, size, yOffset, uvMode);
-				addSphereVertex(buffer, matrix, u1, v0, yawStart, yawEnd, travelAngle, red, green, blue, alphaInt, size, yOffset, uvMode);
-			}
-		}
-		MeshData meshData = buffer.buildOrThrow();
-		if (renderType == null)
-			BufferUploader.drawWithShader(meshData);
-		else
-			renderType.draw(meshData);
-	}
-	
-	private static void addSphereVertex(BufferBuilder buffer,
-	                                    Matrix4f matrix,
-	                                    float u,
-	                                    float v,
-	                                    float yawStart,
-	                                    float yawEnd,
-	                                    float travelAngle,
-	                                    float red,
-	                                    float green,
-	                                    float blue,
-	                                    int alpha,
-	                                    float size,
-	                                    float yOffset,
-	                                    UvMode uvMode)
-	{
-		float yaw = Mth.lerp(u, yawStart, yawEnd);
-		float pitch = Mth.lerp(1.0F - v, -Mth.HALF_PI, Mth.HALF_PI);
-		float horizontal = Mth.cos(pitch);
-		float x = Mth.sin(pitch);
-		float y = Mth.sin(yaw) * horizontal;
-		float z = Mth.cos(yaw) * horizontal;
-		float renderY = rotateVanillaSkyY(y, z, travelAngle);
-		float renderZ = rotateVanillaSkyZ(y, z, travelAngle);
-		float finalX = rotateVanillaSkyOffsetX(x, renderZ);
-		float finalZ = rotateVanillaSkyOffsetZ(x, renderZ);
-		
-		buffer.addVertex(matrix, finalX * size, renderY * size + yOffset, finalZ * size).
-				setUv(textureU(u, v, uvMode), textureV(u, v, uvMode)).
-				setColor(colorToInt(red), colorToInt(green), colorToInt(blue), alpha);
-	}
-	
-	private static float textureU(float u, float v, UvMode mode)
-	{
-		return mode == UvMode.NORMAL ? u : v;
-	}
-	
-	private static float textureV(float u, float v, UvMode mode)
-	{
-		return switch (mode)
-		{
-			case NORMAL -> v;
-			case TRANSITION_FORWARD -> u;
-			case TRANSITION_REVERSED -> 1.0F - u;
-		};
+		float red = MathHelper.ColorHelper.redFloat(skyColor);
+		float green = MathHelper.ColorHelper.greenFloat(skyColor);
+		float blue = MathHelper.ColorHelper.blueFloat(skyColor);
+		float nightWeight = nightSkyWeight(level, partialTick);
+		float rotation = sphereTravelAngle(level, partialTick);
+		CubemapSkyboxRenderer.render(skybox.day(), alpha * (1.0F - nightWeight), rotation, red, green, blue, poseStack);
+		CubemapSkyboxRenderer.render(skybox.night(), alpha * nightWeight, rotation, red, green, blue, poseStack);
 	}
 	
 	static float sphereTravelAngle(ClientLevel level, float partialTick)
 	{
 		return level.getSunAngle(partialTick) * DOME_DAY_CYCLE_SCROLL;
+	}
+
+	private static float nightSkyWeight(ClientLevel level, float partialTick)
+	{
+		float time = level.getTimeOfDay(partialTick);
+		return (1.0F - Mth.cos(time * Mth.TWO_PI)) * 0.5F;
 	}
 	
 	private static int skyColor(ClientLevel level, BiomeSkybox skybox, float partialTick)
@@ -656,33 +464,13 @@ public final class BiomeSkyboxes
 				setColor(colorToInt(red), colorToInt(green), colorToInt(blue), alpha);
 	}
 	
-	private static float rotateVanillaSkyY(float y, float z, float angle)
-	{
-		return y * Mth.cos(angle) - z * Mth.sin(angle);
-	}
-	
-	private static float rotateVanillaSkyZ(float y, float z, float angle)
-	{
-		return y * Mth.sin(angle) + z * Mth.cos(angle);
-	}
-	
-	private static float rotateVanillaSkyOffsetX(float x, float z)
-	{
-		return -z;
-	}
-	
-	private static float rotateVanillaSkyOffsetZ(float x, float z)
-	{
-		return x;
-	}
-	
 	static int alphaToInt(float alpha)
 	{
 		if (alpha > 0.98F)
 			return 255;
 		return Mth.clamp((int)(alpha * 255.0F), 0, 255);
 	}
-	
+
 	private static int colorToInt(float color)
 	{
 		return Mth.clamp((int)(color * 255.0F), 0, 255);
@@ -701,10 +489,4 @@ public final class BiomeSkyboxes
 	{
 	}
 	
-	enum UvMode
-	{
-		NORMAL,
-		TRANSITION_FORWARD,
-		TRANSITION_REVERSED
-	}
 }

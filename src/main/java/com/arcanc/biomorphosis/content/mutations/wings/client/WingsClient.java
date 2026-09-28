@@ -54,8 +54,8 @@ public final class WingsClient
 	private static final float FLIGHT_POSE_STEP = 0.12F;
 	private static final float HOVER_BOB_AMPLITUDE = 0.025F;
 	private static final float HOVER_BOB_SPEED = 0.12F;
-	private static final PModelData FLIGHT_MODEL = new PModelData.Builder(
-			Database.rl("glmodels/player/wings_flight.gltf"), "").build();
+	private static final PModelData FLIGHT_MODEL = PModelData.direct(
+			Database.rl("player/wings_flight"));
 	private static final PRawAnimation FLIGHT_ANIMATION = PRawAnimation.begin().thenLoop("flight").build();
 	private static final Map<Player, FlightPose> FLIGHT_POSES = new WeakHashMap<>();
 	private static WingsFlightSound flightSound;
@@ -67,6 +67,7 @@ public final class WingsClient
 	public static void init (final IEventBus modEventBus)
 	{
 		modEventBus.addListener(WingsClient :: registerKeyMapping);
+		modEventBus.addListener(WingsClient :: registerResources);
 		modEventBus.addListener(WingsClient :: registerFlightAnimation);
 		NeoForge.EVENT_BUS.addListener(WingsClient :: clientPlayerTick);
 		NeoForge.EVENT_BUS.addListener(WingsClient :: computeCameraAngles);
@@ -74,6 +75,11 @@ public final class WingsClient
 		
 		modEventBus.addListener(WingsAttachmentRenderHandler :: registerLayerDefinition);
 		modEventBus.addListener(WingsAttachmentRenderHandler :: addLayers);
+	}
+
+	private static void registerResources(PulseLibEvents.RegisterResourceEvent event)
+	{
+		event.model(FLIGHT_MODEL);
 	}
 	
 	private static void registerKeyMapping(RegisterKeyMappingsEvent event)

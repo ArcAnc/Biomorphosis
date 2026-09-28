@@ -19,9 +19,12 @@ import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.arcanc.pulselib.content.animatable.ControllerState;
 import com.arcanc.pulselib.content.event.PulseLibEvents;
 import com.arcanc.pulselib.content.model.animation.PRawAnimation;
+import com.arcanc.pulselib.content.player.animation.PPlayerAnimationAnchors;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationBlendMode;
 import com.arcanc.pulselib.content.player.animation.PPlayerAnimationDefinition;
 import com.arcanc.pulselib.content.player.animation.PPlayerPart;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PFirstPersonCameraMode;
+import com.arcanc.pulselib.content.player.animation.firstPerson.PPlayerFirstPersonSettings;
 import com.arcanc.pulselib.content.renderer.modelData.PModelData;
 import com.mojang.blaze3d.vertex.*;
 import net.minecraft.client.Minecraft;
@@ -45,16 +48,19 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public final class HookClientHandler
 {
 	private static final List<ClientHook> HOOKS = new ArrayList<>();
+	private static final Map<UUID, Long> LAST_CAST_STARTS = new HashMap<>();
 	private static final String CAST_CONTROLLER = "hook_controller";
-	private static final PModelData CAST_MODEL = new PModelData.Builder(
-			Database.rl("glmodels/player/abilities/hook.gltf"), "").build();
-	private static final PRawAnimation CAST_ANIMATION = PRawAnimation.begin().thenPlay("extend").build();
+	private static final PModelData CAST_MODEL = PModelData.direct(
+			Database.rl("player/abilities/hook"));
+	private static final PRawAnimation CAST_ANIMATION = PRawAnimation.begin().thenHold("extend").build();
 	private static final RenderType TETHER_RENDER_TYPE = RenderType.create("biomorphosis_hook_tether",
 			DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.TRIANGLES, 4096, false, true,
 			RenderType.CompositeState.builder().
@@ -75,7 +81,14 @@ public final class HookClientHandler
 	{
 		NeoForge.EVENT_BUS.addListener(HookClientHandler :: playerTick);
 		NeoForge.EVENT_BUS.addListener(HookClientHandler :: renderHooks);
+		modEventBus.addListener(HookClientHandler :: registerResources);
 		modEventBus.addListener(HookClientHandler :: registerAnimation);
+	}
+
+	private static void registerResources(PulseLibEvents.RegisterResourceEvent event)
+	{
+		event.model(CAST_MODEL).
+			texture("0", AbilityCastClientHandler.PLAYER_MODEL_DUMMY_TEXTURE);
 	}
 
 	public static void spawn(UUID ownerId, Vec3 origin, Vec3 direction, double speedPerTick, double range)
@@ -96,6 +109,7 @@ public final class HookClientHandler
 		{
 			HOOKS.forEach(ClientHook :: stopFlightSounds);
 			HOOKS.clear();
+			LAST_CAST_STARTS.clear();
 			return;
 		}
 
@@ -122,19 +136,38 @@ public final class HookClientHandler
 	{
 		event.registration().register(AbilityCastAnimations.HOOK,
 				PPlayerAnimationDefinition.builder(CAST_MODEL).
-						when(player -> AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.HOOK)).
+				when(HookClientHandler :: keepsCastPose).
 						bind(PPlayerPart.RIGHT_ARM, "right_arm").
+						anchor(PPlayerAnimationAnchors.FIRST_PERSON_CAMERA, "fp_camera").
 						mask(PPlayerPart.RIGHT_ARM).
 						blendMode(PPlayerAnimationBlendMode.OVERRIDE).
+						firstPerson(new PPlayerFirstPersonSettings(true, 0.0F, 0.0F, PFirstPersonCameraMode.VANILLA)).
 						controllers(registrar -> registrar.add(CAST_CONTROLLER, () -> state ->
 						{
-							if (!AbilityCastClientHandler.isCasting(state.animatable().player(), AbilityCastAnimations.HOOK))
+							Player player = state.animatable().player();
+							if (!keepsCastPose(player))
 								return ControllerState.STOP;
+							if (startsNewCast(player))
+								state.controller().stop();
 							if (state.controller().isStopped())
 								state.controller().play(CAST_ANIMATION);
 							return ControllerState.PLAY;
 						})).
 						build());
+	}
+
+	private static boolean keepsCastPose(Player player)
+	{
+		return AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.HOOK) ||
+				HOOKS.stream().anyMatch(hook -> hook.ownerId.equals(player.getUUID()));
+	}
+
+	private static boolean startsNewCast(Player player)
+	{
+		if (!AbilityCastClientHandler.isCasting(player, AbilityCastAnimations.HOOK))
+			return false;
+		long startedAt = AbilityCastClientHandler.castStartedAt(player, AbilityCastAnimations.HOOK);
+		return !Long.valueOf(startedAt).equals(LAST_CAST_STARTS.put(player.getUUID(), startedAt));
 	}
 
 	private static final class ClientHook
