@@ -17,7 +17,13 @@
     "SymmetricGroup3Expander",
     "WingsLivingEntityMixin",
     "WingsPlayerMixin",
-    "WingsServerPacketListenerImplMixin"
+    "WingsServerPacketListenerImplMixin",
+    "OrientedEntityMixin",
+    "OrientedProjectileMixin",
+    "OrientedPlayerMixin",
+    "OrientedMobMixin",
+    "OrientedLivingEntityMixin",
+    "OrientedLevelMixin"
   ],
   "minVersion": "0.8",
   "client": [
@@ -33,6 +39,7 @@
     "client.RecipeUpdateMixin",
     "client.WingsEntityTurnMixin",
     "client.WingsPlayerModelMixin",
-    "client.WingsPlayerRendererMixin"
+    "client.WingsPlayerRendererMixin",
+    "client.OrientedHitboxRendererMixin"
   ]
 }

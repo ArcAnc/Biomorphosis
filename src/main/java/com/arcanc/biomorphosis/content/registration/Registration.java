@@ -38,6 +38,8 @@ import com.arcanc.biomorphosis.content.book_data.BookPageData;
 import com.arcanc.biomorphosis.content.effect.AcidEffect;
 import com.arcanc.biomorphosis.content.effect.InfestationEffect;
 import com.arcanc.biomorphosis.content.entity.*;
+import com.arcanc.biomorphosis.content.fluid.client.FluidClientCallbacks;
+import net.neoforged.fml.loading.FMLLoader;
 import com.arcanc.biomorphosis.content.entity.ai.brain.sensor.SwarmHurtBySensor;
 import com.arcanc.biomorphosis.content.entity.renderer.*;
 import com.arcanc.biomorphosis.content.entity.renderer.srf.BlacksmithRenderer;
@@ -77,15 +79,12 @@ import com.arcanc.biomorphosis.util.Database;
 import com.arcanc.biomorphosis.util.enumextensions.RarityExtension;
 import com.arcanc.biomorphosis.util.helper.BioCodecs;
 import com.arcanc.biomorphosis.util.helper.MathHelper;
-import com.arcanc.biomorphosis.util.helper.RenderHelper;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.Util;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.*;
@@ -297,7 +296,7 @@ public final class Registration
                                 add(Attributes.FOLLOW_RANGE, 32).
                                 add(Attributes.MOVEMENT_SPEED, 0.2f).
                                 add(Attributes.ARMOR, 5)).
-                        rendererProvider(QueenRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? QueenRenderer::new : null),
                 itemProps -> ItemReg.baseProps.
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
                         accept(itemProps));
@@ -324,7 +323,7 @@ public final class Registration
                                 add(Attributes.MOVEMENT_SPEED, 0.3f).
                                 add(Attributes.ARMOR, 10).
                                 add(Attributes.ARMOR_TOUGHNESS, 5)).
-                        rendererProvider(QueenGuardRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? QueenGuardRenderer::new : null),
                 itemProps -> ItemReg.baseProps.
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
                         accept(itemProps));
@@ -348,7 +347,7 @@ public final class Registration
                                 add(Attributes.ATTACK_DAMAGE, 6).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.MOVEMENT_SPEED, 0.2f)).
-                        rendererProvider(WorkerRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? WorkerRenderer::new : null),
                 itemProps -> ItemReg.baseProps.
                         andThen(props -> props.rarity(RarityExtension.BIO_ULTRA_RARE.getValue())).
                         accept(itemProps));
@@ -372,7 +371,7 @@ public final class Registration
                                 add(Attributes.ATTACK_DAMAGE, 8).
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.MOVEMENT_SPEED, 0.15f)).
-                        rendererProvider(KsiggRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? KsiggRenderer::new : null),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         public static final EntityEntry<Larva> MOB_LARVA = makeEntityType(
@@ -396,7 +395,7 @@ public final class Registration
                                 add(Attributes.FOLLOW_RANGE, 12).
                                 add(Attributes.ARMOR, 20).
                                 add(Attributes.ARMOR_TOUGHNESS, 10)).
-                        rendererProvider(LarvaRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? LarvaRenderer::new : null),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         public static final EntityEntry<Ziris> MOB_ZIRIS = makeEntityType(
@@ -419,7 +418,7 @@ public final class Registration
                                 add(Attributes.FLYING_SPEED, 0.4f).
                                 add(Attributes.MOVEMENT_SPEED, 0.4f).
                                 add(Attributes.FOLLOW_RANGE, 16f)).
-                        rendererProvider(ZirisRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? ZirisRenderer::new : null),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         public static final EntityEntry<Infestor> MOB_INFESTOR = makeEntityType(
@@ -442,7 +441,7 @@ public final class Registration
                                 add(Attributes.MOVEMENT_SPEED, 0.2f).
                                 add(Attributes.FOLLOW_RANGE, 16).
                                 add(Attributes.ARMOR, 2)).
-                        rendererProvider(InfestorRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? InfestorRenderer::new : null),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         public static final EntityEntry<Swarmling> MOB_SWARMLING= makeEntityType(
@@ -465,7 +464,7 @@ public final class Registration
                                 add(Attributes.MOVEMENT_SPEED, 0.3f).
                                 add(Attributes.FOLLOW_RANGE, 16).
                                 add(Attributes.ARMOR, 2)).
-                        rendererProvider(SwarmlingRenderer :: new),
+                        rendererProvider(FMLLoader.getDist().isClient() ? SwarmlingRenderer::new : null),
                 itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
 		public static final EntityEntry<MelonMaw> MOB_MELON_MAW = makeEntityType(
@@ -488,7 +487,7 @@ public final class Registration
 								add(Attributes.MOVEMENT_SPEED, 0.4f).
 								add(Attributes.FOLLOW_RANGE, 16).
 								add(Attributes.ARMOR, 2)).
-						rendererProvider(MelonMawRenderer :: new),
+						rendererProvider(FMLLoader.getDist().isClient() ? MelonMawRenderer::new : null),
 				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
 		public static final EntityEntry<TurretProjectile> PROJECTILE_TURRET = makeEntityType(
@@ -501,7 +500,7 @@ public final class Registration
 						eyeHeight(0.13f).
 						clientTrackingRange(4).
 						updateInterval(20).
-						rendererProvider(TurretProjectileRenderer :: new),
+						rendererProvider(FMLLoader.getDist().isClient() ? TurretProjectileRenderer::new : null),
 				null);
 
 		public static final EntityEntry<ZirisProjectile> PROJECTILE_ZIRIS = makeEntityType(
@@ -514,7 +513,7 @@ public final class Registration
 						eyeHeight(0.13f).
 						clientTrackingRange(4).
 						updateInterval(20).
-						rendererProvider(ZirisProjectileRenderer :: new),
+						rendererProvider(FMLLoader.getDist().isClient() ? ZirisProjectileRenderer::new : null),
 				null);
 
 		public static final EntityEntry<Soldier> MOB_BASE_SOLDIER = makeEntityType(
@@ -534,7 +533,7 @@ public final class Registration
 								add(Attributes.ATTACK_DAMAGE, 8).
 								add(Attributes.MOVEMENT_SPEED, 0.27f).
 								add(Attributes.ARMOR, 4)).
-						rendererProvider(SoldierRenderer :: new),
+						rendererProvider(FMLLoader.getDist().isClient() ? SoldierRenderer::new : null),
 				itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
 	    public static final EntityEntry<Sergeant> MOB_BASE_SERGEANT = makeEntityType(
@@ -554,7 +553,7 @@ public final class Registration
 					            add(Attributes.ATTACK_DAMAGE, 10).
 					            add(Attributes.MOVEMENT_SPEED, 0.27f).
 					            add(Attributes.ARMOR, 6)).
-					    rendererProvider(SergeantRenderer :: new),
+					    rendererProvider(FMLLoader.getDist().isClient() ? SergeantRenderer::new : null),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
 	    public static final EntityEntry<Captain> MOB_BASE_CAPTAIN = makeEntityType(
@@ -574,7 +573,7 @@ public final class Registration
 					            add(Attributes.ATTACK_DAMAGE, 12).
 					            add(Attributes.MOVEMENT_SPEED, 0.27f).
 					            add(Attributes.ARMOR, 8)).
-					    rendererProvider(CaptainRenderer :: new),
+					    rendererProvider(FMLLoader.getDist().isClient() ? CaptainRenderer::new : null),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
 	    public static final EntityEntry<Blacksmith> MOB_BASE_BLACKSMITH = makeEntityType(
@@ -594,7 +593,7 @@ public final class Registration
 					            add(Attributes.ATTACK_DAMAGE, 8).
 					            add(Attributes.MOVEMENT_SPEED, 0.27f).
 					            add(Attributes.ARMOR, 4)).
-					    rendererProvider(BlacksmithRenderer :: new),
+					    rendererProvider(FMLLoader.getDist().isClient() ? BlacksmithRenderer::new : null),
 			    itemProps -> itemProps.rarity(RarityExtension.BIO_ULTRA_RARE.getValue()));
 
         private static <T extends Entity> EntityEntry<T> makeEntityType(String name,
@@ -1373,105 +1372,105 @@ public final class Registration
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<LureCampfireBE>> BE_LURE_CAMPFIRE = BLOCK_ENTITIES.register(
                 "lure_campfire",
                 makeType(LureCampfireBE :: new,
-                         LureCampfireRenderer:: new,
+                         FMLLoader.getDist().isClient() ? LureCampfireRenderer::new : null,
                          BlockReg.LURE_CAMPFIRE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidStorage>> BE_FLUID_STORAGE = BLOCK_ENTITIES.register(
                 "fluid_storage",
                 makeType(BioFluidStorage :: new,
-                         BioFluidStorageRenderer :: new,
+                         FMLLoader.getDist().isClient() ? BioFluidStorageRenderer::new : null,
                          BlockReg.FLUID_STORAGE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioFluidTransmitter>> BE_FLUID_TRANSMITTER = BLOCK_ENTITIES.register(
                 "fluid_transmitter",
                 makeType(BioFluidTransmitter :: new,
-                        BioFluidTransmitterRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioFluidTransmitterRenderer::new : null,
                         BlockReg.FLUID_TRANSMITTER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<NorphSource>> BE_NORPH_SOURCE = BLOCK_ENTITIES.register(
                 "norph_source",
                 makeType(NorphSource :: new,
-                        NorphSourceRenderer :: new,
+                        FMLLoader.getDist().isClient() ? NorphSourceRenderer::new : null,
                         BlockReg.NORPH_SOURCE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioCrusher>> BE_CRUSHER = BLOCK_ENTITIES.register(
                 "crusher",
                 makeType(BioCrusher :: new,
-                        BioCrusherRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioCrusherRenderer::new : null,
                         BlockReg.CRUSHER));
 
 	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioSqueezer>> BE_SQUEEZER = BLOCK_ENTITIES.register(
 			    "squeezer",
 			    makeType(BioSqueezer :: new,
-					    BioSqueezerRenderer :: new,
+					    FMLLoader.getDist().isClient() ? BioSqueezerRenderer::new : null,
 					    BlockReg.SQUEEZER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioStomach>> BE_STOMACH = BLOCK_ENTITIES.register(
                 "stomach",
                 makeType(BioStomach :: new,
-                        BioStomachRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioStomachRenderer::new : null,
                         BlockReg.STOMACH));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioCatcher>> BE_CATCHER = BLOCK_ENTITIES.register(
                 "catcher",
                 makeType(BioCatcher :: new,
-                        BioCatcherRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioCatcherRenderer::new : null,
                         BlockReg.CATCHER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioForge>> BE_FORGE = BLOCK_ENTITIES.register(
                 "forge",
                 makeType(BioForge :: new,
-                        BioForgeRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioForgeRenderer::new : null,
                         BlockReg.FORGE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockFluidStorage>> BE_MULTIBLOCK_FLUID_STORAGE = BLOCK_ENTITIES.register(
                 "multiblock_fluid_storage",
                 makeType(MultiblockFluidStorage :: new,
-                        MultiblockFluidStorageRenderer :: new,
+                        FMLLoader.getDist().isClient() ? MultiblockFluidStorageRenderer::new : null,
                         BlockReg.MULTIBLOCK_FLUID_STORAGE));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockMorpher>> BE_MULTIBLOCK_MORPHER = BLOCK_ENTITIES.register(
                 "multiblock_morpher",
                 makeType(MultiblockMorpher :: new,
-                        MultiblockMorpherRenderer :: new,
+                        FMLLoader.getDist().isClient() ? MultiblockMorpherRenderer::new : null,
                         BlockReg.MULTIBLOCK_MORPHER));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChamber>> BE_MULTIBLOCK_CHAMBER = BLOCK_ENTITIES.register(
                 "multiblock_chamber",
                 makeType(MultiblockChamber :: new,
-                        MultiblockChamberRenderer :: new,
+                        FMLLoader.getDist().isClient() ? MultiblockChamberRenderer::new : null,
                         MenuTypeReg.CHAMBER,
-                        ChamberScreen :: new,
+                        FMLLoader.getDist().isClient() ? ChamberScreen::new : null,
                         BlockReg.MULTIBLOCK_CHAMBER));
 
 		public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockChrysalis>> BE_MULTIBLOCK_CHRYSALIS = BLOCK_ENTITIES.register(
 				"multiblock_chrysalis",
 				makeType(MultiblockChrysalis :: new,
-						MultiblockChrysalisRenderer :: new,
+						FMLLoader.getDist().isClient() ? MultiblockChrysalisRenderer::new : null,
 						MenuTypeReg.CHRYSALIS,
-						ChrysalisScreen :: new,
+						FMLLoader.getDist().isClient() ? ChrysalisScreen::new : null,
 						BlockReg.MULTIBLOCK_CHRYSALIS));
 
 	    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<MultiblockTurret>> BE_MULTIBLOCK_TURRET = BLOCK_ENTITIES.register(
 			    "multiblock_turret",
 			    makeType(MultiblockTurret :: new,
-					    MultiblockTurretRenderer :: new,
+					    FMLLoader.getDist().isClient() ? MultiblockTurretRenderer::new : null,
 					    MenuTypeReg.TURRET,
-					    TurretScreen :: new,
+					    FMLLoader.getDist().isClient() ? TurretScreen::new : null,
 					    BlockReg.MULTIBLOCK_TURRET));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<EggsDeco>> BE_EGGS_DECO = BLOCK_ENTITIES.register(
                 "eggs_deco",
                 makeType(EggsDeco :: new,
-                        EggsDecoRenderer :: new,
+                        FMLLoader.getDist().isClient() ? EggsDecoRenderer::new : null,
                         BlockReg.EGGS_DECO));
 
         public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<BioChest>> BE_CHEST = BLOCK_ENTITIES.register(
                 "chest",
                 makeType(BioChest :: new,
-                        BioChestRenderer :: new,
+                        FMLLoader.getDist().isClient() ? BioChestRenderer::new : null,
                         MenuTypeReg.CHEST,
-                        ChestScreen:: new,
+                        FMLLoader.getDist().isClient() ? ChestScreen::new : null,
                         BlockReg.CHEST));
 
         public static <T extends BlockEntity,  C extends BioContainerMenu, S extends BioContainerScreen<C>> Supplier<BlockEntityType<T>> makeType(BlockEntityType.BlockEntitySupplier<T> create,
@@ -1502,6 +1501,9 @@ public final class Registration
                 Collection<? extends Supplier<? extends Block>> valid
         )
         {
+            if (!FMLLoader.getDist().isClient())
+                return () -> new BioBlockEntityType<>(create, null, menuProvider, null,
+                        valid.stream().map(Supplier::get).collect(Collectors.toUnmodifiableSet()));
             return () -> new BioBlockEntityType<>(
                     create, rendererProvider, menuProvider, screenConstructor, valid.stream().map(Supplier :: get).collect(Collectors.toUnmodifiableSet()));
         }
@@ -1715,33 +1717,10 @@ public final class Registration
         public static final DeferredRegister<FluidType> FLUID_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.FLUID_TYPES, Database.MOD_ID);
 
         public static final FluidEntry BIOMASS = FluidEntry.make("biomass",
-                new BioFluidType.ColorParams(new Vector4f(112, 15, 37, 255), new Vector4f(97, 21, 10, 255), 80, (minColor, maxColor, maxTime) ->
-                {
-                    Vector3f minimumColor = new Vector3f(minColor.x(), minColor.y(), minColor.z()).div(255f);
-                    Vector3f maximumColor = new Vector3f(maxColor.x(), maxColor.y(), maxColor.z()).div(255f);
-                    Minecraft mc = RenderHelper.mc();
-                    Level level = mc.level;
-                    if (level == null)
-                        return -1;
-                    long levelTime = level.getGameTime();
-                    float partialTicks = mc.getTimer().getGameTimeDeltaPartialTick(false);
-                    float halfTime = maxTime / 2f;
-
-                    float time = (levelTime + partialTicks) % maxTime;
-                    if (time < halfTime)
-                        return MathHelper.ColorHelper.lerp(time / halfTime, MathHelper.ColorHelper.color(maximumColor), MathHelper.ColorHelper.color(minimumColor));
-                    else
-                        return MathHelper.ColorHelper.lerp((time - halfTime) / halfTime, MathHelper.ColorHelper.color(minimumColor), MathHelper.ColorHelper.color(maximumColor));
-                }),
-                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
-                    {
-	                    RenderSystem.setShaderFogStart(1.0f);
-						RenderSystem.setShaderFogEnd(6.0f);
-						//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                        //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
-                    },
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.biomassColor()
+                        : BioFluidType.ColorParams.constantColor(new Vector4f(112, 15, 37, 255)),
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.color() : null,
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.options() : null,
                 props -> props.slopeFindDistance(2).
                         levelDecreasePerBlock(2).
                         explosionResistance(100),
@@ -1757,15 +1736,8 @@ public final class Registration
 
         public static final FluidEntry ACID = FluidEntry.make("acid",
                 BioFluidType.ColorParams.constantColor(new Vector4f(230, 255, 200, 255)),
-                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
-                {
-	                RenderSystem.setShaderFogStart(1.0f);
-	                RenderSystem.setShaderFogEnd(6.0f);
-					//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                    //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
-                },
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.color() : null,
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.options() : null,
                 props -> props.slopeFindDistance(3).
                         levelDecreasePerBlock(1).
                         explosionResistance(100),
@@ -1781,15 +1753,8 @@ public final class Registration
 
         public static final FluidEntry ADRENALINE = FluidEntry.make("adrenaline",
                 BioFluidType.ColorParams.constantColor(new Vector4f(173, 216, 230, 255)),
-                (camera, partialTick, level, renderDistance, darkenWorldAmount, fluidFogColor, colorParams) ->
-                        MathHelper.ColorHelper.vector3fFromRGB24(colorParams.getColor()),
-                (camera, mode, renderDistance, partialTick, nearDistance, farDistance, shape, colorParams) ->
-                {
-	                RenderSystem.setShaderFogStart(1.0f);
-	                RenderSystem.setShaderFogEnd(6.0f);
-					//Vector4f color = MathHelper.ColorHelper.vector4fFromARGB(colorParams.getColor());
-                    //return new FogParameters(0.00f, 0.5f, FogShape.CYLINDER, color.x(), color.y(), color.z(), color.w());
-                },
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.color() : null,
+                FMLLoader.getDist().isClient() ? FluidClientCallbacks.options() : null,
                 props -> props.slopeFindDistance(4).
                         levelDecreasePerBlock(1).
                         explosionResistance(100),

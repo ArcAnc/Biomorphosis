@@ -12,6 +12,8 @@ package com.arcanc.biomorphosis.content.entity;
 
 import com.arcanc.biomorphosis.content.entity.ai.goals.SwarmHurtByTargetGoal;
 import com.arcanc.biomorphosis.content.entity.ai.targeting.SwarmTargeting;
+import com.arcanc.biomorphosis.content.entity.hitbox.IOrientedHitbox;
+import com.arcanc.biomorphosis.content.entity.hitbox.OBB;
 import com.arcanc.biomorphosis.content.registration.Registration;
 import com.arcanc.biomorphosis.data.tags.base.BioItemTags;
 import com.arcanc.pulselib.content.animatable.AnimManagerKey;
@@ -33,9 +35,10 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-public class Swarmling extends Animal implements PAnimatable<Swarmling>
+public class Swarmling extends Animal implements PAnimatable<Swarmling>, IOrientedHitbox
 {
 	private final PAnimationManager<Swarmling> manager = PLibHelper.createManager(this);
 
@@ -47,6 +50,13 @@ public class Swarmling extends Animal implements PAnimatable<Swarmling>
 	public Swarmling(EntityType<? extends Animal> type, Level level)
 	{
 		super(type, level);
+	}
+
+	@Override
+	public OBB getOrientedHitbox()
+	{
+		return OBB.at(position(), new Vec3(0.0, getBbHeight() / 2.0, 0.0),
+				getBbWidth() * 0.5, getBbHeight(), getBbWidth() * 1.5f, this.yBodyRot);
 	}
 	
 	@Override

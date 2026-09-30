@@ -37,7 +37,8 @@ import java.util.*;
 public final class BiomeSkyboxes
 {
 	private static final float DOME_DAY_CYCLE_SCROLL = 1.0F;
-	private static final float SUN_SIZE = 12.0F;
+	// Extra room for the long rays surrounding the sun's smaller texture core.
+	private static final float SUN_SIZE = 18.0F;
 	private static final float MOON_SIZE = 9.0F;
 	private static final float CELESTIAL_DISTANCE = 94.0F;
 	private static final int SAMPLE_RADIUS = 32;

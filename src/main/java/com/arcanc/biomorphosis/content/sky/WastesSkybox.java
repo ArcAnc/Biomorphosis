@@ -85,9 +85,9 @@ final class WastesSkybox
 		BiomeSkyboxes.registerCubemap(NEBULA);
 		BiomeSkyboxes.registerCubemap(STARS);
 		BiomeSkyboxes.register(BioBiomes.WASTES, BiomeSkybox.builder(Database.rl("environment/skybox/wastes")).
-				noonColor(192, 237, 183).
+				noonColor(207, 230, 202).
 				midnightColor(54, 48, 92).
-				noonFogColor(70, 115, 86).
+				noonFogColor(85, 110, 94).
 				midnightFogColor(24, 18, 47).
 				effect(STARS_EFFECT).
 				effect(new WastesHorizon()).

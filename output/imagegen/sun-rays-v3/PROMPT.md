@@ -1,0 +1,11 @@
+# Long sun rays, version 3
+
+Built-in imagegen edit with two inputs: the current sun sprite (edit target) and the user-provided Minecraft screenshot (ray shape reference). ImageMagick exports the sprite at 128 x 128 with an eight-pixel smooth alpha fade towards the canvas edges to prevent clipped ray tips. The sun quad half-size is increased from 12 to 18 to accommodate the expanded ray area.
+
+- `sun-before.png`: previous texture.
+- `sun-generated.png`: full-resolution imagegen output.
+- Installed texture: `src/main/resources/assets/biomorphosis/textures/environment/skybox/wastes/sun.png`.
+
+## Prompt
+
+Use case: precise-object-edit. Input image 1 is the existing sun sprite to edit; input image 2 is ONLY a visual reference for the LONG PIXEL-STEPPED LIGHT RAYS around the sun in its sky. Output only a single isolated sun sprite on true transparent RGBA background, no screenshot elements. Refine image 1 into a luminous Minecraft-compatible sun with dramatically longer, clearly visible rays like image 2. Keep the sun's round nearly white ivory core and soft low-saturation cream/pale-gold coloring, no strong orange or yellow ring. Main circular luminous core occupies approximately 44-46% of the square canvas width. Four dominant long rays extend horizontally and vertically nearly to the canvas boundaries, reaching about 94% of total canvas width and height, plus four shorter diagonal rays reaching 75-80%. Rays are broad near the core and taper with stepped pixel-art edges and a smoothly fading alpha glow, as in the reference. Make the long rays distinct bright linear shafts of soft cream light, not mere tiny bumps on a circular halo; an elegant soft cross-shaped bloom rather than a spiky cartoon star. Subtle translucent diffuse glow between rays. The core remains very bright almost white. ALL glow and ray tips must fade to fully transparent before the canvas edges, leave 3% clear margin, do not crop rays. No hard outline or concentric ring, no lens flare dots, no stars, no typography, no UI, no terrain, no trees, no cloud background. Transparent background must be actual alpha, not black, gray, white or checkerboard pixels. Square PNG readable after downsampling to 128x128, preferably generate 128x128.

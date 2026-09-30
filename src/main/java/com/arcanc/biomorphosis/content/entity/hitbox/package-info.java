@@ -1,6 +1,6 @@
 /**
  * @author ArcAnc
- * Created at: 18.03.2026
+ * Created at: 29.09.2026
  * Copyright (c) 2026
  * <p>
  * This code is licensed under "Arc's License of Common Sense"
@@ -10,7 +10,7 @@
 @ParametersAreNonnullByDefault
 @MethodsReturnNonnullByDefault
 @FieldsAreNonnullByDefault
-package com.arcanc.biomorphosis.content.entity;
+package com.arcanc.biomorphosis.content.entity.hitbox;
 
 import net.minecraft.FieldsAreNonnullByDefault;
 import net.minecraft.MethodsReturnNonnullByDefault;
